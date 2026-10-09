@@ -1,0 +1,39 @@
+parameters:
+    level: max
+    # The PHP version the extension ships against, not the one DDEV runs.
+    phpVersion: 80200
+    paths:
+        - Classes
+        - Configuration
+        - Tests
+    # The browser suite's own TYPO3: the settings it runs on, the server that serves it and
+    # the script that builds its database. Scripts rather than code — they run once, by
+    # hand or in CI, and say whether they worked by failing loudly. The records are written
+    # by one of them.
+    excludePaths:
+        analyseAndScan:
+            - Tests/E2e
+    treatPhpDocTypesAsCertain: false
+    # Both narrow the route themselves. A typo3.requestGetAttributeMapping would fix this too,
+    # but the check against the plain TYPO3 API runs without phpstan-typo3 and rejects that key.
+    ignoreErrors:
+        -
+            identifier: phpstanTypo3.requestAttributeValidation
+            paths:
+                - Classes/Authorization/AdminAccess.php
+                - Classes/ViewAsUser/LeaveUserView.php
+            reportUnmatched: false
+        # 14.3 renders the page for the request it is given; 13.4 takes none and reads the global
+        -
+            identifier: arguments.count
+            message: '#PageRenderer::render\(\) invoked with 1 parameter, 0 required#'
+            paths:
+                - Tests/Functional/Configuration/InlineSettingsTest.php
+                - Tests/Functional/Surfaces/Toolbar/VisualPermissionsToolbarItemTest.php
+                - Tests/Functional/ViewAsUser/LeaveUserViewTest.php
+            reportUnmatched: false
+        # Calls the API of both majors; each analysis sees one of the two methods missing
+        -
+            identifier: method.notFound
+            path: Classes/Compatibility/FileStorageTreeProvider.php
+            reportUnmatched: false

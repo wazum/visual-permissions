@@ -1,0 +1,227 @@
+@use '../contract';
+
+// It stands in for a select, so core's own form-select gives it the frame and the caret.
+.#{contract.$class-picker-trigger} {
+  width: auto;
+  min-width: 12rem;
+  max-width: 20rem;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+// Every colour, size and spacing is one of the backend's own.
+#{contract.$element-picker} {
+  --vperm-picker-row: 30px;
+  --vperm-picker-gap: 12px;
+
+  position: fixed;
+  z-index: 9999;
+  width: min(560px, 100vw - 32px);
+  max-height: min(60vh, 380px);
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--typo3-component-border-color);
+  border-radius: var(--typo3-component-border-radius);
+  background: var(--typo3-component-bg);
+  color: var(--typo3-component-color);
+  box-shadow: var(--typo3-component-box-shadow-flyout);
+  font-size: var(--typo3-component-font-size);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+
+  &:popover-open,
+  &[data-open] {
+    display: flex;
+  }
+
+  .input-group {
+    margin: 8px;
+    width: calc(100% - 16px);
+  }
+
+  // A key to read, not one to press, so it sits flat rather than as a key cap.
+  kbd {
+    padding: 1px 4px;
+    border: 1px solid var(--typo3-component-border-color);
+    border-radius: 3px;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: .85em;
+    line-height: 1.4;
+  }
+
+  // Both panes carry the same text gutter, made of the pane's padding plus the row's, so
+  // the columns line up.
+  .#{contract.$class-picker-panes} {
+    display: flex;
+    align-items: stretch;
+    min-height: 0;
+    flex: 1;
+    border-top: 1px solid var(--typo3-component-border-color);
+  }
+
+  [role='listbox'] {
+    min-height: 0;
+    overflow: auto;
+    padding: 4px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .#{contract.$class-picker-list} {
+    flex: 0 0 58%;
+    border-right: 1px solid var(--typo3-component-border-color);
+
+    // What stands there instead of rows: loading, failed, or nothing matched.
+    > p {
+      margin: 0;
+      padding: 8px var(--vperm-picker-gap);
+      color: var(--typo3-component-secondary-color);
+    }
+
+    > button {
+      margin: 0 var(--vperm-picker-gap);
+    }
+  }
+
+  .dropdown-header {
+    padding: 8px var(--vperm-picker-gap) 2px;
+    margin: 0;
+  }
+
+  [role='option'] {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    min-height: var(--vperm-picker-row);
+    padding: 4px var(--vperm-picker-gap);
+    border-radius: var(--typo3-component-border-radius);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--typo3-component-hover-bg);
+      color: var(--typo3-component-hover-color);
+    }
+
+    // The keyboard never leaves the field, so this stands in for a focus ring. Core's own
+    // live search marks its rows the same way, never with the primary colour.
+    &[aria-selected='true'] {
+      background: var(--typo3-component-focus-bg);
+      color: var(--typo3-component-focus-color);
+    }
+
+    // The name gives way first: the username is what tells two people apart where an
+    // installation signs them in as tu34323433, so it is never the part that is cut.
+    span:first-child {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span:last-child {
+      flex: 0 0 auto;
+      margin-inline-start: auto;
+      padding-inline-start: 12px;
+      color: var(--typo3-component-secondary-color);
+      white-space: nowrap;
+    }
+
+    &[aria-selected='true'] span:last-child,
+    &:hover span:last-child {
+      color: inherit;
+      opacity: 0.75;
+    }
+
+    mark {
+      padding: 0;
+      border-radius: 2px;
+      background: var(--typo3-component-match-highlight-bg);
+      color: var(--typo3-component-match-highlight-color);
+    }
+
+  }
+
+  // The row that scrolls under a resting pointer would light up beside the one in play.
+  &[#{contract.$attribute-by-key}] [role='option']:not([aria-selected='true']):hover {
+    background: none;
+    color: inherit;
+
+    span:last-child {
+      color: var(--typo3-component-secondary-color);
+      opacity: 1;
+    }
+  }
+
+  .#{contract.$class-picker-count} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--vperm-picker-gap);
+    min-height: 32px;
+    margin: 0;
+    padding: 0 var(--vperm-picker-gap);
+    border-top: 1px solid var(--typo3-component-border-color);
+    color: var(--typo3-component-secondary-color);
+  }
+
+  .#{contract.$class-picker-hints} {
+    display: flex;
+    align-items: center;
+    gap: var(--vperm-picker-gap);
+
+    kbd + kbd {
+      margin-left: 2px;
+    }
+  }
+
+  .#{contract.$class-picker-tally} {
+    white-space: nowrap;
+  }
+
+  // The name stands still while the list under it scrolls.
+  .#{contract.$class-picker-detail} {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 42%;
+    min-width: 0;
+    overflow: hidden;
+
+    [role='listbox'] {
+      flex: 1;
+      padding: 4px 4px 8px;
+    }
+  }
+
+  .#{contract.$class-picker-head} {
+    padding: 8px calc(var(--vperm-picker-gap) + 4px);
+    border-bottom: 1px solid var(--typo3-component-border-color);
+
+    strong {
+      display: block;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0;
+      color: var(--typo3-component-secondary-color);
+    }
+  }
+
+  // Only the indent for its place in the chain: the rest is the row styling above.
+  .#{contract.$class-picker-row} {
+    padding-inline-start: calc(
+      var(--vperm-picker-gap) + var(--vperm-picker-depth, 0) * 12px
+    );
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

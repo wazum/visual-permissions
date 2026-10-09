@@ -1,0 +1,6 @@
+"be_groups",,,,,,
+,"uid","pid","title","subgroup","non_exclude_fields","hidden","deleted"
+,20,0,"Editors","21,22","pages:subtitle,pages:author",0,0
+,21,0,"Writers","","pages:nav_title",0,0
+,22,0,"Reviewers","23","",0,0
+,23,0,"Everyone","","pages:nav_title,pages:author",0,0

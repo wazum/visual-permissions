@@ -1,0 +1,16 @@
+services:
+  web:
+    image: webdevops/php-nginx:8.3-alpine
+    user: root
+    ports:
+      - '8321:80'
+    volumes:
+      - ../..:/app
+    environment:
+      WEB_DOCUMENT_ROOT: /app/public
+      TYPO3_CONTEXT: Testing
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', '-o', '/dev/null', 'http://127.0.0.1/typo3/']
+      interval: 3s
+      timeout: 5s
+      retries: 20

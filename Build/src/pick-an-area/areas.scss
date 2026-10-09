@@ -1,0 +1,52 @@
+@use '../platform/contract';
+
+// A framed area that folds away takes its badge with it, and the way back to it. Only the
+// buttons that fold go: the handle beside them is how the column is dragged wider, which
+// stays an admin's to do.
+[#{contract.$attribute-active}] {
+  typo3-backend-content-navigation-toggle {
+    display: none;
+  }
+
+  // The handle that drags the column wider runs the full height of the columns it stands
+  // between, and no rule from outside reaches it. So the columns themselves start below the
+  // tabs, and the areas inside them keep no room of their own.
+  typo3-backend-content-navigation {
+    box-sizing: border-box;
+    padding-block-start: var(--vperm-tab-band, 41px);
+
+    .#{contract.$class-frame} {
+      --vperm-tab-band: 0px;
+    }
+  }
+
+  // Comparing a page's languages is editing work, not permissions
+  .module-docheader-buttons .btn-group:has(.dropdown-item[href*='viewMode=']) {
+    display: none;
+  }
+
+  // No page is dragged into a tree while the mode is on. The icons take no pointer, so the
+  // bar behind them carries the cursor.
+  .tree-toolbar__submenu {
+    cursor: not-allowed;
+
+    .tree-toolbar__drag-node {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+  }
+
+  // Core's handle is 0.5rem wide and reaches half of it into the module beside it.
+  .#{contract.$class-area-cover}[#{contract.$attribute-ground}='module'] {
+    clip-path: inset(0 0 0 0.25rem);
+  }
+}
+
+// A group that cannot be shut has nothing to point at. Both cores force the box to stay, so
+// the two hairlines inside it go.
+[#{contract.$attribute-picked}='modules'] #modulemenu [aria-disabled='true'] .modulemenu-indicator {
+  &::before,
+  &::after {
+    display: none;
+  }
+}

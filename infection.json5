@@ -1,0 +1,55 @@
+{
+    $schema: 'vendor/infection/infection/resources/schema.json',
+    source: {
+        directories: ['Classes'],
+        // Framework, database and version glue — middlewares, controllers, records and
+        // the toolbar item — is proven by the functional suite, which Infection does not
+        // run. Everything else must survive its mutants.
+        excludes: [
+            'AllowValues/AllowFileOperationsController.php',
+            'AllowValues/AllowPageTypesController.php',
+            'AllowValues/AllowValuesController.php',
+            'Authorization/AdminAccess.php',
+            'BackendGroups/BackendGroups.php',
+            'BackendGroups/GroupCatalogue.php',
+            'Compatibility',
+            'Configuration/InlineSettings.php',
+            'Configuration/Settings.php',
+            'DataHandling/Records.php',
+            'DataHandling/WriteGuard.php',
+            'EditOtherPermissions/OtherPermissionsController.php',
+            'GrantFields/GrantFieldsController.php',
+            'GrantModules/GrantModulesController.php',
+            'GrantTables/GrantTablesController.php',
+            'Inspect/InspectController.php',
+            'MountBranches/Folders/FileMounts.php',
+            'MountBranches/Folders/FolderTreeController.php',
+            'MountBranches/Folders/MountFoldersController.php',
+            'MountBranches/Pages/MountOrder.php',
+            'MountBranches/Pages/MountPagesController.php',
+            'MountBranches/Pages/PageVisibility.php',
+            'Surfaces/ContextMenu/RecordMenu.php',
+            'Surfaces/RecordForm/AnchorEmittingFieldContainer.php',
+            'Surfaces/RecordForm/OpenDocumentController.php',
+            'Surfaces/RecordList/RecordActions.php',
+            'Surfaces/Toolbar',
+            'ViewAsUser/LeaveUserView.php',
+            'ViewAsUser/NoAccessibleModule.php',
+            'ViewAsUser/NoAccessiblePage.php',
+            'ViewAsUser/SwitchUserController.php',
+            'ViewAsUser/ViewableUsers.php',
+            'ViewAsUser/ViewableUsersController.php',
+            'Write/GroupWriteController.php',
+        ],
+    },
+    // Unit suite only: the functional one boots TYPO3 per test case.
+    testFramework: 'phpunit',
+    mutators: {
+        '@default': true,
+    },
+    minMsi: 100,
+    minCoveredMsi: 100,
+    logs: {
+        text: 'var/log/infection.txt',
+    },
+}

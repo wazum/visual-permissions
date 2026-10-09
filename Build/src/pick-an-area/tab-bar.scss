@@ -1,0 +1,189 @@
+@use '../platform/contract';
+
+// How tall a tab stands is measured in the running backend and handed over as a property;
+// this is only what holds until the first one is laid out.
+$before-a-tab-is-drawn: 37px;
+
+// The armed tab is lifted with a shadow above its own top edge, and the backend's header
+// paints over whatever reaches into it. This is the air that lift needs, and what the areas
+// give up beyond the tabs themselves.
+$air: 4px;
+
+// One band for the bar's own height and for the room every area keeps free, so the tabs'
+// feet and the areas' top edges are the same line.
+[#{contract.$attribute-active}] {
+  --vperm-tab-band: calc(var(--vperm-tab-tall, #{$before-a-tab-is-drawn}) + #{$air});
+
+  // The backend curves the corner where its sidebar meets the content, with a mask it lays
+  // over everything in the scaffold. While the bar stands there, that corner is a tab's.
+  .scaffold-content::before {
+    display: none;
+  }
+}
+
+// On 14.3 the header's purple; on 13.4 the compatibility layer has set the property to the
+// surface the header wears there.
+$bar-ground: var(--vperm-bar-bg, var(--typo3-scaffold-header-bg));
+
+// The bar lives in the backend's own scaffold and takes its place in the scaffold's own
+// order. The columns stand at 989 and the header above them at 990, and what the header
+// opens — a dropdown of its own — comes down over the bar: so the bar stands level with the
+// columns and above them by standing later in the document, and under the header.
+$with-the-columns: 989;
+
+.#{contract.$class-tab-bar} {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-start: var(--vperm-tab-top, 60px);
+  z-index: $with-the-columns;
+  height: var(--vperm-tab-band, #{$before-a-tab-is-drawn});
+  // The bar reaches up into the header's air, so it stands on the header's own ground. The
+  // rule the tabs stand on belongs to the areas below and is drawn by each of them.
+  background: #{$bar-ground};
+  font: 400 13px / 1 var(--typo3-font-family, sans-serif);
+}
+
+// The weight the armed tab is set in, which every tab keeps room for.
+$armed: 600;
+
+// Around what the armed tab owns. A region hands over its own ink, so a dark area is
+// marked out in light and a light one in dark.
+$edge: color-mix(in srgb, var(--vperm-region-ink) 45%, transparent);
+
+// A core that divides its columns with a line puts that pixel outside them, and whatever
+// draws a boundary here stands on it. Where none is drawn, there is nothing to stand on.
+$divider: var(--vperm-divider, 0px);
+
+.#{contract.$class-tab-card} {
+  position: fixed;
+  inset-inline-start: calc(var(--vperm-host-x, 0px) - #{$divider});
+  inset-block-start: var(--vperm-host-y, 0);
+  // Over the rule the tabs stand on, under the tabs themselves: the armed tab covers the
+  // stretch of this line that it owns.
+  z-index: 1;
+  box-sizing: border-box;
+  width: calc(var(--vperm-host-width, 0px) + #{$divider});
+  height: var(--vperm-host-height, 0);
+  // The line under the tab, which the area beside it draws for itself. Down the sides there
+  // is nothing to draw on: this core divides its columns by their surfaces, and a line of
+  // ours would take the first pixel of one and move the boundary the reader was looking at.
+  // A core that divides them with a line of its own lends us that pixel (§ compatibility).
+  border: 0;
+  border-block-start: 1px solid #{$edge};
+  pointer-events: none;
+}
+
+// An area out of play is inert, so it answers no pointer and nothing inside it can carry a
+// cursor. This lies over the area and carries one for all of it. It paints nothing — the
+// area veils itself (§ the frame) — and it belongs to the bar, so the tabs stand above it
+// and stay the way back in.
+.#{contract.$class-area-cover} {
+  position: fixed;
+  inset-inline-start: var(--vperm-host-x, 0);
+  inset-block-start: var(--vperm-host-y, 0);
+  width: var(--vperm-host-width, 0);
+  height: var(--vperm-host-height, 0);
+  cursor: not-allowed;
+}
+
+// Core draws an edge down the left of every column but the module area.
+.#{contract.$class-tab-seam} {
+  position: fixed;
+  inset-inline-start: calc(var(--vperm-host-x, 0px) - #{$divider});
+  inset-block-start: var(--vperm-host-y, 0);
+  // Under the tabs, like the card: the tab standing on this edge covers its own pixel.
+  z-index: 1;
+  width: 1px;
+  height: var(--vperm-host-height, 0);
+  background: var(--vperm-region-edge);
+  pointer-events: none;
+}
+
+// A tab is the top edge of its own column: it stands where that column starts, sits on the
+// rule, and paints its own bottom edge in the column's ground, so the two run together.
+.#{contract.$class-tab} {
+  position: absolute;
+  // Where a column is divided from its neighbour by a line, the tab's edge stands on that
+  // line rather than a pixel inside it, or the two leave a notch where they meet the rule.
+  inset-inline-start: calc(var(--vperm-host-x, 0px) - #{$divider});
+  inset-block-end: 0;
+  z-index: 1;
+  // One cell, with the word in it twice: what the reader sees, and a copy of it at the
+  // weight the armed tab is set in, which nobody sees but which the width is taken from.
+  display: inline-grid;
+  align-items: center;
+  justify-items: center;
+  padding: 0.5rem 0.9rem 0.7rem;
+  // Drawn in the region's own ink, so a dark area gets a light edge and a light one a dark
+  // edge. The colour the backend divides its own boxes with is far too close to a dark
+  // ground to be seen on it at all.
+  border: 1px solid color-mix(in srgb, var(--vperm-region-ink) 22%, transparent);
+  border-block-end: 0;
+  border-start-start-radius: 5px;
+  border-start-end-radius: 5px;
+  // The same surface the area below wears, so the two run together.
+  background: var(--vperm-region-bg);
+  // Each area draws the rule across its own top edge, and the tab covers the stretch it
+  // stands on with its own ground: a corner of its own would leave a notch in the line.
+  box-shadow: 0 1px 0 0 var(--vperm-region-bg);
+  font: inherit;
+  // Out of play is said with the ink: dimming the tab itself would let the rule show
+  // through its face.
+  color: color-mix(in srgb, var(--vperm-region-ink) 45%, transparent);
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--vperm-region-ink) 35%, transparent);
+    color: color-mix(in srgb, var(--vperm-region-ink) 78%, transparent);
+  }
+
+  // The word the reader reads, and the copy of it the width comes from: both in the one
+  // cell, so the tab is as wide as its own boldest word whether it is armed or not.
+  .#{contract.$class-tab-label} {
+    grid-area: 1 / 1;
+  }
+
+  &::after {
+    content: attr(#{contract.$attribute-label});
+    grid-area: 1 / 1;
+    visibility: hidden;
+    font-weight: $armed;
+  }
+
+  // The rule below is the column's own. A tab whose scope is drawn elsewhere owns none of
+  // it and lets it run through, as it runs either side.
+  &[#{contract.$attribute-elsewhere}][aria-selected='false'] {
+    box-shadow: none;
+  }
+
+  &[#{contract.$attribute-area}='other'] {
+    &[aria-selected='false'] {
+      box-shadow: none;
+    }
+
+    // Unless the column it shares is the armed one: that rule is then the top edge of a
+    // card, and a card's line running under this tab would take the tab into the card. One
+    // pixel row, and one only — a border here as well gives two rows in two colours.
+    [#{contract.$attribute-picked}='fields'] &[aria-selected='false'] {
+      box-shadow: 0 1px 0 0 #{$bar-ground};
+    }
+  }
+
+  // The fourth side runs into what the tab owns, so nothing is drawn there. The lift is
+  // mixed from the region's ink, or a dark area would be lit with black.
+  &[aria-selected='true'] {
+    z-index: 2;
+    border-color: #{$edge};
+    color: var(--vperm-region-ink);
+    font-weight: $armed;
+    // The lift is drawn above the foot and no lower: a blur reaching past it would leave a
+    // line along the bottom of the tab, where the tab and what it owns are meant to be one.
+    // Faint on purpose — it says the tab stands forward, it does not draw an edge of its own.
+    box-shadow:
+      0 1px 0 0 var(--vperm-region-bg),
+      0 -2px 5px -3px color-mix(in srgb, var(--vperm-region-ink) 16%, transparent),
+      -2px -2px 6px -4px color-mix(in srgb, var(--vperm-region-ink) 16%, transparent),
+      2px -2px 6px -4px color-mix(in srgb, var(--vperm-region-ink) 16%, transparent);
+  }
+}

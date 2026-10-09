@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "testRunner": "vitest",
+  "reporters": ["progress", "clear-text", "html"],
+  "coverageAnalysis": "perTest",
+  "inPlace": true,
+  "mutate": [
+    "src/**/*.ts",
+    "!src/platform/contract.ts",
+    "!src/main.ts",
+    "!src/surfaces/record-form/surface.ts",
+    "!src/view-as-user/module-shell.ts"
+  ],
+  "thresholds": {
+    "high": 100,
+    "low": 100,
+    "break": 100
+  },
+  "htmlReporter": {
+    "fileName": "../var/log/stryker/index.html"
+  },
+  "tempDirName": "../var/cache/stryker"
+}

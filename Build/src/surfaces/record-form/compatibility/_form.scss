@@ -1,0 +1,28 @@
+@use '../../../platform/contract';
+
+// 14.3 leads: a palette there is a grid of its own, and the form scope styles it. 13.4 lays
+// its palette fields out in Bootstrap columns, which only this file knows about. The markup
+// it names exists in 13.4 alone, so these rules reach nothing under 14.3.
+// Delete this with 13.4 support.
+
+[#{contract.$attribute-picked}='fields'] {
+  .form-irre-header-icon,
+  .form-irre-header-control {
+    display: none;
+  }
+}
+
+[#{contract.$attribute-show}='list'] .row > .form-group[class*='col'] {
+  flex: 0 0 100%;
+  max-width: none;
+}
+
+[#{contract.$attribute-picked}='fields']:not([#{contract.$attribute-show}='list'])
+  .row:has(> .form-group[hidden]) > .form-group[class*='col-'] {
+  flex: 1 1 0;
+  max-width: none;
+}
+
+[#{contract.$attribute-face}='pick'] .form-group:has(> select[name='_langSelector']) {
+  display: none;
+}

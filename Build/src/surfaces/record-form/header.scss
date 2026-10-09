@@ -1,0 +1,21 @@
+@use '../../platform/contract';
+
+// The navigation row's left column is empty on a record form, so our line costs no height.
+.#{contract.$class-head-bar} {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+  font: 400 12px / 1.4 var(--typo3-font-family, sans-serif);
+}
+
+.#{contract.$class-head-bar} .#{contract.$class-face-sentence} {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// The language menu has nothing to assign
+[#{contract.$attribute-face}='pick'] .module-docheader-navigation > .module-docheader-column:last-child > * {
+  display: none;
+}

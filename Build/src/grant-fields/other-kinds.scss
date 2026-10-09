@@ -1,0 +1,18 @@
+@use '../platform/contract';
+
+// Only the side that gives fields away lists what other kinds of record could be given. It
+// stands inside the records' own list, set apart from them by a dashed line alone, and lines
+// up with the body of a record above it.
+.#{contract.$class-other-kinds} {
+  display: none;
+  padding: 16px 16px 4px;
+  border-block-start: 1px dashed color-mix(in srgb, currentColor 25%, transparent);
+
+  [#{contract.$attribute-picked}='fields'][#{contract.$attribute-face}='pick'] &:not([hidden]) {
+    display: block;
+  }
+
+  > .form-section-headline {
+    margin: 0 0 8px;
+  }
+}

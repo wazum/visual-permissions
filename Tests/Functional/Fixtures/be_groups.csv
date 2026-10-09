@@ -1,0 +1,6 @@
+"be_groups",,,
+,"uid","pid","title","hidden","deleted"
+,1,0,"Reviewers",0,0
+,2,0,"Editors",0,0
+,3,0,"Retired",1,0
+,4,0,"Removed",0,1

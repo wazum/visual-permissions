@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="messages" date="2026-09-01T00:00:00Z" product-name="visual_permissions">
+        <header/>
+        <body>
+            <trans-unit id="allowedValues.choose.CType" resname="allowedValues.choose.CType">
+                <source>Choose page content types</source>
+            </trans-unit>
+            <trans-unit id="allowedValues.choose.doktype" resname="allowedValues.choose.doktype">
+                <source>Choose page types</source>
+            </trans-unit>
+            <trans-unit id="allowedValues.title.fieldValues" resname="allowedValues.title.fieldValues">
+                <source>The page content types the group "%s" may use</source>
+            </trans-unit>
+            <trans-unit id="allowedValues.title.fileOperations" resname="allowedValues.title.fileOperations">
+                <source>What the group "%s" may do with files and folders</source>
+            </trans-unit>
+            <trans-unit id="allowedValues.title.pageTypes" resname="allowedValues.title.pageTypes">
+                <source>The page types the group "%s" may create</source>
+            </trans-unit>
+            <trans-unit id="editOtherPermissions.notSaved" resname="editOtherPermissions.notSaved">
+                <source>The permissions were not saved</source>
+            </trans-unit>
+            <trans-unit id="grantFields.givenBy" resname="grantFields.givenBy">
+                <source>Given by</source>
+            </trans-unit>
+            <trans-unit id="grantFields.going.many" resname="grantFields.going.many">
+                <source>%s fields waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="grantFields.going.one" resname="grantFields.going.one">
+                <source>%s field waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="grantFields.grantTab" resname="grantFields.grantTab">
+                <source>Grant all on this tab</source>
+            </trans-unit>
+            <trans-unit id="grantFields.hint.give" resname="grantFields.hint.give">
+                <source>Press the field to give it</source>
+            </trans-unit>
+            <trans-unit id="grantFields.hint.keep" resname="grantFields.hint.keep">
+                <source>Press again to keep it</source>
+            </trans-unit>
+            <trans-unit id="grantFields.hint.leave" resname="grantFields.hint.leave">
+                <source>Press again to leave it out</source>
+            </trans-unit>
+            <trans-unit id="grantFields.hint.take" resname="grantFields.hint.take">
+                <source>Press the field to take it away</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.adminOnly.meaning" resname="grantFields.mark.adminOnly.meaning">
+                <source>Only administrators see this field. A group cannot be given it.</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.adminOnly.title" resname="grantFields.mark.adminOnly.title">
+                <source>Administrators only</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.allowed.meaning" resname="grantFields.mark.allowed.meaning">
+                <source>The group may edit this field.</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.allowed.title" resname="grantFields.mark.allowed.title">
+                <source>Allowed</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.allowedAndInherited.meaning" resname="grantFields.mark.allowedAndInherited.meaning">
+                <source>The group may edit this field itself, and a subgroup gives it too. Removing it here leaves the subgroup's grant.</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.allowedAndInherited.title" resname="grantFields.mark.allowedAndInherited.title">
+                <source>Allowed, and inherited</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.denied.meaning" resname="grantFields.mark.denied.meaning">
+                <source>The group may not edit this field.</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.denied.title" resname="grantFields.mark.denied.title">
+                <source>Not allowed</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.inherited.meaning" resname="grantFields.mark.inherited.meaning">
+                <source>The group may edit this field because a subgroup may. Change it on that subgroup.</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.inherited.title" resname="grantFields.mark.inherited.title">
+                <source>Inherited</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.neverEditable.meaning" resname="grantFields.mark.neverEditable.meaning">
+                <source>The field is read-only for everyone, so no permission changes it.</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.neverEditable.title" resname="grantFields.mark.neverEditable.title">
+                <source>Read-only</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.notApplicable.meaning" resname="grantFields.mark.notApplicable.meaning">
+                <source>TYPO3 has no permission for this field. Every user who may edit this table may edit it.</source>
+            </trans-unit>
+            <trans-unit id="grantFields.mark.notApplicable.title" resname="grantFields.mark.notApplicable.title">
+                <source>Open to all editors</source>
+            </trans-unit>
+            <trans-unit id="grantFields.otherKinds" resname="grantFields.otherKinds">
+                <source>Only on other kinds of "%s"</source>
+            </trans-unit>
+            <trans-unit id="grantFields.recordNoFields" resname="grantFields.recordNoFields">
+                <source>The group may edit "%s", but no field of this record yet</source>
+            </trans-unit>
+            <trans-unit id="grantFields.showGroup" resname="grantFields.showGroup">
+                <source>Show group</source>
+            </trans-unit>
+            <trans-unit id="grantFields.showGroupNamed" resname="grantFields.showGroupNamed">
+                <source>Show group "%s"</source>
+            </trans-unit>
+            <trans-unit id="grantFields.tally.many" resname="grantFields.tally.many">
+                <source>The group may edit %1$s of %2$s fields</source>
+            </trans-unit>
+            <trans-unit id="grantFields.tally.one" resname="grantFields.tally.one">
+                <source>The group may edit %1$s of %2$s field</source>
+            </trans-unit>
+            <trans-unit id="grantFields.toTakeAway" resname="grantFields.toTakeAway">
+                <source>to take away</source>
+            </trans-unit>
+            <trans-unit id="grantFields.waiting.many" resname="grantFields.waiting.many">
+                <source>%s fields waiting to be added</source>
+            </trans-unit>
+            <trans-unit id="grantFields.waiting.one" resname="grantFields.waiting.one">
+                <source>%s field waiting to be added</source>
+            </trans-unit>
+            <trans-unit id="grantModules.add" resname="grantModules.add">
+                <source>Add modules</source>
+            </trans-unit>
+            <trans-unit id="grantModules.hint" resname="grantModules.hint">
+                <source>or click a module to remove it</source>
+            </trans-unit>
+            <trans-unit id="grantModules.marked.many" resname="grantModules.marked.many">
+                <source>%1$s of %2$s modules waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="grantModules.marked.one" resname="grantModules.marked.one">
+                <source>%1$s of %2$s module waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="grantModules.pickFor" resname="grantModules.pickFor">
+                <source>Pick what the group "%s" may open</source>
+            </trans-unit>
+            <trans-unit id="grantModules.previewFor" resname="grantModules.previewFor">
+                <source>The modules the group "%s" may open</source>
+            </trans-unit>
+            <trans-unit id="grantModules.tally.many" resname="grantModules.tally.many">
+                <source>%1$s of %2$s modules granted</source>
+            </trans-unit>
+            <trans-unit id="grantModules.tally.one" resname="grantModules.tally.one">
+                <source>%1$s of %2$s module granted</source>
+            </trans-unit>
+            <trans-unit id="grantTables.adminOnly" resname="grantTables.adminOnly">
+                <source>Only administrators may edit records of this kind</source>
+            </trans-unit>
+            <trans-unit id="grantTables.alsoHandedDown" resname="grantTables.alsoHandedDown">
+                <source>Given by this group and through a subgroup. Change it on that subgroup.</source>
+            </trans-unit>
+            <trans-unit id="grantTables.give" resname="grantTables.give">
+                <source>Grant "%s"</source>
+            </trans-unit>
+            <trans-unit id="grantTables.gone" resname="grantTables.gone">
+                <source>This is empty for the group: it may not edit "%s"</source>
+            </trans-unit>
+            <trans-unit id="grantTables.handedDown" resname="grantTables.handedDown">
+                <source>Reached through a subgroup, not by this group itself. Change it on that group.</source>
+            </trans-unit>
+            <trans-unit id="grantTables.missing" resname="grantTables.missing">
+                <source>The group may not edit records of this kind</source>
+            </trans-unit>
+            <trans-unit id="grantTables.take" resname="grantTables.take">
+                <source>Revoke "%s"</source>
+            </trans-unit>
+            <trans-unit id="grantTables.theirs" resname="grantTables.theirs">
+                <source>The group may edit records of this kind</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.add" resname="mountBranches.folders.add">
+                <source>Add file mounts</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.chooseOperations" resname="mountBranches.folders.chooseOperations">
+                <source>Choose file operations</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.hint" resname="mountBranches.folders.hint">
+                <source>or click a folder to remove it</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.marked.many" resname="mountBranches.folders.marked.many">
+                <source>%1$s of %2$s folders waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.marked.one" resname="mountBranches.folders.marked.one">
+                <source>%1$s of %2$s folder waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.name" resname="mountBranches.folders.name">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.nameFor" resname="mountBranches.folders.nameFor">
+                <source>These folders have no file mount yet. Name them as backend users will see them in the folder tree.</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.nameWhy" resname="mountBranches.folders.nameWhy">
+                <source>Give this file mount a name.</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.pickFor" resname="mountBranches.folders.pickFor">
+                <source>Pick the folders the group "%s" may work in</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.previewFor" resname="mountBranches.folders.previewFor">
+                <source>The folders the group "%s" may work in</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.tally.many" resname="mountBranches.folders.tally.many">
+                <source>%s folders mounted</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.folders.tally.one" resname="mountBranches.folders.tally.one">
+                <source>%s folder mounted</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.add" resname="mountBranches.pages.add">
+                <source>Add page mounts</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.hint" resname="mountBranches.pages.hint">
+                <source>or click a branch to remove it</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.marked.many" resname="mountBranches.pages.marked.many">
+                <source>%1$s of %2$s branches waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.marked.one" resname="mountBranches.pages.marked.one">
+                <source>%1$s of %2$s branch waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.pickFor" resname="mountBranches.pages.pickFor">
+                <source>Pick the branches the group "%s" may work in</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.previewFor" resname="mountBranches.pages.previewFor">
+                <source>The branches the group "%s" may work in</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.tally.many" resname="mountBranches.pages.tally.many">
+                <source>%s branches mounted</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.tally.one" resname="mountBranches.pages.tally.one">
+                <source>%s branch mounted</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.unseen.many" resname="mountBranches.pages.unseen.many">
+                <source>%s pages the group cannot see:</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.unseen.one" resname="mountBranches.pages.unseen.one">
+                <source>%s page the group cannot see:</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.unseenLink" resname="mountBranches.pages.unseenLink">
+                <source>Page permissions of "%s"</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.unseenPage" resname="mountBranches.pages.unseenPage">
+                <source>"%s"</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.pages.unseenWhy" resname="mountBranches.pages.unseenWhy">
+                <source>their page permissions show them to nobody in the group.</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.button" resname="pickAGroup.button">
+                <source>Backend group</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.detail" resname="pickAGroup.detail">
+                <source>Inherits from</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.detail.none" resname="pickAGroup.detail.none">
+                <source>Inherits from no other group</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.disabled" resname="pickAGroup.disabled">
+                <source>disabled</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.inherits.many" resname="pickAGroup.inherits.many">
+                <source>inherits %s groups</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.inherits.one" resname="pickAGroup.inherits.one">
+                <source>inherits 1 group</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.key.detail" resname="pickAGroup.key.detail">
+                <source>inherits</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.key.take" resname="pickAGroup.key.take">
+                <source>select</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.search" resname="pickAGroup.search">
+                <source>Search groups</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.total.many" resname="pickAGroup.total.many">
+                <source>%d groups</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.total.one" resname="pickAGroup.total.one">
+                <source>1 group</source>
+            </trans-unit>
+            <trans-unit id="pickAnArea.bar" resname="pickAnArea.bar">
+                <source>Areas to work in</source>
+            </trans-unit>
+            <trans-unit id="pickAnArea.fields" resname="pickAnArea.fields">
+                <source>Records and fields</source>
+            </trans-unit>
+            <trans-unit id="pickAnArea.fileMounts" resname="pickAnArea.fileMounts">
+                <source>File mounts</source>
+            </trans-unit>
+            <trans-unit id="pickAnArea.modules" resname="pickAnArea.modules">
+                <source>Modules</source>
+            </trans-unit>
+            <trans-unit id="pickAnArea.other" resname="pickAnArea.other">
+                <source>Other permissions</source>
+            </trans-unit>
+            <trans-unit id="pickAnArea.pageMounts" resname="pickAnArea.pageMounts">
+                <source>Page mounts</source>
+            </trans-unit>
+            <trans-unit id="platform.cancel" resname="platform.cancel">
+                <source>Cancel</source>
+            </trans-unit>
+            <trans-unit id="platform.doAdd" resname="platform.doAdd">
+                <source>Add</source>
+            </trans-unit>
+            <trans-unit id="platform.doApply" resname="platform.doApply">
+                <source>Apply</source>
+            </trans-unit>
+            <trans-unit id="platform.doRemove" resname="platform.doRemove">
+                <source>Remove</source>
+            </trans-unit>
+            <trans-unit id="platform.failed" resname="platform.failed">
+                <source>The change could not be sent. It is still waiting here.</source>
+            </trans-unit>
+            <trans-unit id="platform.from" resname="platform.from">
+                <source>inherited</source>
+            </trans-unit>
+            <trans-unit id="platform.going" resname="platform.going">
+                <source>%s waiting to be taken away</source>
+            </trans-unit>
+            <trans-unit id="platform.loggedOut" resname="platform.loggedOut">
+                <source>Your login has run out. The change was not saved and is still waiting here.</source>
+            </trans-unit>
+            <trans-unit id="platform.notRead" resname="platform.notRead">
+                <source>The permissions could not be read. Nothing is marked here.</source>
+            </trans-unit>
+            <trans-unit id="platform.pick" resname="platform.pick">
+                <source>Assign</source>
+            </trans-unit>
+            <trans-unit id="platform.picker.count" resname="platform.picker.count">
+                <source>%d of %d</source>
+            </trans-unit>
+            <trans-unit id="platform.picker.empty" resname="platform.picker.empty">
+                <source>Nothing matches</source>
+            </trans-unit>
+            <trans-unit id="platform.picker.key.clear" resname="platform.picker.key.clear">
+                <source>clear</source>
+            </trans-unit>
+            <trans-unit id="platform.picker.key.close" resname="platform.picker.key.close">
+                <source>close</source>
+            </trans-unit>
+            <trans-unit id="platform.picker.key.move" resname="platform.picker.key.move">
+                <source>move</source>
+            </trans-unit>
+            <trans-unit id="platform.picker.retry" resname="platform.picker.retry">
+                <source>Try again</source>
+            </trans-unit>
+            <trans-unit id="platform.preview" resname="platform.preview">
+                <source>Preview</source>
+            </trans-unit>
+            <trans-unit id="platform.refused" resname="platform.refused">
+                <source>The backend did not take the change. It is still waiting here.</source>
+            </trans-unit>
+            <trans-unit id="platform.shortcut.modifiers" resname="platform.shortcut.modifiers">
+                <source>Ctrl+Shift</source>
+            </trans-unit>
+            <trans-unit id="platform.toAdd" resname="platform.toAdd">
+                <source>to add</source>
+            </trans-unit>
+            <trans-unit id="platform.waiting" resname="platform.waiting">
+                <source>%s waiting to be added</source>
+            </trans-unit>
+            <trans-unit id="readOnly.previewNewContent" resname="readOnly.previewNewContent">
+                <source>Preview new content</source>
+            </trans-unit>
+            <trans-unit id="readOnly.reason" resname="readOnly.reason">
+                <source>Records are not saved while permissions are edited</source>
+            </trans-unit>
+            <trans-unit id="recordForm.add" resname="recordForm.add">
+                <source>Assign permissions</source>
+            </trans-unit>
+            <trans-unit id="recordForm.pickFor" resname="recordForm.pickFor">
+                <source>Pick what the group "%s" may edit</source>
+            </trans-unit>
+            <trans-unit id="recordForm.previewFor" resname="recordForm.previewFor">
+                <source>The form as the group "%s" sees it</source>
+            </trans-unit>
+            <trans-unit id="recordForm.show" resname="recordForm.show">
+                <source>Show</source>
+            </trans-unit>
+            <trans-unit id="recordForm.show.identifiers" resname="recordForm.show.identifiers">
+                <source>Identifiers</source>
+            </trans-unit>
+            <trans-unit id="recordForm.show.listOnly" resname="recordForm.show.listOnly">
+                <source>List only</source>
+            </trans-unit>
+            <trans-unit id="setting.animation" resname="setting.animation">
+                <source>Animation</source>
+            </trans-unit>
+            <trans-unit id="setting.shortcut.show" resname="setting.shortcut.show">
+                <source>Show keyboard shortcuts on the buttons</source>
+            </trans-unit>
+            <trans-unit id="setting.shortcut.switchUser" resname="setting.shortcut.switchUser">
+                <source>Key that switches to the user viewed last and back again, together with Ctrl/Cmd and Shift. A single key, or empty for no shortcut.</source>
+            </trans-unit>
+            <trans-unit id="setting.shortcut.toggle" resname="setting.shortcut.toggle">
+                <source>Key that shows and hides the permissions, together with Ctrl/Cmd and Shift. A single key, or empty for no shortcut.</source>
+            </trans-unit>
+            <trans-unit id="switchTheMode.shortcut" resname="switchTheMode.shortcut">
+                <source>Switches the permissions on and off</source>
+            </trans-unit>
+            <trans-unit id="switchTheMode.toggle" resname="switchTheMode.toggle">
+                <source>Edit permissions</source>
+            </trans-unit>
+            <trans-unit id="toolbar.title" resname="toolbar.title">
+                <source>Visual permissions</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.all" resname="viewAsUser.all">
+                <source>All users</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.button" resname="viewAsUser.button">
+                <source>View as …</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.detail.many" resname="viewAsUser.detail.many">
+                <source>In %s groups</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.detail.none" resname="viewAsUser.detail.none">
+                <source>In no group</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.detail.one" resname="viewAsUser.detail.one">
+                <source>In 1 group</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.failed" resname="viewAsUser.failed">
+                <source>The list of users could not be loaded</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.groups.many" resname="viewAsUser.groups.many">
+                <source>in %s groups</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.groups.one" resname="viewAsUser.groups.one">
+                <source>in 1 group</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.key.detail" resname="viewAsUser.key.detail">
+                <source>groups</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.key.take" resname="viewAsUser.key.take">
+                <source>view as</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.leave" resname="viewAsUser.leave">
+                <source>Leave user view</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.loading" resname="viewAsUser.loading">
+                <source>Loading users…</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.noModule.message" resname="viewAsUser.noModule.message">
+                <source>Your user account does not have access to any backend module. Please contact your administrator.</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.noModule.title" resname="viewAsUser.noModule.title">
+                <source>No module access</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.recent" resname="viewAsUser.recent">
+                <source>Recently viewed</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.search" resname="viewAsUser.search">
+                <source>Search users</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.total.many" resname="viewAsUser.total.many">
+                <source>%d users</source>
+            </trans-unit>
+            <trans-unit id="viewAsUser.total.one" resname="viewAsUser.total.one">
+                <source>1 user</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

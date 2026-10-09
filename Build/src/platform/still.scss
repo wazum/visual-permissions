@@ -1,0 +1,8 @@
+@use 'contract';
+
+// An installation can ask for no motion in the extension settings, and the script leaves
+// this mark on the backend and on the module document. Every duration of ours is measured
+// against it, so nothing of ours moves and the backend's own spinners carry on turning.
+[#{contract.$attribute-still}] {
+  --vperm-motion: 0;
+}

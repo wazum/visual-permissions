@@ -1,0 +1,79 @@
+@use '../platform/contract';
+
+// The tab bar stands over the areas, and every area makes the same room for it: the room is
+// the tabs' own height, measured where the picking happens. The number written here is only
+// what holds until the first tab has been laid out and measured.
+.#{contract.$class-frame} {
+  position: relative;
+  box-sizing: border-box;
+  padding-block-start: var(--vperm-tab-band, 41px);
+
+  // The line the tabs stand on is the top edge of the area below them, so each area draws
+  // its own stretch of it: one bar-wide rule would be one colour over three surfaces. The
+  // armed area is the exception: the card that owns it draws that line as its own.
+  &:not([#{contract.$attribute-armed}])::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: var(--vperm-tab-band, 41px);
+    z-index: 5;
+    height: 1px;
+    background: var(--vperm-region-edge);
+    pointer-events: none;
+  }
+}
+
+// An area out of play is inert, and the ink says so along with a veil in the area's own
+// colour. The veil belongs to the area itself: from outside it would lie over the backend's
+// own chrome as well, and one core keeps its dropdowns where nothing can lift them clear.
+.#{contract.$class-frame}[inert] {
+  --vperm-frame-ink: color-mix(in srgb, currentColor 22%, transparent);
+  // The veil stays inside the area, under core's drag handle at its edge.
+  isolation: isolate;
+
+  // It starts below the strip kept free for the bar: that strip is what the tab meets, and
+  // it stays as it is.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: var(--vperm-tab-band, 41px) 0 0;
+    z-index: 4;
+    background: color-mix(in srgb, var(--vperm-region-bg) 60%, transparent);
+    pointer-events: none;
+  }
+}
+
+// Each area stands on a surface the backend paints and names, and whatever we put there
+// wears it: the tab above the area, the chrome of a panel inside it, the edges of both.
+[#{contract.$attribute-ground}='tree'] {
+  --vperm-region-bg: var(--typo3-component-bg);
+  --vperm-region-ink: var(--typo3-component-color);
+  --vperm-region-edge: var(--typo3-component-border-color);
+  --vperm-frame-ink: var(--typo3-text-color-primary, #1f5aad);
+}
+
+// The module paints its own head, and that is the surface the tab meets.
+[#{contract.$attribute-ground}='module'] {
+  --vperm-region-bg: var(--typo3-surface-container-lowest);
+  --vperm-region-ink: var(--typo3-text-color-base);
+  --vperm-region-edge: var(--typo3-component-border-color);
+  --vperm-frame-ink: var(--typo3-text-color-primary, #1f5aad);
+}
+
+// The panel's ground is dark in one version and light in the other, so its inks are
+// pulled towards the text colour that panel already reads well in.
+[#{contract.$attribute-ground}='panel'] {
+  --vperm-region-bg: var(--typo3-scaffold-sidebar-bg);
+  --vperm-region-ink: var(--typo3-scaffold-sidebar-color);
+  // Core's own name for it carries core's own typo.
+  --vperm-region-edge: var(--typo3-scaffold-sidebar-boder-color);
+
+  // The panel fills the column and only its list scrolls, so the column itself never does.
+  overflow: hidden;
+
+  --vperm-frame-ink: color-mix(in srgb, currentColor 55%, transparent);
+  --vperm-ink-allowed: color-mix(in srgb, var(--typo3-text-color-success, #247554), currentColor 60%);
+  --vperm-ink-denied: color-mix(in srgb, var(--typo3-text-color-danger, #a72e25), currentColor 60%);
+  --vperm-ink-admin: color-mix(in srgb, var(--typo3-text-color-warning, #664d00), currentColor 60%);
+  --vperm-ink-quiet: color-mix(in srgb, currentColor 65%, transparent);
+}

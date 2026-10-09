@@ -1,0 +1,10 @@
+"be_groups",,,,,,
+,"uid","pid","title","subgroup","db_mountpoints","hidden","deleted"
+,20,0,"Editorial Lead","21","3,5",0,0
+,21,0,"Editors","","5,7",0,0
+"pages",,,,,,
+,"uid","pid","title","doktype","sorting","hidden","deleted"
+,1,0,"Root",1,256,0,0
+,3,1,"Organization",1,256,0,0
+,5,3,"West Wing",1,512,0,0
+,7,3,"East Wing",1,128,0,0

@@ -1,0 +1,118 @@
+@use '../platform/contract';
+
+// Handing the session over is a page load, and a page load that just happens is a jolt.
+// One backend is pushed out of sight and the other follows it in, both travelling the
+// same way: down into a user's backend, up again to come out of it. No fading, since a
+// page that is pushed does not dissolve.
+@keyframes vperm-pushed-down {
+  to {
+    translate: 0 100%;
+  }
+}
+
+@keyframes vperm-pushed-up {
+  to {
+    translate: 0 -100%;
+  }
+}
+
+// Each comes from the side the page before it went towards, a little past where it
+// belongs and back, the way something with weight would settle.
+@keyframes vperm-following-from-the-top {
+  from {
+    translate: 0 -100%;
+  }
+
+  85% {
+    translate: 0 1.5%;
+  }
+}
+
+@keyframes vperm-following-from-the-bottom {
+  from {
+    translate: 0 100%;
+  }
+
+  85% {
+    translate: 0 -1.5%;
+  }
+}
+
+[#{contract.$attribute-leaving}],
+[#{contract.$attribute-settling}],
+[#{contract.$attribute-arriving}] {
+  // A page leaving its own box would offer a scrollbar to the room it left behind.
+  overflow: clip;
+}
+
+[#{contract.$attribute-leaving}='down'] {
+  animation: vperm-pushed-down calc(var(--vperm-motion, 1) * 260ms) ease-in forwards;
+}
+
+[#{contract.$attribute-leaving}='up'] {
+  animation: vperm-pushed-up calc(var(--vperm-motion, 1) * 260ms) ease-in forwards;
+}
+
+// It carries on where the page before it left off, and slows as it comes to rest.
+[#{contract.$attribute-arriving}='down'] {
+  animation: vperm-following-from-the-top calc(var(--vperm-motion, 1) * 360ms)
+    cubic-bezier(0.16, 0.7, 0.3, 1);
+}
+
+[#{contract.$attribute-arriving}='up'] {
+  animation: vperm-following-from-the-bottom calc(var(--vperm-motion, 1) * 360ms)
+    cubic-bezier(0.16, 0.7, 0.3, 1);
+}
+
+// A backend that has landed goes on loading screen by screen, each one repainting, so it
+// waits behind milk glass until that stops and the page has come to rest.
+// On the page, not on the body: the body is the thing that slides, and glass that travels
+// with it covers the wrong half of the screen.
+html:has([#{contract.$attribute-settling}])::after,
+html:has([#{contract.$attribute-arriving}])::after,
+html:has([#{contract.$attribute-unwrapping}])::after {
+  content: '';
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  background: color-mix(in srgb, Canvas 35%, transparent);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+@keyframes vperm-unwrapping {
+  to {
+    opacity: 0;
+  }
+}
+
+html:has([#{contract.$attribute-unwrapping}])::after {
+  animation: vperm-unwrapping calc(var(--vperm-motion, 1) * 300ms) ease-out forwards;
+}
+
+// A frame of its own comes through the glass sharp all the same, so it is blurred itself.
+[#{contract.$attribute-settling}] #typo3-contentIframe,
+[#{contract.$attribute-arriving}] #typo3-contentIframe {
+  filter: blur(4px);
+}
+
+@keyframes vperm-sharpening {
+  from {
+    filter: blur(4px);
+  }
+
+  to {
+    filter: blur(0);
+  }
+}
+
+[#{contract.$attribute-unwrapping}] #typo3-contentIframe {
+  animation: vperm-sharpening calc(var(--vperm-motion, 1) * 300ms) ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [#{contract.$attribute-leaving}],
+  [#{contract.$attribute-arriving}] {
+    animation-duration: 1ms;
+  }
+}

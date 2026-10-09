@@ -1,0 +1,4 @@
+"be_groups",,,,,,
+,"uid","pid","title","subgroup","non_exclude_fields","hidden","deleted"
+,10,0,"Editors","11","tt_content:imageorient",0,0
+,11,0,"Everyone","","tt_content:imagecols",0,0

@@ -1,0 +1,7 @@
+"be_users",,,,,,,,,,
+,"uid","pid","username","password","admin","disable","lang","uc","usergroup","realName"
+,1,0,"admin","$argon2i$v=19$m=65536,t=16,p=1$dummy",1,0,"default","","","The Admin"
+,2,0,"editor","$argon2i$v=19$m=65536,t=16,p=1$dummy",0,0,"de","a:1:{i:0;i:1;}","10","Hans Huber"
+,3,0,"other-admin","$argon2i$v=19$m=65536,t=16,p=1$dummy",1,0,"default","","","The Other Admin"
+,4,0,"disabled-editor","$argon2i$v=19$m=65536,t=16,p=1$dummy",0,1,"default","","","Gone Away"
+,5,0,"another-editor","$argon2i$v=19$m=65536,t=16,p=1$dummy",0,0,"default","","10,12",""

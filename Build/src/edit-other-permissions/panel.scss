@@ -1,0 +1,34 @@
+@use '../platform/contract';
+
+$head-ground: var(--module-docheader-bg);
+$form-ground: var(--module-bg);
+
+// While this tab is armed, the panel covers the column the module otherwise shows.
+.#{contract.$class-frame}[#{contract.$attribute-area}='fields'] > .#{contract.$class-face} {
+  inset: var(--vperm-tab-band, 41px) 0 0;
+  z-index: 1;
+  overflow-y: auto;
+  background: #{$form-ground};
+}
+
+// Core sizes the head for a single row of buttons, and the taller form beside it would
+// press ours back to that height.
+.#{contract.$class-face} .module-docheader {
+  height: auto;
+  flex-shrink: 0;
+}
+
+// Each core lays its own head out its own way, so ours reads the same on both.
+.#{contract.$class-head} {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-block-start: 0.5rem;
+}
+
+// Named from inside the bar, which outranks what a core's compatibility rule gives that
+// column.
+.#{contract.$class-tab-bar} .#{contract.$class-tab}[#{contract.$attribute-area}='other'] {
+  --vperm-region-bg: #{$head-ground};
+}

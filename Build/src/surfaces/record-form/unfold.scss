@@ -1,0 +1,9 @@
+@use '../../platform/contract';
+
+// A record on this form is there to be read: it is not opened, folded, hidden, moved or deleted
+[#{contract.$attribute-picked}='fields'] {
+  .panel-button .caret,
+  .panel-actions {
+    display: none;
+  }
+}

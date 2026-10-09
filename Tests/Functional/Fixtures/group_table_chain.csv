@@ -1,0 +1,4 @@
+"be_groups",,,,,,,
+,"uid","pid","title","subgroup","tables_modify","tables_select","hidden","deleted"
+,10,0,"Editors","11","tt_content","",0,0
+,11,0,"Everyone","","","sys_category",0,0

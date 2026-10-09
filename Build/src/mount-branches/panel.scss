@@ -1,0 +1,368 @@
+@use '../platform/contract';
+
+// The tree component is the column here, the same one in both versions, and the file module
+// brings one of its own.
+$column: ':is(typo3-backend-navigation-component-pagetree,'
+    + 'typo3-backend-navigation-component-filestoragetree)';
+
+$their-tree: ':is(typo3-backend-navigation-component-pagetree-tree,'
+    + 'typo3-backend-navigation-component-filestorage-tree)';
+
+$gone: color-mix(in srgb, var(--typo3-text-color-danger, #a72e25) 14%, transparent);
+
+// The grey the backend fills a row with. The ink the marks are mixed from is declared
+// inside the module menu, out of reach of the page tree.
+$filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
+
+#{$column}:has(> .#{contract.$class-panel-card}) {
+  position: relative;
+  display: block;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  perspective: 1800px;
+  perspective-origin: 50% 40%;
+}
+
+// Both sides are out of flow, so the column has no height of its own left.
+#{$column} .#{contract.$class-panel-card} {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-style: preserve-3d;
+  transition: transform calc(var(--vperm-motion, 1) * 520ms) cubic-bezier(0.23, 1, 0.32, 1);
+
+  > .#{contract.$class-face} {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    backface-visibility: hidden;
+    // The turn changes the side, never the colour behind it.
+    background: transparent;
+  }
+
+  > .#{contract.$class-face-preview} {
+    transform: rotateY(180deg);
+  }
+}
+
+// The faces of every scope are called the same, so a rule of ours reaches only as far as
+// the column our own card stands in. Unscoped, it would land on another panel's face.
+#{$column} {
+  .#{contract.$class-panel-card}.#{contract.$class-panel-card-turned} {
+    transform: rotateY(180deg);
+  }
+
+  // It takes the tree's free height, or the foot rides up instead of resting at the end.
+  .#{contract.$class-naming} {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  // The gap core leaves between a form label and its field.
+  .#{contract.$class-naming-row} {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .#{contract.$class-naming-row} input[aria-invalid='true'] {
+    border-color: var(--typo3-state-danger-border-color, #a72e25);
+  }
+
+  // The path tells two folders of the same name apart, and reads as the address it is.
+  .#{contract.$class-naming-path} {
+    font-family: var(--typo3-font-family-monospace, monospace);
+    overflow-wrap: anywhere;
+  }
+
+  // The tree brings its own scrolling, so this side only passes the height on.
+  .#{contract.$class-face-pick} > .#{contract.$class-face-scroll} {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: visible;
+
+    // The tree asks the box it stands in for its height and has none of its own, so the
+    // side hands its own over: without it the tree draws in nothing and the rows it lays
+    // out are nowhere to be seen.
+    > #{$their-tree} {
+      flex: 1;
+      min-height: 0;
+    }
+  }
+
+  // The tree paints its rows from these, the way the module menu paints its own, so both
+  // panels answer the pointer in the same colours instead of each version's own blue.
+  .#{contract.$class-face} {
+    --tree-node-hover-bg: var(--typo3-component-hover-bg, rgb(0 0 0 / 4%));
+    --tree-node-hover-color: var(--typo3-text-color-base, #1a1a1a);
+    --tree-node-hover-border-color: var(--typo3-component-hover-border-color, #b4b4b4);
+    // What a row wears when nothing is happening to it, kept here where the backend's own
+    // fill for a row still reads plainly: on the row itself that name is taken over by
+    // whichever state it is in.
+    --vperm-row-bg: var(--tree-node-bg);
+  }
+
+  // A branch a subgroup mounts is not this group's to take away. It says so the way the
+  // modules panel says it: the same word, at the end of the row, and the row answers no
+  // click.
+  .#{contract.$class-mount-inherited} {
+    cursor: not-allowed;
+    opacity: 0.75;
+
+    &::after {
+      content: var(--vperm-inherited-note, '');
+      flex: none;
+      margin-inline-start: auto;
+      padding-inline-end: 0.75rem;
+      color: color-mix(in srgb, currentColor 60%, transparent);
+      font-size: 11px;
+      font-style: italic;
+      white-space: nowrap;
+    }
+  }
+
+  // A page waiting to be mounted stays filled while the next one is picked, and says what
+  // it is waiting for: the fill alone reads the same as one the group already mounts.
+  .#{contract.$class-mount-picked} {
+    --tree-node-bg: #{$filled};
+    --tree-node-hover-bg: #{$filled};
+    --tree-node-border-color: var(--typo3-component-hover-border-color, #b4b4b4);
+
+    // The row lays its own parts out in a line, so the word takes its place at the end of
+    // it rather than under the name.
+    &::after {
+      content: var(--vperm-queued-note, '');
+      flex: none;
+      margin-inline-start: auto;
+      padding-inline-end: 0.75rem;
+      color: color-mix(in srgb, currentColor 60%, transparent);
+      font-size: 11px;
+      font-style: italic;
+      white-space: nowrap;
+    }
+  }
+
+  // A branch marked to go reads as struck through until the change is applied, and keeps
+  // its fill under the pointer.
+  .#{contract.$class-face-marked} {
+    --tree-node-bg: #{$gone};
+    --tree-node-hover-bg: #{$gone};
+
+    .node-name,
+    .node-contentlabel {
+      text-decoration: line-through;
+    }
+  }
+
+  // A page below a branch is no mount of its own, and one the group mounts already is
+  // taken away on the other side. Neither answers a click here.
+  // Nothing here is a row to act on: the pointer says so, and the row lights up for nothing
+  // — neither under the pointer nor when pressed, since a press on it takes no keyboard
+  // either (§ the tree, where a press on such a row is refused). Its expander is another
+  // matter: a branch below a mount can still be opened and closed.
+  .#{contract.$class-mount-inside},
+  .#{contract.$class-mount-already},
+  .#{contract.$class-mount-whole},
+  .#{contract.$class-mount-context},
+  .#{contract.$class-mount-inherited} {
+    cursor: not-allowed;
+
+    --tree-node-hover-bg: var(--tree-node-bg);
+    --tree-node-hover-border-color: transparent;
+
+    .node-toggle {
+      cursor: pointer;
+    }
+  }
+
+  .node:not(
+    .#{contract.$class-mount-inside},
+    .#{contract.$class-mount-already},
+    .#{contract.$class-mount-whole},
+    .#{contract.$class-mount-context}
+  ) {
+    cursor: pointer;
+  }
+
+  // The rows down to a mount only say where it stands, and they stand open: there is no
+  // branch here to close.
+  .#{contract.$class-mount-context} {
+    opacity: 0.45;
+
+    .node-toggle {
+      visibility: hidden;
+    }
+  }
+
+  // What the group already mounts reads as filled, the way a module it may open does.
+  .#{contract.$class-mount-already} {
+    --tree-node-bg: #{$filled};
+    --tree-node-hover-bg: #{$filled};
+  }
+
+  // A mount the group cannot see keeps its row, dimmed, with the warning square at its end.
+  // The row lays its parts out in a line, so the square takes the end of it, as the word on
+  // an inherited row does; the row itself is placed by the tree and is left alone.
+  .#{contract.$class-mount-unseen} {
+    .node-name,
+    .node-contentlabel {
+      opacity: 0.5;
+    }
+
+    &::after {
+      content: '!';
+      flex: none;
+      display: grid;
+      place-items: center;
+      box-sizing: border-box;
+      width: var(--vperm-square, 18px);
+      height: var(--vperm-square, 18px);
+      margin-inline: auto 0.5rem;
+      border: 2px solid var(--typo3-text-color-warning, #664d00);
+      border-radius: 2px;
+      color: var(--typo3-text-color-warning, #664d00);
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+  }
+
+  .#{contract.$class-face-choice} {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0.625rem 0.75rem;
+    border-block-start: 1px solid var(--vperm-region-edge);
+    background: var(--vperm-region-bg);
+  }
+
+  // Between the tree and the foot, and never inside the tree's scrolling: the tree draws
+  // only the rows in view, and anything above or below them there shifts or scrolls away.
+  // It scrolls as one piece, the sentence with the list.
+  .#{contract.$class-unseen-pages} {
+    flex: none;
+    max-height: 11rem;
+    overflow-y: auto;
+    border-block-start: 1px solid var(--vperm-region-edge);
+    background: var(--vperm-region-bg);
+    color: var(--vperm-region-ink);
+    font: 400 12px / 1.4 var(--typo3-font-family, sans-serif);
+
+    // The bold words and the reason read as one sentence, so the mark stands beside it.
+    > p {
+      position: relative;
+      margin: 0;
+      padding: 0.6rem 0.75rem 0.5rem calc(0.75rem + 16px + 0.5rem);
+
+      &::before {
+        content: '!';
+        position: absolute;
+        inset-inline-start: 0.75rem;
+        inset-block-start: calc(0.6rem + 1px);
+        display: grid;
+        place-items: center;
+        box-sizing: border-box;
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--typo3-text-color-warning, #664d00);
+        border-radius: 2px;
+        color: var(--typo3-text-color-warning, #664d00);
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+      }
+    }
+
+    > ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      border-block-start: 1px solid color-mix(in srgb, currentColor 8%, transparent);
+    }
+
+    // The whole line is the link; the arrow at its end only says where it leads.
+    a {
+      position: relative;
+      display: block;
+      margin: 0;
+      padding: 0.35rem calc(0.75rem + 26px + 0.5rem) 0.35rem 0.75rem;
+      overflow: hidden;
+      color: inherit;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      // The backend's own hover grey is this ground's colour, so the fill is mixed from the ink.
+      &:hover,
+      &:focus-visible {
+        background: color-mix(in srgb, currentColor 6%, transparent);
+      }
+
+      &::after {
+        content: '↗';
+        position: absolute;
+        inset-inline-end: 0.75rem;
+        inset-block-start: 50%;
+        translate: 0 -50%;
+        display: grid;
+        place-items: center;
+        box-sizing: border-box;
+        width: 26px;
+        height: 24px;
+        border: 1px solid var(--typo3-btn-default-border-color, #bbb);
+        border-radius: var(--typo3-btn-border-radius, 4px);
+        background: var(--typo3-btn-default-bg, #fff);
+        color: var(--typo3-btn-default-color, #313131);
+      }
+
+      &:hover::after {
+        border-color: var(--typo3-btn-default-hover-border-color, #999);
+        background: var(--typo3-btn-default-hover-bg, #f0f0f0);
+      }
+    }
+  }
+
+  // With the note under it, the tree needs no room of its own under its last row.
+  .#{contract.$class-face-preview}:has(> .#{contract.$class-unseen-pages}) > .#{contract.$class-face-scroll} {
+    padding-block-end: 0;
+  }
+
+  // The tree asks the box it stands in for its whole height, and a box sized by its content
+  // answers nothing. The holder carries one tree and nothing else, so the rule never has to
+  // learn the name of the next one.
+  .#{contract.$class-mount-tree} {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    > * {
+      display: block;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #{$column} .#{contract.$class-panel-card} {
+    transition: none;
+  }
+}
