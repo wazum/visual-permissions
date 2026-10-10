@@ -1,9 +1,10 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { attributes, classes } from '#src/platform/contract.js'
 import {
   activate, deactivate, getState, hideControls, selectGroup, showControls,
 } from '#src/platform/session.js'
 import { initialise } from '#src/surfaces/toolbar/controls.js'
+import { prime } from '../../__mocks__/typo3-persistent-storage.js'
 
 const controls = (): HTMLElement => {
   const element = document.querySelector<HTMLElement>(`[${attributes.controls}]`)
@@ -134,6 +135,30 @@ describe('the controls in the header', () => {
     toolbar().click()
 
     expect(toolbar().getAttribute('aria-pressed')).toBe('true')
+  })
+
+  it('stands the bar up on a page that comes back with the mode on', async () => {
+    prime({ vperm: { session: { version: '1', active: 'true', groupId: '13', area: 'fields' } } })
+    vi.resetModules()
+    const fresh = await import('#src/surfaces/toolbar/controls.js')
+
+    fresh.initialise(document, listening.signal)
+
+    expect(controls().classList.contains(classes.controlsOpen)).toBe(true)
+    expect(toolbar().getAttribute('aria-pressed')).toBe('true')
+  })
+
+  it('folds the bar away and the mode off with one press on a page that came back with the mode on', async () => {
+    prime({ vperm: { session: { version: '1', active: 'true', groupId: '13', area: 'fields' } } })
+    vi.resetModules()
+    const fresh = await import('#src/surfaces/toolbar/controls.js')
+    const session = await import('#src/platform/session.js')
+    fresh.initialise(document, listening.signal)
+
+    toolbar().click()
+
+    expect(controls().classList.contains(classes.controlsOpen)).toBe(false)
+    expect(session.getState().active).toBe(false)
   })
 
   it('stands the bar up when the mode is switched on from the keyboard', () => {

@@ -17,16 +17,18 @@ export function initialise(doc: Document, signal: AbortSignal): void {
 
   const button = doc.querySelector(`[${attributes.toolbar}]`)
 
+  const shown = (): boolean => getState().open || getState().active
+
   const stand = (): void => {
-    controls.classList.toggle(classes.controlsOpen, getState().open)
-    button?.setAttribute('aria-pressed', String(getState().open))
+    controls.classList.toggle(classes.controlsOpen, shown())
+    button?.setAttribute('aria-pressed', String(shown()))
   }
 
   stand()
   subscribe(stand, signal)
 
   button?.addEventListener('click', () => {
-    if (getState().open) {
+    if (shown()) {
       hideControls()
     } else {
       showControls()

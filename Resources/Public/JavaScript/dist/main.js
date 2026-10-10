@@ -294,11 +294,11 @@ function Mr(e, t) {
   if (n === null || r === null)
     return;
   r.classList.add(l.viewAsControls), r.hidden = !1, n.append(r), Sn(e, r, t);
-  const o = e.querySelector(`[${d.toolbar}]`), i = () => {
-    r.classList.toggle(l.controlsOpen, b().open), o?.setAttribute("aria-pressed", String(b().open));
+  const o = e.querySelector(`[${d.toolbar}]`), i = () => b().open || b().active, s = () => {
+    r.classList.toggle(l.controlsOpen, i()), o?.setAttribute("aria-pressed", String(i()));
   };
-  i(), E(i, t), o?.addEventListener("click", () => {
-    b().open ? Nr() : _r(), i();
+  s(), E(s, t), o?.addEventListener("click", () => {
+    i() ? Nr() : _r(), s();
   }, { signal: t }), t.addEventListener("abort", () => {
     r.remove();
   });
