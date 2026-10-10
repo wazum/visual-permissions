@@ -315,6 +315,10 @@
                 <source>their page permissions show them to nobody in the group.</source>
                 <target>ihre Seitenberechtigungen zeigen sie niemandem in der Gruppe.</target>
             </trans-unit>
+            <trans-unit id="pickAGroup.all" resname="pickAGroup.all" approved="yes">
+                <source>All groups</source>
+                <target>Alle Gruppen</target>
+            </trans-unit>
             <trans-unit id="pickAGroup.button" resname="pickAGroup.button" approved="yes">
                 <source>Backend group</source>
                 <target>Backend-Gruppe</target>
@@ -346,6 +350,10 @@
             <trans-unit id="pickAGroup.key.take" resname="pickAGroup.key.take" approved="yes">
                 <source>select</source>
                 <target>auswählen</target>
+            </trans-unit>
+            <trans-unit id="pickAGroup.recent" resname="pickAGroup.recent" approved="yes">
+                <source>Recently shown</source>
+                <target>Zuletzt angezeigt</target>
             </trans-unit>
             <trans-unit id="pickAGroup.search" resname="pickAGroup.search" approved="yes">
                 <source>Search groups</source>

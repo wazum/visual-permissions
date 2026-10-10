@@ -237,6 +237,9 @@
             <trans-unit id="mountBranches.pages.unseenWhy" resname="mountBranches.pages.unseenWhy">
                 <source>their page permissions show them to nobody in the group.</source>
             </trans-unit>
+            <trans-unit id="pickAGroup.all" resname="pickAGroup.all">
+                <source>All groups</source>
+            </trans-unit>
             <trans-unit id="pickAGroup.button" resname="pickAGroup.button">
                 <source>Backend group</source>
             </trans-unit>
@@ -260,6 +263,9 @@
             </trans-unit>
             <trans-unit id="pickAGroup.key.take" resname="pickAGroup.key.take">
                 <source>select</source>
+            </trans-unit>
+            <trans-unit id="pickAGroup.recent" resname="pickAGroup.recent">
+                <source>Recently shown</source>
             </trans-unit>
             <trans-unit id="pickAGroup.search" resname="pickAGroup.search">
                 <source>Search groups</source>
