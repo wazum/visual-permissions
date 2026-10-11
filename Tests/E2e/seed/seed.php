@@ -101,6 +101,11 @@ foreach (require __DIR__ . '/records.php' as $table => $rows) {
     $insert($database, $table, $rows);
 }
 
+// 13.4 calls the record list web_list. Delete this with 13.4 support.
+if ((new TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() < 14) {
+    $database->exec("UPDATE be_groups SET groupMods = REPLACE(groupMods, 'records', 'web_list')");
+}
+
 $database->exec("UPDATE be_users SET uc = '" . serialize([]) . "'");
 
 // Core hashes the stored id and signs the cookie differently per major; it does both here

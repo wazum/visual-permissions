@@ -1,8 +1,10 @@
 import { type Page } from '@playwright/test'
 import { expect, test } from '../../fixtures/test.js'
 import { pickArea } from '../../fixtures/areas.js'
+import { selectorFor } from '../../fixtures/compatibility.js'
+import { pickGroup } from '../../fixtures/groups.js'
 import { forgetSession } from '../../fixtures/session.js'
-import { showPermissions } from '../../fixtures/visual-mode.js'
+import { openControls, showPermissions, switchOn } from '../../fixtures/visual-mode.js'
 
 const menu = '#modulemenu'
 const preview = '.vperm-face-preview'
@@ -26,6 +28,17 @@ test('picking the modules area turns the panel to what the group may open', asyn
   await expect(allowed).toBeAttached()
   await expect(allowed).toHaveAttribute('data-vperm-verdict', 'allowed')
   await expect(page.locator(menu)).toHaveAttribute('inert', '')
+})
+
+test('a group allowed the record list sees it among what it may open', async ({ page }) => {
+  await page.goto('/typo3/')
+  await openControls(page)
+  await pickGroup(page, 'News Office')
+  await switchOn(page)
+  await pickArea(page, 'modules')
+
+  await expect(page.locator(`${preview} ${await selectorFor(page, '[data-modulemenu-identifier="records"]')}`))
+    .toHaveAttribute('data-vperm-verdict', 'allowed')
 })
 
 test('the backend gets its own module menu back when the area is left', async ({ page }) => {
