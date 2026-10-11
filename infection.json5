@@ -31,6 +31,7 @@
             'Surfaces/ContextMenu/RecordMenu.php',
             'Surfaces/RecordForm/AnchorEmittingFieldContainer.php',
             'Surfaces/RecordForm/OpenDocumentController.php',
+            'Surfaces/RecordForm/SwitchedValues.php',
             'Surfaces/RecordList/RecordActions.php',
             'Surfaces/Toolbar',
             'ViewAsUser/LeaveUserView.php',

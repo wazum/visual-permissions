@@ -17,16 +17,18 @@ final readonly class FieldAnchorRenderer
         string $inside = '',
         string $allows = '',
         array $choices = [],
+        string $switchLabel = '',
     ): string {
         if ('' === trim($html)) {
             return $html;
         }
 
         return sprintf(
-            '<fieldset class="vperm-anchor" data-vperm-token="%s" data-vperm-field="%s" data-vperm-inside="%s"%s>%s</fieldset>',
+            '<fieldset class="vperm-anchor" data-vperm-token="%s" data-vperm-field="%s" data-vperm-inside="%s"%s%s>%s</fieldset>',
             htmlspecialchars($table . ':' . $fieldName, ENT_QUOTES),
             htmlspecialchars($table . '-' . $uid . '-' . $fieldName, ENT_QUOTES),
             htmlspecialchars($inside, ENT_QUOTES),
+            '' === $switchLabel ? '' : sprintf(' data-vperm-switch="%s"', htmlspecialchars($switchLabel, ENT_QUOTES)),
             '' === $allows ? '' : sprintf(
                 ' data-vperm-allows="%s" data-vperm-choices="%s"',
                 htmlspecialchars($allows, ENT_QUOTES),

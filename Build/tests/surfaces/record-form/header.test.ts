@@ -155,11 +155,11 @@ describe('the header of a form we have taken over', () => {
   })
 
   // Core's buttons are taken off the row; the ones we put there are ours to keep
-  it('leaves a control of ours standing in the row', () => {
+  it.each([classes.showMenu, classes.typeSwitch])('leaves %s, a control of ours, standing in the row', ourClass => {
     initialise(document, listening.signal)
     docheader(save, close)
     const ours = document.createElement('button')
-    ours.className = classes.showMenu
+    ours.className = ourClass
     ours.textContent = 'Show'
     document.querySelector('.module-docheader-buttons .btn-toolbar')?.append(ours)
 

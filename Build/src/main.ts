@@ -10,6 +10,7 @@ import { initialise as markCards } from './allow-fields/mark-card.js'
 import { initialise as otherKinds } from './allow-fields/other-kinds.js'
 import { initialise as frameArea } from './pick-an-area/frame.js'
 import { initialise as lockForm } from './surfaces/record-form/lock.js'
+import { initialise as switchType } from './surfaces/record-form/switch-type.js'
 import { initialise as modules } from './allow-modules/modules.js'
 import { initialise as tableGates } from './allow-tables/gate.js'
 import { initialise as tablesPreview } from './allow-tables/preview.js'
@@ -80,6 +81,7 @@ function start(): void {
   otherPermissions(document, backend.signal)
   docheaderNames(document, backend.signal)
   lockForm(document, backend.signal)
+  switchType(backend.signal)
   closeForm(document, backend.signal)
   header(document, backend.signal)
   showMenu(backend.signal)

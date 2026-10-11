@@ -14,7 +14,7 @@ const buttons = '.module-docheader-buttons .btn-toolbar > *'
 const closeButton = '.t3js-editform-close'
 
 // Core's own controls come off the row while the form is ours; the ones we put there stay
-const ourOwn = withOlderLanguageMenu(`.${classes.headButton}, .${classes.showMenu}`)
+const ourOwn = withOlderLanguageMenu(`.${classes.headButton}, .${classes.showMenu}, .${classes.typeSwitch}`)
 
 const heading = 'form[name="editform"] h1'
 

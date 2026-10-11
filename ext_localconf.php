@@ -11,6 +11,15 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1788400000] = [
     'class' => \Wazum\VisualPermissions\Surfaces\RecordForm\AnchorEmittingFieldContainer::class,
 ];
 
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][\Wazum\VisualPermissions\Surfaces\RecordForm\SwitchedValues::class] = [
+    'depends' => [
+        \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
+    ],
+    'before' => [
+        \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+    ],
+];
+
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['visual_permissions']
     = \Wazum\VisualPermissions\DataHandling\WriteGuard::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass']['visual_permissions']
