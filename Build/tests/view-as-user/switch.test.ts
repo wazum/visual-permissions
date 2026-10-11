@@ -712,7 +712,7 @@ describe('switching to a user from the header', () => {
     const went: string[] = []
     const goes = { go: (url: string) => { went.push(url) }, handOver: () => undefined }
 
-    prime({ vperm: { returnTo: { place: '/typo3/module/manage/forms' } } })
+    prime({ vperm: { returnTo: { place: '/typo3/module/form' } } })
     initialise(document, listening.signal, goes)
     await quiet()
 
@@ -724,15 +724,15 @@ describe('switching to a user from the header', () => {
 
     while (landings > 0) {
       landings -= 1
-      prime({ vperm: { returnTo: { place: '/typo3/module/manage/forms' } } })
+      prime({ vperm: { returnTo: { place: '/typo3/module/form' } } })
       initialise(document, listening.signal, goes)
       await quiet()
     }
 
-    expect(went).toEqual(['/typo3/module/manage/forms'])
+    expect(went).toEqual(['/typo3/module/form'])
 
     await viewAs('editor')
-    prime({ vperm: { returnTo: { place: '/typo3/module/manage/forms' } } })
+    prime({ vperm: { returnTo: { place: '/typo3/module/form' } } })
     initialise(document, listening.signal, goes)
     await quiet()
 

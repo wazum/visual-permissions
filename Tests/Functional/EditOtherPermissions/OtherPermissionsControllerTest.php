@@ -163,7 +163,7 @@ final class OtherPermissionsControllerTest extends FunctionalTestCase
                 'group' => '10',
                 'data' => ['be_groups' => ['10' => [
                     'TSconfig' => 'options.saveDocNew = 1',
-                    'groupMods' => 'web_list',
+                    'groupMods' => 'records',
                 ]]],
             ]);
 

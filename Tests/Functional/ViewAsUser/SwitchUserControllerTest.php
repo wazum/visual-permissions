@@ -36,10 +36,10 @@ final class SwitchUserControllerTest extends FunctionalTestCase
 
         $response = $this->get(SwitchUserController::class)->switchUser($this->asked([
             'targetUser' => 2,
-            'screen' => '/typo3/module/web/list?id=3',
+            'screen' => '/typo3/module/content/records?id=3',
         ]));
 
-        self::assertSame('/typo3/module/web/list?id=3', $response->getHeaderLine('location'));
+        self::assertSame('/typo3/module/content/records?id=3', $response->getHeaderLine('location'));
     }
 
     // The screen comes from the browser, so it is not to be trusted
