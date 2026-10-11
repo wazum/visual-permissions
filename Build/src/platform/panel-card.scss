@@ -64,7 +64,7 @@
   // that ground dark and writes on it in white.
   background: var(--vperm-region-bg);
   color: var(--vperm-region-ink);
-  font: 400 12px / 1.4 var(--typo3-font-family, sans-serif);
+  font: 400 12px / 1.4 var(--typo3-font-family);
 
   .btn {
     width: 100%;
@@ -72,13 +72,13 @@
 }
 
 .#{contract.$class-face-hint} {
-  color: color-mix(in srgb, currentColor 55%, transparent);
+  color: color-mix(in srgb, currentColor 70%, transparent);
   font-size: 11px;
   text-align: center;
 }
 
 .#{contract.$class-face-eyebrow} {
-  color: color-mix(in srgb, currentColor 55%, transparent);
+  color: color-mix(in srgb, currentColor 70%, transparent);
   font-size: 10px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -104,7 +104,7 @@
   background: var(--vperm-region-bg);
   box-shadow: 0 -4px 14px rgb(0 0 0 / 6%);
   color: var(--vperm-region-ink);
-  font-family: var(--typo3-font-family, sans-serif);
+  font-family: var(--typo3-font-family);
   line-height: 1.4;
 
   .btn {
@@ -135,7 +135,7 @@
 
 // And the one still waiting says so more quietly than the one that holds.
 .#{contract.$class-face-waiting}:not(:empty) {
-  color: color-mix(in srgb, currentColor 65%, transparent);
+  color: color-mix(in srgb, currentColor 70%, transparent);
   font-style: italic;
 }
 

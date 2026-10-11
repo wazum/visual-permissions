@@ -8,11 +8,11 @@ $column: ':is(typo3-backend-navigation-component-pagetree,'
 $their-tree: ':is(typo3-backend-navigation-component-pagetree-tree,'
     + 'typo3-backend-navigation-component-filestorage-tree)';
 
-$gone: color-mix(in srgb, var(--typo3-text-color-danger, #a72e25) 14%, transparent);
+$gone: color-mix(in srgb, var(--typo3-text-color-danger) 14%, transparent);
 
 // The grey the backend fills a row with. The ink the marks are mixed from is declared
 // inside the module menu, out of reach of the page tree.
-$filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
+$filled: var(--typo3-component-hover-bg);
 
 #{$column}:has(> .#{contract.$class-panel-card}) {
   position: relative;
@@ -77,12 +77,12 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
   }
 
   .#{contract.$class-naming-row} input[aria-invalid='true'] {
-    border-color: var(--typo3-state-danger-border-color, #a72e25);
+    border-color: var(--typo3-state-danger-border-color);
   }
 
   // The path tells two folders of the same name apart, and reads as the address it is.
   .#{contract.$class-naming-path} {
-    font-family: var(--typo3-font-family-monospace, monospace);
+    font-family: var(--typo3-font-family-monospace);
     overflow-wrap: anywhere;
   }
 
@@ -106,9 +106,9 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
   // The tree paints its rows from these, the way the module menu paints its own, so both
   // panels answer the pointer in the same colours instead of each version's own blue.
   .#{contract.$class-face} {
-    --tree-node-hover-bg: var(--typo3-component-hover-bg, rgb(0 0 0 / 4%));
-    --tree-node-hover-color: var(--typo3-text-color-base, #1a1a1a);
-    --tree-node-hover-border-color: var(--typo3-component-hover-border-color, #b4b4b4);
+    --tree-node-hover-bg: var(--typo3-component-hover-bg);
+    --tree-node-hover-color: var(--typo3-text-color-base);
+    --tree-node-hover-border-color: var(--typo3-component-hover-border-color);
     // What a row wears when nothing is happening to it, kept here where the backend's own
     // fill for a row still reads plainly: on the row itself that name is taken over by
     // whichever state it is in.
@@ -127,7 +127,7 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
       flex: none;
       margin-inline-start: auto;
       padding-inline-end: 0.75rem;
-      color: color-mix(in srgb, currentColor 60%, transparent);
+      color: var(--typo3-text-color-variant);
       font-size: 11px;
       font-style: italic;
       white-space: nowrap;
@@ -139,7 +139,7 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
   .#{contract.$class-mount-picked} {
     --tree-node-bg: #{$filled};
     --tree-node-hover-bg: #{$filled};
-    --tree-node-border-color: var(--typo3-component-hover-border-color, #b4b4b4);
+    --tree-node-border-color: var(--typo3-component-hover-border-color);
 
     // The row lays its own parts out in a line, so the word takes its place at the end of
     // it rather than under the name.
@@ -148,7 +148,7 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
       flex: none;
       margin-inline-start: auto;
       padding-inline-end: 0.75rem;
-      color: color-mix(in srgb, currentColor 60%, transparent);
+      color: var(--typo3-text-color-variant);
       font-size: 11px;
       font-style: italic;
       white-space: nowrap;
@@ -231,9 +231,9 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
       width: var(--vperm-square, 18px);
       height: var(--vperm-square, 18px);
       margin-inline: auto 0.5rem;
-      border: 2px solid var(--typo3-text-color-warning, #664d00);
+      border: 2px solid var(--typo3-text-color-warning);
       border-radius: 2px;
-      color: var(--typo3-text-color-warning, #664d00);
+      color: var(--typo3-text-color-warning);
       font-size: 0.75rem;
       font-weight: 600;
       line-height: 1;
@@ -259,7 +259,7 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
     border-block-start: 1px solid var(--vperm-region-edge);
     background: var(--vperm-region-bg);
     color: var(--vperm-region-ink);
-    font: 400 12px / 1.4 var(--typo3-font-family, sans-serif);
+    font: 400 12px / 1.4 var(--typo3-font-family);
 
     // The bold words and the reason read as one sentence, so the mark stands beside it.
     > p {
@@ -277,9 +277,9 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
         box-sizing: border-box;
         width: 16px;
         height: 16px;
-        border: 2px solid var(--typo3-text-color-warning, #664d00);
+        border: 2px solid var(--typo3-text-color-warning);
         border-radius: 2px;
-        color: var(--typo3-text-color-warning, #664d00);
+        color: var(--typo3-text-color-warning);
         font-size: 11px;
         font-weight: 700;
         line-height: 1;
@@ -325,15 +325,15 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
         box-sizing: border-box;
         width: 26px;
         height: 24px;
-        border: 1px solid var(--typo3-btn-default-border-color, #bbb);
-        border-radius: var(--typo3-btn-border-radius, 4px);
-        background: var(--typo3-btn-default-bg, #fff);
-        color: var(--typo3-btn-default-color, #313131);
+        border: 1px solid var(--typo3-component-border-color);
+        border-radius: var(--typo3-input-border-radius);
+        background: var(--typo3-component-bg);
+        color: var(--typo3-component-color);
       }
 
       &:hover::after {
-        border-color: var(--typo3-btn-default-hover-border-color, #999);
-        background: var(--typo3-btn-default-hover-bg, #f0f0f0);
+        border-color: var(--typo3-component-hover-border-color);
+        background: var(--typo3-component-hover-bg);
       }
     }
   }

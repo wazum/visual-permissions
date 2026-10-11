@@ -84,7 +84,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
   flex: none;
   margin-inline-start: auto;
   padding-inline-end: 0.5rem;
-  color: color-mix(in srgb, currentColor 60%, transparent);
+  color: color-mix(in srgb, currentColor 70%, transparent);
   font-size: 11px;
   font-style: italic;
   white-space: nowrap;
@@ -100,7 +100,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
 // What is marked to go reads as struck through until the change is applied, and keeps its
 // fill under the pointer.
 .#{contract.$class-face-marked} {
-  --modulemenu-action-bg: color-mix(in srgb, var(--vperm-ink-denied, #a72e25) 14%, transparent);
+  --modulemenu-action-bg: color-mix(in srgb, var(--vperm-ink-denied) 14%, transparent);
   --modulemenu-action-bg-state: var(--modulemenu-action-bg);
 
   .modulemenu-name {
@@ -153,7 +153,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
   // Picked reads as a filled row, the way the backend fills the module in view. The fill is
   // pinned through the hover state as well, so the pointer only adds the backend's border.
   [#{contract.$attribute-verdict}='#{contract.$verdict-allowed}'] {
-    --modulemenu-action-bg: color-mix(in srgb, var(--vperm-ink-allowed, #247554) 14%, transparent);
+    --modulemenu-action-bg: color-mix(in srgb, var(--vperm-ink-allowed) 14%, transparent);
     --modulemenu-action-bg-state: var(--modulemenu-action-bg);
   }
 
@@ -166,7 +166,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
     flex: none;
     margin-inline-start: auto;
     padding-inline-start: 0.5rem;
-    color: color-mix(in srgb, currentColor 60%, transparent);
+    color: color-mix(in srgb, currentColor 70%, transparent);
     font-size: 11px;
     font-style: italic;
     white-space: nowrap;

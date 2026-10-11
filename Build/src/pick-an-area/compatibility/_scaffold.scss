@@ -7,7 +7,7 @@ body:has(.t3js-scaffold-modulemenu) {
   // edge of an armed card, stands on it. 14.3 divides them by their surfaces alone.
   --vperm-divider: 1px;
   // 14.3 names its header's ground; 13.4 paints the same surface as the page around it.
-  --vperm-bar-bg: var(--typo3-surface-base, #f5f5f5);
+  --vperm-bar-bg: var(--typo3-surface-base);
 
   // 13.4's header casts a shadow onto whatever lies below it, and the bar lies there: the
   // line it draws falls across the tops of the tabs. While the bar is up it is itself the
@@ -47,9 +47,9 @@ body:has(.t3js-scaffold-modulemenu) {
   // written in the page's own ink. The colours are for whatever stands on that ground, a
   // tab as much as the area itself; the scrolling below is the area's alone.
   [#{contract.$attribute-ground}='panel'] {
-    --vperm-region-bg: var(--typo3-surface-container-secondary, #e6e6e6);
-    --vperm-region-ink: var(--typo3-text-color-base, #1a1a1a);
-    --vperm-region-edge: var(--typo3-component-border-color, #d1d1d1);
+    --vperm-region-bg: var(--typo3-surface-container-secondary);
+    --vperm-region-ink: var(--typo3-text-color-base);
+    --vperm-region-edge: var(--typo3-component-border-color);
 
   }
 
@@ -76,12 +76,12 @@ body:has(.t3js-scaffold-modulemenu) {
 
   // 13.4 paints the tree's own toolbar a step darker than the component surface 14.3 uses.
   [#{contract.$attribute-ground}='tree'] {
-    --vperm-region-bg: var(--typo3-surface-container-secondary, #e6e6e6);
+    --vperm-region-bg: var(--typo3-surface-container-secondary);
   }
 
   // Both cores let the module name its own head, and each names a different surface.
   [#{contract.$attribute-ground}='module'] {
-    --vperm-region-bg: var(--typo3-surface-container-high, #e6e6e6);
+    --vperm-region-bg: var(--typo3-surface-container-high);
   }
 }
 
