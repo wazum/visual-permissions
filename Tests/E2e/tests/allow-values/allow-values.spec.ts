@@ -48,7 +48,7 @@ test('the page content types are chosen in a dialog that lists every one of them
 
   const dialog = page.getByRole('dialog')
 
-  await expect(dialog.locator('.t3js-modal-title')).toHaveText('The page content types the group "Aliquam" may use')
+  await expect(dialog.locator('.t3js-modal-title')).toHaveText('The page content types the group "Faculty Editors" may use')
   await expect(dialog.getByRole('checkbox', { name: 'Text & Media' })).toBeVisible()
 })
 

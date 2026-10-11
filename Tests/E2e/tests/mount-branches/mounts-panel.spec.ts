@@ -155,14 +155,14 @@ test('a mounted page the group cannot see links to its page permissions', async 
 
   await showMounts(page)
 
-  await expect(page.locator(preview).getByRole('link', { name: 'Page permissions of "Ipsum"' })).toBeVisible()
+  await expect(page.locator(preview).getByRole('link', { name: 'Page permissions of "Studies"' })).toBeVisible()
 })
 
 test('the page permissions open with the page chosen in the tree', async ({ page, databaseNumber }) => {
   shownToNobody(databaseNumber, 25)
   await showMounts(page)
 
-  await page.locator(preview).getByRole('link', { name: 'Page permissions of "Ipsum"' }).click()
+  await page.locator(preview).getByRole('link', { name: 'Page permissions of "Studies"' }).click()
 
   await expect(page.locator('typo3-backend-navigation-component-pagetree .node-selected[data-id="25"]')).toBeAttached()
 })
