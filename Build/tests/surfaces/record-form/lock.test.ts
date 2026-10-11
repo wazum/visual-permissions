@@ -197,6 +197,21 @@ describe('the form lock', () => {
     expect(anchor.disabled).toBe(false)
   })
 
+  it('puts a field\'s link that opens the element browser out of the way', () => {
+    initialise(document, listening.signal)
+    moduleArrives()
+    const anchor = fieldInModule()
+    const browse = document.createElement('a')
+    browse.href = '#'
+    browse.className = 'btn btn-default t3js-element-browser'
+    anchor.append(browse)
+
+    activate()
+    pickArea('fields')
+
+    expect(browse.hasAttribute('inert')).toBe(true)
+  })
+
   // The form's own controls are locked; ours stand among them and are pressed to decide
   it('leaves a control of ours inside a field open', () => {
     initialise(document, listening.signal)
