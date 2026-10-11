@@ -5,6 +5,7 @@
 @use 'surfaces/record-form/turn';
 @use 'surfaces/record-form/compatibility/form' as compatibility-form;
 @use 'pick-an-area/compatibility/scaffold';
+@use 'platform/compatibility/modal' as compatibility-modal;
 @use 'surfaces/record-form/anchor';
 @use 'allow-fields/fields';
 @use 'allow-fields/mark-card';
