@@ -4,12 +4,21 @@
 .#{contract.$class-head-bar} {
   display: flex;
   align-items: baseline;
+  flex-shrink: 0;
   gap: 0.5rem;
   min-width: 0;
-  font: 400 12px / 1.4 var(--typo3-font-family, sans-serif);
+  font-family: var(--typo3-font-family, sans-serif);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+typo3-breadcrumb + .#{contract.$class-head-bar} {
+  max-width: 70%;
+  margin-inline-start: 1.5rem;
 }
 
 .#{contract.$class-head-bar} .#{contract.$class-face-sentence} {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
