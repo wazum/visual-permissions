@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
@@ -56,7 +57,7 @@ final readonly class FolderTreeController
             return new Response(null, 404);
         }
 
-        $mounted = $this->groups->mountedFolders($groupId);
+        $mounted = array_values(array_filter($this->groups->mountedFolders($groupId), $this->exists(...)));
 
         $rows = [];
 
@@ -107,6 +108,17 @@ final readonly class FolderTreeController
             storage: $prepared['storage'],
             resourceType: 'folder',
         );
+    }
+
+    private function exists(string $folder): bool
+    {
+        try {
+            $this->resources->getFolderObjectFromCombinedIdentifier($folder);
+        } catch (FolderDoesNotExistException) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

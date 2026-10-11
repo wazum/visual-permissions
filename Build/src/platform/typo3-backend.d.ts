@@ -168,18 +168,22 @@ declare module '@typo3/backend/tree/tree.js' {
     readonly identifier: string
     readonly depth: number
     readonly __parents?: string[]
+    readonly loaded?: boolean
     __hidden?: boolean
     __expanded?: boolean
   }
 
   export class Tree extends HTMLElement {
     setup: unknown
+    readonly settings: { readonly rootlineUrl?: string }
     allowNodeEdit: boolean
     allowNodeDrag: boolean
     allowNodeSorting: boolean
     getNodeClasses(node: TreeNode): string[]
     // Core shows every row that is not marked hidden
     readonly nodes: PreparedNode[]
+    loadData(): Promise<void>
+    loadChildren(node: PreparedNode): Promise<void>
     prepareNodes(nodes: PreparedNode[]): PreparedNode[]
     hideChildren(node: PreparedNode): void
     // A node refused here is never selected, focused or spoken of again

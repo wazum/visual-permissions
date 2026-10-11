@@ -10,6 +10,7 @@ import {
   forget,
   holdNextRead,
   holdNextWrite,
+  refuseNextRead,
   refuseNextWrite,
   reply,
   replyTo,
@@ -154,6 +155,15 @@ const mountedButUnseen = (...titles: string[]): void => {
 const previewTree = (): PageTree | null =>
   document.querySelector<PageTree>(`.${classes.facePreview} vperm-page-tree`)
 
+const builtPreviewTree = async (): Promise<PageTree> => vi.waitFor(() => {
+  const built = previewTree()
+  if (built === null) {
+    throw new Error('the preview tree is not built yet')
+  }
+
+  return built
+})
+
 const armed = async (): Promise<void> => {
   activate()
   pickArea('pageMounts')
@@ -246,6 +256,57 @@ describe('the mounts panel', () => {
 
     expect(parent.__expanded).toBe(true)
     expect(mounted.__expanded).toBe(false)
+  })
+
+  it('loads the way down to a mount deeper than the tree first loads', async () => {
+    replyTo('page_tree_rootline', { rootline: ['0', '1', '2', '3'] })
+    await armed()
+    const preview = await builtPreviewTree()
+    preview.nodes = [
+      { identifier: '1', depth: 0, __parents: [], loaded: true },
+      { identifier: '5', depth: 1, __parents: ['1'] },
+      { identifier: '2', depth: 1, __parents: ['1'] },
+    ]
+    preview.childrenOf = {
+      1: [{ identifier: '9', depth: 1, __parents: ['1'] }],
+      2: [{ identifier: '3', depth: 2, __parents: ['1', '2'] }],
+      3: [{ identifier: '7', depth: 3, __parents: ['1', '2', '3'] }],
+      5: [{ identifier: '8', depth: 2, __parents: ['1', '5'] }],
+    }
+
+    await preview.loadData()
+
+    expect(preview.nodes.map(node => node.identifier)).toEqual(['1', '5', '2', '3'])
+    expect(preview.nodes[2]?.__hidden).toBe(false)
+  })
+
+  it('asks the way down only for a mount the tree has not loaded', async () => {
+    replyTo('page_tree_rootline', { rootline: ['1', '3'] })
+    await armed()
+    const preview = await builtPreviewTree()
+    preview.nodes = [
+      { identifier: '1', depth: 0, __parents: [], loaded: true },
+      { identifier: '5', depth: 1, __parents: ['1'] },
+    ]
+
+    await preview.loadData()
+
+    expect(asked.filter(url => url.includes('page_tree_rootline')))
+      .toEqual(['/typo3/ajax/page_tree_rootline?identifier=3'])
+  })
+
+  it('opens the way down to the other mounts when a mounted page is gone', async () => {
+    await armed()
+    const preview = await builtPreviewTree()
+    preview.nodes = [
+      { identifier: '1', depth: 0, __parents: [], loaded: true },
+      { identifier: '5', depth: 1, __parents: ['1'] },
+    ]
+    refuseNextRead()
+
+    await preview.loadData()
+
+    expect(preview.nodes[0]?.__hidden).toBe(false)
   })
 
   it('marks a page that only leads down to a mount as the way there', async () => {
@@ -535,13 +596,16 @@ describe('the mounts panel', () => {
     })
   })
 
-  it('hands the preview tree the configuration the backend answered with', async () => {
+  it('hands the preview tree the configuration the backend answered with, and the way to a page\'s rootline', async () => {
     replyTo('page_tree_browser_configuration', { dataUrl: '/fetchData?readOnly=1' })
 
     await armed()
 
     await vi.waitFor(() => {
-      expect(previewTree()?.setup).toStrictEqual({ dataUrl: '/fetchData?readOnly=1' })
+      expect(previewTree()?.setup).toStrictEqual({
+        dataUrl: '/fetchData?readOnly=1',
+        rootlineUrl: '/typo3/ajax/page_tree_rootline',
+      })
     })
   })
 

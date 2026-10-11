@@ -1,3 +1,4 @@
+import AjaxRequest from '@typo3/core/ajax/ajax-request.js'
 import type { PageTree, PreparedNode } from '@typo3/backend/tree/page-tree.js'
 import type { Tree, TreeNode } from '@typo3/backend/tree/tree.js'
 import { classes, elements } from '../platform/contract.js'
@@ -114,21 +115,38 @@ function register(named: string, base: typeof Tree): void {
       return actionRow(node.identifier)
     }
 
-    // Closed row hides mount; ensure rows are open before drawing mounts
-    public override prepareNodes(nodes: PreparedNode[]): PreparedNode[] {
-      const prepared = super.prepareNodes(nodes)
+    // Core loads the first levels only, so a deeper mount needs the way down to it loaded
+    public override async loadData(): Promise<void> {
+      await super.loadData()
 
-      prepared.forEach(node => {
-        if (hasMountAbove(node) || mountedIds.has(node.identifier)) {
-          return
+      const missing = [...mountedIds].filter(mount => !this.nodes.some(node => node.identifier === mount))
+
+      for (const mount of missing) {
+        // A mount can name a page deleted since, and that has no way down to load
+        // Stryker disable next-line StringLiteral: both kinds hand the tree a rootline route
+        const response = await new AjaxRequest(this.settings.rootlineUrl ?? '')
+          .withQueryArguments({ identifier: mount })
+          .get()
+          .catch(() => null)
+        if (response === null) {
+          continue
         }
+        const { rootline } = await response.resolve<{ rootline: string[] }>()
 
-        node.__expanded = true
-        // This side is the way down to the mounts and what they carry, and no more.
-        node.__hidden = !hasMountBelow(node, prepared)
-      })
+        for (const over of rootline.slice(0, -1)) {
+          const node = this.nodes.find(each => each.identifier === over)
 
-      return prepared
+          if (node !== undefined && node.loaded !== true) {
+            await this.loadChildren(node)
+          }
+        }
+      }
+
+      openWayDown(this.nodes)
+    }
+
+    public override prepareNodes(nodes: PreparedNode[]): PreparedNode[] {
+      return openWayDown(super.prepareNodes(nodes))
     }
 
     public override hideChildren(node: PreparedNode): void {
@@ -170,4 +188,19 @@ function register(named: string, base: typeof Tree): void {
       return painted
     }
   })
+}
+
+// A closed row hides the mount under it, and this side is the way down to the mounts and
+// what they carry, and no more
+function openWayDown(nodes: PreparedNode[]): PreparedNode[] {
+  nodes.forEach(node => {
+    if (hasMountAbove(node) || mountedIds.has(node.identifier)) {
+      return
+    }
+
+    node.__expanded = true
+    node.__hidden = !hasMountBelow(node, nodes)
+  })
+
+  return nodes
 }

@@ -31,6 +31,17 @@ final class FolderTreeControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function leavesAMountedFolderThatNoLongerExistsOutOfTheTree(): void
+    {
+        $this->arrange();
+        GeneralUtility::rmdir($this->instancePath . '/fileadmin/press/');
+
+        $response = $this->get(FolderTreeController::class)->tree($this->asked(['group' => 20]));
+
+        self::assertSame(['1:/', '1:/campaign/'], $this->foldersIn($response->getBody()->__toString()));
+    }
+
+    #[Test]
     public function standsEachFolderAtTheDepthOfItsPlace(): void
     {
         $this->arrange();
