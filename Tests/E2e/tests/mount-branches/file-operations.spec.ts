@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }) => {
   await forgetSession(page)
 })
 
-test('a file operation ticked and added is one the group may do', async ({ page, databaseNumber }) => {
+test('a file operation ticked and allowed is one the group may do', async ({ page, databaseNumber }) => {
   groupOperates(databaseNumber, 'readFile')
 
   await page.goto('/typo3/module/web/layout')

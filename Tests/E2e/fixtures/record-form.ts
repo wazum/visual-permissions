@@ -7,7 +7,7 @@ import { verifyIfAsked } from './sudo-mode.js'
 const pageRecord = 'a[href*="edit%5Bpages%5D"]'
 
 /**
- * An area opens showing what the group has. The fields are given away on the other side of
+ * An area opens showing what the group has. The fields are allowed on the other side of
  * the form, which the header's own button turns to.
  */
 export const turnToFields = async (page: Page): Promise<void> => {
@@ -24,7 +24,7 @@ export const turnToFields = async (page: Page): Promise<void> => {
       .filter(animation => animation.timeline === body.ownerDocument.timeline).length)).toBe(0)
 }
 
-export const giveMarkedFieldsAway = async (page: Page, form: FrameLocator): Promise<void> => {
+export const allowMarkedFields = async (page: Page, form: FrameLocator): Promise<void> => {
   await expect(form.locator('.vperm-face-apply')).toBeEnabled()
   await verifyIfAsked(page, () => form.locator('.vperm-face-apply').click())
 

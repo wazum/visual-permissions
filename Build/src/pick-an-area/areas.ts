@@ -49,7 +49,7 @@ function keepPanelOpen(doc: Document, undo: (() => void)[]): void {
     })
   })
 
-  // Shutting a group hides what is being granted; a disabled button cannot take focus
+  // Shutting a group hides what is being allowed; a disabled button cannot take focus
   doc.querySelectorAll(controls).forEach(row => {
     row.setAttribute('aria-disabled', 'true')
     undo.push(() => { row.removeAttribute('aria-disabled') })

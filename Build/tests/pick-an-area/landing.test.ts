@@ -398,7 +398,7 @@ describe('the modules a session of ours keeps to', () => {
     expect(groupOf('system')?.hidden).toBe(true)
   })
 
-  // Domain rule: folded row in panel is a grant that nobody can give away
+  // Domain rule: a folded row in the panel is something no group can be allowed
   it('lists every module again while the modules are the scope being worked in', () => {
     menu('web_layout', 'system_config')
     setCurrentModule('web_layout')

@@ -14,7 +14,7 @@ use Wazum\VisualPermissions\Authorization\TargetKind;
 final class ModuleCatalogueTest extends TestCase
 {
     #[Test]
-    public function callsAModuleAGroupCanBeGivenGrantable(): void
+    public function callsAModuleAGroupCanBeAllowedAllowable(): void
     {
         $catalogue = $this->catalogueOf('web_layout', 'user');
 

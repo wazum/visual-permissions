@@ -366,7 +366,7 @@ describe('the module panel the group sees', () => {
     expect(getState().area).toBe('modules')
   })
 
-  it('keeps the granted modules under the heading of the group they belong to', async () => {
+  it('keeps the allowed modules under the heading of the group they belong to', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -391,7 +391,7 @@ describe('the module panel the group sees', () => {
     expect(inPreview(`.${classes.faceHint}`)?.textContent).toBe('or click a module to remove it')
   })
 
-  it('marks a granted module to be taken away when it is clicked', async () => {
+  it('marks an allowed module to be disallowed when it is clicked', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -464,7 +464,7 @@ describe('the module panel the group sees', () => {
     expect(inPreview(`.${classes.faceCancel}`)?.hasAttribute('disabled')).toBe(false)
   })
 
-  it('counts what is marked to be taken away', async () => {
+  it('counts what is marked to be disallowed', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -476,7 +476,7 @@ describe('the module panel the group sees', () => {
     expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('1 of 2 modules marked to remove')
   })
 
-  it('takes away everything marked when the removal is applied', async () => {
+  it('disallows everything marked when the change is applied', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -551,7 +551,7 @@ describe('the module panel the group sees', () => {
     expect(inPick('.modulemenu-group-container')?.classList.contains('show')).toBe(true)
   })
 
-  it('names a group of modules with a heading, since a group is granted to nobody', async () => {
+  it('names a group of modules with a heading, since a module group cannot be allowed', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -573,7 +573,7 @@ describe('the module panel the group sees', () => {
     expect(pickedNames()).toEqual(['dashboard', 'web_layout', 'records'])
   })
 
-  // What the group already has is taken away on the preview; do not add it back
+  // What the group already has is disallowed on the preview; do not allow it again
   it('leaves a module the group already had where it is while picking', async () => {
     menu()
     carrier()
@@ -615,7 +615,7 @@ describe('the module panel the group sees', () => {
     expect(row?.getAttribute(attributes.verdict)).toBe('denied')
   })
 
-  it('leaves a module nobody may be granted alone', async () => {
+  it('leaves a module alone that cannot be allowed for a group', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -627,7 +627,7 @@ describe('the module panel the group sees', () => {
     expect(pickedNames()).toEqual(['dashboard', 'web_layout'])
   })
 
-  // A picked row is filled but does not say whether the group has the module already or is only about to be given it
+  // A picked row is filled but does not say whether the group has the module already or is only about to be allowed it
   it('says of a picked module that it is waiting to be allowed', async () => {
     menu()
     carrier()
@@ -665,8 +665,8 @@ describe('the module panel the group sees', () => {
     expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('1 of 1 module allowed')
   })
 
-  // Group has and waiting counts are two separate values; a pick is granted only when saved
-  it('counts what is waiting to be allowed beside what is granted', async () => {
+  // Group has and waiting counts are two separate values; a pick is allowed only when saved
+  it('counts what is waiting to be allowed beside what is allowed', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -679,7 +679,7 @@ describe('the module panel the group sees', () => {
     expect(inPick(`.${classes.faceWaiting}`)?.textContent).toBe('1 waiting to be allowed')
   })
 
-  it('flashes the module that was just added once the card has turned', async () => {
+  it('flashes the module that was just allowed once the card has turned', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -774,7 +774,7 @@ describe('the module panel the group sees', () => {
     expect(document.querySelectorAll(`.${classes.justAdded}`)).toHaveLength(0)
   })
 
-  it('flashes nothing when a module was taken away', async () => {
+  it('flashes nothing when a module was disallowed', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -893,7 +893,7 @@ describe('the module panel the group sees', () => {
       .toBe('allowed')
   })
 
-  // The module carries the face's state when painted, not the latest grant
+  // The module carries the face's state when painted, not the latest change
   it('sends what was picked when the change is applied, and nothing else', async () => {
     menu()
     carrier()
@@ -1297,7 +1297,7 @@ describe('the module panel the group sees', () => {
     expect(document.querySelector(`.${classes.coin}`)).toBe(coin)
   })
 
-  it('offers nothing to add while nothing is picked', async () => {
+  it('offers nothing to allow while nothing is picked', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -1318,7 +1318,7 @@ describe('the module panel the group sees', () => {
     expect(inPick(`.${classes.faceApply}`)?.hasAttribute('disabled')).toBe(false)
   })
 
-  it('offers nothing to add again once the pick is taken back', async () => {
+  it('offers nothing to allow again once the pick is taken back', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -1357,7 +1357,7 @@ describe('the module panel the group sees', () => {
     expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
   })
 
-  it('says where an inherited module comes from, and nothing on its own grants', async () => {
+  it('says where an inherited module comes from, and nothing on what it allows itself', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -1369,7 +1369,7 @@ describe('the module panel the group sees', () => {
     expect(inPreview('[data-modulemenu-identifier="web_layout"] .' + classes.allowedFrom)).toBeNull()
   })
 
-  it('leaves a module nobody may be granted where it is while picking', async () => {
+  it('leaves a module that cannot be allowed for a group where it is while picking', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -1382,7 +1382,7 @@ describe('the module panel the group sees', () => {
       .toBe('adminOnly')
   })
 
-  it('leaves a module a subgroup grants where it is while picking', async () => {
+  it('leaves a module a subgroup allows where it is while picking', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)

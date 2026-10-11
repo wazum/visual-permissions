@@ -143,7 +143,7 @@ describe('the header of a form we have taken over', () => {
   })
 
   // A record is closed from the side that shows it; the other side is left through its foot
-  it('takes the way out away while the fields are given away', () => {
+  it('takes the way out away while on the assign side', () => {
     initialise(document, listening.signal)
     docheader(save, close)
 
@@ -170,7 +170,7 @@ describe('the header of a form we have taken over', () => {
     expect(ours.hasAttribute('hidden')).toBe(false)
   })
 
-  // The other side would stand empty: a record no field of which can be given has nothing to pick
+  // The other side would stand empty: a record with no field that can be allowed has nothing to pick
   it('offers no way into the picking while the form has nothing to pick', () => {
     initialise(document, listening.signal)
     docheader(save, close)
@@ -317,7 +317,7 @@ describe('the header of a form we have taken over', () => {
     expect(visibleHeaderControls()).toEqual(['Save', 'Close', 'History', 'Info'])
   })
 
-  it('offers the way to the side where the fields are given', () => {
+  it('offers the way to the assign side', () => {
     initialise(document, listening.signal)
     docheader(save, close)
 

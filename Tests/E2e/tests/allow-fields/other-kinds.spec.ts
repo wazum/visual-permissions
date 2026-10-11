@@ -3,7 +3,7 @@ import { expect, test } from '../../fixtures/test.js'
 import { pickArea } from '../../fixtures/areas.js'
 import { pickFirstGroup } from '../../fixtures/groups.js'
 import { moduleContent } from '../../fixtures/module-content.js'
-import { giveMarkedFieldsAway, turnToFields } from '../../fixtures/record-form.js'
+import { allowMarkedFields, turnToFields } from '../../fixtures/record-form.js'
 import { forgetSession } from '../../fixtures/session.js'
 import { verifyIfAsked } from '../../fixtures/sudo-mode.js'
 import { openControls, switchOn } from '../../fixtures/visual-mode.js'
@@ -61,20 +61,20 @@ test('a field holding records lists the fields only other kinds of record show',
   expect(tokens).not.toContain('sys_file_reference:title')
 })
 
-test('a field only other kinds of record show is given away like any other', async ({ page }) => {
+test('a field only other kinds of record show is allowed like any other', async ({ page }) => {
   const form = await recordWithAFile(page)
   const autoplay = form.locator(`${section} [data-vperm-token="sys_file_reference:autoplay"]`)
 
   await expect(autoplay).toHaveAttribute('data-vperm-verdict', 'denied')
   await autoplay.click()
   await expect(autoplay).toHaveClass(/vperm-face-marked/)
-  await giveMarkedFieldsAway(page, form)
+  await allowMarkedFields(page, form)
   await turnToFields(page)
 
   await expect(autoplay).toHaveAttribute('data-vperm-verdict', 'allowed')
 })
 
-// A record of a table the group may not write holds nothing to give, and neither does its kind
+// A record of a table the group may not write holds nothing to allow, and neither does its kind
 test('a field holding records of a table the group may not write lists nothing', async ({ page }) => {
   const form = await recordWithAFile(page, false)
 

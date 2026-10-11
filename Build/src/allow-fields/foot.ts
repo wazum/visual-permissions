@@ -10,8 +10,8 @@ import { flipForm } from '../surfaces/record-form/turn.js'
 import { adminsOnly, dropped } from '../platform/vocabulary.js'
 import type { Draft } from './draft.js'
 
-// A field no grant can reach is on neither side of the count, so the record is what a grant
-// could reach and the tally what it does
+// A field nothing can allow is on neither side of the count, so the record is what can be
+// allowed and the tally what is
 const countable = `[${attributes.verdict}]:not([${attributes.outOfReach}])`
 
 const kept = [dropped, adminsOnly]
@@ -149,8 +149,8 @@ export function initialise(draft: Draft, signal: AbortSignal): void {
       card.waiting.textContent = waiting === 0
         ? ''
         : counted(`allowFields.${adding ? 'waiting' : 'going'}`, waiting, waiting)
-      // The side that hands fields over is left by cancelling it; the side the form settles
-      // on has nowhere to go, so there is only a mark to take back
+      // The assign side is left by cancelling it; the side the form settles
+      // on has nowhere to go, so there is only a mark to clear
       card.ready(waiting > 0, adding || waiting > 0)
     }
 

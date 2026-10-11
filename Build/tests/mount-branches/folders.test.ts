@@ -405,7 +405,7 @@ describe('the file mounts panel', () => {
       .toBe('1 folder mounted')
   })
 
-  it('sends the marked folders to be taken away', async () => {
+  it('sends the marked folders to be removed', async () => {
     await armed()
     await vi.waitFor(() => {
       expect(document.querySelector(`.${classes.facePreview} ${elements.folderTree}`)).not.toBeNull()

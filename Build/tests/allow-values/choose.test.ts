@@ -141,7 +141,7 @@ describe('choosing the values a group may use', () => {
     expect([boxNamed('Text & Media').checked, boxNamed('Text & Media').disabled]).toStrictEqual([true, true])
   })
 
-  it('says on a box that a subgroup gives its value', async () => {
+  it('says on a box that a subgroup allows its value', async () => {
     reply({ scopes: { fieldValues: { targets: { 'tt_content:CType:textmedia': 'inherited' } } } })
 
     await openChoice()
@@ -166,7 +166,7 @@ describe('choosing the values a group may use', () => {
     expect(dialog()).toBeNull()
   })
 
-  it('says a value that was ticked is waiting to be added', async () => {
+  it('says a value that was ticked is waiting to be allowed', async () => {
     await openChoice()
 
     boxNamed('Text & Media').click()
@@ -175,7 +175,7 @@ describe('choosing the values a group may use', () => {
     expect(applyButton()?.textContent).toBe('Apply')
   })
 
-  it('sends the values that were ticked to be added', async () => {
+  it('sends the values that were ticked to be allowed', async () => {
     await openChoice()
     boxNamed('Text & Media').click()
 
@@ -285,7 +285,7 @@ describe('choosing the values a group may use', () => {
     expect(heard).toHaveLength(0)
   })
 
-  it('says a value that was unticked is waiting to be taken away', async () => {
+  it('says a value that was unticked is waiting to be disallowed', async () => {
     reply({ scopes: { fieldValues: { targets: { 'tt_content:CType:text': 'allowed' } } } })
     await openChoice()
 
@@ -295,7 +295,7 @@ describe('choosing the values a group may use', () => {
     expect(applyButton()?.textContent).toBe('Apply')
   })
 
-  it('says both when values are added and taken away', async () => {
+  it('says both when values are allowed and disallowed', async () => {
     reply({ scopes: { fieldValues: { targets: { 'tt_content:CType:text': 'allowed' } } } })
     await openChoice()
 

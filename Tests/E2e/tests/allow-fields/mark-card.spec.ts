@@ -1,6 +1,6 @@
 import type { FrameLocator, Page } from '@playwright/test'
 import { expect, test } from '../../fixtures/test.js'
-import { giveMarkedFieldsAway, openFirstPage, turnToFields } from '../../fixtures/record-form.js'
+import { allowMarkedFields, openFirstPage, turnToFields } from '../../fixtures/record-form.js'
 import { pickFirstGroup, pickGroup, shownGroup } from '../../fixtures/groups.js'
 import { forgetSession } from '../../fixtures/session.js'
 import { openControls, switchOn } from '../../fixtures/visual-mode.js'
@@ -85,7 +85,7 @@ test('a field\'s mark says what the field became once it is given', async ({ pag
   const denied = form.locator('[data-vperm-verdict="denied"][role="switch"]').filter({ visible: true }).first()
   const field = form.locator(`[data-vperm-token="${await denied.getAttribute('data-vperm-token') ?? ''}"]`)
   await denied.click()
-  await giveMarkedFieldsAway(page, form)
+  await allowMarkedFields(page, form)
 
   await expect(field.locator('.vperm-mark')).toHaveAccessibleName('Allowed')
 })
@@ -175,7 +175,7 @@ test('a marked field\'s mark stands right after the word that says what waits', 
   expect(await field.locator('.vperm-mark').evaluate(mark => parseFloat(getComputedStyle(mark).marginInlineStart))).toBeLessThan(8)
 })
 
-test('an inherited field names the groups that give it, and shows one of them', async ({ page }) => {
+test('an inherited field names the groups that allow it, and shows one of them', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickGroup(page, 'Elit')
@@ -277,7 +277,7 @@ test('the card of a field the group holds says what pressing the field does', as
   await expect(card).toContainText('Press again to keep it')
 })
 
-test('the card of a field the group can be given says what pressing the field does', async ({ page }) => {
+test('the card of a field the group can be allowed says what pressing the field does', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)

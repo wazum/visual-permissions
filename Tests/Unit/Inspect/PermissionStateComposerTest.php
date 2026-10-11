@@ -57,7 +57,7 @@ final class PermissionStateComposerTest extends TestCase
     }
 
     #[Test]
-    public function namesTheSubgroupsThatGiveTheFieldsOfTheTablesItWasAskedAbout(): void
+    public function namesTheSubgroupsThatAllowTheFieldsOfTheTablesItWasAskedAbout(): void
     {
         $GLOBALS['TCA'] = [
             'pages' => ['columns' => ['nav_title' => ['exclude' => true, 'config' => ['type' => 'input']]]],

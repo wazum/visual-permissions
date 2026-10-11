@@ -13,7 +13,7 @@ use Wazum\VisualPermissions\Authorization\Verdicts;
 final class VerdictsTest extends TestCase
 {
     #[Test]
-    public function namesEveryGroupBehindTheGroupThatGivesATarget(): void
+    public function namesEveryGroupBehindTheGroupThatAllowsATarget(): void
     {
         $allowedBy = (new Verdicts())->allowedBy([20, 21, 22, 23], [20 => [5], 21 => [7], 22 => [], 23 => [7, 5]]);
 
@@ -21,7 +21,7 @@ final class VerdictsTest extends TestCase
     }
 
     #[Test]
-    public function callsATargetNobodyGrantedDenied(): void
+    public function callsATargetNobodyAllowedDenied(): void
     {
         $verdicts = (new Verdicts())->resolve([13], [13 => []], ['pages:layout' => TargetKind::Allowable]);
 
@@ -29,7 +29,7 @@ final class VerdictsTest extends TestCase
     }
 
     #[Test]
-    public function callsATargetTheGroupItselfGrantsAllowed(): void
+    public function callsATargetTheGroupItselfAllowsAllowed(): void
     {
         $verdicts = (new Verdicts())->resolve([13, 18], [13 => ['web_layout'], 18 => []]);
 
@@ -37,7 +37,7 @@ final class VerdictsTest extends TestCase
     }
 
     #[Test]
-    public function callsATargetOnlyAGroupBehindItGrantsInherited(): void
+    public function callsATargetOnlyAGroupBehindItAllowsInherited(): void
     {
         $verdicts = (new Verdicts())->resolve([20, 21], [20 => [], 21 => [7]]);
 
@@ -45,7 +45,7 @@ final class VerdictsTest extends TestCase
     }
 
     #[Test]
-    public function callsATargetTheGroupGrantsAndAlsoInheritsAllowedAndInherited(): void
+    public function callsATargetTheGroupAllowsAndAlsoInheritsAllowedAndInherited(): void
     {
         $verdicts = (new Verdicts())->resolve([13, 18], [13 => ['web_layout'], 18 => ['web_layout']]);
 
@@ -53,7 +53,7 @@ final class VerdictsTest extends TestCase
     }
 
     #[Test]
-    public function callsATargetTheGroupGrantsTwiceAllowed(): void
+    public function callsATargetTheGroupAllowsTwiceAllowed(): void
     {
         $verdicts = (new Verdicts())->resolve([13], [13 => ['web_layout', 'web_layout']]);
 
@@ -61,14 +61,14 @@ final class VerdictsTest extends TestCase
     }
 
     #[Test]
-    public function readsOnPastATargetTheNearerGroupAlreadyGives(): void
+    public function readsOnPastATargetTheNearerGroupAlreadyAllows(): void
     {
         $verdicts = (new Verdicts())->resolve([20, 21], [20 => [5], 21 => [5, 9]]);
 
         self::assertSame([5 => AccessVerdict::AllowedAndInherited, 9 => AccessVerdict::Inherited], $verdicts);
     }
 
-    // Core turns such a grant down whatever the group carries
+    // Core turns such a target down whatever the group carries
     #[Test]
     public function leavesATargetForAdministratorsTheirsEvenWhenAGroupCarriesIt(): void
     {

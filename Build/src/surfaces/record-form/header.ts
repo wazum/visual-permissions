@@ -56,7 +56,7 @@ export function initialise(outer: Document, signal: AbortSignal): void {
 
     const reachable = inner.querySelector(`[${attributes.token}][${attributes.inside}='']:not([${attributes.outOfReach}])`) !== null
 
-    // A record without a field to give has no other side
+    // A record without a field to allow has no other side
     if (!reachable && getState().face === 'pick') {
       flipForm(inner, () => { turnTo('preview') })
 

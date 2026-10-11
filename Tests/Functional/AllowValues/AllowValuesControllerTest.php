@@ -41,7 +41,7 @@ final class AllowValuesControllerTest extends FunctionalTestCase
     /**
      * @return array<string, array{string}>
      */
-    public static function valuesNoGroupCanBeGiven(): array
+    public static function valuesNoGroupCanBeAllowed(): array
     {
         return [
             'of a field that allows none' => ['pages:title:anything'],
@@ -53,8 +53,8 @@ final class AllowValuesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[DataProvider('valuesNoGroupCanBeGiven')]
-    public function refusesToGrantAValue(string $value): void
+    #[DataProvider('valuesNoGroupCanBeAllowed')]
+    public function refusesToAllowAValue(string $value): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_values.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -69,7 +69,7 @@ final class AllowValuesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function refusesToGrantAValueOfAFieldInAModeCoreDoesNotSupport(): void
+    public function refusesToAllowAValueOfAFieldInAModeCoreDoesNotSupport(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_values.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

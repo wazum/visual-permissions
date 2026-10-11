@@ -55,7 +55,7 @@ describe('the tables of the form as the group sees it', () => {
     expect(recordsOnScreen()).toStrictEqual([])
   })
 
-  it('draws no field of such a table on the side where the fields are given', () => {
+  it('draws no field of such a table on the assign side', () => {
     drawForm(row('tt_content:header', 'notApplicable'), row('sys_file_reference:title', 'allowed'))
 
     activate()
@@ -142,7 +142,7 @@ describe('the tables of the form as the group sees it', () => {
   })
 
   // That side keeps the record, and says it on the record itself
-  it('says no such word on the side where the fields are given away', () => {
+  it('says no such word on a child record on the assign side', () => {
     drawForm(fieldHolding('tt_content:assets', 'notApplicable', childRecord(
       'The video',
       row('sys_file_reference:title', 'allowed'),
@@ -211,7 +211,7 @@ describe('the tables of the form as the group sees it', () => {
   })
 
   // The table has still to be decided, and the record's own row is where that is said
-  it('leaves such a child record standing where the fields are given, holding no field', () => {
+  it('leaves such a child record standing on the assign side, holding no field', () => {
     drawForm(fieldHolding('tt_content:assets', 'notApplicable', childRecord(
       'The video',
       row('sys_file_reference:title', 'allowed'),
@@ -227,7 +227,7 @@ describe('the tables of the form as the group sees it', () => {
   })
 
   // A heading standing over nothing reads as a section whose fields went missing
-  it('takes a section emptied by such a table off the side where the fields are given', () => {
+  it('takes a section emptied by such a table off the assign side', () => {
     drawForm(fieldHolding('tt_content:assets', 'notApplicable', childRecord(
       'The video',
       row('sys_file_reference:title', 'allowed'),
@@ -241,7 +241,7 @@ describe('the tables of the form as the group sees it', () => {
     expect(document.querySelector('.form-irre-object .form-section')?.hasAttribute('hidden')).toBe(true)
   })
 
-  it('says no such word on the side where the fields are given', () => {
+  it('says no such word for a record on the assign side', () => {
     drawForm(row('sys_file_reference:title', 'allowed'))
     backendSays()
 
@@ -266,7 +266,7 @@ describe('the tables of the form as the group sees it', () => {
     expect(note?.querySelector(`.${classes.tableAllow}`)?.textContent).toBe('Allow "Page Content"')
   })
 
-  it('says so in the band the side that gives tables away draws', () => {
+  it('says so in the band the assign side draws', () => {
     drawForm(row('tt_content:header', 'notApplicable'))
     backendSays()
 
@@ -277,7 +277,7 @@ describe('the tables of the form as the group sees it', () => {
     expect(document.querySelector(`.${classes.nothingTheirs}`)?.classList.contains(classes.tableGate)).toBe(true)
   })
 
-  it('grants the table when the offer is pressed', async () => {
+  it('allows the table when the offer is pressed', async () => {
     drawForm(row('tt_content:header', 'notApplicable'))
     backendSays()
 
@@ -329,8 +329,8 @@ describe('the tables of the form as the group sees it', () => {
       .toBe('The group may not edit records of this kind')
   })
 
-  // A table only administrators may write cannot be granted to anyone, so there is no deed
-  it('offers nothing for a table nobody can be given', () => {
+  // A table only administrators may write cannot be allowed for a group, so there is no deed
+  it('offers nothing for a table that cannot be allowed for a group', () => {
     drawForm(row('be_groups:title', 'allowed'))
     backendSays()
 

@@ -115,7 +115,7 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
     --vperm-row-bg: var(--tree-node-bg);
   }
 
-  // A branch a subgroup mounts is not this group's to take away. It says so the way the
+  // A branch a subgroup mounts is not this group's to remove. It says so the way the
   // modules panel says it: the same word, at the end of the row, and the row answers no
   // click.
   .#{contract.$class-mount-inherited} {
@@ -168,7 +168,7 @@ $filled: var(--typo3-component-hover-bg, rgb(0 0 0 / 6%));
   }
 
   // A page below a branch is no mount of its own, and one the group mounts already is
-  // taken away on the other side. Neither answers a click here.
+  // removed on the other side. Neither answers a click here.
   // Nothing here is a row to act on: the pointer says so, and the row lights up for nothing
   // — neither under the pointer nor when pressed, since a press on it takes no keyboard
   // either (§ the tree, where a press on such a row is refused). Its expander is another

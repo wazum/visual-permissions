@@ -65,8 +65,8 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
         element.setAttribute(attributes.verdict, verdict)
       }
 
-      // Whatever the field itself says, a grant on a table the group does not write does
-      // nothing: refused, nobody's to give, or a table the backend says nothing about
+      // Whatever the field itself says, allowing it on a table the group does not write does
+      // nothing: refused, not allowable, or a table the backend says nothing about
       element.toggleAttribute(attributes.outOfReach, !isReachable(scopes.tablesModify.targets[tableOf(token)]))
     })
 

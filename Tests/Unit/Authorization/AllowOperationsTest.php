@@ -11,7 +11,7 @@ use Wazum\VisualPermissions\Authorization\AllowOperations;
 final class AllowOperationsTest extends TestCase
 {
     #[Test]
-    public function readsAGrantAndARevoke(): void
+    public function readsAnAllowAndADisallow(): void
     {
         self::assertSame(
             [['target' => 'web_list', 'add' => true], ['target' => 'web_layout', 'add' => false]],
@@ -37,7 +37,7 @@ final class AllowOperationsTest extends TestCase
     }
 
     #[Test]
-    public function refusesToGrantWhatCannotBeGranted(): void
+    public function refusesToAllowWhatCannotBeAllowed(): void
     {
         self::assertNull(AllowOperations::from(
             [['module' => 'web_list', 'allow' => true]],
@@ -47,7 +47,7 @@ final class AllowOperationsTest extends TestCase
     }
 
     #[Test]
-    public function takesAwayWhatCanNoLongerBeGranted(): void
+    public function disallowsWhatCanNoLongerBeAllowed(): void
     {
         self::assertSame(
             [['target' => 'web_list', 'add' => false]],

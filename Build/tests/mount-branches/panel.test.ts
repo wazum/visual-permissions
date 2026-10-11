@@ -1236,7 +1236,7 @@ describe('the mounts panel', () => {
     expect(inPick(`.${classes.faceApply}`)?.hasAttribute('disabled')).toBe(true)
   })
 
-  it('counts what is marked to be taken away beside what is mounted', async () => {
+  it('counts what is marked to be removed beside what is mounted', async () => {
     await armed()
     await vi.waitFor(() => {
       expect(previewTree()).not.toBeNull()
@@ -1265,7 +1265,7 @@ describe('the mounts panel', () => {
     expect(inPick(`.${classes.faceWaiting}`)?.textContent).toBe('1 waiting to be added')
   })
 
-  it('sends the marked branches to be taken away', async () => {
+  it('sends the marked branches to be removed', async () => {
     await armed()
     await vi.waitFor(() => {
       expect(previewTree()).not.toBeNull()
@@ -1678,7 +1678,7 @@ describe('the mounts panel', () => {
     expect(previewTree()?.repainted()).toBe(painted)
   })
 
-  it('flashes nothing once branches were taken away', async () => {
+  it('flashes nothing once branches were removed', async () => {
     await armed()
     await vi.waitFor(() => {
       expect(previewTree()).not.toBeNull()

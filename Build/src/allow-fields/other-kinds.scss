@@ -1,6 +1,6 @@
 @use '../platform/contract';
 
-// Only the side that gives fields away lists what other kinds of record could be given. It
+// Only the assign side lists what other kinds of record could be allowed. It
 // stands inside the records' own list, set apart from them by a dashed line alone, and lines
 // up with the body of a record above it.
 .#{contract.$class-other-kinds} {

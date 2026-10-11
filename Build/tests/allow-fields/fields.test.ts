@@ -88,7 +88,7 @@ describe('the fields scope', () => {
     })
   })
 
-  it('takes a field the group was not given off the form once the verdicts land', async () => {
+  it('takes a field the group is not allowed off the form once the verdicts land', async () => {
     const kept = fieldInRow('pages:title')
     const taken = fieldInRow('pages:layout')
     initialise(createJudgement(), listening.signal)
@@ -120,7 +120,7 @@ describe('the fields scope', () => {
     expect(verdicts()).toStrictEqual(['allowed'])
   })
 
-  it('shows the fields the group was not given once the form is turned over', async () => {
+  it('shows the fields the group is not allowed once the form is turned over', async () => {
     const taken = fieldInRow('pages:layout')
     initialise(createJudgement(), listening.signal)
     activate()
@@ -227,9 +227,9 @@ describe('the fields scope', () => {
     expect(field.hasAttribute(attributes.outOfReach)).toBe(false)
   })
 
-  // A table only administrators may write is nobody's to be given, so its fields are no more
+  // A table only administrators may write cannot be allowed for a group, so its fields are no more
   // in reach than those of a table the group was refused
-  it('marks the fields of a table nobody can be given as out of reach too', async () => {
+  it('marks the fields of a table no group can be allowed as out of reach too', async () => {
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],
@@ -279,7 +279,7 @@ describe('the fields scope', () => {
     })
   })
 
-  it('brings the fields of a granted table back into reach', async () => {
+  it('brings the fields of an allowed table back into reach', async () => {
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],
@@ -338,7 +338,7 @@ describe('the fields scope', () => {
     })
   })
 
-  it('says on a field that a subgroup gives it', () => {
+  it('says on a field that a subgroup allows it', () => {
     TYPO3.lang = { 'platform.from': 'from a subgroup' }
     const field = fieldInRow('pages:title')
     initialise(createJudgement(), listening.signal)

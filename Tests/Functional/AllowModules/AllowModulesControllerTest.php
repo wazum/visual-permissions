@@ -41,7 +41,7 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function refusesToGrantWhatCannotBeGranted(): void
+    public function refusesToAllowWhatCannotBeAllowed(): void
     {
         $response = $this->get(AllowModulesController::class)->write($this->asked([
             'group' => 10,
@@ -58,7 +58,7 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function takesAwayWhatCanNoLongerBeGranted(): void
+    public function disallowsWhatCanNoLongerBeAllowed(): void
     {
         $response = $this->get(AllowModulesController::class)->write($this->asked([
             'group' => 10,

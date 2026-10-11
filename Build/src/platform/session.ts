@@ -9,7 +9,7 @@ export interface SessionState {
   readonly area: string
   // What the admin picked, not what a module may have no column for; only this is written down
   readonly picked: string
-  // An area opens showing what the group has; the other side is where it is given
+  // An area opens showing what the group has; the other side is where it is allowed
   readonly face: 'preview' | 'pick'
 }
 

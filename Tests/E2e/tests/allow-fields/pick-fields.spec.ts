@@ -2,12 +2,12 @@ import { expect, test } from '../../fixtures/test.js'
 import { pickArea } from '../../fixtures/areas.js'
 import { cursorOver } from '../../fixtures/buttons.js'
 import { selectorFor } from '../../fixtures/compatibility.js'
-import { giveMarkedFieldsAway, openFirstPage, turnToFields } from '../../fixtures/record-form.js'
+import { allowMarkedFields, openFirstPage, turnToFields } from '../../fixtures/record-form.js'
 import { pickFirstGroup } from '../../fixtures/groups.js'
 import { forgetSession } from '../../fixtures/session.js'
 import { openControls, switchOn } from '../../fixtures/visual-mode.js'
 
-const givable = ".vperm-anchor[data-vperm-verdict='denied']"
+const allowable = ".vperm-anchor[data-vperm-verdict='denied']"
 const nobodys = ".vperm-anchor[data-vperm-verdict='notApplicable']"
 const marked = '.vperm-face-marked'
 
@@ -16,7 +16,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 // The field itself is the switch, and a second press takes the mark back off it
-test('a field is pressed to give it away, and pressed again to take it back', async ({ page }) => {
+test('a field is pressed once to mark it and again to unmark it', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -28,7 +28,7 @@ test('a field is pressed to give it away, and pressed again to take it back', as
   await pickArea(page, 'fields')
   await turnToFields(page)
 
-  const row = form.locator(givable).first()
+  const row = form.locator(allowable).first()
 
   await expect(row).toBeVisible()
   await expect(row).toHaveCSS('cursor', 'pointer')
@@ -42,7 +42,7 @@ test('a field is pressed to give it away, and pressed again to take it back', as
   await expect(form.locator(marked)).toHaveCount(0)
 })
 
-// Nothing is marked yet, so there is nothing to give, and the button says so under the pointer
+// Nothing is marked yet, so there is nothing to allow, and the button says so under the pointer
 test('the deed that cannot be done yet shows it under the pointer', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
@@ -97,7 +97,7 @@ test('the next record opens on what the group has', async ({ page }) => {
 })
 
 // Giving a field away shows up where it counts: the group's own form grows by that row
-test('a field given away turns up on the form the group gets', async ({ page }) => {
+test('a field that was allowed turns up on the form the group gets', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -109,11 +109,11 @@ test('a field given away turns up on the form the group gets', async ({ page }) 
   await pickArea(page, 'fields')
   await turnToFields(page)
 
-  const row = form.locator(givable).first()
+  const row = form.locator(allowable).first()
   const token = await row.getAttribute('data-vperm-token')
 
   await row.click()
-  await giveMarkedFieldsAway(page, form)
+  await allowMarkedFields(page, form)
 
   await expect(
     form.locator(`[data-vperm-token='${token ?? ''}']`),
@@ -121,7 +121,7 @@ test('a field given away turns up on the form the group gets', async ({ page }) 
   ).toBeVisible()
 })
 
-test('every field of its own the tab holds is marked to be given at once', async ({ page }) => {
+test('every field of its own the tab holds is marked to be allowed at once', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -134,17 +134,17 @@ test('every field of its own the tab holds is marked to be given at once', async
   await turnToFields(page)
 
   const tab = form.locator('.tab-pane.active')
-  const own = tab.locator(`${givable}[data-vperm-inside='']`)
+  const own = tab.locator(`${allowable}[data-vperm-inside='']`)
 
   await expect(own.first()).toBeVisible()
-  const givableCount = await own.count()
+  const allowableCount = await own.count()
 
   await tab.getByRole('button', { name: 'Allow all on this tab' }).click()
 
-  await expect(tab.locator(`.vperm-anchor[data-vperm-inside='']${marked}`)).toHaveCount(givableCount)
+  await expect(tab.locator(`.vperm-anchor[data-vperm-inside='']${marked}`)).toHaveCount(allowableCount)
 })
 
-test('a row nobody can be given says nothing and takes no mark', async ({ page }) => {
+test('a row that cannot be allowed for a group says nothing and takes no mark', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)

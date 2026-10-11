@@ -47,7 +47,7 @@ const fieldOf = (token: string): HTMLElement => {
   return field
 }
 
-describe('the foot under the fields a group is given', () => {
+describe('the foot under the fields a group is allowed', () => {
   let listening: AbortController
   let draft: Draft
 
@@ -154,7 +154,7 @@ describe('the foot under the fields a group is given', () => {
     expect(document.querySelectorAll(`.${classes.faceFoot}`)).toHaveLength(1)
   })
 
-  it('offers nothing to take away until a field is marked', () => {
+  it('offers nothing to disallow until a field is marked', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:header', 'allowed'))
 
@@ -275,7 +275,7 @@ describe('the foot under the fields a group is given', () => {
     expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent).toBe('')
   })
 
-  it('says how many marked fields are waiting to be given', () => {
+  it('says how many marked fields are waiting to be allowed', () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'), row('tt_content:bodytext', 'denied'))
@@ -330,7 +330,7 @@ describe('the foot under the fields a group is given', () => {
     expect(document.body.getAttribute(attributes.face)).toBe('preview')
   })
 
-  it('gives the marked fields to the group the form was picked for', async () => {
+  it('allows the marked fields for the group the form was picked for', async () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'), row('tt_content:bodytext', 'denied'))
@@ -400,7 +400,7 @@ describe('the foot under the fields a group is given', () => {
     expect(document.querySelector(`.${classes.faceCounted}`)?.textContent).toBe(labels['platform.refused'])
   })
 
-  it('offers to take away what is marked on the side that shows what the group has', () => {
+  it('offers to disallow what is marked on the side that shows what the group has', () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:header', 'allowed'))
@@ -428,7 +428,7 @@ describe('the foot under the fields a group is given', () => {
       .toBe('2 fields waiting to be disallowed')
   })
 
-  it('leaves the form standing on that side when a field is taken away', async () => {
+  it('leaves the form standing on that side when a field is disallowed', async () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:header', 'allowed'))
@@ -444,7 +444,7 @@ describe('the foot under the fields a group is given', () => {
     expect(document.body.getAttribute(attributes.face)).toBe('preview')
   })
 
-  it('leaves the form standing when taking a field back is cancelled', () => {
+  it('leaves the form standing when disallowing a field is cancelled', () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:header', 'allowed'))
@@ -492,7 +492,7 @@ describe('the foot under the fields a group is given', () => {
     })
   })
 
-  it('gives away the marked row\'s own field and none of the record it holds', async () => {
+  it('allows the marked row\'s own field and none of the record it holds', async () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(around(row('sys_file_reference:title', 'denied'), 'tt_content:assets', 'denied'))
@@ -599,7 +599,7 @@ describe('the foot under the fields a group is given', () => {
     expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent).toBe('1 field waiting to be allowed')
   })
 
-  it('gives the marked fields to the group picked since the form was drawn', async () => {
+  it('allows the marked fields for the group picked since the form was drawn', async () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'))
@@ -740,7 +740,7 @@ describe('the foot under the fields a group is given', () => {
     expect(told).toBe(0)
   })
 
-  it('offers nothing to give away until a field is marked', () => {
+  it('offers nothing to allow until a field is marked', () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'))

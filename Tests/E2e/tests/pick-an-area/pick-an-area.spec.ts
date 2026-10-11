@@ -22,7 +22,7 @@ test('a reload keeps the area that was picked', async ({ page }) => {
   await expect(page.getByRole('tab', { name: 'File mounts' })).toHaveAttribute('aria-selected', 'true')
 })
 
-test('every framed area carries a tab that names what it grants', async ({ page }) => {
+test('every framed area carries a tab that names what it allows', async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 900 })
   await page.goto('/typo3/module/web/layout')
   await showTree(page)

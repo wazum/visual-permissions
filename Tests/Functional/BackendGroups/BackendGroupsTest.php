@@ -138,7 +138,7 @@ final class BackendGroupsTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function grantsAndTakesBackInOneWrite(): void
+    public function addsAndRemovesInOneWrite(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_tables.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
@@ -153,7 +153,7 @@ final class BackendGroupsTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function grantsWhatTheGroupHasOnlyOnce(): void
+    public function addsWhatTheGroupHasOnlyOnce(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_tables.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
