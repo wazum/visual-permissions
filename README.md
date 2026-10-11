@@ -51,19 +51,19 @@ records of this table.
 
 | What the group has | What you give the group |
 |---|---|
-| ![The record form as the group sees it](Documentation/Images/record-form-preview.png) | ![Two fields marked to add on the back of the record form](Documentation/Images/record-form-assign.png) |
+| ![The record form as the group sees it](Documentation/Images/record-form-preview.png) | ![Two fields marked to allow on the back of the record form](Documentation/Images/record-form-assign.png) |
 
 **Modules, page mounts and file mounts.** The module menu, the page tree and the folder tree
 show what the group has, and you mark more on the same tree.
 
 | Modules | Page mounts | File mounts |
 |---|---|---|
-| ![The module menu with the modules the group can open](Documentation/Images/modules.png) | ![Two pages marked to add as mounts in the page tree](Documentation/Images/page-mounts.png) | ![The folders the group may work in, and the button to choose its file operations](Documentation/Images/file-mounts.png) |
+| ![The module menu with one more module marked to allow](Documentation/Images/modules.png) | ![Two pages marked to add as mounts in the page tree](Documentation/Images/page-mounts.png) | ![The folders the group may work in, and the button to choose its file operations](Documentation/Images/file-mounts.png) |
 
 **File operations.** What the group may do with files and folders holds for every file mount,
 so it is chosen once, in a dialog opened from the foot of the File mounts panel.
 
-![The file operations of a group, two of them ticked and waiting to be added](Documentation/Images/file-operations.png)
+![The file operations of a group, two of them ticked and waiting to be allowed](Documentation/Images/file-operations.png)
 
 **Other permissions.** The rest of the group record, next to the screen you are on.
 
