@@ -87,10 +87,10 @@ describe('the type switch', () => {
       .toStrictEqual(['text', 'textmedia'])
   })
 
-  it('offers the plugin beside the type, as 13.4 switches the form by that field too', () => {
+  it('offers every other field that switches the form beside the type', () => {
     const doc = formAt(editUrl)
-    switchIn(doc, 'Type', 'data[tt_content][1][CType]', ['text', 'list'])
-    switchIn(doc, 'Plugin', 'data[tt_content][1][list_type]', ['', 'news_pi1'])
+    switchIn(doc, 'Type', 'data[tt_content][1][CType]', ['text', 'textmedia'])
+    switchIn(doc, 'Variant', 'data[tt_content][1][tx_variant]', ['plain', 'boxed'])
     initialise(listening.signal, vi.fn())
     activate()
     pickArea('fields')
@@ -98,7 +98,7 @@ describe('the type switch', () => {
     formReady({ doc, fields: [] })
 
     expect(headerSwitches(doc).map(control => control.querySelector('select')?.getAttribute('aria-label')))
-      .toStrictEqual(['Type', 'Plugin'])
+      .toStrictEqual(['Type', 'Variant'])
   })
 
   it('leaves the type of a record shown inside the form out of the header', () => {
