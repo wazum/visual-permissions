@@ -27,25 +27,29 @@
                 <source>The permissions were not saved</source>
                 <target>Die Berechtigungen wurden nicht gespeichert</target>
             </trans-unit>
-            <trans-unit id="grantFields.givenBy" resname="grantFields.givenBy" approved="yes">
-                <source>Given by</source>
-                <target>Gegeben von</target>
+            <trans-unit id="grantFields.allowTab" resname="grantFields.allowTab" approved="yes">
+                <source>Allow all on this tab</source>
+                <target>Alle auf diesem Reiter erlauben</target>
+            </trans-unit>
+            <trans-unit id="grantFields.allowedBy" resname="grantFields.allowedBy" approved="yes">
+                <source>Allowed by</source>
+                <target>Erlaubt durch</target>
             </trans-unit>
             <trans-unit id="grantFields.going.many" resname="grantFields.going.many" approved="yes">
-                <source>%s fields waiting to be taken away</source>
+                <source>%s fields waiting to be disallowed</source>
                 <target>%s Felder noch zu entziehen</target>
             </trans-unit>
             <trans-unit id="grantFields.going.one" resname="grantFields.going.one" approved="yes">
-                <source>%s field waiting to be taken away</source>
+                <source>%s field waiting to be disallowed</source>
                 <target>%s Feld noch zu entziehen</target>
             </trans-unit>
-            <trans-unit id="grantFields.grantTab" resname="grantFields.grantTab" approved="yes">
-                <source>Grant all on this tab</source>
-                <target>Alle auf diesem Reiter vergeben</target>
+            <trans-unit id="grantFields.hint.allow" resname="grantFields.hint.allow" approved="yes">
+                <source>Press the field to allow it</source>
+                <target>Das Feld drücken, um es zu erlauben</target>
             </trans-unit>
-            <trans-unit id="grantFields.hint.give" resname="grantFields.hint.give" approved="yes">
-                <source>Press the field to give it</source>
-                <target>Das Feld drücken, um es zu vergeben</target>
+            <trans-unit id="grantFields.hint.disallow" resname="grantFields.hint.disallow" approved="yes">
+                <source>Press the field to disallow it</source>
+                <target>Das Feld drücken, um es zu entziehen</target>
             </trans-unit>
             <trans-unit id="grantFields.hint.keep" resname="grantFields.hint.keep" approved="yes">
                 <source>Press again to keep it</source>
@@ -55,13 +59,9 @@
                 <source>Press again to leave it out</source>
                 <target>Noch einmal drücken, um es wegzulassen</target>
             </trans-unit>
-            <trans-unit id="grantFields.hint.take" resname="grantFields.hint.take" approved="yes">
-                <source>Press the field to take it away</source>
-                <target>Das Feld drücken, um es wegzunehmen</target>
-            </trans-unit>
             <trans-unit id="grantFields.mark.adminOnly.meaning" resname="grantFields.mark.adminOnly.meaning" approved="yes">
-                <source>Only administrators see this field. A group cannot be given it.</source>
-                <target>Nur Administratoren sehen dieses Feld. Eine Gruppe kann es nicht bekommen.</target>
+                <source>Only administrators see this field. It cannot be allowed for a group.</source>
+                <target>Nur Administratoren sehen dieses Feld. Es kann keiner Gruppe erlaubt werden.</target>
             </trans-unit>
             <trans-unit id="grantFields.mark.adminOnly.title" resname="grantFields.mark.adminOnly.title" approved="yes">
                 <source>Administrators only</source>
@@ -76,8 +76,8 @@
                 <target>Erlaubt</target>
             </trans-unit>
             <trans-unit id="grantFields.mark.allowedAndInherited.meaning" resname="grantFields.mark.allowedAndInherited.meaning" approved="yes">
-                <source>The group may edit this field itself, and a subgroup gives it too. Removing it here leaves the subgroup's grant.</source>
-                <target>Die Gruppe darf dieses Feld selbst bearbeiten, und eine Untergruppe gibt es ihr auch. Wird es hier entfernt, bleibt die Berechtigung der Untergruppe.</target>
+                <source>The group may edit this field itself, and a subgroup allows it too. Disallowing it here keeps it allowed through the subgroup.</source>
+                <target>Die Gruppe darf dieses Feld selbst bearbeiten, und eine Untergruppe erlaubt es auch. Wird es hier entzogen, bleibt es über die Untergruppe erlaubt.</target>
             </trans-unit>
             <trans-unit id="grantFields.mark.allowedAndInherited.title" resname="grantFields.mark.allowedAndInherited.title" approved="yes">
                 <source>Allowed, and inherited</source>
@@ -139,32 +139,32 @@
                 <source>The group may edit %1$s of %2$s field</source>
                 <target>Die Gruppe darf %1$s von %2$s Feld bearbeiten</target>
             </trans-unit>
-            <trans-unit id="grantFields.toTakeAway" resname="grantFields.toTakeAway" approved="yes">
-                <source>to take away</source>
+            <trans-unit id="grantFields.toDisallow" resname="grantFields.toDisallow" approved="yes">
+                <source>to disallow</source>
                 <target>zu entziehen</target>
             </trans-unit>
             <trans-unit id="grantFields.waiting.many" resname="grantFields.waiting.many" approved="yes">
-                <source>%s fields waiting to be added</source>
-                <target>%s Felder noch hinzuzufügen</target>
+                <source>%s fields waiting to be allowed</source>
+                <target>%s Felder noch zu erlauben</target>
             </trans-unit>
             <trans-unit id="grantFields.waiting.one" resname="grantFields.waiting.one" approved="yes">
-                <source>%s field waiting to be added</source>
-                <target>%s Feld noch hinzuzufügen</target>
+                <source>%s field waiting to be allowed</source>
+                <target>%s Feld noch zu erlauben</target>
             </trans-unit>
-            <trans-unit id="grantModules.add" resname="grantModules.add" approved="yes">
-                <source>Add modules</source>
-                <target>Module hinzufügen</target>
+            <trans-unit id="grantModules.allow" resname="grantModules.allow" approved="yes">
+                <source>Allow modules</source>
+                <target>Module erlauben</target>
             </trans-unit>
             <trans-unit id="grantModules.hint" resname="grantModules.hint" approved="yes">
-                <source>or click a module to remove it</source>
-                <target>oder ein Modul anklicken, um es zu entfernen</target>
+                <source>or click a module to disallow it</source>
+                <target>oder ein Modul anklicken, um es zu entziehen</target>
             </trans-unit>
             <trans-unit id="grantModules.marked.many" resname="grantModules.marked.many" approved="yes">
-                <source>%1$s of %2$s modules waiting to be taken away</source>
+                <source>%1$s of %2$s modules waiting to be disallowed</source>
                 <target>%1$s von %2$s Modulen noch zu entziehen</target>
             </trans-unit>
             <trans-unit id="grantModules.marked.one" resname="grantModules.marked.one" approved="yes">
-                <source>%1$s of %2$s module waiting to be taken away</source>
+                <source>%1$s of %2$s module waiting to be disallowed</source>
                 <target>%1$s von %2$s Modul noch zu entziehen</target>
             </trans-unit>
             <trans-unit id="grantModules.pickFor" resname="grantModules.pickFor" approved="yes">
@@ -176,24 +176,28 @@
                 <target>Die Module, die die Gruppe „%s“ öffnen darf</target>
             </trans-unit>
             <trans-unit id="grantModules.tally.many" resname="grantModules.tally.many" approved="yes">
-                <source>%1$s of %2$s modules granted</source>
-                <target>%1$s von %2$s Modulen erteilt</target>
+                <source>%1$s of %2$s modules allowed</source>
+                <target>%1$s von %2$s Modulen erlaubt</target>
             </trans-unit>
             <trans-unit id="grantModules.tally.one" resname="grantModules.tally.one" approved="yes">
-                <source>%1$s of %2$s module granted</source>
-                <target>%1$s von %2$s Modul erteilt</target>
+                <source>%1$s of %2$s module allowed</source>
+                <target>%1$s von %2$s Modul erlaubt</target>
             </trans-unit>
             <trans-unit id="grantTables.adminOnly" resname="grantTables.adminOnly" approved="yes">
                 <source>Only administrators may edit records of this kind</source>
                 <target>Nur Administratoren dürfen Datensätze dieser Art bearbeiten</target>
             </trans-unit>
-            <trans-unit id="grantTables.alsoHandedDown" resname="grantTables.alsoHandedDown" approved="yes">
-                <source>Given by this group and through a subgroup. Change it on that subgroup.</source>
-                <target>Von dieser Gruppe und über eine Untergruppe vergeben. Dort zu ändern.</target>
+            <trans-unit id="grantTables.allow" resname="grantTables.allow" approved="yes">
+                <source>Allow "%s"</source>
+                <target>„%s“ erlauben</target>
             </trans-unit>
-            <trans-unit id="grantTables.give" resname="grantTables.give" approved="yes">
-                <source>Grant "%s"</source>
-                <target>„%s“ erteilen</target>
+            <trans-unit id="grantTables.alsoHandedDown" resname="grantTables.alsoHandedDown" approved="yes">
+                <source>Allowed by this group and through a subgroup. Change it on that subgroup.</source>
+                <target>Von dieser Gruppe und über eine Untergruppe erlaubt. Dort zu ändern.</target>
+            </trans-unit>
+            <trans-unit id="grantTables.disallow" resname="grantTables.disallow" approved="yes">
+                <source>Disallow "%s"</source>
+                <target>„%s“ entziehen</target>
             </trans-unit>
             <trans-unit id="grantTables.gone" resname="grantTables.gone" approved="yes">
                 <source>This is empty for the group: it may not edit "%s"</source>
@@ -207,13 +211,17 @@
                 <source>The group may not edit records of this kind</source>
                 <target>Die Gruppe darf keine Datensätze dieser Art bearbeiten</target>
             </trans-unit>
-            <trans-unit id="grantTables.take" resname="grantTables.take" approved="yes">
-                <source>Revoke "%s"</source>
-                <target>„%s“ entziehen</target>
-            </trans-unit>
             <trans-unit id="grantTables.theirs" resname="grantTables.theirs" approved="yes">
                 <source>The group may edit records of this kind</source>
                 <target>Die Gruppe darf Datensätze dieser Art bearbeiten</target>
+            </trans-unit>
+            <trans-unit id="mountBranches.doAdd" resname="mountBranches.doAdd" approved="yes">
+                <source>Add</source>
+                <target>Hinzufügen</target>
+            </trans-unit>
+            <trans-unit id="mountBranches.doRemove" resname="mountBranches.doRemove" approved="yes">
+                <source>Remove</source>
+                <target>Entfernen</target>
             </trans-unit>
             <trans-unit id="mountBranches.folders.add" resname="mountBranches.folders.add" approved="yes">
                 <source>Add file mounts</source>
@@ -228,12 +236,12 @@
                 <target>oder ein Verzeichnis anklicken, um es zu entfernen</target>
             </trans-unit>
             <trans-unit id="mountBranches.folders.marked.many" resname="mountBranches.folders.marked.many" approved="yes">
-                <source>%1$s of %2$s folders waiting to be taken away</source>
-                <target>%1$s von %2$s Verzeichnissen noch zu entziehen</target>
+                <source>%1$s of %2$s folders waiting to be removed</source>
+                <target>%1$s von %2$s Verzeichnissen noch zu entfernen</target>
             </trans-unit>
             <trans-unit id="mountBranches.folders.marked.one" resname="mountBranches.folders.marked.one" approved="yes">
-                <source>%1$s of %2$s folder waiting to be taken away</source>
-                <target>%1$s von %2$s Verzeichnis noch zu entziehen</target>
+                <source>%1$s of %2$s folder waiting to be removed</source>
+                <target>%1$s von %2$s Verzeichnis noch zu entfernen</target>
             </trans-unit>
             <trans-unit id="mountBranches.folders.name" resname="mountBranches.folders.name" approved="yes">
                 <source>Name</source>
@@ -272,12 +280,12 @@
                 <target>oder einen Bereich anklicken, um ihn zu entfernen</target>
             </trans-unit>
             <trans-unit id="mountBranches.pages.marked.many" resname="mountBranches.pages.marked.many" approved="yes">
-                <source>%1$s of %2$s branches waiting to be taken away</source>
-                <target>%1$s von %2$s Bereichen noch zu entziehen</target>
+                <source>%1$s of %2$s branches waiting to be removed</source>
+                <target>%1$s von %2$s Bereichen noch zu entfernen</target>
             </trans-unit>
             <trans-unit id="mountBranches.pages.marked.one" resname="mountBranches.pages.marked.one" approved="yes">
-                <source>%1$s of %2$s branch waiting to be taken away</source>
-                <target>%1$s von %2$s Bereich noch zu entziehen</target>
+                <source>%1$s of %2$s branch waiting to be removed</source>
+                <target>%1$s von %2$s Bereich noch zu entfernen</target>
             </trans-unit>
             <trans-unit id="mountBranches.pages.pickFor" resname="mountBranches.pages.pickFor" approved="yes">
                 <source>Pick the branches the group "%s" may work in</source>
@@ -314,6 +322,14 @@
             <trans-unit id="mountBranches.pages.unseenWhy" resname="mountBranches.pages.unseenWhy" approved="yes">
                 <source>their page permissions show them to nobody in the group.</source>
                 <target>ihre Seitenberechtigungen zeigen sie niemandem in der Gruppe.</target>
+            </trans-unit>
+            <trans-unit id="mountBranches.toAdd" resname="mountBranches.toAdd" approved="yes">
+                <source>to add</source>
+                <target>hinzuzufügen</target>
+            </trans-unit>
+            <trans-unit id="mountBranches.waiting" resname="mountBranches.waiting" approved="yes">
+                <source>%s waiting to be added</source>
+                <target>%s noch hinzuzufügen</target>
             </trans-unit>
             <trans-unit id="pickAGroup.all" resname="pickAGroup.all" approved="yes">
                 <source>All groups</source>
@@ -395,17 +411,17 @@
                 <source>Cancel</source>
                 <target>Abbrechen</target>
             </trans-unit>
-            <trans-unit id="platform.doAdd" resname="platform.doAdd" approved="yes">
-                <source>Add</source>
-                <target>Hinzufügen</target>
+            <trans-unit id="platform.doAllow" resname="platform.doAllow" approved="yes">
+                <source>Allow</source>
+                <target>Erlauben</target>
             </trans-unit>
             <trans-unit id="platform.doApply" resname="platform.doApply" approved="yes">
                 <source>Apply</source>
                 <target>Anwenden</target>
             </trans-unit>
-            <trans-unit id="platform.doRemove" resname="platform.doRemove" approved="yes">
-                <source>Remove</source>
-                <target>Entfernen</target>
+            <trans-unit id="platform.doDisallow" resname="platform.doDisallow" approved="yes">
+                <source>Disallow</source>
+                <target>Entziehen</target>
             </trans-unit>
             <trans-unit id="platform.failed" resname="platform.failed" approved="yes">
                 <source>The change could not be sent. It is still waiting here.</source>
@@ -416,7 +432,7 @@
                 <target>geerbt</target>
             </trans-unit>
             <trans-unit id="platform.going" resname="platform.going" approved="yes">
-                <source>%s waiting to be taken away</source>
+                <source>%s waiting to be disallowed</source>
                 <target>%s noch zu entziehen</target>
             </trans-unit>
             <trans-unit id="platform.loggedOut" resname="platform.loggedOut" approved="yes">
@@ -460,20 +476,20 @@
                 <target>Vorschau</target>
             </trans-unit>
             <trans-unit id="platform.refused" resname="platform.refused" approved="yes">
-                <source>The backend did not take the change. It is still waiting here.</source>
-                <target>Das Backend hat die Änderung nicht übernommen. Sie wartet weiterhin hier.</target>
+                <source>The change could not be saved. It is still waiting here.</source>
+                <target>Die Änderung konnte nicht gespeichert werden. Sie wartet weiterhin hier.</target>
             </trans-unit>
             <trans-unit id="platform.shortcut.modifiers" resname="platform.shortcut.modifiers" approved="yes">
                 <source>Ctrl+Shift</source>
                 <target>Strg+Umschalt</target>
             </trans-unit>
-            <trans-unit id="platform.toAdd" resname="platform.toAdd" approved="yes">
-                <source>to add</source>
-                <target>hinzuzufügen</target>
+            <trans-unit id="platform.toAllow" resname="platform.toAllow" approved="yes">
+                <source>to allow</source>
+                <target>zu erlauben</target>
             </trans-unit>
             <trans-unit id="platform.waiting" resname="platform.waiting" approved="yes">
-                <source>%s waiting to be added</source>
-                <target>%s noch hinzuzufügen</target>
+                <source>%s waiting to be allowed</source>
+                <target>%s noch zu erlauben</target>
             </trans-unit>
             <trans-unit id="readOnly.previewNewContent" resname="readOnly.previewNewContent" approved="yes">
                 <source>Preview new content</source>

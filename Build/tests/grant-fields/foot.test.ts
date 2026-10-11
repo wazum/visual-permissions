@@ -27,14 +27,14 @@ const outOfReach = (markup: string): string =>
 const labels = {
   'grantFields.tally.one': 'The group may edit %1$s of %2$s field',
   'grantFields.tally.many': 'The group may edit %1$s of %2$s fields',
-  'grantFields.waiting.one': '%s field waiting to be added',
-  'grantFields.waiting.many': '%s fields waiting to be added',
-  'grantFields.going.one': '%s field waiting to be taken away',
-  'grantFields.going.many': '%s fields waiting to be taken away',
+  'grantFields.waiting.one': '%s field waiting to be allowed',
+  'grantFields.waiting.many': '%s fields waiting to be allowed',
+  'grantFields.going.one': '%s field waiting to be disallowed',
+  'grantFields.going.many': '%s fields waiting to be disallowed',
   'platform.cancel': 'Cancel',
-  'platform.doAdd': 'Add',
-  'platform.doRemove': 'Remove',
-  'platform.refused': 'The backend did not take the change. It is still waiting here.',
+  'platform.doAllow': 'Allow',
+  'platform.doDisallow': 'Disallow',
+  'platform.refused': 'The change could not be saved. It is still waiting here.',
   'platform.loggedOut': 'Your login has run out. The change was not saved and is still waiting here.',
 }
 
@@ -251,7 +251,7 @@ describe('the foot under the fields a group is given', () => {
 
     pickFieldsToGive()
 
-    expect(document.querySelector(`.${classes.faceApply}`)?.textContent).toBe(labels['platform.doAdd'])
+    expect(document.querySelector(`.${classes.faceApply}`)?.textContent).toBe(labels['platform.doAllow'])
     expect(document.querySelector(`.${classes.faceCancel}`)?.textContent).toBe(labels['platform.cancel'])
   })
 
@@ -284,7 +284,7 @@ describe('the foot under the fields a group is given', () => {
 
     fieldOf('tt_content:layout').dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-    expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent).toBe('1 field waiting to be added')
+    expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent).toBe('1 field waiting to be allowed')
   })
 
   it('counts a field marked with the keyboard as well', () => {
@@ -297,7 +297,7 @@ describe('the foot under the fields a group is given', () => {
     fieldOf('tt_content:layout')
       .dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
 
-    expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent).toBe('1 field waiting to be added')
+    expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent).toBe('1 field waiting to be allowed')
   })
 
   it('counts nothing more once the backend page has gone', () => {
@@ -347,7 +347,7 @@ describe('the foot under the fields a group is given', () => {
     }])
   })
 
-  it('counts every field waiting to be added', () => {
+  it('counts every field waiting to be allowed', () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'), row('tt_content:bodytext', 'denied'))
@@ -358,7 +358,7 @@ describe('the foot under the fields a group is given', () => {
     fieldOf('tt_content:bodytext').dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent)
-      .toBe('2 fields waiting to be added')
+      .toBe('2 fields waiting to be allowed')
   })
 
   // The reader has to be able to read what went wrong, and looking at it is a press
@@ -378,7 +378,7 @@ describe('the foot under the fields a group is given', () => {
 
     document.querySelector('.tab-content')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-    expect(said).toBe('The backend did not take the change. It is still waiting here.')
+    expect(said).toBe('The change could not be saved. It is still waiting here.')
     expect(document.querySelector(`.${classes.faceCounted}`)?.textContent).toBe(said)
   })
 
@@ -410,10 +410,10 @@ describe('the foot under the fields a group is given', () => {
 
     fieldOf('tt_content:header').dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-    expect(document.querySelector(`.${classes.faceApply}`)?.textContent).toBe('Remove')
+    expect(document.querySelector(`.${classes.faceApply}`)?.textContent).toBe('Disallow')
   })
 
-  it('counts the fields waiting to be taken away', () => {
+  it('counts the fields waiting to be disallowed', () => {
     initialise(draft, listening.signal)
     pickFields(draft, listening.signal)
     drawForm(row('tt_content:header', 'allowed'), row('tt_content:bodytext', 'allowed'))
@@ -425,7 +425,7 @@ describe('the foot under the fields a group is given', () => {
     fieldOf('tt_content:bodytext').dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent)
-      .toBe('2 fields waiting to be taken away')
+      .toBe('2 fields waiting to be disallowed')
   })
 
   it('leaves the form standing on that side when a field is taken away', async () => {
@@ -596,7 +596,7 @@ describe('the foot under the fields a group is given', () => {
     fieldOf('tt_content:layout').dispatchEvent(new MouseEvent('click', { bubbles: true }))
     emit('fields-judged', {})
 
-    expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent).toBe('1 field waiting to be added')
+    expect(document.querySelector(`.${classes.faceWaiting}`)?.textContent).toBe('1 field waiting to be allowed')
   })
 
   it('gives the marked fields to the group picked since the form was drawn', async () => {

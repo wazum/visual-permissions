@@ -188,7 +188,7 @@ test('an inherited field names the groups that give it, and shows one of them', 
   await form.locator('[data-vperm-token="pages:nav_title"]').getByRole('button', { name: 'Inherited' }).press('Enter')
   const card = form.getByRole('dialog', { name: 'Inherited' })
 
-  await expect(card.getByRole('heading', { name: 'Given by' })).toBeVisible()
+  await expect(card.getByRole('heading', { name: 'Allowed by' })).toBeVisible()
   await expect(card.getByRole('listitem')).toContainText(['Consectetur', 'Aliquam'])
   await expect(card.getByRole('button', { name: 'Show group "Aliquam"' })).toHaveText('Show group')
   await expect(card.getByRole('button', { name: 'Show group "Consectetur"' })).toBeFocused()
@@ -269,7 +269,7 @@ test('the card of a field the group holds says what pressing the field does', as
 
   const field = form.locator('[data-vperm-verdict="allowed"][role="switch"]').filter({ visible: true }).first()
   await field.locator('.vperm-mark').press('Enter')
-  await expect(card).toContainText('Press the field to take it away')
+  await expect(card).toContainText('Press the field to disallow it')
   await page.keyboard.press('Escape')
 
   await field.click({ position: { x: 16, y: 16 } })
@@ -291,7 +291,7 @@ test('the card of a field the group can be given says what pressing the field do
   const card = form.getByRole('dialog')
   const field = form.locator('[data-vperm-verdict="denied"][role="switch"]').filter({ visible: true }).first()
   await field.locator('.vperm-mark').press('Enter')
-  await expect(card).toContainText('Press the field to give it')
+  await expect(card).toContainText('Press the field to allow it')
   await page.keyboard.press('Escape')
 
   await field.click({ position: { x: 16, y: 16 } })

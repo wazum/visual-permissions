@@ -21,20 +21,23 @@
             <trans-unit id="editOtherPermissions.notSaved" resname="editOtherPermissions.notSaved">
                 <source>The permissions were not saved</source>
             </trans-unit>
-            <trans-unit id="grantFields.givenBy" resname="grantFields.givenBy">
-                <source>Given by</source>
+            <trans-unit id="grantFields.allowTab" resname="grantFields.allowTab">
+                <source>Allow all on this tab</source>
+            </trans-unit>
+            <trans-unit id="grantFields.allowedBy" resname="grantFields.allowedBy">
+                <source>Allowed by</source>
             </trans-unit>
             <trans-unit id="grantFields.going.many" resname="grantFields.going.many">
-                <source>%s fields waiting to be taken away</source>
+                <source>%s fields waiting to be disallowed</source>
             </trans-unit>
             <trans-unit id="grantFields.going.one" resname="grantFields.going.one">
-                <source>%s field waiting to be taken away</source>
+                <source>%s field waiting to be disallowed</source>
             </trans-unit>
-            <trans-unit id="grantFields.grantTab" resname="grantFields.grantTab">
-                <source>Grant all on this tab</source>
+            <trans-unit id="grantFields.hint.allow" resname="grantFields.hint.allow">
+                <source>Press the field to allow it</source>
             </trans-unit>
-            <trans-unit id="grantFields.hint.give" resname="grantFields.hint.give">
-                <source>Press the field to give it</source>
+            <trans-unit id="grantFields.hint.disallow" resname="grantFields.hint.disallow">
+                <source>Press the field to disallow it</source>
             </trans-unit>
             <trans-unit id="grantFields.hint.keep" resname="grantFields.hint.keep">
                 <source>Press again to keep it</source>
@@ -42,11 +45,8 @@
             <trans-unit id="grantFields.hint.leave" resname="grantFields.hint.leave">
                 <source>Press again to leave it out</source>
             </trans-unit>
-            <trans-unit id="grantFields.hint.take" resname="grantFields.hint.take">
-                <source>Press the field to take it away</source>
-            </trans-unit>
             <trans-unit id="grantFields.mark.adminOnly.meaning" resname="grantFields.mark.adminOnly.meaning">
-                <source>Only administrators see this field. A group cannot be given it.</source>
+                <source>Only administrators see this field. It cannot be allowed for a group.</source>
             </trans-unit>
             <trans-unit id="grantFields.mark.adminOnly.title" resname="grantFields.mark.adminOnly.title">
                 <source>Administrators only</source>
@@ -58,7 +58,7 @@
                 <source>Allowed</source>
             </trans-unit>
             <trans-unit id="grantFields.mark.allowedAndInherited.meaning" resname="grantFields.mark.allowedAndInherited.meaning">
-                <source>The group may edit this field itself, and a subgroup gives it too. Removing it here leaves the subgroup's grant.</source>
+                <source>The group may edit this field itself, and a subgroup allows it too. Disallowing it here keeps it allowed through the subgroup.</source>
             </trans-unit>
             <trans-unit id="grantFields.mark.allowedAndInherited.title" resname="grantFields.mark.allowedAndInherited.title">
                 <source>Allowed, and inherited</source>
@@ -105,26 +105,26 @@
             <trans-unit id="grantFields.tally.one" resname="grantFields.tally.one">
                 <source>The group may edit %1$s of %2$s field</source>
             </trans-unit>
-            <trans-unit id="grantFields.toTakeAway" resname="grantFields.toTakeAway">
-                <source>to take away</source>
+            <trans-unit id="grantFields.toDisallow" resname="grantFields.toDisallow">
+                <source>to disallow</source>
             </trans-unit>
             <trans-unit id="grantFields.waiting.many" resname="grantFields.waiting.many">
-                <source>%s fields waiting to be added</source>
+                <source>%s fields waiting to be allowed</source>
             </trans-unit>
             <trans-unit id="grantFields.waiting.one" resname="grantFields.waiting.one">
-                <source>%s field waiting to be added</source>
+                <source>%s field waiting to be allowed</source>
             </trans-unit>
-            <trans-unit id="grantModules.add" resname="grantModules.add">
-                <source>Add modules</source>
+            <trans-unit id="grantModules.allow" resname="grantModules.allow">
+                <source>Allow modules</source>
             </trans-unit>
             <trans-unit id="grantModules.hint" resname="grantModules.hint">
-                <source>or click a module to remove it</source>
+                <source>or click a module to disallow it</source>
             </trans-unit>
             <trans-unit id="grantModules.marked.many" resname="grantModules.marked.many">
-                <source>%1$s of %2$s modules waiting to be taken away</source>
+                <source>%1$s of %2$s modules waiting to be disallowed</source>
             </trans-unit>
             <trans-unit id="grantModules.marked.one" resname="grantModules.marked.one">
-                <source>%1$s of %2$s module waiting to be taken away</source>
+                <source>%1$s of %2$s module waiting to be disallowed</source>
             </trans-unit>
             <trans-unit id="grantModules.pickFor" resname="grantModules.pickFor">
                 <source>Pick what the group "%s" may open</source>
@@ -133,19 +133,22 @@
                 <source>The modules the group "%s" may open</source>
             </trans-unit>
             <trans-unit id="grantModules.tally.many" resname="grantModules.tally.many">
-                <source>%1$s of %2$s modules granted</source>
+                <source>%1$s of %2$s modules allowed</source>
             </trans-unit>
             <trans-unit id="grantModules.tally.one" resname="grantModules.tally.one">
-                <source>%1$s of %2$s module granted</source>
+                <source>%1$s of %2$s module allowed</source>
             </trans-unit>
             <trans-unit id="grantTables.adminOnly" resname="grantTables.adminOnly">
                 <source>Only administrators may edit records of this kind</source>
             </trans-unit>
-            <trans-unit id="grantTables.alsoHandedDown" resname="grantTables.alsoHandedDown">
-                <source>Given by this group and through a subgroup. Change it on that subgroup.</source>
+            <trans-unit id="grantTables.allow" resname="grantTables.allow">
+                <source>Allow "%s"</source>
             </trans-unit>
-            <trans-unit id="grantTables.give" resname="grantTables.give">
-                <source>Grant "%s"</source>
+            <trans-unit id="grantTables.alsoHandedDown" resname="grantTables.alsoHandedDown">
+                <source>Allowed by this group and through a subgroup. Change it on that subgroup.</source>
+            </trans-unit>
+            <trans-unit id="grantTables.disallow" resname="grantTables.disallow">
+                <source>Disallow "%s"</source>
             </trans-unit>
             <trans-unit id="grantTables.gone" resname="grantTables.gone">
                 <source>This is empty for the group: it may not edit "%s"</source>
@@ -156,11 +159,14 @@
             <trans-unit id="grantTables.missing" resname="grantTables.missing">
                 <source>The group may not edit records of this kind</source>
             </trans-unit>
-            <trans-unit id="grantTables.take" resname="grantTables.take">
-                <source>Revoke "%s"</source>
-            </trans-unit>
             <trans-unit id="grantTables.theirs" resname="grantTables.theirs">
                 <source>The group may edit records of this kind</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.doAdd" resname="mountBranches.doAdd">
+                <source>Add</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.doRemove" resname="mountBranches.doRemove">
+                <source>Remove</source>
             </trans-unit>
             <trans-unit id="mountBranches.folders.add" resname="mountBranches.folders.add">
                 <source>Add file mounts</source>
@@ -172,10 +178,10 @@
                 <source>or click a folder to remove it</source>
             </trans-unit>
             <trans-unit id="mountBranches.folders.marked.many" resname="mountBranches.folders.marked.many">
-                <source>%1$s of %2$s folders waiting to be taken away</source>
+                <source>%1$s of %2$s folders waiting to be removed</source>
             </trans-unit>
             <trans-unit id="mountBranches.folders.marked.one" resname="mountBranches.folders.marked.one">
-                <source>%1$s of %2$s folder waiting to be taken away</source>
+                <source>%1$s of %2$s folder waiting to be removed</source>
             </trans-unit>
             <trans-unit id="mountBranches.folders.name" resname="mountBranches.folders.name">
                 <source>Name</source>
@@ -205,10 +211,10 @@
                 <source>or click a branch to remove it</source>
             </trans-unit>
             <trans-unit id="mountBranches.pages.marked.many" resname="mountBranches.pages.marked.many">
-                <source>%1$s of %2$s branches waiting to be taken away</source>
+                <source>%1$s of %2$s branches waiting to be removed</source>
             </trans-unit>
             <trans-unit id="mountBranches.pages.marked.one" resname="mountBranches.pages.marked.one">
-                <source>%1$s of %2$s branch waiting to be taken away</source>
+                <source>%1$s of %2$s branch waiting to be removed</source>
             </trans-unit>
             <trans-unit id="mountBranches.pages.pickFor" resname="mountBranches.pages.pickFor">
                 <source>Pick the branches the group "%s" may work in</source>
@@ -236,6 +242,12 @@
             </trans-unit>
             <trans-unit id="mountBranches.pages.unseenWhy" resname="mountBranches.pages.unseenWhy">
                 <source>their page permissions show them to nobody in the group.</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.toAdd" resname="mountBranches.toAdd">
+                <source>to add</source>
+            </trans-unit>
+            <trans-unit id="mountBranches.waiting" resname="mountBranches.waiting">
+                <source>%s waiting to be added</source>
             </trans-unit>
             <trans-unit id="pickAGroup.all" resname="pickAGroup.all">
                 <source>All groups</source>
@@ -297,14 +309,14 @@
             <trans-unit id="platform.cancel" resname="platform.cancel">
                 <source>Cancel</source>
             </trans-unit>
-            <trans-unit id="platform.doAdd" resname="platform.doAdd">
-                <source>Add</source>
+            <trans-unit id="platform.doAllow" resname="platform.doAllow">
+                <source>Allow</source>
             </trans-unit>
             <trans-unit id="platform.doApply" resname="platform.doApply">
                 <source>Apply</source>
             </trans-unit>
-            <trans-unit id="platform.doRemove" resname="platform.doRemove">
-                <source>Remove</source>
+            <trans-unit id="platform.doDisallow" resname="platform.doDisallow">
+                <source>Disallow</source>
             </trans-unit>
             <trans-unit id="platform.failed" resname="platform.failed">
                 <source>The change could not be sent. It is still waiting here.</source>
@@ -313,7 +325,7 @@
                 <source>inherited</source>
             </trans-unit>
             <trans-unit id="platform.going" resname="platform.going">
-                <source>%s waiting to be taken away</source>
+                <source>%s waiting to be disallowed</source>
             </trans-unit>
             <trans-unit id="platform.loggedOut" resname="platform.loggedOut">
                 <source>Your login has run out. The change was not saved and is still waiting here.</source>
@@ -346,16 +358,16 @@
                 <source>Preview</source>
             </trans-unit>
             <trans-unit id="platform.refused" resname="platform.refused">
-                <source>The backend did not take the change. It is still waiting here.</source>
+                <source>The change could not be saved. It is still waiting here.</source>
             </trans-unit>
             <trans-unit id="platform.shortcut.modifiers" resname="platform.shortcut.modifiers">
                 <source>Ctrl+Shift</source>
             </trans-unit>
-            <trans-unit id="platform.toAdd" resname="platform.toAdd">
-                <source>to add</source>
+            <trans-unit id="platform.toAllow" resname="platform.toAllow">
+                <source>to allow</source>
             </trans-unit>
             <trans-unit id="platform.waiting" resname="platform.waiting">
-                <source>%s waiting to be added</source>
+                <source>%s waiting to be allowed</source>
             </trans-unit>
             <trans-unit id="readOnly.previewNewContent" resname="readOnly.previewNewContent">
                 <source>Preview new content</source>

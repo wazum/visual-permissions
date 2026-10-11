@@ -12,12 +12,12 @@ import {
 
 const labels = {
   'grantTables.missing': 'The group may not edit records of this kind',
-  'grantTables.give': 'Grant "%s"',
-  'grantTables.take': 'Revoke "%s"',
+  'grantTables.allow': 'Allow "%s"',
+  'grantTables.disallow': 'Disallow "%s"',
   'grantTables.theirs': 'The group may edit records of this kind',
   'grantTables.handedDown': 'Reached through a subgroup, not by this group itself. Change it on that group.',
-  'grantTables.alsoHandedDown': 'Given by this group and through a subgroup. Change it on that subgroup.',
-  'platform.refused': 'The backend did not take the change. It is still waiting here.',
+  'grantTables.alsoHandedDown': 'Allowed by this group and through a subgroup. Change it on that subgroup.',
+  'platform.refused': 'The change could not be saved. It is still waiting here.',
 }
 
 // The server says which field holds which, so the gate needs no box of core's to find them
@@ -276,7 +276,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableTake}`)?.textContent).toBe('Revoke "File Reference"')
+      expect(document.querySelector(`.${classes.tableTake}`)?.textContent).toBe('Disallow "File Reference"')
     })
   })
 
@@ -379,7 +379,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableGive}`)?.textContent).toBe('Grant "File Reference"')
+      expect(document.querySelector(`.${classes.tableGive}`)?.textContent).toBe('Allow "File Reference"')
     })
   })
 
@@ -578,7 +578,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     emit('permissions-written', {})
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableTake}`)?.textContent).toBe('Revoke "File Reference"')
+      expect(document.querySelector(`.${classes.tableTake}`)?.textContent).toBe('Disallow "File Reference"')
     })
 
     expect(gates()).toStrictEqual(['The group may edit records of this kind'])
@@ -764,7 +764,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(gates()).toStrictEqual(['Given by this group and through a subgroup. Change it on that subgroup.'])
+      expect(gates()).toStrictEqual(['Allowed by this group and through a subgroup. Change it on that subgroup.'])
     })
     expect(document.querySelector(`.${classes.tableTake}, .${classes.tableGive}`)).toBeNull()
   })

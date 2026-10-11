@@ -1021,7 +1021,7 @@ const Mn = (e) => e.map((t) => `[${d.verdict}='${t}']:not([${d.outOfReach}])`).j
     // The group has it after the change unless this side is about to take it away
     on: r !== t,
     operable: e.matches(nt(n)),
-    waiting: t ? h(n === "pick" ? "platform.toAdd" : "grantFields.toTakeAway") : ""
+    waiting: t ? h(n === "pick" ? "platform.toAllow" : "grantFields.toDisallow") : ""
   };
 }, mo = (e) => {
   if (e.querySelector(`.${l.fieldName}`) !== null)
@@ -1064,7 +1064,7 @@ function go(e, t) {
     });
   }, i = (s, a, c) => {
     const u = s.createElement("button");
-    return u.type = "button", u.className = `btn btn-default btn-sm ${l.tabGive}`, u.textContent = h("grantFields.grantTab"), u.addEventListener("click", () => {
+    return u.type = "button", u.className = `btn btn-default btn-sm ${l.tabGive}`, u.textContent = h("grantFields.allowTab"), u.addEventListener("click", () => {
       c().forEach((p) => {
         e.toggle(p);
       }), r();
@@ -1129,7 +1129,7 @@ function yo(e, t) {
         ce("preview");
       });
     }, f = _e(m, {
-      label: h(c ? "platform.doAdd" : "platform.doRemove"),
+      label: h(c ? "platform.doAllow" : "platform.doDisallow"),
       cancel: () => {
         e.drop(), g();
       },
@@ -1163,13 +1163,13 @@ const wo = `.${l.anchor}[${d.verdict}]`, ko = 350, Ao = 250, rt = (e) => e.getAt
   if (e.getAttribute("role") !== "switch" || e.getAttribute("aria-disabled") === "true")
     return "";
   const t = e.classList.contains(l.faceMarked);
-  return b().face === "pick" ? h(t ? "grantFields.hint.leave" : "grantFields.hint.give") : h(t ? "grantFields.hint.keep" : "grantFields.hint.take");
+  return b().face === "pick" ? h(t ? "grantFields.hint.leave" : "grantFields.hint.allow") : h(t ? "grantFields.hint.keep" : "grantFields.hint.disallow");
 };
 function Co(e, t) {
   if (t.length === 0)
     return [];
   const n = e.ownerDocument, r = n.createElement("h3");
-  r.textContent = h("grantFields.givenBy");
+  r.textContent = h("grantFields.allowedBy");
   const o = n.createElement("ul");
   o.append(...t.map((s) => {
     const a = n.createElement("span");
@@ -1399,7 +1399,7 @@ function Do(e, t) {
       f(!1), J("permissions-written", {});
     })));
   }, w = _e(a.foot, {
-    label: h("platform.doRemove"),
+    label: h("platform.doDisallow"),
     cancel: () => {
       ze(a.scroll).forEach((A) => {
         A.classList.remove(l.faceMarked);
@@ -1411,7 +1411,7 @@ function Do(e, t) {
   }), S = () => {
     Yt(c.scroll, t, N), N(), f(!1);
   }, _ = _e(c.foot, {
-    label: h("platform.doAdd"),
+    label: h("platform.doAllow"),
     cancel: S,
     apply: () => {
       const A = Jt(c.scroll).filter((P) => z(P) !== it.get(P));
@@ -1422,11 +1422,11 @@ function Do(e, t) {
     w.state.textContent = T.length === 0 ? k : W("grantModules.marked", s.length, T.length, s.length), w.ready(T.length > 0, T.length > 0), _.state.textContent = k, _.waiting.textContent = P.length === 0 ? "" : x(h("platform.waiting"), P.length), _.ready(P.length > 0, !0);
   };
   a.bar.append(
-    Y(e, h("grantModules.add"), "btn btn-default", () => {
+    Y(e, h("grantModules.allow"), "btn btn-default", () => {
       f(!0);
     }),
     O(e, l.faceHint, h("grantModules.hint"))
-  ), c.scroll.style.setProperty("--vperm-queued-note", `"${h("platform.toAdd")}"`), jo(e, a.scroll, i, h("platform.from"), N), Yt(c.scroll, t, N), N(), f(we), ke.start(() => {
+  ), c.scroll.style.setProperty("--vperm-queued-note", `"${h("platform.toAllow")}"`), jo(e, a.scroll, i, h("platform.from"), N), Yt(c.scroll, t, N), N(), f(we), ke.start(() => {
     p.querySelectorAll(`.${l.facePreview} ${De}`).forEach((A) => {
       A.classList.toggle(l.justAdded, ke.isLit(He(A)));
     });
@@ -1547,7 +1547,7 @@ function Kn(e, { groupId: t, table: n, called: r, verdict: o }) {
   if (c.append(u), !s && !a) {
     const p = Y(
       e,
-      x(h(i ? "grantTables.take" : "grantTables.give"), r),
+      x(h(i ? "grantTables.disallow" : "grantTables.allow"), r),
       `btn btn-default btn-sm ${i ? l.tableTake : l.tableGive}`,
       () => {
         p.toggleAttribute("disabled", !0), Ho(t, n, !i).then((m) => {
@@ -1983,7 +1983,7 @@ function hi(e, t, n, { groupId: r, kind: o }) {
   g($e);
   const y = () => {
     const k = W(`${i}.tally`, v.length, v.length);
-    S.state.textContent = D.size === 0 ? k : W(`${i}.marked`, v.length, D.size, v.length), S.ready(D.size > 0, D.size > 0), L.state.textContent = k, L.waiting.textContent = B.size === 0 ? "" : x(h("platform.waiting"), B.size), L.ready(B.size > 0, !0);
+    S.state.textContent = D.size === 0 ? k : W(`${i}.marked`, v.length, D.size, v.length), S.ready(D.size > 0, D.size > 0), L.state.textContent = k, L.waiting.textContent = B.size === 0 ? "" : x(h("mountBranches.waiting"), B.size), L.ready(B.size > 0, !0);
   }, w = (k, T) => {
     if (b().groupId !== r)
       return;
@@ -2003,7 +2003,7 @@ function hi(e, t, n, { groupId: r, kind: o }) {
       q.forEach((se) => k.delete(se)), N(), f(!1), J("permissions-written", {});
     });
   }, S = _e(m.foot, {
-    label: h("platform.doRemove"),
+    label: h("mountBranches.doRemove"),
     cancel: () => {
       D.clear(), at(e), y();
     },
@@ -2029,13 +2029,13 @@ function hi(e, t, n, { groupId: r, kind: o }) {
     }
     w(B, !0);
   }, P = () => li(p.sheet, s("nameWhy")), L = _e(p.foot, {
-    label: h("platform.doAdd"),
+    label: h("mountBranches.doAdd"),
     cancel: () => {
       B.clear(), N(), f(!1), y();
     },
     apply: A
   });
-  if (p.scroll.style.setProperty("--vperm-queued-note", `"${h("platform.toAdd")}"`), m.scroll.style.setProperty("--vperm-inherited-note", `"${h("platform.from")}"`), st.clear(), n.unseen.forEach(({ page: k }) => {
+  if (p.scroll.style.setProperty("--vperm-queued-note", `"${h("mountBranches.toAdd")}"`), m.scroll.style.setProperty("--vperm-inherited-note", `"${h("platform.from")}"`), st.clear(), n.unseen.forEach(({ page: k }) => {
     st.add(String(k));
   }), mi(e, m, n.unseen, i), m.sheet.querySelector(`.${l.faceChoice}`)?.remove(), o.choice !== void 0) {
     const k = e.createElement("div");

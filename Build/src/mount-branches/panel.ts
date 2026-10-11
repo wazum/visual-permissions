@@ -130,7 +130,7 @@ export function paintMounts(
     additions.state.textContent = has
     additions.waiting.textContent = pickedIds.size === 0
       ? ''
-      : said(labelOf('platform.waiting'), pickedIds.size)
+      : said(labelOf('mountBranches.waiting'), pickedIds.size)
     additions.ready(pickedIds.size > 0, true)
   }
 
@@ -178,7 +178,7 @@ export function paintMounts(
   }
 
   const removals = footIn(preview.foot, {
-    label: labelOf('platform.doRemove'),
+    label: labelOf('mountBranches.doRemove'),
     cancel: () => {
       markedIds.clear()
       repaintBranches(doc)
@@ -231,7 +231,7 @@ export function paintMounts(
   const validateNames = (): boolean => validateFolderNames(pick.sheet, own('nameWhy'))
 
   const additions = footIn(pick.foot, {
-    label: labelOf('platform.doAdd'),
+    label: labelOf('mountBranches.doAdd'),
     cancel: () => {
       pickedIds.clear()
       closeNaming()
@@ -241,7 +241,7 @@ export function paintMounts(
     apply: addPicked,
   })
 
-  pick.scroll.style.setProperty('--vperm-queued-note', `"${labelOf('platform.toAdd')}"`)
+  pick.scroll.style.setProperty('--vperm-queued-note', `"${labelOf('mountBranches.toAdd')}"`)
   preview.scroll.style.setProperty('--vperm-inherited-note', `"${labelOf('platform.from')}"`)
 
   unseenIds.clear()

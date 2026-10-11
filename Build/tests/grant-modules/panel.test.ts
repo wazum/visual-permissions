@@ -69,21 +69,21 @@ const carrier = (): void => {
   TYPO3.lang = {
     'platform.preview': 'Preview',
     'grantModules.previewFor': 'What %s may open',
-    'grantModules.add': 'Add modules',
+    'grantModules.allow': 'Allow modules',
     'grantModules.hint': 'or click a module to remove it',
     'platform.pick': 'Assign',
     'grantModules.pickFor': 'Pick what %s may open',
-    'grantModules.tally.one': '%1$s of %2$s module granted',
-    'grantModules.tally.many': '%1$s of %2$s modules granted',
-    'platform.waiting': '%s waiting to be added',
+    'grantModules.tally.one': '%1$s of %2$s module allowed',
+    'grantModules.tally.many': '%1$s of %2$s modules allowed',
+    'platform.waiting': '%s waiting to be allowed',
     'grantModules.marked.one': '%1$s of %2$s module marked to remove',
     'grantModules.marked.many': '%1$s of %2$s modules marked to remove',
     'platform.from': 'from a subgroup',
     'platform.cancel': 'Cancel',
-    'platform.doAdd': 'Add',
-    'platform.doRemove': 'Remove',
-    'platform.toAdd': 'to add',
-    'platform.refused': 'The backend did not take the change',
+    'platform.doAllow': 'Allow',
+    'platform.doDisallow': 'Disallow',
+    'platform.toAllow': 'to allow',
+    'platform.refused': 'The change could not be saved',
     'platform.failed': 'The change could not be sent',
   }
 }
@@ -386,7 +386,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPreview('button')?.textContent).toBe('Add modules')
+    expect(inPreview('button')?.textContent).toBe('Allow modules')
     expect(inPreview('button')?.className).toBe('btn btn-default')
     expect(inPreview(`.${classes.faceHint}`)?.textContent).toBe('or click a module to remove it')
   })
@@ -436,8 +436,8 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPreview(`.${classes.faceApply}`)?.textContent).toBe('Remove')
-    expect(inPick(`.${classes.faceApply}`)?.textContent).toBe('Add')
+    expect(inPreview(`.${classes.faceApply}`)?.textContent).toBe('Disallow')
+    expect(inPick(`.${classes.faceApply}`)?.textContent).toBe('Allow')
   })
 
   it('offers nothing to press while nothing is marked', async () => {
@@ -628,7 +628,7 @@ describe('the module panel the group sees', () => {
   })
 
   // A picked row is filled but does not say whether the group has the module already or is only about to be given it
-  it('says of a picked module that it is waiting to be added', async () => {
+  it('says of a picked module that it is waiting to be allowed', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -636,7 +636,7 @@ describe('the module panel the group sees', () => {
     await armed()
 
     expect(inPick(`.${classes.faceScroll}`)?.getAttribute('style'))
-      .toContain('--vperm-queued-note: "to add"')
+      .toContain('--vperm-queued-note: "to allow"')
   })
 
   it('counts what is picked', async () => {
@@ -646,7 +646,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules granted')
+    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
   })
 
   // XLIFF carries singular and plural separately, no plural rules
@@ -662,11 +662,11 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('1 of 1 module granted')
+    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('1 of 1 module allowed')
   })
 
   // Group has and waiting counts are two separate values; a pick is granted only when saved
-  it('counts what is waiting to be added beside what is granted', async () => {
+  it('counts what is waiting to be allowed beside what is granted', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
@@ -675,8 +675,8 @@ describe('the module panel the group sees', () => {
 
     inPick('[data-modulemenu-identifier="records"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-    expect(inPick(`.${classes.faceTally}`)?.firstChild?.textContent).toBe('2 of 3 modules granted')
-    expect(inPick(`.${classes.faceWaiting}`)?.textContent).toBe('1 waiting to be added')
+    expect(inPick(`.${classes.faceTally}`)?.firstChild?.textContent).toBe('2 of 3 modules allowed')
+    expect(inPick(`.${classes.faceWaiting}`)?.textContent).toBe('1 waiting to be allowed')
   })
 
   it('flashes the module that was just added once the card has turned', async () => {
@@ -865,7 +865,7 @@ describe('the module panel the group sees', () => {
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The backend did not take the change')
+      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     expect(told).toBe(0)
   })
@@ -925,7 +925,7 @@ describe('the module panel the group sees', () => {
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The backend did not take the change')
+      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     expect(inPick('[data-modulemenu-identifier="records"]')?.getAttribute(attributes.verdict)).toBe('allowed')
   })
@@ -941,7 +941,7 @@ describe('the module panel the group sees', () => {
     answerNextWriteWith(409)
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The backend did not take the change')
+      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     reply({
       group: { id: 7, title: 'Content Reviewers' },
@@ -1049,7 +1049,7 @@ describe('the module panel the group sees', () => {
     })
     await vi.advanceTimersByTimeAsync(20)
 
-    expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('2 of 3 modules granted')
+    expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('2 of 3 modules allowed')
   })
 
   it('turns one card, however often the panel is painted', async () => {
@@ -1174,10 +1174,10 @@ describe('the module panel the group sees', () => {
 
     expect(inPreview(`.${classes.faceEyebrow}`)?.textContent).toBe('Preview')
     expect(inPreview(`.${classes.faceSentence}`)?.textContent).toBe('What Content Reviewers may open')
-    expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules granted')
+    expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
     expect(inPick(`.${classes.faceEyebrow}`)?.textContent).toBe('Assign')
     expect(inPick(`.${classes.faceSentence}`)?.textContent).toBe('Pick what Content Reviewers may open')
-    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules granted')
+    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
     expect(inPreview(`.${classes.faceCancel}`)?.textContent).toBe('Cancel')
   })
 
@@ -1354,7 +1354,7 @@ describe('the module panel the group sees', () => {
     await armed()
 
     expect(inPreview('[data-modulemenu-identifier="some_removed_module"]')).toBeNull()
-    expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules granted')
+    expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
   })
 
   it('says where an inherited module comes from, and nothing on its own grants', async () => {

@@ -27,7 +27,7 @@ export function drawBand(doc: Document, { groupId, table, called, verdict }: Ban
   if (!handedDown && !nobodys) {
     const deed = button(
       doc,
-      said(labelOf(theirs ? 'grantTables.take' : 'grantTables.give'), called),
+      said(labelOf(theirs ? 'grantTables.disallow' : 'grantTables.allow'), called),
       `btn btn-default btn-sm ${theirs ? classes.tableTake : classes.tableGive}`,
       () => {
         deed.toggleAttribute('disabled', true)
