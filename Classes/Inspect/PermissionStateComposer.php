@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Wazum\VisualPermissions\Inspect;
 
+use Wazum\VisualPermissions\AllowFields\FieldCatalogue;
+use Wazum\VisualPermissions\AllowModules\ModuleCatalogue;
+use Wazum\VisualPermissions\AllowTables\TableCatalogue;
 use Wazum\VisualPermissions\Authorization\AccessVerdict;
 use Wazum\VisualPermissions\Authorization\Verdicts;
 use Wazum\VisualPermissions\BackendGroups\InheritanceChain;
-use Wazum\VisualPermissions\GrantFields\FieldCatalogue;
-use Wazum\VisualPermissions\GrantModules\ModuleCatalogue;
-use Wazum\VisualPermissions\GrantTables\TableCatalogue;
 
 /**
  * @phpstan-import-type ChainStep from InheritanceChain

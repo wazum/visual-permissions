@@ -1,7 +1,7 @@
 import ue from "@typo3/backend/storage/persistent.js";
-import { LitElement as yr, html as M } from "lit";
+import { LitElement as wr, html as M } from "lit";
 import ie from "@typo3/core/ajax/ajax-request.js";
-import wr from "@typo3/backend/login-refresh.js";
+import yr from "@typo3/backend/login-refresh.js";
 import Qe from "@typo3/backend/notification.js";
 import { sudoModeInterceptor as kr } from "@typo3/backend/security/sudo-mode-interceptor.js";
 import Ft from "@typo3/backend/modal.js";
@@ -140,7 +140,7 @@ function bn(e) {
   const t = e ?? {};
   return typeof t.place == "string" ? t.place : "";
 }
-function yn(e) {
+function wn(e) {
   const t = e ?? {};
   return typeof t.document == "string" ? t.document : "";
 }
@@ -167,7 +167,7 @@ function ht(e) {
 function _r(e) {
   return /edit\[[a-z0-9_]+\]\[-?\d+\]=new/.test(decodeURIComponent(mt(e)));
 }
-function wn(e) {
+function yn(e) {
   const t = mt(e);
   if (t === "")
     return "";
@@ -189,7 +189,7 @@ function pe(e, t) {
 function Nr() {
   return Ze;
 }
-const kn = "vperm.session", An = 1, ye = "modules", xr = "fields", et = /* @__PURE__ */ new Set();
+const kn = "vperm.session", An = 1, we = "modules", xr = "fields", et = /* @__PURE__ */ new Set();
 let F = Ir();
 document.addEventListener("typo3-module-loaded", () => {
   je({ ...F, face: "preview" });
@@ -242,11 +242,11 @@ function je(e) {
 function Ir() {
   const e = ue.get(kn);
   if (e === null || typeof e != "object")
-    return { open: !1, active: !1, groupId: null, area: ye, picked: ye, face: "preview" };
+    return { open: !1, active: !1, groupId: null, area: we, picked: we, face: "preview" };
   const t = e;
   if (String(t.version) !== String(An))
-    return { open: !1, active: !1, groupId: null, area: ye, picked: ye, face: "preview" };
-  const n = Number(t.groupId), r = typeof t.area == "string" && t.area !== "null" ? t.area : ye;
+    return { open: !1, active: !1, groupId: null, area: we, picked: we, face: "preview" };
+  const n = Number(t.groupId), r = typeof t.area == "string" && t.area !== "null" ? t.area : we;
   return {
     open: String(t.open) === "true",
     active: String(t.active) === "true",
@@ -434,7 +434,7 @@ function Dt(e, t) {
   return i;
 }
 const Rt = (e) => e.subtitle === "" ? e.title : `${e.title} ${e.subtitle}`, Wr = 70, Ke = 50;
-class Gr extends yr {
+class Gr extends wr {
   // Stryker disable ObjectLiteral,BooleanLiteral: callers set these as properties, never as attributes
   static properties = {
     entries: { attribute: !1 },
@@ -816,14 +816,14 @@ function j(e) {
   return TYPO3.settings.ajaxUrls[e] ?? "";
 }
 const I = {
+  allow_fields: "visual_permissions_allow_fields",
   allow_file_operations: "visual_permissions_allow_file_operations",
+  allow_modules: "visual_permissions_allow_modules",
   allow_page_types: "visual_permissions_allow_page_types",
+  allow_tables: "visual_permissions_allow_tables",
   allow_values: "visual_permissions_allow_values",
   file_operations: "visual_permissions_file_operations",
   folder_tree: "visual_permissions_folder_tree",
-  grant_fields: "visual_permissions_grant_fields",
-  grant_modules: "visual_permissions_grant_modules",
-  grant_tables: "visual_permissions_grant_tables",
   inspect: "visual_permissions_inspect",
   mount_folders: "visual_permissions_mount_folders",
   mount_pages: "visual_permissions_mount_pages",
@@ -839,13 +839,13 @@ async function Z(e, t) {
     tt -= 1;
   });
 }
-function yt() {
+function wt() {
   return tt > 0;
 }
 function Wt(e) {
   try {
     const t = e.raw();
-    return t.redirected === !0 ? (wr.checkActiveSession(), "loggedOut") : Qr(t.status);
+    return t.redirected === !0 ? (yr.checkActiveSession(), "loggedOut") : Qr(t.status);
   } catch {
     return "failed";
   }
@@ -853,14 +853,14 @@ function Wt(e) {
 function Qr(e) {
   return e < 300 ? "taken" : e === 422 ? "cancelled" : e === 409 ? "refused" : "failed";
 }
-async function wt(e, t = []) {
+async function yt(e, t = []) {
   return kt(new ie(j(I.inspect)).withQueryArguments({ group: e, tables: [...t] }).get());
 }
 function We() {
   let e = 0;
   return {
     inspect: async (t, n) => {
-      const r = ++e, o = await wt(t, n);
+      const r = ++e, o = await yt(t, n);
       return r === e ? o : null;
     },
     // Stryker disable next-line AssignmentOperator: counting down works as well, since only "is this still the newest" is asked
@@ -960,9 +960,9 @@ function ao(e, t) {
     if (v === null)
       return;
     const { scopes: g } = v;
-    e.take(v), c.forEach(([f, y]) => {
-      const w = g.fields.targets[y];
-      w !== void 0 && f.setAttribute(d.verdict, w), f.toggleAttribute(d.outOfReach, !G(g.tablesModify.targets[Me(y)]));
+    e.take(v), c.forEach(([f, w]) => {
+      const y = g.fields.targets[w];
+      y !== void 0 && f.setAttribute(d.verdict, y), f.toggleAttribute(d.outOfReach, !G(g.tablesModify.targets[Me(w)]));
     }), o = g.tablesModify, i(), J("fields-judged", {});
   };
   R(({ doc: c, fields: u }) => {
@@ -1086,7 +1086,7 @@ function go(e, t) {
   }, t), K("fields-judged", r, t), E(r, t);
 }
 async function vo(e, t) {
-  return Z(I.grant_fields, { group: e, operations: [...t] });
+  return Z(I.allow_fields, { group: e, operations: [...t] });
 }
 const Kt = 280;
 function Ee(e, t) {
@@ -1100,7 +1100,7 @@ function Ee(e, t) {
   }, Kt * 2);
 }
 const zt = `[${d.verdict}]:not([${d.outOfReach}])`, bo = [me, Ge].map((e) => `:not([${d.verdict}='${e}'])`).join("");
-function yo(e, t) {
+function wo(e, t) {
   let n = null, r = null;
   const o = () => {
     if (n === null)
@@ -1120,7 +1120,7 @@ function yo(e, t) {
     let p = null;
     const m = a.ownerDocument.createElement("div");
     m.className = l.faceFoot;
-    const v = () => [...a.querySelectorAll(`[${d.token}]`)].filter((w) => e.has(w)), g = () => {
+    const v = () => [...a.querySelectorAll(`[${d.token}]`)].filter((y) => e.has(y)), g = () => {
       if (!c) {
         ce("preview");
         return;
@@ -1134,24 +1134,24 @@ function yo(e, t) {
         e.drop(), g();
       },
       apply: () => {
-        const w = v().map((S) => ({ field: S.getAttribute(d.token) ?? "", grant: c }));
-        yt() || vo(u, w).then((S) => {
+        const y = v().map((S) => ({ field: S.getAttribute(d.token) ?? "", grant: c }));
+        wt() || vo(u, y).then((S) => {
           if (b().groupId !== u) {
             S === "taken" && J("permissions-written", {});
             return;
           }
           if (S !== "taken") {
-            vt(f, S), p = w.length;
+            vt(f, S), p = y.length;
             return;
           }
           e.drop(), g(), J("permissions-written", {});
         });
       }
-    }), y = () => {
-      const w = [...a.querySelectorAll(zt)].filter((N) => N.closest(`.${l.otherKinds}`) === null), S = w.filter((N) => N.matches(bo)), _ = v().length;
-      p !== _ && (p = null, f.state.textContent = W("grantFields.tally", w.length, S.length, w.length), f.waiting.textContent = _ === 0 ? "" : W(`grantFields.${c ? "waiting" : "going"}`, _, _), f.ready(_ > 0, c || _ > 0));
+    }), w = () => {
+      const y = [...a.querySelectorAll(zt)].filter((N) => N.closest(`.${l.otherKinds}`) === null), S = y.filter((N) => N.matches(bo)), _ = v().length;
+      p !== _ && (p = null, f.state.textContent = W("grantFields.tally", y.length, S.length, y.length), f.waiting.textContent = _ === 0 ? "" : W(`grantFields.${c ? "waiting" : "going"}`, _, _), f.ready(_ > 0, c || _ > 0));
     };
-    return y(), a.append(m), y;
+    return w(), a.append(m), w;
   }, s = () => {
     r?.showCount();
   };
@@ -1159,7 +1159,7 @@ function yo(e, t) {
     n = a.doc, o(), n.defaultView?.addEventListener("click", s, { signal: t }), n.defaultView?.addEventListener("keydown", s, { signal: t });
   }, t), K("fields-judged", o, t), E(o, t);
 }
-const wo = `.${l.anchor}[${d.verdict}]`, ko = 350, Ao = 250, rt = (e) => e.getAttribute(d.verdict) ?? "", $o = (e) => e.getAttribute(d.token) ?? "", So = (e) => e.querySelector(":scope > .form-label, :scope > fieldset > legend"), ot = (e) => h(`grantFields.mark.${e}.title`), Eo = (e) => {
+const yo = `.${l.anchor}[${d.verdict}]`, ko = 350, Ao = 250, rt = (e) => e.getAttribute(d.verdict) ?? "", $o = (e) => e.getAttribute(d.token) ?? "", So = (e) => e.querySelector(":scope > .form-label, :scope > fieldset > legend"), ot = (e) => h(`grantFields.mark.${e}.title`), Eo = (e) => {
   if (e.getAttribute("role") !== "switch" || e.getAttribute("aria-disabled") === "true")
     return "";
   const t = e.classList.contains(l.faceMarked);
@@ -1224,7 +1224,7 @@ function Lo(e, t) {
     const g = c(m.ownerDocument);
     i?.style.removeProperty("anchor-name"), i?.setAttribute("aria-expanded", "false"), i = m, m.style.setProperty("anchor-name", "--vperm-mark"), m.setAttribute("aria-expanded", "true"), qo(g, v, e.givenBy($o(v))), g.showPopover();
   }, p = () => {
-    n.querySelectorAll(wo).forEach((m) => {
+    n.querySelectorAll(yo).forEach((m) => {
       const v = So(m);
       if (v === null)
         return;
@@ -1234,8 +1234,8 @@ function Lo(e, t) {
         return;
       }
       const f = v.ownerDocument.createElement("button");
-      f.type = "button", f.className = l.mark, f.setAttribute("aria-label", ot(rt(m))), f.setAttribute("aria-haspopup", "dialog"), f.setAttribute("aria-controls", l.markCard), f.setAttribute("aria-expanded", "false"), f.addEventListener("click", (y) => {
-        u(f, m), y.detail === 0 && c(f.ownerDocument).querySelector("button")?.focus();
+      f.type = "button", f.className = l.mark, f.setAttribute("aria-label", ot(rt(m))), f.setAttribute("aria-haspopup", "dialog"), f.setAttribute("aria-controls", l.markCard), f.setAttribute("aria-expanded", "false"), f.addEventListener("click", (w) => {
+        u(f, m), w.detail === 0 && c(f.ownerDocument).querySelector("button")?.focus();
       }), f.addEventListener("mouseenter", () => {
         if (window.clearTimeout(r), o) {
           u(f, m);
@@ -1367,10 +1367,10 @@ function Io(e, t) {
   }, t), E(c, t);
 }
 async function Mo(e, t) {
-  return Z(I.grant_modules, { group: e, operations: [...t] });
+  return Z(I.allow_modules, { group: e, operations: [...t] });
 }
 const Bn = "data-modulemenu-identifier", De = `[${Bn}]:not([aria-controls])`, jn = ".modulemenu-group-container";
-let we = !1;
+let ye = !1;
 const it = /* @__PURE__ */ new WeakMap();
 let le = null;
 const ke = _n(560);
@@ -1384,21 +1384,21 @@ function Do(e, t) {
     g.classList.add(l.panelCardTurned);
   });
   const f = (A) => {
-    we = A, p.classList.toggle(l.coinTurned, A), a.sheet.toggleAttribute("inert", A), c.sheet.toggleAttribute("inert", !A);
-  }, y = (A) => {
+    ye = A, p.classList.toggle(l.coinTurned, A), a.sheet.toggleAttribute("inert", A), c.sheet.toggleAttribute("inert", !A);
+  }, w = (A) => {
     const P = A.filter((L) => L.grant).map((L) => L.module);
-    n !== null && b().groupId === n && (yt() || (P.forEach((L) => {
+    n !== null && b().groupId === n && (wt() || (P.forEach((L) => {
       ke.add(L);
     }), Mo(n, A).then((L) => {
       if (L !== "taken") {
         P.forEach((k) => {
           ke.delete(k);
-        }), vt(we ? _ : w, L);
+        }), vt(ye ? _ : y, L);
         return;
       }
       f(!1), J("permissions-written", {});
     })));
-  }, w = _e(a.foot, {
+  }, y = _e(a.foot, {
     label: h("platform.doDisallow"),
     cancel: () => {
       ze(a.scroll).forEach((A) => {
@@ -1406,7 +1406,7 @@ function Do(e, t) {
       }), N();
     },
     apply: () => {
-      y(ze(a.scroll).map((A) => ({ module: He(A), grant: !1 })));
+      w(ze(a.scroll).map((A) => ({ module: He(A), grant: !1 })));
     }
   }), S = () => {
     Yt(c.scroll, t, N), N(), f(!1);
@@ -1415,25 +1415,25 @@ function Do(e, t) {
     cancel: S,
     apply: () => {
       const A = Jt(c.scroll).filter((P) => z(P) !== it.get(P));
-      y(A.map((P) => ({ module: He(P), grant: !0 })));
+      w(A.map((P) => ({ module: He(P), grant: !0 })));
     }
   }), N = () => {
     const A = Jt(c.scroll), P = A.filter((q) => z(q) !== it.get(q)), L = A.filter((q) => G(z(q)) && !P.includes(q)), k = W("grantModules.tally", A.length, L.length, A.length), T = ze(a.scroll);
-    w.state.textContent = T.length === 0 ? k : W("grantModules.marked", s.length, T.length, s.length), w.ready(T.length > 0, T.length > 0), _.state.textContent = k, _.waiting.textContent = P.length === 0 ? "" : x(h("platform.waiting"), P.length), _.ready(P.length > 0, !0);
+    y.state.textContent = T.length === 0 ? k : W("grantModules.marked", s.length, T.length, s.length), y.ready(T.length > 0, T.length > 0), _.state.textContent = k, _.waiting.textContent = P.length === 0 ? "" : x(h("platform.waiting"), P.length), _.ready(P.length > 0, !0);
   };
   a.bar.append(
     Y(e, h("grantModules.allow"), "btn btn-default", () => {
       f(!0);
     }),
     O(e, l.faceHint, h("grantModules.hint"))
-  ), c.scroll.style.setProperty("--vperm-queued-note", `"${h("platform.toAllow")}"`), jo(e, a.scroll, i, h("platform.from"), N), Yt(c.scroll, t, N), N(), f(we), ke.start(() => {
+  ), c.scroll.style.setProperty("--vperm-queued-note", `"${h("platform.toAllow")}"`), jo(e, a.scroll, i, h("platform.from"), N), Yt(c.scroll, t, N), N(), f(ye), ke.start(() => {
     p.querySelectorAll(`.${l.facePreview} ${De}`).forEach((A) => {
       A.classList.toggle(l.justAdded, ke.isLit(He(A)));
     });
-  }), le?.abort(), le = new AbortController(), bt(e, le.signal, () => we, S), Nn(n, [w, _], le.signal);
+  }), le?.abort(), le = new AbortController(), bt(e, le.signal, () => ye, S), Nn(n, [y, _], le.signal);
 }
 function Ro(e, t) {
-  le?.abort(), le = null, we = !1, ke.stop();
+  le?.abort(), le = null, ye = !1, ke.stop();
   const n = e.querySelector(`.${l.panelCard}`);
   if (t.removeAttribute("inert"), n === null)
     return;
@@ -1537,7 +1537,7 @@ function zo(e, t) {
   r(), K("permissions-written", () => void r(), t), E(() => void r(), t);
 }
 async function Ho(e, t, n) {
-  const r = await Z(I.grant_tables, { group: e, operations: [{ table: t, grant: n }] });
+  const r = await Z(I.allow_tables, { group: e, operations: [{ table: t, grant: n }] });
   return r === "taken" && J("permissions-written", {}), r;
 }
 function Kn(e, { groupId: t, table: n, called: r, verdict: o }) {
@@ -1579,23 +1579,23 @@ function Yo(e) {
     }
     const u = /* @__PURE__ */ new Map();
     o.querySelectorAll(`[${d.inside}]`).forEach((g) => {
-      const f = g.getAttribute(d.inside) ?? "", y = f === "" ? g.closest(Qt) : o.querySelector(`[${d.field}='${f}']`), w = g.getAttribute(d.token) ?? "";
-      y !== null && u.set(y, Me(w));
+      const f = g.getAttribute(d.inside) ?? "", w = f === "" ? g.closest(Qt) : o.querySelector(`[${d.field}='${f}']`), y = g.getAttribute(d.token) ?? "";
+      w !== null && u.set(w, Me(y));
     });
     const p = await n.inspect(c, [...new Set(u.values())]);
     if (p === null)
       return;
     const { named: m, targets: v } = p.scopes.tablesModify;
     u.forEach((g, f) => {
-      const y = v[g];
-      if (![H, $t, St, me].some((_) => _ === y))
+      const w = v[g];
+      if (![H, $t, St, me].some((_) => _ === w))
         return;
-      const w = Kn(o, { groupId: c, table: g, called: m[g] ?? g, verdict: y }), S = f.matches(Qt) ? null : f.querySelector(".form-irre-object");
+      const y = Kn(o, { groupId: c, table: g, called: m[g] ?? g, verdict: w }), S = f.matches(Qt) ? null : f.querySelector(".form-irre-object");
       if (S === null) {
-        f.prepend(w);
+        f.prepend(y);
         return;
       }
-      S.before(w);
+      S.before(y);
     });
   };
   R((o) => {
@@ -1635,10 +1635,10 @@ function Xo(e, t, n) {
 function Hn(e, t, n, r, o = /* @__PURE__ */ new Set()) {
   const i = document.createElement("div");
   i.className = l.allowChoices, i.style.setProperty("--vperm-inherited-note", `"${h("platform.from")}"`), e.groups.forEach(({ label: v, values: g }) => {
-    const f = document.createElement("section"), y = document.createElement("h2");
-    y.textContent = v;
-    const w = document.createElement("div");
-    w.append(...g.map((S) => ei(S, n.has(S.value), o.has(S.value)))), f.append(y, w), i.append(f);
+    const f = document.createElement("section"), w = document.createElement("h2");
+    w.textContent = v;
+    const y = document.createElement("div");
+    y.append(...g.map((S) => ei(S, n.has(S.value), o.has(S.value)))), f.append(w, y), i.append(f);
   });
   const s = O(document, l.faceWaiting, ""), a = () => [...i.querySelectorAll("input")].filter((v) => v.checked !== n.has(v.value)).map((v) => ({ value: v.value, grant: v.checked })), c = {
     text: h("platform.cancel"),
@@ -1720,11 +1720,11 @@ function ni(e) {
       const s = i.getAttribute(d.token) ?? "", a = i.ownerDocument.createElement("button");
       a.type = "button", a.className = `btn btn-default btn-sm ${l.allowChoose}`, a.textContent = h(`allowedValues.choose.${eo(s)}`), a.addEventListener("click", () => {
         const c = JSON.parse(i.getAttribute(d.choices) ?? "{}"), u = b().groupId ?? 0;
-        wt(u).then((p) => {
+        yt(u).then((p) => {
           if (p === null)
             return;
           const m = i.getAttribute(d.allows) === "pageTypes" ? "pageTypes" : "fieldValues", v = m === "pageTypes" ? "" : `${s}:`, g = new Set(Object.entries(p.scopes[m].targets).filter(([, f]) => G(f)).map(([f]) => f.substring(v.length)));
-          Hn(c, X(document, u) ?? "", g, async (f) => await ti(m, u, f.map(({ value: w, grant: S }) => ({ value: `${v}${w}`, grant: S }))) !== "taken" ? !1 : (J("permissions-written", {}), !0), new Set(Object.entries(p.scopes[m].targets).filter(([, f]) => G(f) && f !== H).map(([f]) => f.substring(v.length))));
+          Hn(c, X(document, u) ?? "", g, async (f) => await ti(m, u, f.map(({ value: y, grant: S }) => ({ value: `${v}${y}`, grant: S }))) !== "taken" ? !1 : (J("permissions-written", {}), !0), new Set(Object.entries(p.scopes[m].targets).filter(([, f]) => G(f) && f !== H).map(([f]) => f.substring(v.length))));
         });
       }), i.after(a);
     });
@@ -1755,7 +1755,7 @@ function oi(e) {
   }, e);
 }
 async function ii(e, t) {
-  const n = await wt(e);
+  const n = await yt(e);
   if (n === null)
     return;
   const r = await kt(new ie(j(I.file_operations)).get());
@@ -1981,14 +1981,14 @@ function hi(e, t, n, { groupId: r, kind: o }) {
     $e = k, c.classList.toggle(l.panelCardTurned, !k), g(k);
   };
   g($e);
-  const y = () => {
+  const w = () => {
     const k = W(`${i}.tally`, v.length, v.length);
     S.state.textContent = D.size === 0 ? k : W(`${i}.marked`, v.length, D.size, v.length), S.ready(D.size > 0, D.size > 0), L.state.textContent = k, L.waiting.textContent = B.size === 0 ? "" : x(h("mountBranches.waiting"), B.size), L.ready(B.size > 0, !0);
-  }, w = (k, T) => {
+  }, y = (k, T) => {
     if (b().groupId !== r)
       return;
     const q = [...k];
-    if (q.length === 0 || yt())
+    if (q.length === 0 || wt())
       return;
     const V = o.write(r, q, T, ai(p.sheet));
     T && q.forEach((ee) => {
@@ -2005,10 +2005,10 @@ function hi(e, t, n, { groupId: r, kind: o }) {
   }, S = _e(m.foot, {
     label: h("mountBranches.doRemove"),
     cancel: () => {
-      D.clear(), at(e), y();
+      D.clear(), at(e), w();
     },
     apply: () => {
-      w(D, !1);
+      y(D, !1);
     }
   }), _ = new Set(Object.keys(n.named)), N = () => {
     p.sheet.querySelector(`.${l.naming}`)?.remove(), p.scroll.hidden = !1, p.eyebrow.textContent = h("platform.pick"), p.sentence.textContent = x(s("pickFor"), a);
@@ -2027,11 +2027,11 @@ function hi(e, t, n, { groupId: r, kind: o }) {
       p.sheet.querySelector(`.${l.naming} input[aria-invalid]`)?.focus();
       return;
     }
-    w(B, !0);
+    y(B, !0);
   }, P = () => li(p.sheet, s("nameWhy")), L = _e(p.foot, {
     label: h("mountBranches.doAdd"),
     cancel: () => {
-      B.clear(), N(), f(!1), y();
+      B.clear(), N(), f(!1), w();
     },
     apply: A
   });
@@ -2041,7 +2041,7 @@ function hi(e, t, n, { groupId: r, kind: o }) {
     const k = e.createElement("div");
     k.className = l.faceChoice, k.append(o.choice(e, r)), m.sheet.insertBefore(k, m.foot);
   }
-  pi(e, m.scroll, v, { groupId: r, kind: o, showCount: y }), ui(p.sheet, y, u), y(), Ce.start(() => {
+  pi(e, m.scroll, v, { groupId: r, kind: o, showCount: w }), ui(p.sheet, w, u), w(), Ce.start(() => {
     at(e);
   }), bt(e, u, () => $e, () => {
     if (p.sheet.querySelector(`.${l.naming}`) !== null) {
@@ -2097,12 +2097,12 @@ function bi(e) {
     foot: t(l.faceFoot)
   };
 }
-const yi = { pageMounts: Yn, fileMounts: Vn };
-function wi(e, t) {
+const wi = { pageMounts: Yn, fileMounts: Vn };
+function yi(e, t) {
   const n = We();
   let r = !1;
   const o = async () => {
-    const { active: s, groupId: a, area: c } = b(), u = yi[c];
+    const { active: s, groupId: a, area: c } = b(), u = wi[c];
     if (!s || a === null || u === void 0) {
       n.drop(), gi(e);
       return;
@@ -2152,35 +2152,35 @@ function Ei(e, t) {
   };
   let i = "", s = "";
   const a = (f) => {
-    const y = nr(e);
-    if (y.forEach(($) => {
+    const w = nr(e);
+    if (w.forEach(($) => {
       g.observe($);
     }), !f.active) {
       n.remove(), o();
       return;
     }
-    const w = y.map(($) => te($)), S = [...tn, ...w.filter(($) => !tn.includes($))], _ = w.includes("fields") ? [Le] : [], N = y.filter(($) => $.getBoundingClientRect().width !== 0).map(te), A = N.includes("fields") ? [...N, Le] : N, [P] = A.includes("fields") ? ["fields"] : A, L = A.find(($) => ne[$] !== void 0 && ne[$] === ne[f.picked]), k = A.includes(f.picked) ? f.picked : L ?? P;
+    const y = w.map(($) => te($)), S = [...tn, ...y.filter(($) => !tn.includes($))], _ = y.includes("fields") ? [Le] : [], N = w.filter(($) => $.getBoundingClientRect().width !== 0).map(te), A = N.includes("fields") ? [...N, Le] : N, [P] = A.includes("fields") ? ["fields"] : A, L = A.find(($) => ne[$] !== void 0 && ne[$] === ne[f.picked]), k = A.includes(f.picked) ? f.picked : L ?? P;
     if (A.join() !== i && (i = A.join(), k !== void 0 && k !== f.area)) {
       Fr(k);
       return;
     }
-    w.join() !== s && (s = w.join(), n.replaceChildren(
-      ...w.flatMap(($) => [Ii(e, $), Fi(e, $)]),
+    y.join() !== s && (s = y.join(), n.replaceChildren(
+      ...y.flatMap(($) => [Ii(e, $), Fi(e, $)]),
       ...S.map(($) => qi(e, $, h(`pickAnArea.${$}`)))
     )), n.parentElement === null && Ci(e).append(n);
     const T = f.area === Le ? "fields" : f.area;
-    _i(n, e), Ni(n, e, y.find(($) => te($) === T) ?? null);
+    _i(n, e), Ni(n, e, w.find(($) => te($) === T) ?? null);
     const q = f.area !== "fields";
-    y.forEach(($) => {
+    w.forEach(($) => {
       const C = te($), ve = C === T, ae = q && !ve && C !== "modules", be = Te(n, C);
-      be?.setAttribute("aria-selected", String(C === f.area)), Li(be, $), $.toggleAttribute(d.armed, ve), $.toggleAttribute("inert", ae), r.add($), Mi(Ri(n, C), $, ae), xi(Bi(n, C), $, ve, y);
+      be?.setAttribute("aria-selected", String(C === f.area)), Li(be, $), $.toggleAttribute(d.armed, ve), $.toggleAttribute("inert", ae), r.add($), Mi(Ri(n, C), $, ae), xi(Bi(n, C), $, ve, w);
     });
     let V = 0, ee = null;
     S.forEach(($) => {
       const C = Te(n, $);
       if (C === null)
         return;
-      const ve = C.hidden ? 0 : C.getBoundingClientRect().width, ae = y.find((br) => te(br) === $), be = ae ?? Di($, y), Tt = Math.max(V, be?.getBoundingClientRect().left ?? V);
+      const ve = C.hidden ? 0 : C.getBoundingClientRect().width, ae = w.find((br) => te(br) === $), be = ae ?? Di($, w), Tt = Math.max(V, be?.getBoundingClientRect().left ?? V);
       C.style.setProperty("--vperm-host-x", `${String(Tt)}px`), C.toggleAttribute(d.elsewhere, ae === void 0), ae === void 0 && (C.setAttribute("aria-selected", String($ === f.area)), xe(C, be ?? ee ?? C)), V = C.hidden ? V : Tt + ve + $i, ee = C;
     });
     const se = Te(n, "fields");
@@ -2195,16 +2195,16 @@ function Ei(e, t) {
       a(b());
     });
   }, p = new MutationObserver((f) => {
-    f.some((y) => !n.contains(y.target)) && u();
+    f.some((w) => !n.contains(w.target)) && u();
   });
   let m = !1;
   const v = (f) => {
-    const y = f.detail.module ?? "", w = Ai(y);
+    const w = f.detail.module ?? "", y = Ai(w);
     if (!m) {
       m = !0;
       return;
     }
-    !w && ne[b().picked] === "tree" && En("fields");
+    !y && ne[b().picked] === "tree" && En("fields");
   };
   e.addEventListener("typo3-module-loaded", v, { signal: t }), p.observe(e.body, { childList: !0, subtree: !0 });
   const g = new ResizeObserver(u);
@@ -2468,8 +2468,8 @@ function us(e, t) {
   u.setAttribute("identifier", "actions-document-save"), u.setAttribute("size", "small"), c.append(u, ` ${h("rm.saveDoc")}`), c.addEventListener("click", () => {
     c.disabled = !0, u.setAttribute("identifier", "spinner-circle");
     const g = { group: String(m) };
-    for (const [f, y] of new FormData(r))
-      typeof y == "string" && (g[f] = y);
+    for (const [f, w] of new FormData(r))
+      typeof w == "string" && (g[f] = w);
     Z(I.write_other_permissions, g).then((f) => {
       if (u.setAttribute("identifier", "actions-document-save"), c.disabled = m !== p, f === "taken") {
         Qe.success(h("notification.record_saved.title.singular"));
@@ -2480,14 +2480,14 @@ function us(e, t) {
   }), a.append(c), i.append(s, a), o.append(i), n.append(o, r);
   let p = null, m = null;
   const v = (g) => {
-    const f = !g.active || g.area !== "other", y = g.groupId === null;
-    if (f || y) {
+    const f = !g.active || g.area !== "other", w = g.groupId === null;
+    if (f || w) {
       n.remove(), p = null, delete TYPO3.settings.FormEngine?.formName;
       return;
     }
-    const w = g.groupId;
-    w !== p && (p = w, c.disabled = !0, s.textContent = X(e, w) ?? "", ds(w).then((S) => {
-      S === null || w !== p || (r.replaceChildren(e.createRange().createContextualFragment(S.html)), m = w, c.disabled = !1, e.querySelector(`.${l.frame}[${d.area}="fields"]`)?.append(n), new Er().processItems([...S.scriptItems]));
+    const y = g.groupId;
+    y !== p && (p = y, c.disabled = !0, s.textContent = X(e, y) ?? "", ds(y).then((S) => {
+      S === null || y !== p || (r.replaceChildren(e.createRange().createContextualFragment(S.html)), m = y, c.disabled = !1, e.querySelector(`.${l.frame}[${d.area}="fields"]`)?.append(n), new Er().processItems([...S.scriptItems]));
     }));
   };
   v(b()), E(v, t);
@@ -2505,7 +2505,7 @@ function fs(e) {
   t !== null && ut.get(t)?.append(t);
 }
 const ms = (e) => `${e}, ${Lt}`, hs = ".module-docheader-navigation > .module-docheader-column-breadcrumb", sn = ".module-docheader-buttons .btn-toolbar > *", gs = ".t3js-editform-close", vs = ms(`.${l.headButton}, .${l.showMenu}`), bs = 'form[name="editform"] h1';
-function ys(e, t) {
+function ws(e, t) {
   let n = null;
   const r = (i) => {
     const { active: s, area: a } = b();
@@ -2568,7 +2568,7 @@ function ys(e, t) {
   }, t), K("fields-judged", o, t), E(o, t);
 }
 const an = `[${d.token}]`;
-function ws(e, t) {
+function ys(e, t) {
   let n = null;
   const r = () => {
     const o = e.querySelector("#typo3-contentIframe")?.contentDocument ?? null;
@@ -2829,14 +2829,14 @@ function Us(e) {
   const t = ge(pr);
   t !== null && he(fr, JSON.stringify({
     ...xt(),
-    [t]: { place: wn(e), document: ht(e) }
+    [t]: { place: yn(e), document: ht(e) }
   }));
 }
 function Ws(e) {
   return bn(xt()[e]);
 }
 function Gs(e) {
-  return yn(xt()[e]);
+  return wn(xt()[e]);
 }
 function xt() {
   const e = ge(fr);
@@ -2916,7 +2916,7 @@ const Qs = {
 }, dt = "vperm.returnTo", pt = "vperm.returning", Xs = "vperm.userSearch";
 function Zs(e, t, n = Qs) {
   const r = ue.get(dt), o = bn(r);
-  return o !== "" && ea(o) ? (hr(yn(r), o), pe(dt, { place: "" }).then(() => {
+  return o !== "" && ea(o) ? (hr(wn(r), o), pe(dt, { place: "" }).then(() => {
     n.go(o);
   }), !0) : (ta(e, t, n), !1);
 }
@@ -2991,7 +2991,7 @@ function oa(e) {
   return e === 0 ? h("viewAsUser.detail.none") : W("viewAsUser.detail", e, e);
 }
 async function vr(e, t, n) {
-  _t(pt), Rs(String(t)), Bs(e.querySelector(`.${l.viewAsControls}`)?.getBoundingClientRect().width ?? 0), await pe(dt, { place: wn(e), document: ht(e) });
+  _t(pt), Rs(String(t)), Bs(e.querySelector(`.${l.viewAsControls}`)?.getBoundingClientRect().width ?? 0), await pe(dt, { place: yn(e), document: ht(e) });
   const r = Ws(String(t));
   hr(Gs(String(t)), r), ia(t, n, r);
 }
@@ -3011,7 +3011,7 @@ function gn() {
   const t = co();
   ao(t, e.signal);
   const n = lo();
-  go(n, e.signal), yo(n, e.signal), Lo(t, e.signal), Oo(e.signal), zo(document, e.signal), wi(document, e.signal), Yo(e.signal), Qo(e.signal), ni(e.signal), oi(e.signal), Gi(document, e.signal), As(document, e.signal), Ss(document, e.signal), Vi(document, e.signal), Yi(document, e.signal), xo(document, e.signal), Ei(document, e.signal), us(document, e.signal), ts(document, e.signal), Io(document, e.signal), Es(document, e.signal), ys(document, e.signal), qs(e.signal), Ns(e.signal), cs(e.signal), ws(document, e.signal);
+  go(n, e.signal), wo(n, e.signal), Lo(t, e.signal), Oo(e.signal), zo(document, e.signal), yi(document, e.signal), Yo(e.signal), Qo(e.signal), ni(e.signal), oi(e.signal), Gi(document, e.signal), As(document, e.signal), Ss(document, e.signal), Vi(document, e.signal), Yi(document, e.signal), xo(document, e.signal), Ei(document, e.signal), us(document, e.signal), ts(document, e.signal), Io(document, e.signal), Es(document, e.signal), ws(document, e.signal), qs(e.signal), Ns(e.signal), cs(e.signal), ys(document, e.signal);
   const r = Zs(document, e.signal);
   Ks(document, e.signal), r ? Is(document) : (zs(document), Ms(document)), Os(document);
 }

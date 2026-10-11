@@ -1,14 +1,14 @@
 // Generated from Contract/*.json by scripts/generate-contract.mjs. Do not edit.
 
 export const routes = {
+  allow_fields: 'visual_permissions_allow_fields',
   allow_file_operations: 'visual_permissions_allow_file_operations',
+  allow_modules: 'visual_permissions_allow_modules',
   allow_page_types: 'visual_permissions_allow_page_types',
+  allow_tables: 'visual_permissions_allow_tables',
   allow_values: 'visual_permissions_allow_values',
   file_operations: 'visual_permissions_file_operations',
   folder_tree: 'visual_permissions_folder_tree',
-  grant_fields: 'visual_permissions_grant_fields',
-  grant_modules: 'visual_permissions_grant_modules',
-  grant_tables: 'visual_permissions_grant_tables',
   inspect: 'visual_permissions_inspect',
   mount_folders: 'visual_permissions_mount_folders',
   mount_pages: 'visual_permissions_mount_pages',

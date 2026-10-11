@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { attributes, classes } from '#src/platform/contract.js'
 import { activate, deactivate, pickArea, selectGroup } from '#src/platform/session.js'
-import { initialise as fieldsPreview } from '#src/grant-fields/preview.js'
-import { initialise as tablesPreview } from '#src/grant-tables/preview.js'
+import { initialise as fieldsPreview } from '#src/allow-fields/preview.js'
+import { initialise as tablesPreview } from '#src/allow-tables/preview.js'
 import { forget } from '../../__mocks__/typo3-ajax-request.js'
 import {
   backendSays, childRecord, fieldHolding, onScreen, row, drawForm, groupForm, formWithTwoTabs,

@@ -9,12 +9,12 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use Wazum\VisualPermissions\AllowFields\AllowFieldsController;
+use Wazum\VisualPermissions\AllowModules\AllowModulesController;
+use Wazum\VisualPermissions\AllowTables\AllowTablesController;
 use Wazum\VisualPermissions\AllowValues\AllowFileOperationsController;
 use Wazum\VisualPermissions\AllowValues\AllowPageTypesController;
 use Wazum\VisualPermissions\AllowValues\AllowValuesController;
-use Wazum\VisualPermissions\GrantFields\GrantFieldsController;
-use Wazum\VisualPermissions\GrantModules\GrantModulesController;
-use Wazum\VisualPermissions\GrantTables\GrantTablesController;
 use Wazum\VisualPermissions\MountBranches\Folders\MountFoldersController;
 use Wazum\VisualPermissions\MountBranches\Pages\MountPagesController;
 use Wazum\VisualPermissions\Tests\Functional\Fixtures\VetoTheWrite;
@@ -39,9 +39,9 @@ final class GroupWriteControllerTest extends FunctionalTestCase
     public static function controllers(): array
     {
         return [
-            'fields' => [GrantFieldsController::class, 'group_fields', 10, 'non_exclude_fields', ['field' => 'tt_content:subheader', 'grant' => true], 'grant'],
-            'modules' => [GrantModulesController::class, 'group_chain', 10, 'groupMods', ['module' => 'about', 'grant' => true], 'grant'],
-            'tables' => [GrantTablesController::class, 'group_tables', 20, 'tables_modify', ['table' => 'sys_file_reference', 'grant' => true], 'grant'],
+            'fields' => [AllowFieldsController::class, 'group_fields', 10, 'non_exclude_fields', ['field' => 'tt_content:subheader', 'grant' => true], 'grant'],
+            'modules' => [AllowModulesController::class, 'group_chain', 10, 'groupMods', ['module' => 'about', 'grant' => true], 'grant'],
+            'tables' => [AllowTablesController::class, 'group_tables', 20, 'tables_modify', ['table' => 'sys_file_reference', 'grant' => true], 'grant'],
             'page mounts' => [MountPagesController::class, 'group_mounts', 20, 'db_mountpoints', ['page' => 7, 'mount' => true], 'mount'],
             'file mounts' => [MountFoldersController::class, 'group_file_mounts', 20, 'file_mountpoints', ['folder' => '1:/archive/', 'mount' => true], 'mount'],
             'field values' => [AllowValuesController::class, 'group_values', 10, 'explicit_allowdeny', ['value' => 'tt_content:CType:header', 'grant' => true], 'grant'],

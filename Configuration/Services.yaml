@@ -7,6 +7,15 @@ services:
   Wazum\VisualPermissions\:
     resource: '../Classes/*'
 
+  Wazum\VisualPermissions\AllowFields\AllowFieldsController:
+    public: true
+
+  Wazum\VisualPermissions\AllowModules\AllowModulesController:
+    public: true
+
+  Wazum\VisualPermissions\AllowTables\AllowTablesController:
+    public: true
+
   Wazum\VisualPermissions\AllowValues\AllowFileOperationsController:
     public: true
 
@@ -32,15 +41,6 @@ services:
     public: true
 
   Wazum\VisualPermissions\EditOtherPermissions\OtherPermissionsController:
-    public: true
-
-  Wazum\VisualPermissions\GrantFields\GrantFieldsController:
-    public: true
-
-  Wazum\VisualPermissions\GrantModules\GrantModulesController:
-    public: true
-
-  Wazum\VisualPermissions\GrantTables\GrantTablesController:
     public: true
 
   Wazum\VisualPermissions\Inspect\InspectController:

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
+use Wazum\VisualPermissions\AllowFields\AllowFieldsController;
+use Wazum\VisualPermissions\AllowModules\AllowModulesController;
+use Wazum\VisualPermissions\AllowTables\AllowTablesController;
 use Wazum\VisualPermissions\AllowValues\AllowFileOperationsController;
 use Wazum\VisualPermissions\AllowValues\AllowPageTypesController;
 use Wazum\VisualPermissions\AllowValues\AllowValuesController;
 use Wazum\VisualPermissions\EditOtherPermissions\OtherPermissionsController;
-use Wazum\VisualPermissions\GrantFields\GrantFieldsController;
-use Wazum\VisualPermissions\GrantModules\GrantModulesController;
-use Wazum\VisualPermissions\GrantTables\GrantTablesController;
 use Wazum\VisualPermissions\Inspect\InspectController;
 use Wazum\VisualPermissions\MountBranches\Folders\FolderTreeController;
 use Wazum\VisualPermissions\MountBranches\Folders\MountFoldersController;
@@ -22,6 +22,14 @@ use Wazum\VisualPermissions\ViewAsUser\ViewableUsersController;
 // for user management: the group fields it writes ask in that group too, and one password
 // has to cover both.
 return [
+    'visual_permissions_allow_fields' => [
+        'path' => '/visual-permissions/allow-fields',
+        'target' => AllowFieldsController::class . '::write',
+        'access' => 'admin',
+        'sudoMode' => [
+            'group' => 'be.userManagement',
+        ],
+    ],
     'visual_permissions_allow_file_operations' => [
         'path' => '/visual-permissions/allow-file-operations',
         'target' => AllowFileOperationsController::class . '::write',
@@ -30,9 +38,25 @@ return [
             'group' => 'be.userManagement',
         ],
     ],
+    'visual_permissions_allow_modules' => [
+        'path' => '/visual-permissions/allow-modules',
+        'target' => AllowModulesController::class . '::write',
+        'access' => 'admin',
+        'sudoMode' => [
+            'group' => 'be.userManagement',
+        ],
+    ],
     'visual_permissions_allow_page_types' => [
         'path' => '/visual-permissions/allow-page-types',
         'target' => AllowPageTypesController::class . '::write',
+        'access' => 'admin',
+        'sudoMode' => [
+            'group' => 'be.userManagement',
+        ],
+    ],
+    'visual_permissions_allow_tables' => [
+        'path' => '/visual-permissions/allow-tables',
+        'target' => AllowTablesController::class . '::write',
         'access' => 'admin',
         'sudoMode' => [
             'group' => 'be.userManagement',
@@ -55,30 +79,6 @@ return [
         'path' => '/visual-permissions/folder-tree',
         'target' => FolderTreeController::class . '::tree',
         'access' => 'admin',
-    ],
-    'visual_permissions_grant_fields' => [
-        'path' => '/visual-permissions/grant-fields',
-        'target' => GrantFieldsController::class . '::write',
-        'access' => 'admin',
-        'sudoMode' => [
-            'group' => 'be.userManagement',
-        ],
-    ],
-    'visual_permissions_grant_modules' => [
-        'path' => '/visual-permissions/grant-modules',
-        'target' => GrantModulesController::class . '::write',
-        'access' => 'admin',
-        'sudoMode' => [
-            'group' => 'be.userManagement',
-        ],
-    ],
-    'visual_permissions_grant_tables' => [
-        'path' => '/visual-permissions/grant-tables',
-        'target' => GrantTablesController::class . '::write',
-        'access' => 'admin',
-        'sudoMode' => [
-            'group' => 'be.userManagement',
-        ],
     ],
     'visual_permissions_inspect' => [
         'path' => '/visual-permissions/inspect',

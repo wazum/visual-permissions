@@ -13,9 +13,9 @@ deptrac:
     - { name: RecordList, collectors: [{ type: directory, value: Classes/Surfaces/RecordList/.* }] }
     - { name: Toolbar, collectors: [{ type: directory, value: Classes/Surfaces/Toolbar/.* }] }
     - { name: EditOtherPermissions, collectors: [{ type: directory, value: Classes/EditOtherPermissions/.* }] }
-    - { name: GrantFields, collectors: [{ type: directory, value: Classes/GrantFields/.* }] }
-    - { name: GrantModules, collectors: [{ type: directory, value: Classes/GrantModules/.* }] }
-    - { name: GrantTables, collectors: [{ type: directory, value: Classes/GrantTables/.* }] }
+    - { name: AllowFields, collectors: [{ type: directory, value: Classes/AllowFields/.* }] }
+    - { name: AllowModules, collectors: [{ type: directory, value: Classes/AllowModules/.* }] }
+    - { name: AllowTables, collectors: [{ type: directory, value: Classes/AllowTables/.* }] }
     - { name: MountBranches, collectors: [{ type: directory, value: Classes/MountBranches/.* }] }
     - { name: ViewAsUser, collectors: [{ type: directory, value: Classes/ViewAsUser/.* }] }
     - { name: Inspect, collectors: [{ type: directory, value: Classes/Inspect/.* }] }
@@ -33,9 +33,9 @@ deptrac:
     RecordList: *surface
     Toolbar: *surface
     EditOtherPermissions: &slice [Authorization, BackendGroups, Compatibility, Configuration, DataHandling, Write, RecordForm, Toolbar]
-    GrantFields: *slice
-    GrantModules: *slice
-    GrantTables: *slice
+    AllowFields: *slice
+    AllowModules: *slice
+    AllowTables: *slice
     MountBranches: *slice
     ViewAsUser: *slice
-    Inspect: [Authorization, BackendGroups, GrantFields, GrantModules, GrantTables, MountBranches]
+    Inspect: [Authorization, BackendGroups, AllowFields, AllowModules, AllowTables, MountBranches]

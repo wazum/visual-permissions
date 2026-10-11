@@ -8,10 +8,10 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Backend\Module\Module;
 use TYPO3\CMS\Backend\Module\ModuleRegistry;
+use Wazum\VisualPermissions\AllowFields\FieldCatalogue;
+use Wazum\VisualPermissions\AllowModules\ModuleCatalogue;
+use Wazum\VisualPermissions\AllowTables\TableCatalogue;
 use Wazum\VisualPermissions\Authorization\Verdicts;
-use Wazum\VisualPermissions\GrantFields\FieldCatalogue;
-use Wazum\VisualPermissions\GrantModules\ModuleCatalogue;
-use Wazum\VisualPermissions\GrantTables\TableCatalogue;
 use Wazum\VisualPermissions\Inspect\PermissionStateComposer;
 use Wazum\VisualPermissions\Tests\ContractFixture;
 
