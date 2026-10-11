@@ -1,5 +1,6 @@
 import { expect, test } from '../../../fixtures/test.js'
 import { pickArea } from '../../../fixtures/areas.js'
+import { onOlderCore } from '../../../fixtures/compatibility.js'
 import { openFirstPage } from '../../../fixtures/record-form.js'
 import { pickFirstGroup } from '../../../fixtures/groups.js'
 import { forgetSession } from '../../../fixtures/session.js'
@@ -7,6 +8,8 @@ import { openControls, switchOn } from '../../../fixtures/visual-mode.js'
 const save = 'button[name="_savedok"]'
 const close = '.t3js-editform-close'
 const textField = 'input[data-formengine-input-name]'
+const newTranslationMenu = '.module-docheader-navigation .dropdown-toggle:has(+ .dropdown-menu typo3-backend-localization-button)'
+const newTranslation = 'typo3-backend-localization-button'
 
 test.beforeEach(async ({ page }) => {
   await forgetSession(page)
@@ -62,4 +65,20 @@ test('a field cannot be typed into while the form is picked to work in', async (
   await pickArea(page, 'modules')
 
   await expect(field).toBeEditable()
+})
+
+test('the language menu offers no new translation while permissions are edited', async ({ page }) => {
+  test.skip(await onOlderCore(page), '13.4 offers languages in a select, covered with the compatibility code')
+  await page.goto('/typo3/')
+  await openControls(page)
+  await pickFirstGroup(page)
+
+  const form = await openFirstPage(page)
+
+  await openControls(page)
+  await switchOn(page)
+  await pickArea(page, 'fields')
+  await form.locator(newTranslationMenu).click()
+
+  await expect(form.locator(newTranslation)).toBeHidden()
 })
