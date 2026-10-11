@@ -192,6 +192,35 @@ describe('a field\'s mark', () => {
     expect(mark?.getAttribute('aria-expanded')).toBe('false')
   })
 
+  it('closes once the keyboard moves on from the mark', async () => {
+    judged({ 'pages:title': 'denied' })
+    drawForm(row('pages:title', 'denied'))
+    await vi.waitFor(() => { expect(markOf('pages:title')).not.toBeNull() })
+    const elsewhere = document.createElement('input')
+    document.body.append(elsewhere)
+    markOf('pages:title')?.focus()
+    markOf('pages:title')?.click()
+
+    elsewhere.focus()
+
+    expect(cardOf().hasAttribute('data-open')).toBe(false)
+  })
+
+  it('stays open while the keyboard is in the card, and closes once it leaves', async () => {
+    judged({ 'pages:nav_title': 'inherited' }, { 'pages:nav_title': [6] })
+    drawForm(row('pages:nav_title', 'inherited'))
+    await vi.waitFor(() => { expect(markOf('pages:nav_title')).not.toBeNull() })
+    const elsewhere = document.createElement('input')
+    document.body.append(elsewhere)
+    markOf('pages:nav_title')?.focus()
+    markOf('pages:nav_title')?.click()
+    expect(cardOf().hasAttribute('data-open')).toBe(true)
+
+    elsewhere.focus()
+
+    expect(cardOf().hasAttribute('data-open')).toBe(false)
+  })
+
   it('opens under the pointer after a moment, and lets go a moment after the pointer left', async () => {
     judged({ 'pages:title': 'denied' })
     drawForm(row('pages:title', 'denied'))

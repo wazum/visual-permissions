@@ -221,6 +221,53 @@ test('escape closes the card and hands the keyboard back to the mark', async ({ 
   await expect(mark).toHaveAttribute('aria-expanded', 'false')
 })
 
+test('the card closes once the keyboard moves on', async ({ page }) => {
+  await page.goto('/typo3/')
+  await openControls(page)
+  await pickFirstGroup(page)
+
+  const form = await openFirstPage(page)
+
+  await openControls(page)
+  await switchOn(page)
+
+  const mark = form.locator(pageTitle).getByRole('button', { name: 'Open to all editors' })
+  await mark.press('Enter')
+  const card = form.getByRole('dialog', { name: 'Open to all editors' })
+  await expect(card).toBeVisible()
+
+  await page.keyboard.press('Tab')
+
+  await expect(card).toBeHidden()
+  await expect(mark).toHaveAttribute('aria-expanded', 'false')
+})
+
+test('the card stays while the keyboard moves through it and closes once it leaves', async ({ page }) => {
+  await page.goto('/typo3/')
+  await openControls(page)
+  await pickGroup(page, 'Student Services')
+
+  const form = await openFirstPage(page)
+
+  await openControls(page)
+  await switchOn(page)
+
+  await form.locator('[data-vperm-token="pages:nav_title"]').getByRole('button', { name: 'Inherited' }).press('Enter')
+  const card = form.getByRole('dialog', { name: 'Inherited' })
+  const buttons = card.getByRole('button')
+  await expect(buttons.first()).toBeFocused()
+
+  for (let step = 1; step < await buttons.count(); step++) {
+    await page.keyboard.press('Tab')
+
+    await expect(buttons.nth(step)).toBeFocused()
+  }
+
+  await page.keyboard.press('Tab')
+
+  await expect(card).toBeHidden()
+})
+
 test('the pointer carries an open card from one mark to the next', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)

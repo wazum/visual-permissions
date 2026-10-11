@@ -111,6 +111,12 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
     timer = window.setTimeout(() => { card.hidePopover() }, closeAfter)
   }
 
+  const moveOn = (card: HTMLElement, event: FocusEvent): void => {
+    if (!card.contains(event.relatedTarget as Node | null)) {
+      card.hidePopover()
+    }
+  }
+
   const cardIn = (doc: Document): HTMLElement => {
     const drawn = cards.get(doc)
     if (drawn !== undefined) {
@@ -125,6 +131,7 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
     card.setAttribute('aria-labelledby', `${classes.markCard}-title`)
     card.addEventListener('mouseenter', () => { window.clearTimeout(timer) })
     card.addEventListener('mouseleave', () => { letGo(card) })
+    card.addEventListener('focusout', event => { moveOn(card, event) })
     // Told before the change, so a mark entered right after an open already finds it open
     card.addEventListener('beforetoggle', event => {
       opened = event.newState === 'open'
@@ -198,6 +205,7 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
         timer = window.setTimeout(() => { open(mark, field) }, openAfter)
       })
       mark.addEventListener('mouseleave', () => { letGo(cardIn(mark.ownerDocument)) })
+      mark.addEventListener('focusout', event => { moveOn(cardIn(mark.ownerDocument), event) })
       heading.append(mark)
     })
   }
