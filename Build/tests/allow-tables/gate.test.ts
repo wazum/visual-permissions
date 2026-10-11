@@ -49,10 +49,9 @@ const recordOf = (token: string): void => {
       <legend class="form-legend">Media elements</legend>
       <div class="form-irre-object">
         <div class="panel-heading">
-          <div class="form-irre-header">
-            <div class="form-irre-header-cell form-irre-header-icon"><span class="caret"></span></div>
-            <button class="form-irre-header-cell"><span>The video</span></button>
-            <div class="form-irre-header-cell form-irre-header-control"><button>Delete</button></div>
+          <div class="panel-heading-row">
+            <button class="panel-button"><span class="caret"></span><div class="panel-title"><span>The video</span></div></button>
+            <div class="panel-actions"><button>Delete</button></div>
           </div>
         </div>
         <div class="panel-collapse">
@@ -99,7 +98,7 @@ const anotherRecordOf = (token: string): void => {
     <fieldset class="vperm-anchor" ${attributes.token}="tt_content:media"
       ${attributes.field}="tt_content-82-media" ${attributes.inside}="">
       <div class="form-irre-object">
-        <div class="panel-heading"><div class="form-irre-header"><button>The poster</button></div></div>
+        <div class="panel-heading"><div class="panel-heading-row"><button class="panel-button">The poster</button></div></div>
         <div class="panel-collapse">
           <div class="form-group">
             <fieldset class="vperm-anchor" ${attributes.token}="${token}"
