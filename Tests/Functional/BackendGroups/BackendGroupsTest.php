@@ -144,9 +144,9 @@ final class BackendGroupsTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
 
-        $this->get(BackendGroups::class)->grant(20, Scope::TablesModify, [
-            ['target' => 'sys_category', 'grant' => true],
-            ['target' => 'pages', 'grant' => false],
+        $this->get(BackendGroups::class)->change(20, Scope::TablesModify, [
+            ['target' => 'sys_category', 'add' => true],
+            ['target' => 'pages', 'add' => false],
         ]);
 
         self::assertSame('tt_content,sys_category', $this->tablesOfTwenty());
@@ -159,7 +159,7 @@ final class BackendGroupsTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
 
-        $this->get(BackendGroups::class)->grant(20, Scope::TablesModify, [['target' => 'pages', 'grant' => true]]);
+        $this->get(BackendGroups::class)->change(20, Scope::TablesModify, [['target' => 'pages', 'add' => true]]);
 
         self::assertSame('tt_content,pages', $this->tablesOfTwenty());
     }

@@ -27,8 +27,8 @@ final class FieldCatalogueTest extends TestCase
         self::assertSame(
             [
                 'pages:title' => TargetKind::NotApplicable,
-                'pages:layout' => TargetKind::Grantable,
-                'pages:nav_title' => TargetKind::Grantable,
+                'pages:layout' => TargetKind::Allowable,
+                'pages:nav_title' => TargetKind::Allowable,
             ],
             (new FieldCatalogue())->of('pages'),
         );

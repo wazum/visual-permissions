@@ -3,7 +3,7 @@ import { write, type WriteOutcome } from '../platform/transport.js'
 
 export interface FieldOperation {
   readonly field: string
-  readonly grant: boolean
+  readonly allow: boolean
 }
 
 export async function writeFields(

@@ -7,7 +7,7 @@ namespace Wazum\VisualPermissions\Authorization;
 enum TargetKind: string
 {
     case AdminOnly = 'adminOnly';
-    case Grantable = 'grantable';
+    case Allowable = 'allowable';
     case NeverEditable = 'neverEditable';
     case NotApplicable = 'notApplicable';
 }

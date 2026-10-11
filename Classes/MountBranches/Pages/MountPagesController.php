@@ -8,7 +8,7 @@ use Wazum\VisualPermissions\Authorization\Scope;
 use Wazum\VisualPermissions\Write\GroupWriteController;
 
 /**
- * @extends GroupWriteController<array{target: string, grant: bool}>
+ * @extends GroupWriteController<array{target: string, add: bool}>
  */
 final readonly class MountPagesController extends GroupWriteController
 {
@@ -34,7 +34,7 @@ final readonly class MountPagesController extends GroupWriteController
                 return null;
             }
 
-            $operations[] = ['target' => (string) $page, 'grant' => $mount];
+            $operations[] = ['target' => (string) $page, 'add' => $mount];
         }
 
         return $operations;
@@ -45,6 +45,6 @@ final readonly class MountPagesController extends GroupWriteController
      */
     protected function writeOperations(int $groupId, array $operations): bool
     {
-        return $this->groups->grant($groupId, Scope::PageMounts, $operations);
+        return $this->groups->change($groupId, Scope::PageMounts, $operations);
     }
 }

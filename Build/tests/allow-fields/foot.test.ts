@@ -25,12 +25,12 @@ const outOfReach = (markup: string): string =>
   markup.replace('class="vperm-anchor"', `class="vperm-anchor" ${attributes.outOfReach}`)
 
 const labels = {
-  'grantFields.tally.one': 'The group may edit %1$s of %2$s field',
-  'grantFields.tally.many': 'The group may edit %1$s of %2$s fields',
-  'grantFields.waiting.one': '%s field waiting to be allowed',
-  'grantFields.waiting.many': '%s fields waiting to be allowed',
-  'grantFields.going.one': '%s field waiting to be disallowed',
-  'grantFields.going.many': '%s fields waiting to be disallowed',
+  'allowFields.tally.one': 'The group may edit %1$s of %2$s field',
+  'allowFields.tally.many': 'The group may edit %1$s of %2$s fields',
+  'allowFields.waiting.one': '%s field waiting to be allowed',
+  'allowFields.waiting.many': '%s fields waiting to be allowed',
+  'allowFields.going.one': '%s field waiting to be disallowed',
+  'allowFields.going.many': '%s fields waiting to be disallowed',
   'platform.cancel': 'Cancel',
   'platform.doAllow': 'Allow',
   'platform.doDisallow': 'Disallow',
@@ -343,7 +343,7 @@ describe('the foot under the fields a group is given', () => {
 
     expect(sent).toStrictEqual([{
       url: '/typo3/ajax/visual_permissions_allow_fields',
-      body: { group: 7, operations: [{ field: 'tt_content:layout', grant: true }] },
+      body: { group: 7, operations: [{ field: 'tt_content:layout', allow: true }] },
     }])
   })
 
@@ -488,7 +488,7 @@ describe('the foot under the fields a group is given', () => {
 
     expect(sent[0]?.body).toStrictEqual({
       group: 7,
-      operations: [{ field: 'tt_content:header', grant: false }],
+      operations: [{ field: 'tt_content:header', allow: false }],
     })
   })
 
@@ -505,7 +505,7 @@ describe('the foot under the fields a group is given', () => {
 
     expect(sent[0]?.body).toStrictEqual({
       group: 7,
-      operations: [{ field: 'tt_content:assets', grant: true }],
+      operations: [{ field: 'tt_content:assets', allow: true }],
     })
   })
 
@@ -611,7 +611,7 @@ describe('the foot under the fields a group is given', () => {
     document.querySelector<HTMLElement>(`.${classes.faceApply}`)?.click()
     await vi.advanceTimersByTimeAsync(280)
 
-    expect(sent[0]?.body).toStrictEqual({ group: 8, operations: [{ field: 'tt_content:layout', grant: true }] })
+    expect(sent[0]?.body).toStrictEqual({ group: 8, operations: [{ field: 'tt_content:layout', allow: true }] })
   })
 
   it('sends a change once however often it is pressed', async () => {

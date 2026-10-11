@@ -184,7 +184,7 @@ describe('choosing the values a group may use', () => {
     await vi.waitFor(() => {
       expect(sent).toContainEqual({
         url: '/typo3/ajax/visual_permissions_allow_values',
-        body: { group: 7, operations: [{ value: 'tt_content:CType:textmedia', grant: true }] },
+        body: { group: 7, operations: [{ value: 'tt_content:CType:textmedia', allow: true }] },
       })
     })
   })
@@ -235,7 +235,7 @@ describe('choosing the values a group may use', () => {
     await vi.waitFor(() => {
       expect(sent).toContainEqual({
         url: '/typo3/ajax/visual_permissions_allow_page_types',
-        body: { group: 7, operations: [{ value: '254', grant: true }] },
+        body: { group: 7, operations: [{ value: '254', allow: true }] },
       })
     })
   })

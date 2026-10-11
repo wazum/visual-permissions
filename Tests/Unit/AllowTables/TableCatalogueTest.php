@@ -24,8 +24,8 @@ final class TableCatalogueTest extends TestCase
     {
         self::assertSame(
             [
-                'pages' => TargetKind::Grantable,
-                'tt_content' => TargetKind::Grantable,
+                'pages' => TargetKind::Allowable,
+                'tt_content' => TargetKind::Allowable,
             ],
             (new TableCatalogue())->all(),
         );

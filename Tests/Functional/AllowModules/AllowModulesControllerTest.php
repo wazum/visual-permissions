@@ -31,8 +31,8 @@ final class AllowModulesControllerTest extends FunctionalTestCase
         $response = $this->get(AllowModulesController::class)->write($this->asked([
             'group' => 10,
             'operations' => [
-                ['module' => 'about', 'grant' => true],
-                ['module' => 'web_layout', 'grant' => false],
+                ['module' => 'about', 'allow' => true],
+                ['module' => 'web_layout', 'allow' => false],
             ],
         ]));
 
@@ -45,7 +45,7 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     {
         $response = $this->get(AllowModulesController::class)->write($this->asked([
             'group' => 10,
-            'operations' => [['module' => 'no_such_module', 'grant' => true]],
+            'operations' => [['module' => 'no_such_module', 'allow' => true]],
         ]));
 
         self::assertSame(400, $response->getStatusCode());
@@ -62,7 +62,7 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     {
         $response = $this->get(AllowModulesController::class)->write($this->asked([
             'group' => 10,
-            'operations' => [['module' => 'no_such_module', 'grant' => false]],
+            'operations' => [['module' => 'no_such_module', 'allow' => false]],
         ]));
 
         self::assertSame(204, $response->getStatusCode());

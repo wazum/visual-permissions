@@ -42,19 +42,19 @@ export function render(doc: Document, menu: Element): void {
   const group = titleOf(doc, paintedFor) ?? ''
   const known = [...menu.querySelectorAll(rows)]
   const reachable = known.filter(row => isReachable(verdictOf(row)))
-  const grantedByGroup = known.filter(row => verdictOf(row) === picked)
+  const allowedByGroup = known.filter(row => verdictOf(row) === picked)
 
-  const preview = face(doc, classes.facePreview, labelOf('platform.preview'), said(labelOf('grantModules.previewFor'), group))
-  const pick = face(doc, classes.facePick, labelOf('platform.pick'), said(labelOf('grantModules.pickFor'), group))
+  const preview = face(doc, classes.facePreview, labelOf('platform.preview'), said(labelOf('allowModules.previewFor'), group))
+  const pick = face(doc, classes.facePick, labelOf('platform.pick'), said(labelOf('allowModules.pickFor'), group))
 
   const spinning = doc.querySelector(`.${classes.coin}`)
   const coin = spinning ?? doc.createElement('div')
   coin.className = classes.coin
   coin.replaceChildren(preview.sheet, pick.sheet)
 
-  const taken = doc.querySelector(`.${classes.granted}`)
+  const taken = doc.querySelector(`.${classes.allowed}`)
   const stage = taken ?? doc.createElement('div')
-  stage.className = classes.granted
+  stage.className = classes.allowed
 
   if (coin.parentElement !== stage) {
     stage.replaceChildren(coin)
@@ -80,8 +80,8 @@ export function render(doc: Document, menu: Element): void {
   }
 
   // The module carries changes and no others
-  const write = (operations: { module: string, grant: boolean }[]): void => {
-    const asked = operations.filter(operation => operation.grant).map(operation => operation.module)
+  const write = (operations: { module: string, allow: boolean }[]): void => {
+    const asked = operations.filter(operation => operation.allow).map(operation => operation.module)
 
     // Stryker disable next-line ConditionalExpression,BlockStatement: the panel is painted only for a group, and writeModules needs the number
     if (paintedFor === null) {
@@ -123,7 +123,7 @@ export function render(doc: Document, menu: Element): void {
       showCount()
     },
     apply: () => {
-      write(marked(preview.scroll).map(row => ({ module: nameOf(row), grant: false })))
+      write(marked(preview.scroll).map(row => ({ module: nameOf(row), allow: false })))
     },
   })
 
@@ -140,20 +140,20 @@ export function render(doc: Document, menu: Element): void {
       const changed = ownIn(pick.scroll).filter(row => verdictOf(row) !== was.get(row))
 
       // Only a module the group has not got can be picked here; every change is a grant
-      write(changed.map(row => ({ module: nameOf(row), grant: true })))
+      write(changed.map(row => ({ module: nameOf(row), allow: true })))
     },
   })
 
   const showCount = (): void => {
     const own = ownIn(pick.scroll)
     const queued = own.filter(row => verdictOf(row) !== was.get(row))
-    const granted = own.filter(row => isReachable(verdictOf(row)) && !queued.includes(row))
-    const has = counted('grantModules.tally', own.length, granted.length, own.length)
+    const allowed = own.filter(row => isReachable(verdictOf(row)) && !queued.includes(row))
+    const has = counted('allowModules.tally', own.length, allowed.length, own.length)
 
     const toRemove = marked(preview.scroll)
     removals.state.textContent = toRemove.length === 0
       ? has
-      : counted('grantModules.marked', grantedByGroup.length, toRemove.length, grantedByGroup.length)
+      : counted('allowModules.marked', allowedByGroup.length, toRemove.length, allowedByGroup.length)
     removals.ready(toRemove.length > 0, toRemove.length > 0)
 
     additions.state.textContent = has
@@ -162,8 +162,8 @@ export function render(doc: Document, menu: Element): void {
   }
 
   preview.bar.append(
-    button(doc, labelOf('grantModules.allow'), 'btn btn-default', () => { turnTo(true) }),
-    say(doc, classes.faceHint, labelOf('grantModules.hint')),
+    button(doc, labelOf('allowModules.allow'), 'btn btn-default', () => { turnTo(true) }),
+    say(doc, classes.faceHint, labelOf('allowModules.hint')),
   )
 
   pick.scroll.style.setProperty('--vperm-queued-note', `"${labelOf('platform.toAllow')}"`)
@@ -199,7 +199,7 @@ export function restoreMenu(doc: Document, menu: Element): void {
     return
   }
 
-  const stage = card.querySelector(`.${classes.granted}`)
+  const stage = card.querySelector(`.${classes.allowed}`)
   if (stage === null) {
     return
   }
@@ -263,7 +263,7 @@ function fillPreview(
     const parent = row.closest(groupContainer)?.previousElementSibling?.getAttribute('title') ?? ''
     if (parent !== heading && parent !== '') {
       heading = parent
-      into.append(say(doc, classes.grantedGroup, parent))
+      into.append(say(doc, classes.allowedGroup, parent))
     }
 
     const clone = plain(row)
@@ -275,7 +275,7 @@ function fillPreview(
         marked()
       })
     } else {
-      clone.append(say(doc, classes.grantedFrom, from))
+      clone.append(say(doc, classes.allowedFrom, from))
     }
 
     into.append(clone)
@@ -304,24 +304,24 @@ function fillPick(into: HTMLElement, menu: Element, marked: () => void): void {
   })
 
   into.querySelectorAll('[aria-controls]').forEach(control => {
-    control.replaceWith(say(control.ownerDocument, classes.grantedGroup, control.getAttribute('title') ?? ''))
+    control.replaceWith(say(control.ownerDocument, classes.allowedGroup, control.getAttribute('title') ?? ''))
   })
 }
 
-function deedFor(row: Element): '' | 'grant' | 'unpick' {
+function deedFor(row: Element): '' | 'allow' | 'unpick' {
   const now = verdictOf(row)
 
   if (row.getAttribute('aria-disabled') === 'true' || !isOwn(now)) {
     return ''
   }
 
-  return isReachable(now) ? 'unpick' : 'grant'
+  return isReachable(now) ? 'unpick' : 'allow'
 }
 
 function ask(row: Element): void {
   const deed = deedFor(row)
   if (deed !== '') {
-    row.setAttribute(attributes.verdict, deed === 'grant' ? picked : dropped)
+    row.setAttribute(attributes.verdict, deed === 'allow' ? picked : dropped)
   }
 }
 

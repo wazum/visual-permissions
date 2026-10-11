@@ -68,16 +68,16 @@ const carrier = (): void => {
   document.body.append(hidden)
   TYPO3.lang = {
     'platform.preview': 'Preview',
-    'grantModules.previewFor': 'What %s may open',
-    'grantModules.allow': 'Allow modules',
-    'grantModules.hint': 'or click a module to remove it',
+    'allowModules.previewFor': 'What %s may open',
+    'allowModules.allow': 'Allow modules',
+    'allowModules.hint': 'or click a module to remove it',
     'platform.pick': 'Assign',
-    'grantModules.pickFor': 'Pick what %s may open',
-    'grantModules.tally.one': '%1$s of %2$s module allowed',
-    'grantModules.tally.many': '%1$s of %2$s modules allowed',
+    'allowModules.pickFor': 'Pick what %s may open',
+    'allowModules.tally.one': '%1$s of %2$s module allowed',
+    'allowModules.tally.many': '%1$s of %2$s modules allowed',
     'platform.waiting': '%s waiting to be allowed',
-    'grantModules.marked.one': '%1$s of %2$s module marked to remove',
-    'grantModules.marked.many': '%1$s of %2$s modules marked to remove',
+    'allowModules.marked.one': '%1$s of %2$s module marked to remove',
+    'allowModules.marked.many': '%1$s of %2$s modules marked to remove',
     'platform.from': 'from a subgroup',
     'platform.cancel': 'Cancel',
     'platform.doAllow': 'Allow',
@@ -92,7 +92,7 @@ const armed = async (): Promise<void> => {
   activate()
   pickArea('modules')
   await vi.waitFor(() => {
-    expect(document.querySelector(`.${classes.granted}`)).not.toBeNull()
+    expect(document.querySelector(`.${classes.allowed}`)).not.toBeNull()
   })
 }
 
@@ -151,7 +151,7 @@ describe('the module panel the group sees', () => {
     const card = document.querySelector(`.${classes.panelCard}`)
 
     expect(card?.querySelector('#modulemenu')).not.toBeNull()
-    expect(card?.querySelector(`.${classes.granted}`)).not.toBeNull()
+    expect(card?.querySelector(`.${classes.allowed}`)).not.toBeNull()
     expect(document.querySelector('#modulemenu')?.hasAttribute('inert')).toBe(true)
     expect(document.querySelector(`.${classes.coin}`)?.classList.contains(classes.coinTurned)).toBe(false)
   })
@@ -265,7 +265,7 @@ describe('the module panel the group sees', () => {
     await Promise.resolve()
     await Promise.resolve()
 
-    expect(document.querySelector(`.${classes.granted}`)).toBeNull()
+    expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
     expect(document.querySelector('#modulemenu')?.hasAttribute('inert')).toBe(false)
   })
 
@@ -282,7 +282,7 @@ describe('the module panel the group sees', () => {
 
     expect(document.querySelector('#modulemenu')?.hasAttribute('inert')).toBe(false)
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.granted}`)).toBeNull()
+      expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
     })
   })
 
@@ -294,14 +294,14 @@ describe('the module panel the group sees', () => {
     await armed()
     pickArea('fields')
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.granted}`)).toBeNull()
+      expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
     })
 
     pickArea('modules')
     pickArea('fields')
 
     expect(document.querySelector('#modulemenu')).not.toBeNull()
-    expect(document.querySelector(`.${classes.granted}`)).toBeNull()
+    expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
   })
 
   it('leaves a card that belongs to another scope alone', () => {
@@ -332,7 +332,7 @@ describe('the module panel the group sees', () => {
     })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.granted}`)).toBeNull()
+      expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
       expect(document.querySelector(`.${classes.panelCard}`)).toBeNull()
     })
   })
@@ -346,7 +346,7 @@ describe('the module panel the group sees', () => {
     inPreview('button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     pickArea('fields')
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.granted}`)).toBeNull()
+      expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
     })
     await armed()
 
@@ -374,7 +374,7 @@ describe('the module panel the group sees', () => {
     await armed()
 
     const shape = [...(inPreview(`.${classes.faceScroll}`)?.children ?? [])]
-      .map(child => child.className.includes(classes.grantedGroup) ? `# ${child.textContent}` : 'row')
+      .map(child => child.className.includes(classes.allowedGroup) ? `# ${child.textContent}` : 'row')
 
     expect(shape).toEqual(['row', '# Web', 'row', 'row'])
   })
@@ -424,7 +424,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    const marks = document.querySelectorAll(`.${classes.granted} .modulemenu-action-active, .${classes.granted} [aria-current]`)
+    const marks = document.querySelectorAll(`.${classes.allowed} .modulemenu-action-active, .${classes.allowed} [aria-current]`)
 
     expect(marks).toHaveLength(0)
   })
@@ -489,7 +489,7 @@ describe('the module panel the group sees', () => {
     await vi.waitFor(() => {
       expect(sent).toHaveLength(1)
     })
-    expect(sent[0]?.body).toEqual({ group: 7, operations: [{ module: 'web_layout', grant: false }] })
+    expect(sent[0]?.body).toEqual({ group: 7, operations: [{ module: 'web_layout', allow: false }] })
   })
 
   it('forgets the marks when the removal is called off', async () => {
@@ -513,7 +513,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    const links = [...document.querySelectorAll(`.${classes.granted} [data-modulemenu-identifier]`)]
+    const links = [...document.querySelectorAll(`.${classes.allowed} [data-modulemenu-identifier]`)]
 
     expect(links.filter(link => link.hasAttribute('href'))).toHaveLength(0)
   })
@@ -558,7 +558,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPick(`.${classes.grantedGroup}`)?.textContent).toBe('Web')
+    expect(inPick(`.${classes.allowedGroup}`)?.textContent).toBe('Web')
     expect(inPick('[data-modulemenu-identifier="web"]')).toBeNull()
   })
 
@@ -908,7 +908,7 @@ describe('the module panel the group sees', () => {
     })
     expect(sent[0]?.body).toEqual({
       group: 7,
-      operations: [{ module: 'records', grant: true }],
+      operations: [{ module: 'records', allow: true }],
     })
   })
 
@@ -1191,7 +1191,7 @@ describe('the module panel the group sees', () => {
     expect(inPreview(`.${classes.faceSentence}`)?.textContent).toBe('')
     expect(inPreview(`.${classes.faceHint}`)?.textContent).toBe('')
     expect(inPreview('button')?.textContent).toBe('')
-    expect(inPreview(`.${classes.grantedFrom}`)?.textContent).toBe('')
+    expect(inPreview(`.${classes.allowedFrom}`)?.textContent).toBe('')
     expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('')
     expect(inPreview(`.${classes.faceApply}`)?.textContent).toBe('')
     expect(inPreview(`.${classes.faceCancel}`)?.textContent).toBe('')
@@ -1204,7 +1204,7 @@ describe('the module panel the group sees', () => {
 
   it('says nothing about the group where the words name none', async () => {
     menu()
-    TYPO3.lang = { 'grantModules.previewFor': 'The modules a group may open' }
+    TYPO3.lang = { 'allowModules.previewFor': 'The modules a group may open' }
     initialise(document, listening.signal)
 
     await armed()
@@ -1214,7 +1214,7 @@ describe('the module panel the group sees', () => {
 
   it('leaves the group nameless when the backend named none', async () => {
     menu()
-    TYPO3.lang = { 'grantModules.previewFor': 'What %s may open' }
+    TYPO3.lang = { 'allowModules.previewFor': 'What %s may open' }
     initialise(document, listening.signal)
 
     await armed()
@@ -1260,7 +1260,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
     const card = document.querySelector(`.${classes.panelCard}`)
-    const stage = document.querySelector(`.${classes.granted}`)
+    const stage = document.querySelector(`.${classes.allowed}`)
     const face = document.querySelector(`.${classes.facePreview}`)
 
     if (card === null || stage === null) {
@@ -1364,9 +1364,9 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPreview('[data-modulemenu-identifier="web_info"] .' + classes.grantedFrom)?.textContent)
+    expect(inPreview('[data-modulemenu-identifier="web_info"] .' + classes.allowedFrom)?.textContent)
       .toBe('from a subgroup')
-    expect(inPreview('[data-modulemenu-identifier="web_layout"] .' + classes.grantedFrom)).toBeNull()
+    expect(inPreview('[data-modulemenu-identifier="web_layout"] .' + classes.allowedFrom)).toBeNull()
   })
 
   it('leaves a module nobody may be granted where it is while picking', async () => {
@@ -1415,8 +1415,8 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPreview(`.${classes.grantedGroup}`)).toBeNull()
-    expect(inPick(`.${classes.grantedGroup}`)?.textContent).toBe('')
+    expect(inPreview(`.${classes.allowedGroup}`)).toBeNull()
+    expect(inPick(`.${classes.allowedGroup}`)?.textContent).toBe('')
     expect(inPreview('[data-modulemenu-identifier="web_layout"]')?.hasAttribute('aria-current')).toBe(false)
   })
 
@@ -1436,7 +1436,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPreview(`.${classes.grantedGroup}`)).toBeNull()
+    expect(inPreview(`.${classes.allowedGroup}`)).toBeNull()
   })
 
   it('offers its controls as buttons of their own', async () => {
@@ -1446,7 +1446,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    const controls = [...document.querySelectorAll<HTMLButtonElement>(`.${classes.granted} button`)]
+    const controls = [...document.querySelectorAll<HTMLButtonElement>(`.${classes.allowed} button`)]
 
     expect(controls).not.toHaveLength(0)
     controls.forEach(control => { expect(control.type).toBe('button') })

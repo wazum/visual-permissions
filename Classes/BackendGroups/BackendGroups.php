@@ -161,18 +161,18 @@ final readonly class BackendGroups
     }
 
     /**
-     * @param list<array{target: string, grant: bool}> $operations
+     * @param list<array{target: string, add: bool}> $operations
      *
      * @return bool whether the backend took the write
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    public function grant(int $groupId, Scope $scope, array $operations): bool
+    public function change(int $groupId, Scope $scope, array $operations): bool
     {
         $list = $this->listOf($groupId, $scope);
 
         foreach ($operations as $operation) {
-            $list = $operation['grant']
+            $list = $operation['add']
                 ? [...$list, $operation['target']]
                 : array_values(array_diff($list, [$operation['target']]));
         }

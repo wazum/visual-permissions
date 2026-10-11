@@ -29,8 +29,8 @@ final class AllowValuesControllerTest extends FunctionalTestCase
         $response = $this->get(AllowValuesController::class)->write($this->asked([
             'group' => 10,
             'operations' => [
-                ['value' => 'tt_content:CType:header', 'grant' => true],
-                ['value' => 'tt_content:CType:textmedia', 'grant' => false],
+                ['value' => 'tt_content:CType:header', 'allow' => true],
+                ['value' => 'tt_content:CType:textmedia', 'allow' => false],
             ],
         ]));
 
@@ -62,7 +62,7 @@ final class AllowValuesControllerTest extends FunctionalTestCase
 
         $response = $this->get(AllowValuesController::class)->write($this->asked([
             'group' => 10,
-            'operations' => [['value' => $value, 'grant' => true]],
+            'operations' => [['value' => $value, 'allow' => true]],
         ]));
 
         self::assertSame(400, $response->getStatusCode());
@@ -81,7 +81,7 @@ final class AllowValuesControllerTest extends FunctionalTestCase
 
         $response = $this->get(AllowValuesController::class)->write($this->asked([
             'group' => 10,
-            'operations' => [['value' => 'tt_content:CType:header', 'grant' => true]],
+            'operations' => [['value' => 'tt_content:CType:header', 'allow' => true]],
         ]));
 
         self::assertSame(400, $response->getStatusCode());

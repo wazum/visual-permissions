@@ -27,7 +27,7 @@ export interface Permissions {
   readonly chain: readonly ChainStep[]
   readonly scopes: {
     // A field a subgroup gives names that subgroup; one the group gives itself is not listed
-    readonly fields: Targets & { readonly givenBy: Readonly<Record<string, readonly number[]>> }
+    readonly fields: Targets & { readonly allowedBy: Readonly<Record<string, readonly number[]>> }
     readonly fieldValues: Targets
     readonly modules: Targets
     readonly pageMounts: Targets & { readonly order: readonly number[], readonly unseen: readonly UnseenPage[] }

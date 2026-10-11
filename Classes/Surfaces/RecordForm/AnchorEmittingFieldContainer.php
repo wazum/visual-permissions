@@ -91,7 +91,7 @@ final class AnchorEmittingFieldContainer extends SingleFieldContainer
 
         return $renderer->otherKinds(
             \sprintf(
-                $language->sL('LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:grantFields.otherKinds'),
+                $language->sL('LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:allowFields.otherKinds'),
                 $language->sL($tableConfigurations[$childTable]['ctrl']['title'] ?? $childTable),
             ),
             $childTable,

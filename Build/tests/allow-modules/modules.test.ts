@@ -141,19 +141,19 @@ describe('the modules scope', () => {
     activate()
     pickArea('modules')
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.granted}`)).not.toBeNull()
+      expect(document.querySelector(`.${classes.allowed}`)).not.toBeNull()
     })
 
     deactivate()
     activate()
     pickArea('modules')
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.granted}`)).not.toBeNull()
+      expect(document.querySelector(`.${classes.allowed}`)).not.toBeNull()
     })
 
     await new Promise(settled => { window.setTimeout(settled, 300) })
 
-    expect(document.querySelector(`.${classes.granted}`)).not.toBeNull()
+    expect(document.querySelector(`.${classes.allowed}`)).not.toBeNull()
     expect(document.querySelector('#modulemenu')).not.toBeNull()
   })
 
@@ -171,7 +171,7 @@ describe('the modules scope', () => {
 
     expect(document.querySelector('#modulemenu')?.hasAttribute('inert')).toBe(false)
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.granted}`)).toBeNull()
+      expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
     })
   })
 

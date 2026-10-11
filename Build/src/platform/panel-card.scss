@@ -17,7 +17,7 @@
 
 // Our side of the card holds a card of its own, so it must not flatten what is inside it:
 // no overflow and no perspective here, both would end the 3D the column started.
-.#{contract.$class-granted} {
+.#{contract.$class-allowed} {
   position: relative;
   height: 100%;
   transform-style: preserve-3d;

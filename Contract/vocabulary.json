@@ -22,7 +22,7 @@
     ],
     "kinds": [
         "adminOnly",
-        "grantable",
+        "allowable",
         "neverEditable",
         "notApplicable"
     ]

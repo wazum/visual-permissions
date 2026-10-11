@@ -29,8 +29,8 @@ final class AllowPageTypesControllerTest extends FunctionalTestCase
         $response = $this->get(AllowPageTypesController::class)->write($this->asked([
             'group' => 10,
             'operations' => [
-                ['value' => '254', 'grant' => true],
-                ['value' => '1', 'grant' => false],
+                ['value' => '254', 'allow' => true],
+                ['value' => '1', 'allow' => false],
             ],
         ]));
 
@@ -63,7 +63,7 @@ final class AllowPageTypesControllerTest extends FunctionalTestCase
 
         $response = $this->get(AllowPageTypesController::class)->write($this->asked([
             'group' => 10,
-            'operations' => [['value' => $pageType, 'grant' => true]],
+            'operations' => [['value' => $pageType, 'allow' => true]],
         ]));
 
         self::assertSame(400, $response->getStatusCode());

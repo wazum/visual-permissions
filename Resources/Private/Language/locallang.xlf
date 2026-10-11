@@ -3,6 +3,147 @@
     <file source-language="en" datatype="plaintext" original="messages" date="2026-09-01T00:00:00Z" product-name="visual_permissions">
         <header/>
         <body>
+            <trans-unit id="allowFields.allowTab" resname="allowFields.allowTab">
+                <source>Allow all on this tab</source>
+            </trans-unit>
+            <trans-unit id="allowFields.allowedBy" resname="allowFields.allowedBy">
+                <source>Allowed by</source>
+            </trans-unit>
+            <trans-unit id="allowFields.going.many" resname="allowFields.going.many">
+                <source>%s fields waiting to be disallowed</source>
+            </trans-unit>
+            <trans-unit id="allowFields.going.one" resname="allowFields.going.one">
+                <source>%s field waiting to be disallowed</source>
+            </trans-unit>
+            <trans-unit id="allowFields.hint.allow" resname="allowFields.hint.allow">
+                <source>Press the field to allow it</source>
+            </trans-unit>
+            <trans-unit id="allowFields.hint.disallow" resname="allowFields.hint.disallow">
+                <source>Press the field to disallow it</source>
+            </trans-unit>
+            <trans-unit id="allowFields.hint.keep" resname="allowFields.hint.keep">
+                <source>Press again to keep it</source>
+            </trans-unit>
+            <trans-unit id="allowFields.hint.leave" resname="allowFields.hint.leave">
+                <source>Press again to leave it out</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.adminOnly.meaning" resname="allowFields.mark.adminOnly.meaning">
+                <source>Only administrators see this field. It cannot be allowed for a group.</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.adminOnly.title" resname="allowFields.mark.adminOnly.title">
+                <source>Administrators only</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.allowed.meaning" resname="allowFields.mark.allowed.meaning">
+                <source>The group may edit this field.</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.allowed.title" resname="allowFields.mark.allowed.title">
+                <source>Allowed</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.allowedAndInherited.meaning" resname="allowFields.mark.allowedAndInherited.meaning">
+                <source>The group may edit this field itself, and a subgroup allows it too. Disallowing it here keeps it allowed through the subgroup.</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.allowedAndInherited.title" resname="allowFields.mark.allowedAndInherited.title">
+                <source>Allowed, and inherited</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.denied.meaning" resname="allowFields.mark.denied.meaning">
+                <source>The group may not edit this field.</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.denied.title" resname="allowFields.mark.denied.title">
+                <source>Not allowed</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.inherited.meaning" resname="allowFields.mark.inherited.meaning">
+                <source>The group may edit this field because a subgroup may. Change it on that subgroup.</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.inherited.title" resname="allowFields.mark.inherited.title">
+                <source>Inherited</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.neverEditable.meaning" resname="allowFields.mark.neverEditable.meaning">
+                <source>The field is read-only for everyone, so no permission changes it.</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.neverEditable.title" resname="allowFields.mark.neverEditable.title">
+                <source>Read-only</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.notApplicable.meaning" resname="allowFields.mark.notApplicable.meaning">
+                <source>TYPO3 has no permission for this field. Every user who may edit this table may edit it.</source>
+            </trans-unit>
+            <trans-unit id="allowFields.mark.notApplicable.title" resname="allowFields.mark.notApplicable.title">
+                <source>Open to all editors</source>
+            </trans-unit>
+            <trans-unit id="allowFields.otherKinds" resname="allowFields.otherKinds">
+                <source>Only on other kinds of "%s"</source>
+            </trans-unit>
+            <trans-unit id="allowFields.recordNoFields" resname="allowFields.recordNoFields">
+                <source>The group may edit "%s", but no field of this record yet</source>
+            </trans-unit>
+            <trans-unit id="allowFields.showGroup" resname="allowFields.showGroup">
+                <source>Show group</source>
+            </trans-unit>
+            <trans-unit id="allowFields.showGroupNamed" resname="allowFields.showGroupNamed">
+                <source>Show group "%s"</source>
+            </trans-unit>
+            <trans-unit id="allowFields.tally.many" resname="allowFields.tally.many">
+                <source>The group may edit %1$s of %2$s fields</source>
+            </trans-unit>
+            <trans-unit id="allowFields.tally.one" resname="allowFields.tally.one">
+                <source>The group may edit %1$s of %2$s field</source>
+            </trans-unit>
+            <trans-unit id="allowFields.toDisallow" resname="allowFields.toDisallow">
+                <source>to disallow</source>
+            </trans-unit>
+            <trans-unit id="allowFields.waiting.many" resname="allowFields.waiting.many">
+                <source>%s fields waiting to be allowed</source>
+            </trans-unit>
+            <trans-unit id="allowFields.waiting.one" resname="allowFields.waiting.one">
+                <source>%s field waiting to be allowed</source>
+            </trans-unit>
+            <trans-unit id="allowModules.allow" resname="allowModules.allow">
+                <source>Allow modules</source>
+            </trans-unit>
+            <trans-unit id="allowModules.hint" resname="allowModules.hint">
+                <source>or click a module to disallow it</source>
+            </trans-unit>
+            <trans-unit id="allowModules.marked.many" resname="allowModules.marked.many">
+                <source>%1$s of %2$s modules waiting to be disallowed</source>
+            </trans-unit>
+            <trans-unit id="allowModules.marked.one" resname="allowModules.marked.one">
+                <source>%1$s of %2$s module waiting to be disallowed</source>
+            </trans-unit>
+            <trans-unit id="allowModules.pickFor" resname="allowModules.pickFor">
+                <source>Pick what the group "%s" may open</source>
+            </trans-unit>
+            <trans-unit id="allowModules.previewFor" resname="allowModules.previewFor">
+                <source>The modules the group "%s" may open</source>
+            </trans-unit>
+            <trans-unit id="allowModules.tally.many" resname="allowModules.tally.many">
+                <source>%1$s of %2$s modules allowed</source>
+            </trans-unit>
+            <trans-unit id="allowModules.tally.one" resname="allowModules.tally.one">
+                <source>%1$s of %2$s module allowed</source>
+            </trans-unit>
+            <trans-unit id="allowTables.adminOnly" resname="allowTables.adminOnly">
+                <source>Only administrators may edit records of this kind</source>
+            </trans-unit>
+            <trans-unit id="allowTables.allow" resname="allowTables.allow">
+                <source>Allow "%s"</source>
+            </trans-unit>
+            <trans-unit id="allowTables.alsoInherited" resname="allowTables.alsoInherited">
+                <source>Allowed by this group and through a subgroup. Change it on that subgroup.</source>
+            </trans-unit>
+            <trans-unit id="allowTables.disallow" resname="allowTables.disallow">
+                <source>Disallow "%s"</source>
+            </trans-unit>
+            <trans-unit id="allowTables.gone" resname="allowTables.gone">
+                <source>This is empty for the group: it may not edit "%s"</source>
+            </trans-unit>
+            <trans-unit id="allowTables.inherited" resname="allowTables.inherited">
+                <source>Reached through a subgroup, not by this group itself. Change it on that group.</source>
+            </trans-unit>
+            <trans-unit id="allowTables.missing" resname="allowTables.missing">
+                <source>The group may not edit records of this kind</source>
+            </trans-unit>
+            <trans-unit id="allowTables.theirs" resname="allowTables.theirs">
+                <source>The group may edit records of this kind</source>
+            </trans-unit>
             <trans-unit id="allowedValues.choose.CType" resname="allowedValues.choose.CType">
                 <source>Choose page content types</source>
             </trans-unit>
@@ -20,147 +161,6 @@
             </trans-unit>
             <trans-unit id="editOtherPermissions.notSaved" resname="editOtherPermissions.notSaved">
                 <source>The permissions were not saved</source>
-            </trans-unit>
-            <trans-unit id="grantFields.allowTab" resname="grantFields.allowTab">
-                <source>Allow all on this tab</source>
-            </trans-unit>
-            <trans-unit id="grantFields.allowedBy" resname="grantFields.allowedBy">
-                <source>Allowed by</source>
-            </trans-unit>
-            <trans-unit id="grantFields.going.many" resname="grantFields.going.many">
-                <source>%s fields waiting to be disallowed</source>
-            </trans-unit>
-            <trans-unit id="grantFields.going.one" resname="grantFields.going.one">
-                <source>%s field waiting to be disallowed</source>
-            </trans-unit>
-            <trans-unit id="grantFields.hint.allow" resname="grantFields.hint.allow">
-                <source>Press the field to allow it</source>
-            </trans-unit>
-            <trans-unit id="grantFields.hint.disallow" resname="grantFields.hint.disallow">
-                <source>Press the field to disallow it</source>
-            </trans-unit>
-            <trans-unit id="grantFields.hint.keep" resname="grantFields.hint.keep">
-                <source>Press again to keep it</source>
-            </trans-unit>
-            <trans-unit id="grantFields.hint.leave" resname="grantFields.hint.leave">
-                <source>Press again to leave it out</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.adminOnly.meaning" resname="grantFields.mark.adminOnly.meaning">
-                <source>Only administrators see this field. It cannot be allowed for a group.</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.adminOnly.title" resname="grantFields.mark.adminOnly.title">
-                <source>Administrators only</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.allowed.meaning" resname="grantFields.mark.allowed.meaning">
-                <source>The group may edit this field.</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.allowed.title" resname="grantFields.mark.allowed.title">
-                <source>Allowed</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.allowedAndInherited.meaning" resname="grantFields.mark.allowedAndInherited.meaning">
-                <source>The group may edit this field itself, and a subgroup allows it too. Disallowing it here keeps it allowed through the subgroup.</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.allowedAndInherited.title" resname="grantFields.mark.allowedAndInherited.title">
-                <source>Allowed, and inherited</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.denied.meaning" resname="grantFields.mark.denied.meaning">
-                <source>The group may not edit this field.</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.denied.title" resname="grantFields.mark.denied.title">
-                <source>Not allowed</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.inherited.meaning" resname="grantFields.mark.inherited.meaning">
-                <source>The group may edit this field because a subgroup may. Change it on that subgroup.</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.inherited.title" resname="grantFields.mark.inherited.title">
-                <source>Inherited</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.neverEditable.meaning" resname="grantFields.mark.neverEditable.meaning">
-                <source>The field is read-only for everyone, so no permission changes it.</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.neverEditable.title" resname="grantFields.mark.neverEditable.title">
-                <source>Read-only</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.notApplicable.meaning" resname="grantFields.mark.notApplicable.meaning">
-                <source>TYPO3 has no permission for this field. Every user who may edit this table may edit it.</source>
-            </trans-unit>
-            <trans-unit id="grantFields.mark.notApplicable.title" resname="grantFields.mark.notApplicable.title">
-                <source>Open to all editors</source>
-            </trans-unit>
-            <trans-unit id="grantFields.otherKinds" resname="grantFields.otherKinds">
-                <source>Only on other kinds of "%s"</source>
-            </trans-unit>
-            <trans-unit id="grantFields.recordNoFields" resname="grantFields.recordNoFields">
-                <source>The group may edit "%s", but no field of this record yet</source>
-            </trans-unit>
-            <trans-unit id="grantFields.showGroup" resname="grantFields.showGroup">
-                <source>Show group</source>
-            </trans-unit>
-            <trans-unit id="grantFields.showGroupNamed" resname="grantFields.showGroupNamed">
-                <source>Show group "%s"</source>
-            </trans-unit>
-            <trans-unit id="grantFields.tally.many" resname="grantFields.tally.many">
-                <source>The group may edit %1$s of %2$s fields</source>
-            </trans-unit>
-            <trans-unit id="grantFields.tally.one" resname="grantFields.tally.one">
-                <source>The group may edit %1$s of %2$s field</source>
-            </trans-unit>
-            <trans-unit id="grantFields.toDisallow" resname="grantFields.toDisallow">
-                <source>to disallow</source>
-            </trans-unit>
-            <trans-unit id="grantFields.waiting.many" resname="grantFields.waiting.many">
-                <source>%s fields waiting to be allowed</source>
-            </trans-unit>
-            <trans-unit id="grantFields.waiting.one" resname="grantFields.waiting.one">
-                <source>%s field waiting to be allowed</source>
-            </trans-unit>
-            <trans-unit id="grantModules.allow" resname="grantModules.allow">
-                <source>Allow modules</source>
-            </trans-unit>
-            <trans-unit id="grantModules.hint" resname="grantModules.hint">
-                <source>or click a module to disallow it</source>
-            </trans-unit>
-            <trans-unit id="grantModules.marked.many" resname="grantModules.marked.many">
-                <source>%1$s of %2$s modules waiting to be disallowed</source>
-            </trans-unit>
-            <trans-unit id="grantModules.marked.one" resname="grantModules.marked.one">
-                <source>%1$s of %2$s module waiting to be disallowed</source>
-            </trans-unit>
-            <trans-unit id="grantModules.pickFor" resname="grantModules.pickFor">
-                <source>Pick what the group "%s" may open</source>
-            </trans-unit>
-            <trans-unit id="grantModules.previewFor" resname="grantModules.previewFor">
-                <source>The modules the group "%s" may open</source>
-            </trans-unit>
-            <trans-unit id="grantModules.tally.many" resname="grantModules.tally.many">
-                <source>%1$s of %2$s modules allowed</source>
-            </trans-unit>
-            <trans-unit id="grantModules.tally.one" resname="grantModules.tally.one">
-                <source>%1$s of %2$s module allowed</source>
-            </trans-unit>
-            <trans-unit id="grantTables.adminOnly" resname="grantTables.adminOnly">
-                <source>Only administrators may edit records of this kind</source>
-            </trans-unit>
-            <trans-unit id="grantTables.allow" resname="grantTables.allow">
-                <source>Allow "%s"</source>
-            </trans-unit>
-            <trans-unit id="grantTables.alsoHandedDown" resname="grantTables.alsoHandedDown">
-                <source>Allowed by this group and through a subgroup. Change it on that subgroup.</source>
-            </trans-unit>
-            <trans-unit id="grantTables.disallow" resname="grantTables.disallow">
-                <source>Disallow "%s"</source>
-            </trans-unit>
-            <trans-unit id="grantTables.gone" resname="grantTables.gone">
-                <source>This is empty for the group: it may not edit "%s"</source>
-            </trans-unit>
-            <trans-unit id="grantTables.handedDown" resname="grantTables.handedDown">
-                <source>Reached through a subgroup, not by this group itself. Change it on that group.</source>
-            </trans-unit>
-            <trans-unit id="grantTables.missing" resname="grantTables.missing">
-                <source>The group may not edit records of this kind</source>
-            </trans-unit>
-            <trans-unit id="grantTables.theirs" resname="grantTables.theirs">
-                <source>The group may edit records of this kind</source>
             </trans-unit>
             <trans-unit id="mountBranches.doAdd" resname="mountBranches.doAdd">
                 <source>Add</source>

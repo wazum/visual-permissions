@@ -39,14 +39,14 @@ final class GroupWriteControllerTest extends FunctionalTestCase
     public static function controllers(): array
     {
         return [
-            'fields' => [AllowFieldsController::class, 'group_fields', 10, 'non_exclude_fields', ['field' => 'tt_content:subheader', 'grant' => true], 'grant'],
-            'modules' => [AllowModulesController::class, 'group_chain', 10, 'groupMods', ['module' => 'about', 'grant' => true], 'grant'],
-            'tables' => [AllowTablesController::class, 'group_tables', 20, 'tables_modify', ['table' => 'sys_file_reference', 'grant' => true], 'grant'],
+            'fields' => [AllowFieldsController::class, 'group_fields', 10, 'non_exclude_fields', ['field' => 'tt_content:subheader', 'allow' => true], 'allow'],
+            'modules' => [AllowModulesController::class, 'group_chain', 10, 'groupMods', ['module' => 'about', 'allow' => true], 'allow'],
+            'tables' => [AllowTablesController::class, 'group_tables', 20, 'tables_modify', ['table' => 'sys_file_reference', 'allow' => true], 'allow'],
             'page mounts' => [MountPagesController::class, 'group_mounts', 20, 'db_mountpoints', ['page' => 7, 'mount' => true], 'mount'],
             'file mounts' => [MountFoldersController::class, 'group_file_mounts', 20, 'file_mountpoints', ['folder' => '1:/archive/', 'mount' => true], 'mount'],
-            'field values' => [AllowValuesController::class, 'group_values', 10, 'explicit_allowdeny', ['value' => 'tt_content:CType:header', 'grant' => true], 'grant'],
-            'page types' => [AllowPageTypesController::class, 'group_values', 10, 'pagetypes_select', ['value' => '254', 'grant' => true], 'grant'],
-            'file operations' => [AllowFileOperationsController::class, 'group_values', 10, 'file_permissions', ['value' => 'deleteFile', 'grant' => true], 'grant'],
+            'field values' => [AllowValuesController::class, 'group_values', 10, 'explicit_allowdeny', ['value' => 'tt_content:CType:header', 'allow' => true], 'allow'],
+            'page types' => [AllowPageTypesController::class, 'group_values', 10, 'pagetypes_select', ['value' => '254', 'allow' => true], 'allow'],
+            'file operations' => [AllowFileOperationsController::class, 'group_values', 10, 'file_permissions', ['value' => 'deleteFile', 'allow' => true], 'allow'],
         ];
     }
 

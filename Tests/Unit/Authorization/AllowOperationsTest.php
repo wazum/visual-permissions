@@ -6,17 +6,17 @@ namespace Wazum\VisualPermissions\Tests\Unit\Authorization;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Wazum\VisualPermissions\Authorization\GrantOperations;
+use Wazum\VisualPermissions\Authorization\AllowOperations;
 
-final class GrantOperationsTest extends TestCase
+final class AllowOperationsTest extends TestCase
 {
     #[Test]
     public function readsAGrantAndARevoke(): void
     {
         self::assertSame(
-            [['target' => 'web_list', 'grant' => true], ['target' => 'web_layout', 'grant' => false]],
-            GrantOperations::from(
-                [['module' => 'web_list', 'grant' => true], ['module' => 'web_layout', 'grant' => false]],
+            [['target' => 'web_list', 'add' => true], ['target' => 'web_layout', 'add' => false]],
+            AllowOperations::from(
+                [['module' => 'web_list', 'allow' => true], ['module' => 'web_layout', 'allow' => false]],
                 'module',
                 static fn(string $target): bool => true,
             ),
@@ -27,9 +27,9 @@ final class GrantOperationsTest extends TestCase
     public function readsAFlagThatArrivedAsText(): void
     {
         self::assertSame(
-            [['target' => 'web_list', 'grant' => true], ['target' => 'web_layout', 'grant' => false]],
-            GrantOperations::from(
-                [['module' => 'web_list', 'grant' => 'true'], ['module' => 'web_layout', 'grant' => 'false']],
+            [['target' => 'web_list', 'add' => true], ['target' => 'web_layout', 'add' => false]],
+            AllowOperations::from(
+                [['module' => 'web_list', 'allow' => 'true'], ['module' => 'web_layout', 'allow' => 'false']],
                 'module',
                 static fn(string $target): bool => true,
             ),
@@ -39,8 +39,8 @@ final class GrantOperationsTest extends TestCase
     #[Test]
     public function refusesToGrantWhatCannotBeGranted(): void
     {
-        self::assertNull(GrantOperations::from(
-            [['module' => 'web_list', 'grant' => true]],
+        self::assertNull(AllowOperations::from(
+            [['module' => 'web_list', 'allow' => true]],
             'module',
             static fn(string $target): bool => false,
         ));
@@ -50,9 +50,9 @@ final class GrantOperationsTest extends TestCase
     public function takesAwayWhatCanNoLongerBeGranted(): void
     {
         self::assertSame(
-            [['target' => 'web_list', 'grant' => false]],
-            GrantOperations::from(
-                [['module' => 'web_list', 'grant' => false]],
+            [['target' => 'web_list', 'add' => false]],
+            AllowOperations::from(
+                [['module' => 'web_list', 'allow' => false]],
                 'module',
                 static fn(string $target): bool => false,
             ),
@@ -62,14 +62,14 @@ final class GrantOperationsTest extends TestCase
     #[Test]
     public function refusesARequestThatSentNoList(): void
     {
-        self::assertNull(GrantOperations::from(null, 'module', static fn(string $target): bool => true));
+        self::assertNull(AllowOperations::from(null, 'module', static fn(string $target): bool => true));
     }
 
     #[Test]
     public function refusesTheWholeListWhenOneOperationNamesNoTarget(): void
     {
-        self::assertNull(GrantOperations::from(
-            [['module' => 'web_list', 'grant' => true], ['module' => 7, 'grant' => true]],
+        self::assertNull(AllowOperations::from(
+            [['module' => 'web_list', 'allow' => true], ['module' => 7, 'allow' => true]],
             'module',
             static fn(string $target): bool => true,
         ));
@@ -78,7 +78,7 @@ final class GrantOperationsTest extends TestCase
     #[Test]
     public function refusesAnOperationThatSaysNothingAboutTheDirection(): void
     {
-        self::assertNull(GrantOperations::from(
+        self::assertNull(AllowOperations::from(
             [['module' => 'web_list']],
             'module',
             static fn(string $target): bool => true,
@@ -88,8 +88,8 @@ final class GrantOperationsTest extends TestCase
     #[Test]
     public function refusesAnOperationWhoseDirectionItCannotRead(): void
     {
-        self::assertNull(GrantOperations::from(
-            [['module' => 'web_list', 'grant' => 'perhaps']],
+        self::assertNull(AllowOperations::from(
+            [['module' => 'web_list', 'allow' => 'perhaps']],
             'module',
             static fn(string $target): bool => true,
         ));

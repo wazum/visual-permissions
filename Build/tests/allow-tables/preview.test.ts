@@ -263,7 +263,7 @@ describe('the tables of the form as the group sees it', () => {
 
     const note = document.querySelector(`.${classes.nothingTheirs}`)
 
-    expect(note?.querySelector(`.${classes.tableGive}`)?.textContent).toBe('Allow "Page Content"')
+    expect(note?.querySelector(`.${classes.tableAllow}`)?.textContent).toBe('Allow "Page Content"')
   })
 
   it('says so in the band the side that gives tables away draws', () => {
@@ -285,10 +285,10 @@ describe('the tables of the form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { tt_content: 'denied' })
 
-    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => {
-      expect(sent.at(-1)?.body).toStrictEqual({ group: 7, operations: [{ table: 'tt_content', grant: true }] })
+      expect(sent.at(-1)?.body).toStrictEqual({ group: 7, operations: [{ table: 'tt_content', allow: true }] })
     })
   })
 
@@ -302,7 +302,7 @@ describe('the tables of the form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { tt_content: 'denied' })
 
-    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => {
       expect(told).toBe(1)
@@ -319,7 +319,7 @@ describe('the tables of the form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { tt_content: 'denied' })
 
-    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => {
       expect(told).toBe(1)

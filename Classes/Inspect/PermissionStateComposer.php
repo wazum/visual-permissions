@@ -44,7 +44,7 @@ final readonly class PermissionStateComposer
      *     group: array{id: int, title: string},
      *     chain: list<ChainStep>,
      *     scopes: array{
-     *         fields: array{targets: array<string, string>, givenBy: array<string, list<int>>},
+     *         fields: array{targets: array<string, string>, allowedBy: array<string, list<int>>},
      *         fieldValues: array{targets: array<string, string>},
      *         modules: array{targets: array<string, string>},
      *         pageMounts: array{targets: array<int, string>},
@@ -94,7 +94,7 @@ final readonly class PermissionStateComposer
             'scopes' => [
                 'fields' => $this->values(
                     array_intersect_key($this->verdicts->resolve($chainIds, $fields, $fieldTargets), $fieldTargets),
-                ) + ['givenBy' => array_intersect_key($this->verdicts->givenBy($chainIds, $fields), $fieldTargets)],
+                ) + ['allowedBy' => array_intersect_key($this->verdicts->allowedBy($chainIds, $fields), $fieldTargets)],
                 'fieldValues' => $this->values($this->verdicts->resolve($chainIds, $fieldValues)),
                 'fileMounts' => $this->values($this->verdicts->resolve($chainIds, $fileMounts)),
                 'fileOperations' => $this->values($this->verdicts->resolve($chainIds, $fileOperations)),

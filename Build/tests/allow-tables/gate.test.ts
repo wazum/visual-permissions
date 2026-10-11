@@ -11,12 +11,12 @@ import {
 } from '../__mocks__/typo3-ajax-request.js'
 
 const labels = {
-  'grantTables.missing': 'The group may not edit records of this kind',
-  'grantTables.allow': 'Allow "%s"',
-  'grantTables.disallow': 'Disallow "%s"',
-  'grantTables.theirs': 'The group may edit records of this kind',
-  'grantTables.handedDown': 'Reached through a subgroup, not by this group itself. Change it on that group.',
-  'grantTables.alsoHandedDown': 'Allowed by this group and through a subgroup. Change it on that subgroup.',
+  'allowTables.missing': 'The group may not edit records of this kind',
+  'allowTables.allow': 'Allow "%s"',
+  'allowTables.disallow': 'Disallow "%s"',
+  'allowTables.theirs': 'The group may edit records of this kind',
+  'allowTables.inherited': 'Reached through a subgroup, not by this group itself. Change it on that group.',
+  'allowTables.alsoInherited': 'Allowed by this group and through a subgroup. Change it on that subgroup.',
   'platform.refused': 'The change could not be saved. It is still waiting here.',
 }
 
@@ -170,12 +170,12 @@ describe('the gate a record stands behind while its table is not given', () => {
     turnTo('pick')
     formReady({ doc: document, fields: [] })
     selectGroup(8)
-    await vi.waitFor(() => { expect(gates()).toStrictEqual([labels['grantTables.theirs']]) })
+    await vi.waitFor(() => { expect(gates()).toStrictEqual([labels['allowTables.theirs']]) })
 
     releaseFirst()
     await new Promise(settled => { setTimeout(settled, 0) })
 
-    expect(gates()).toStrictEqual([labels['grantTables.theirs']])
+    expect(gates()).toStrictEqual([labels['allowTables.theirs']])
   })
 
   it('leaves an answer that comes after the form has turned to what the group gets', async () => {
@@ -276,7 +276,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableTake}`)?.textContent).toBe('Disallow "File Reference"')
+      expect(document.querySelector(`.${classes.tableDisallow}`)?.textContent).toBe('Disallow "File Reference"')
     })
   })
 
@@ -318,10 +318,10 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableGive}`)).not.toBeNull()
+      expect(document.querySelector(`.${classes.tableAllow}`)).not.toBeNull()
     })
 
-    expect(document.querySelector(`.${classes.tableGive}`)?.closest('[inert]')).toBeNull()
+    expect(document.querySelector(`.${classes.tableAllow}`)?.closest('[inert]')).toBeNull()
   })
 
   it('finds the records from what the server said, not from a box of core\'s', async () => {
@@ -379,7 +379,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableGive}`)?.textContent).toBe('Allow "File Reference"')
+      expect(document.querySelector(`.${classes.tableAllow}`)?.textContent).toBe('Allow "File Reference"')
     })
   })
 
@@ -394,7 +394,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields })
 
     await vi.waitFor(() => {
-      expect(document.querySelectorAll(`.${classes.tableGive}`)).toHaveLength(1)
+      expect(document.querySelectorAll(`.${classes.tableAllow}`)).toHaveLength(1)
     })
 
     formReady({ doc: document, fields })
@@ -403,7 +403,7 @@ describe('the gate a record stands behind while its table is not given', () => {
       expect(document.querySelectorAll(`.${classes.tableGate}`)).toHaveLength(1)
     })
 
-    expect(document.querySelectorAll(`.${classes.tableGive}`)).toHaveLength(1)
+    expect(document.querySelectorAll(`.${classes.tableAllow}`)).toHaveLength(1)
   })
 
   // There is nothing else on this form to decide alongside it
@@ -415,15 +415,15 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableGive}`)).not.toBeNull()
+      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
     })
 
     sent.length = 0
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => {
       expect(sent.at(-1)?.body)
-        .toStrictEqual({ group: 7, operations: [{ table: 'sys_file_reference', grant: true }] })
+        .toStrictEqual({ group: 7, operations: [{ table: 'sys_file_reference', allow: true }] })
     })
   })
 
@@ -435,13 +435,13 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableGive}`)).not.toBeNull()
+      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
     })
 
     sent.length = 0
     const letGo = holdNextWrite()
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
     letGo()
     await new Promise(settled => { setTimeout(settled, 0) })
 
@@ -456,16 +456,16 @@ describe('the gate a record stands behind while its table is not given', () => {
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableGive}`)).not.toBeNull()
+      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
     })
 
     sent.length = 0
     answerNextWriteWith(409)
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLButtonElement>(`.${classes.tableGive}`)?.disabled).toBe(false)
+      expect(document.querySelector<HTMLButtonElement>(`.${classes.tableAllow}`)?.disabled).toBe(false)
     })
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => { expect(sent).toHaveLength(2) })
   })
@@ -479,10 +479,10 @@ describe('the gate a record stands behind while its table is not given', () => {
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableGive}`)).not.toBeNull()
+      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
     })
 
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => {
       expect(told).toBe(1)
@@ -498,12 +498,12 @@ describe('the gate a record stands behind while its table is not given', () => {
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableGive}`)).not.toBeNull()
+      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
     })
     sent.length = 0
     answerNextWriteWith(409)
 
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => {
       expect(sent).toHaveLength(1)
@@ -519,11 +519,11 @@ describe('the gate a record stands behind while its table is not given', () => {
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableGive}`)).not.toBeNull()
+      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
     })
     answerNextWriteWith(409)
 
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => {
       expect(gates()).toStrictEqual([labels['platform.refused']])
@@ -537,18 +537,18 @@ describe('the gate a record stands behind while its table is not given', () => {
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableGive}`)).not.toBeNull()
+      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
     })
     sent.length = 0
     cancelNextPassword()
 
-    document.querySelector<HTMLElement>(`.${classes.tableGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
 
     await vi.waitFor(() => {
       expect(sent).toHaveLength(1)
     })
     await new Promise(settled => { setTimeout(settled, 0) })
-    expect(gates()).toStrictEqual([labels['grantTables.missing']])
+    expect(gates()).toStrictEqual([labels['allowTables.missing']])
   })
 
   // Whatever wrote it, the table it stands over may be the group's own by now
@@ -578,7 +578,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     emit('permissions-written', {})
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableTake}`)?.textContent).toBe('Disallow "File Reference"')
+      expect(document.querySelector(`.${classes.tableDisallow}`)?.textContent).toBe('Disallow "File Reference"')
     })
 
     expect(gates()).toStrictEqual(['The group may edit records of this kind'])
@@ -712,7 +712,7 @@ describe('the gate a record stands behind while its table is not given', () => {
 
     // What the table is called comes from the group's permissions, not from the words
     expect(gates()).toStrictEqual([''])
-    expect(document.querySelector(`.${classes.tableGive}`)?.textContent).toBe('')
+    expect(document.querySelector(`.${classes.tableAllow}`)?.textContent).toBe('')
   })
 
   it('says a table was handed down, and offers no deed on it', async () => {
@@ -741,8 +741,8 @@ describe('the gate a record stands behind while its table is not given', () => {
       ])
     })
 
-    expect(document.querySelectorAll(`.${classes.tableGive}`)).toHaveLength(1)
-    expect(document.querySelector(`.${classes.tableTake}`)).toBeNull()
+    expect(document.querySelectorAll(`.${classes.tableAllow}`)).toHaveLength(1)
+    expect(document.querySelector(`.${classes.tableDisallow}`)).toBeNull()
   })
 
   it('says a table the group gives itself is handed down too, and offers no deed on it', async () => {
@@ -766,6 +766,6 @@ describe('the gate a record stands behind while its table is not given', () => {
     await vi.waitFor(() => {
       expect(gates()).toStrictEqual(['Allowed by this group and through a subgroup. Change it on that subgroup.'])
     })
-    expect(document.querySelector(`.${classes.tableTake}, .${classes.tableGive}`)).toBeNull()
+    expect(document.querySelector(`.${classes.tableDisallow}, .${classes.tableAllow}`)).toBeNull()
   })
 })

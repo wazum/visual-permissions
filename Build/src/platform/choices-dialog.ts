@@ -15,8 +15,8 @@ export function openChoices(
   choices: Choices,
   group: string,
   held: ReadonlySet<string>,
-  apply: (marked: readonly { value: string, grant: boolean }[]) => Promise<boolean>,
-  handedDown: ReadonlySet<string> = new Set(),
+  apply: (marked: readonly { value: string, allow: boolean }[]) => Promise<boolean>,
+  inherited: ReadonlySet<string> = new Set(),
 ): void {
   const content = document.createElement('div')
   content.className = classes.allowChoices
@@ -26,15 +26,15 @@ export function openChoices(
     const heading = document.createElement('h2')
     heading.textContent = label
     const tiles = document.createElement('div')
-    tiles.append(...values.map(value => boxFor(value, held.has(value.value), handedDown.has(value.value))))
+    tiles.append(...values.map(value => boxFor(value, held.has(value.value), inherited.has(value.value))))
     section.append(heading, tiles)
     content.append(section)
   })
   const waiting = say(document, classes.faceWaiting, '')
 
-  const marked = (): { value: string, grant: boolean }[] => [...content.querySelectorAll<HTMLInputElement>('input')]
+  const marked = (): { value: string, allow: boolean }[] => [...content.querySelectorAll<HTMLInputElement>('input')]
     .filter(tick => tick.checked !== held.has(tick.value))
-    .map(tick => ({ value: tick.value, grant: tick.checked }))
+    .map(tick => ({ value: tick.value, allow: tick.checked }))
 
   const cancelling: ModalButton = {
     text: labelOf('platform.cancel'),
@@ -87,7 +87,7 @@ export function openChoices(
 
   content.addEventListener('change', () => {
     const marks = marked()
-    const adding = marks.filter(({ grant }) => grant).length
+    const adding = marks.filter(({ allow }) => allow).length
     waiting.textContent = waitingFor(adding, marks.length - adding)
     offer()
   })
@@ -103,7 +103,7 @@ function waitingFor(adding: number, taking: number): string {
 function boxFor(
   { value, label, icon }: Choices['groups'][number]['values'][number],
   held: boolean,
-  handedDown: boolean,
+  inherited: boolean,
 ): HTMLLabelElement {
   const box = document.createElement('label')
   box.className = classes.allowValue
@@ -117,7 +117,7 @@ function boxFor(
   tick.type = 'checkbox'
   tick.value = value
   tick.checked = held
-  tick.disabled = handedDown
+  tick.disabled = inherited
   box.append(drawn, name, tick)
 
   return box

@@ -3,7 +3,7 @@ import { write, type WriteOutcome } from '../platform/transport.js'
 
 export interface ModuleOperation {
   readonly module: string
-  readonly grant: boolean
+  readonly allow: boolean
 }
 
 export async function writeModules(

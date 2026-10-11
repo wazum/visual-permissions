@@ -20,7 +20,7 @@ const tokenOf = (field: Element): string => field.getAttribute(attributes.token)
 
 const headingOf = (field: Element): Element | null => field.querySelector(':scope > .form-label, :scope > fieldset > legend')
 
-const titleOf = (verdict: string): string => labelOf(`grantFields.mark.${verdict}.title`)
+const titleOf = (verdict: string): string => labelOf(`allowFields.mark.${verdict}.title`)
 
 // Only a field that answers a press on this side says what the press does
 const hintOf = (field: Element): string => {
@@ -30,10 +30,10 @@ const hintOf = (field: Element): string => {
 
   const marked = field.classList.contains(classes.faceMarked)
   if (getState().face === 'pick') {
-    return labelOf(marked ? 'grantFields.hint.leave' : 'grantFields.hint.allow')
+    return labelOf(marked ? 'allowFields.hint.leave' : 'allowFields.hint.allow')
   }
 
-  return labelOf(marked ? 'grantFields.hint.keep' : 'grantFields.hint.disallow')
+  return labelOf(marked ? 'allowFields.hint.keep' : 'allowFields.hint.disallow')
 }
 
 function givers(card: HTMLElement, groups: readonly ChainStep[]): HTMLElement[] {
@@ -43,7 +43,7 @@ function givers(card: HTMLElement, groups: readonly ChainStep[]): HTMLElement[] 
 
   const doc = card.ownerDocument
   const heading = doc.createElement('h3')
-  heading.textContent = labelOf('grantFields.allowedBy')
+  heading.textContent = labelOf('allowFields.allowedBy')
   const list = doc.createElement('ul')
   list.append(...groups.map(group => {
     const name = doc.createElement('span')
@@ -53,8 +53,8 @@ function givers(card: HTMLElement, groups: readonly ChainStep[]): HTMLElement[] 
     show.type = 'button'
     // Stryker disable next-line StringLiteral: core's look, which only a browser draws
     show.className = 'btn btn-default btn-sm'
-    show.textContent = labelOf('grantFields.showGroup')
-    show.setAttribute('aria-label', said(labelOf('grantFields.showGroupNamed'), group.title))
+    show.textContent = labelOf('allowFields.showGroup')
+    show.setAttribute('aria-label', said(labelOf('allowFields.showGroupNamed'), group.title))
     show.addEventListener('click', () => {
       card.hidePopover()
       selectGroup(group.groupId)
@@ -84,7 +84,7 @@ function fill(card: HTMLElement, field: Element, groups: readonly ChainStep[]): 
   title.id = `${classes.markCard}-title`
   title.textContent = titleOf(verdict)
   const meaning = doc.createElement('p')
-  meaning.textContent = labelOf(`grantFields.mark.${verdict}.meaning`)
+  meaning.textContent = labelOf(`allowFields.mark.${verdict}.meaning`)
   const words = doc.createElement('div')
   words.append(title, meaning)
   const header = doc.createElement('header')
@@ -155,7 +155,7 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
     // Stryker disable next-line StringLiteral: anchor positioning is the browser's to do
     mark.style.setProperty('anchor-name', '--vperm-mark')
     mark.setAttribute('aria-expanded', 'true')
-    fill(card, field, judgement.givenBy(tokenOf(field)))
+    fill(card, field, judgement.allowedBy(tokenOf(field)))
     card.showPopover()
   }
 

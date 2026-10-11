@@ -12,11 +12,11 @@ describe('the fields a group is given', () => {
   })
 
   it('sends the fields a group is to hold', async () => {
-    await writeFields(7, [{ field: 'tt_content:header', grant: true }])
+    await writeFields(7, [{ field: 'tt_content:header', allow: true }])
 
     expect(sent).toStrictEqual([{
       url: '/typo3/ajax/visual_permissions_allow_fields',
-      body: { group: 7, operations: [{ field: 'tt_content:header', grant: true }] },
+      body: { group: 7, operations: [{ field: 'tt_content:header', allow: true }] },
     }])
   })
 })

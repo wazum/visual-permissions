@@ -227,7 +227,7 @@ describe('the file mounts panel', () => {
     await vi.waitFor(() => {
       expect(sent).toContainEqual({
         url: '/typo3/ajax/visual_permissions_allow_file_operations',
-        body: { group: 7, operations: [{ value: 'readFile', grant: false }, { value: 'deleteFile', grant: true }] },
+        body: { group: 7, operations: [{ value: 'readFile', allow: false }, { value: 'deleteFile', allow: true }] },
       })
     })
   })

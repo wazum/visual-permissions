@@ -54,7 +54,7 @@ export function initialise(signal: AbortSignal): void {
             .map(([target]) => target.substring(prefix.length)))
           // Stryker disable next-line StringLiteral: the group is one of those the backend lists, so it has a title
           openChoices(choices, titleOf(document, groupId) ?? '', held, async marked => {
-            const outcome = await writeValues(list, groupId, marked.map(({ value, grant }) => ({ value: `${prefix}${value}`, grant })))
+            const outcome = await writeValues(list, groupId, marked.map(({ value, allow }) => ({ value: `${prefix}${value}`, allow })))
             if (outcome !== 'taken') {
               return false
             }

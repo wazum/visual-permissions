@@ -70,7 +70,7 @@ final class PermissionStateComposerTest extends TestCase
         ], ['pages']);
 
         self::assertSame(['pages:nav_title' => 'inherited'], $state['scopes']['fields']['targets']);
-        self::assertSame(['pages:nav_title' => [11]], $state['scopes']['fields']['givenBy']);
+        self::assertSame(['pages:nav_title' => [11]], $state['scopes']['fields']['allowedBy']);
     }
 
     #[Test]
