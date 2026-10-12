@@ -50,9 +50,8 @@
 
   > span {
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
   }
 
   // The backend's own document carries no form styles, so the box is the browser's own

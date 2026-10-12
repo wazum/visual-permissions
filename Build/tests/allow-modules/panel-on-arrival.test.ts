@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { attributes, classes } from '#src/platform/contract.js'
-import { reply } from '../__mocks__/typo3-ajax-request.js'
+import { reply, replyTo } from '../__mocks__/typo3-ajax-request.js'
 import { prime } from '../__mocks__/typo3-persistent-storage.js'
 
 describe('the module panel on arrival', () => {
@@ -25,6 +25,7 @@ describe('the module panel on arrival', () => {
 
     document.body.append(nav, hidden)
 
+    replyTo('visual_permissions_modules_outside_menu', { title: '', groups: [] })
     reply({
       group: { id: 7, title: 'Content Reviewers' },
       chain: [],

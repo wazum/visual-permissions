@@ -108,6 +108,18 @@
             <trans-unit id="allowModules.marked.one" resname="allowModules.marked.one">
                 <source>%1$s of %2$s module waiting to be disallowed</source>
             </trans-unit>
+            <trans-unit id="allowModules.outside" resname="allowModules.outside">
+                <source>Choose modules outside the menu</source>
+            </trans-unit>
+            <trans-unit id="allowModules.outside.tally.many" resname="allowModules.outside.tally.many">
+                <source>%1$s of %2$s outside the menu allowed</source>
+            </trans-unit>
+            <trans-unit id="allowModules.outside.tally.one" resname="allowModules.outside.tally.one">
+                <source>%1$s of %2$s outside the menu allowed</source>
+            </trans-unit>
+            <trans-unit id="allowModules.outside.title" resname="allowModules.outside.title">
+                <source>Modules outside the menu the group "%s" may open</source>
+            </trans-unit>
             <trans-unit id="allowModules.pickFor" resname="allowModules.pickFor">
                 <source>Pick what the group "%s" may open</source>
             </trans-unit>
@@ -115,10 +127,10 @@
                 <source>The modules the group "%s" may open</source>
             </trans-unit>
             <trans-unit id="allowModules.tally.many" resname="allowModules.tally.many">
-                <source>%1$s of %2$s modules allowed</source>
+                <source>%1$s of %2$s menu modules allowed</source>
             </trans-unit>
             <trans-unit id="allowModules.tally.one" resname="allowModules.tally.one">
-                <source>%1$s of %2$s module allowed</source>
+                <source>%1$s of %2$s menu module allowed</source>
             </trans-unit>
             <trans-unit id="allowTables.adminOnly" resname="allowTables.adminOnly">
                 <source>Only administrators may edit records of this kind</source>

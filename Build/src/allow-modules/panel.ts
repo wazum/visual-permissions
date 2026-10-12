@@ -16,6 +16,7 @@ import {
   type Face,
 } from '../platform/panel-card.js'
 import { labelOf } from '../platform/labels.js'
+import { chooseOutside } from './outside.js'
 import { writeModules } from './write.js'
 import { getState } from '../platform/session.js'
 import { isWriting } from '../platform/transport.js'
@@ -36,7 +37,7 @@ let listening: AbortController | null = null
 
 const flash = createFlash(560)
 
-export function render(doc: Document, menu: Element): void {
+export function render(doc: Document, menu: Element, outside: readonly (string | undefined)[]): void {
   // Every pick on this panel is a change asked for on that group, not just what's shown
   const paintedFor = getState().groupId
   const group = titleOf(doc, paintedFor) ?? ''
@@ -147,8 +148,9 @@ export function render(doc: Document, menu: Element): void {
   const showCount = (): void => {
     const own = ownIn(pick.scroll)
     const queued = own.filter(row => verdictOf(row) !== was.get(row))
-    const allowed = own.filter(row => isReachable(verdictOf(row)) && !queued.includes(row))
-    const has = counted('allowModules.tally', own.length, allowed.length, own.length)
+    const allowed = own.filter(row => isReachable(verdictOf(row)) && !queued.includes(row)).length
+    const has = counted('allowModules.tally', own.length, allowed, own.length)
+    inMenu.textContent = has
 
     const toRemove = marked(preview.scroll)
     removals.state.textContent = toRemove.length === 0
@@ -156,7 +158,7 @@ export function render(doc: Document, menu: Element): void {
       : counted('allowModules.marked', allowedByGroup.length, toRemove.length, allowedByGroup.length)
     removals.ready(toRemove.length > 0, toRemove.length > 0)
 
-    additions.state.textContent = has
+    additions.state.textContent = ''
     additions.waiting.textContent = queued.length === 0 ? '' : said(labelOf('platform.waiting'), queued.length)
     additions.ready(queued.length > 0, true)
   }
@@ -165,6 +167,22 @@ export function render(doc: Document, menu: Element): void {
     button(doc, labelOf('allowModules.allow'), 'btn btn-default', () => { turnTo(true) }),
     say(doc, classes.faceHint, labelOf('allowModules.hint')),
   )
+
+  const choice = doc.createElement('div')
+  choice.className = classes.faceChoice
+  // Stryker disable next-line StringLiteral: the count is said as soon as the panel is painted
+  const inMenu = say(doc, classes.faceCounted, '')
+  choice.append(inMenu)
+  // Stryker disable next-line StringLiteral: only core draws the class, and only a browser shows it
+  choice.append(button(doc, labelOf('allowModules.outside'), 'btn btn-default', () => {
+    // Stryker disable next-line ConditionalExpression,BlockStatement: the panel is painted only for a group
+    if (paintedFor !== null) {
+      void chooseOutside(paintedFor, group)
+    }
+  }))
+  const outsideAllowed = outside.filter(isReachable).length
+  choice.append(say(doc, classes.faceCounted, counted('allowModules.outside.tally', outside.length, outsideAllowed, outside.length)))
+  pick.sheet.insertBefore(choice, pick.foot)
 
   pick.scroll.style.setProperty('--vperm-queued-note', `"${labelOf('platform.toAllow')}"`)
 

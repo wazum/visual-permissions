@@ -85,6 +85,11 @@ return [
         'target' => InspectController::class . '::inspect',
         'access' => 'admin',
     ],
+    'visual_permissions_modules_outside_menu' => [
+        'path' => '/visual-permissions/modules-outside-menu',
+        'target' => AllowModulesController::class . '::choices',
+        'access' => 'admin',
+    ],
     'visual_permissions_mount_folders' => [
         'path' => '/visual-permissions/mount-folders',
         'target' => MountFoldersController::class . '::write',

@@ -5,13 +5,18 @@ import { activate, deactivate, getState, pickArea, selectGroup } from '#src/plat
 import { initialise } from '#src/allow-modules/modules.js'
 import {
   answerNextWriteWith,
+  asked,
   cancelNextPassword,
   forget,
+  holdNextRead,
   holdNextWrite,
+  refuseNextRead,
   refuseNextWrite,
   reply,
+  replyTo,
   sent,
 } from '../__mocks__/typo3-ajax-request.js'
+import { dialog, press } from '../__mocks__/typo3-modal.js'
 
 const menu = (): void => {
   const nav = document.createElement('nav')
@@ -71,10 +76,13 @@ const carrier = (): void => {
     'allowModules.previewFor': 'What %s may open',
     'allowModules.allow': 'Allow modules',
     'allowModules.hint': 'or click a module to remove it',
+    'allowModules.outside': 'Choose modules outside the menu',
+    'allowModules.outside.tally.one': '%1$s of %2$s outside the menu allowed',
+    'allowModules.outside.tally.many': '%1$s of %2$s outside the menu allowed',
     'platform.pick': 'Assign',
     'allowModules.pickFor': 'Pick what %s may open',
-    'allowModules.tally.one': '%1$s of %2$s module allowed',
-    'allowModules.tally.many': '%1$s of %2$s modules allowed',
+    'allowModules.tally.one': '%1$s of %2$s menu module allowed',
+    'allowModules.tally.many': '%1$s of %2$s menu modules allowed',
     'platform.waiting': '%s waiting to be allowed',
     'allowModules.marked.one': '%1$s of %2$s module marked to remove',
     'allowModules.marked.many': '%1$s of %2$s modules marked to remove',
@@ -97,6 +105,18 @@ const armed = async (): Promise<void> => {
 }
 
 
+const outsideTheMenu = {
+  title: 'Modules outside the menu the group "%s" may open',
+  groups: [
+    { label: 'Help', values: [{ value: 'about', label: 'About TYPO3 CMS', icon: '' }] },
+    { label: 'User Tools', values: [{ value: 'user_setup', label: 'User Settings', icon: '' }] },
+  ],
+}
+
+const chooseOutside = (): void => {
+  ;[...document.querySelectorAll('button')].find(offered => offered.textContent === 'Choose modules outside the menu')?.click()
+}
+
 const inPreview = (selector: string): Element | null =>
   document.querySelector(`.${classes.facePreview} ${selector}`)
 
@@ -118,6 +138,7 @@ describe('the module panel the group sees', () => {
     selectGroup(7)
     listening = new AbortController()
     document.body.replaceChildren()
+    replyTo('visual_permissions_modules_outside_menu', { title: '', groups: [] })
     reply({
       group: { id: 7, title: 'Content Reviewers' },
       chain: [],
@@ -139,6 +160,182 @@ describe('the module panel the group sees', () => {
   afterEach(() => {
     listening.abort()
     deactivate()
+  })
+
+  it('offers to choose the modules outside the menu right above the foot of the assign side', async () => {
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+
+    await armed()
+
+    expect(inPick(`.${classes.faceFoot}`)?.previousElementSibling?.querySelector('button')?.textContent)
+      .toBe('Choose modules outside the menu')
+    expect(inPreview(`.${classes.faceChoice}`)).toBeNull()
+  })
+
+  it('lists the modules outside the menu the backend offers as boxes to tick', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+
+    chooseOutside()
+
+    await vi.waitFor(() => {
+      expect([...dialog()?.querySelectorAll('label:has(input[type="checkbox"])') ?? []].map(box => box.textContent.trim()))
+        .toStrictEqual(['About TYPO3 CMS', 'User Settings'])
+    })
+  })
+
+  it('ticks a module outside the menu the group may open', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    reply({ group: { id: 7, title: 'Content Reviewers' }, chain: [], scopes: { modules: { targets: { about: 'allowed', user_setup: 'denied' } } } })
+
+    chooseOutside()
+
+    await vi.waitFor(() => {
+      expect([...dialog()?.querySelectorAll('label:has(input:checked)') ?? []].map(box => box.textContent.trim()))
+        .toStrictEqual(['About TYPO3 CMS'])
+    })
+  })
+
+  it('keeps a module outside the menu the group gets from a subgroup ticked, and out of reach', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    reply({ group: { id: 7, title: 'Content Reviewers' }, chain: [], scopes: { modules: { targets: { about: 'inherited' } } } })
+
+    chooseOutside()
+
+    await vi.waitFor(() => { expect(dialog()).not.toBeNull() })
+    const about = [...dialog()?.querySelectorAll('label') ?? []].find(box => box.textContent.trim() === 'About TYPO3 CMS')
+    expect([about?.querySelector('input')?.checked, about?.querySelector('input')?.disabled]).toStrictEqual([true, true])
+  })
+
+  it('sends the modules outside the menu that were ticked and unticked', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    reply({ group: { id: 7, title: 'Content Reviewers' }, chain: [], scopes: { modules: { targets: { about: 'allowed' } } } })
+    chooseOutside()
+    await vi.waitFor(() => { expect(dialog()).not.toBeNull() })
+    dialog()?.querySelectorAll('input').forEach(box => { box.click() })
+
+    await press('apply')
+
+    await vi.waitFor(() => {
+      expect(sent).toContainEqual({
+        url: '/typo3/ajax/visual_permissions_allow_modules',
+        body: { group: 7, operations: [{ module: 'about', allow: false }, { module: 'user_setup', allow: true }] },
+      })
+    })
+  })
+
+  it('closes the dialog once the modules outside the menu are written', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    chooseOutside()
+    await vi.waitFor(() => { expect(dialog()).not.toBeNull() })
+    dialog()?.querySelector('input')?.click()
+
+    await press('apply')
+
+    await vi.waitFor(() => { expect(dialog()).toBeNull() })
+  })
+
+  it('keeps the dialog open when the modules outside the menu were not written', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    chooseOutside()
+    await vi.waitFor(() => { expect(dialog()).not.toBeNull() })
+    dialog()?.querySelector('input')?.click()
+    answerNextWriteWith(409)
+
+    await press('apply')
+
+    await vi.waitFor(() => { expect(sent).toHaveLength(1) })
+    await vi.advanceTimersByTimeAsync(0)
+    expect(dialog()).not.toBeNull()
+  })
+
+  it('opens no dialog of the modules outside the menu when the permissions cannot be read', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    refuseNextRead()
+
+    chooseOutside()
+
+    await vi.waitFor(() => { expect(asked.at(-1)).toContain('visual_permissions_inspect') })
+    await vi.advanceTimersByTimeAsync(0)
+    expect(dialog()).toBeNull()
+  })
+
+  it('opens no dialog when the modules outside the menu cannot be read', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    const release = holdNextRead()
+    chooseOutside()
+    refuseNextRead()
+    release()
+
+    await vi.waitFor(() => { expect(asked.at(-1)).toContain('visual_permissions_modules_outside_menu') })
+    await vi.advanceTimersByTimeAsync(0)
+    expect(dialog()).toBeNull()
+  })
+
+  it('tells everyone the modules outside the menu were written', async () => {
+    let told = 0
+    on('permissions-written', () => { told += 1 }, listening.signal)
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    chooseOutside()
+    await vi.waitFor(() => { expect(dialog()).not.toBeNull() })
+    dialog()?.querySelector('input')?.click()
+
+    await press('apply')
+
+    await vi.waitFor(() => { expect(told).toBe(1) })
+  })
+
+  it('counts the modules outside the menu below the button that chooses them', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    reply({
+      group: { id: 7, title: 'Content Reviewers' },
+      chain: [],
+      scopes: { modules: { targets: { dashboard: 'allowed', web_layout: 'allowed', records: 'denied', about: 'allowed' } } },
+    })
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+
+    await armed()
+
+    expect(inPick(`.${classes.faceChoice}`)?.lastElementChild?.textContent).toBe('1 of 2 outside the menu allowed')
   })
 
   it('puts both sides on one card, the backend menu turned away, our preview up', async () => {
@@ -639,14 +836,14 @@ describe('the module panel the group sees', () => {
       .toContain('--vperm-queued-note: "to allow"')
   })
 
-  it('counts what is picked', async () => {
+  it('counts what is picked in the menu above the button for the modules outside it', async () => {
     menu()
     carrier()
     initialise(document, listening.signal)
 
     await armed()
 
-    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
+    expect(inPick(`.${classes.faceChoice}`)?.firstElementChild?.textContent).toBe('2 of 3 menu modules allowed')
   })
 
   // XLIFF carries singular and plural separately, no plural rules
@@ -662,7 +859,17 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('1 of 1 module allowed')
+    expect(inPick(`.${classes.faceChoice}`)?.firstElementChild?.textContent).toBe('1 of 1 menu module allowed')
+  })
+
+  it('says nothing in the foot of the assign side while nothing waits', async () => {
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+
+    await armed()
+
+    expect(inPick(`.${classes.faceFoot} .${classes.faceTally}`)?.textContent).toBe('')
   })
 
   // Group has and waiting counts are two separate values; a pick is allowed only when saved
@@ -675,7 +882,7 @@ describe('the module panel the group sees', () => {
 
     inPick('[data-modulemenu-identifier="records"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-    expect(inPick(`.${classes.faceTally}`)?.firstChild?.textContent).toBe('2 of 3 modules allowed')
+    expect(inPick(`.${classes.faceChoice}`)?.firstElementChild?.textContent).toBe('2 of 3 menu modules allowed')
     expect(inPick(`.${classes.faceWaiting}`)?.textContent).toBe('1 waiting to be allowed')
   })
 
@@ -865,7 +1072,7 @@ describe('the module panel the group sees', () => {
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
+      expect(inPick(`.${classes.faceFoot} .${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     expect(told).toBe(0)
   })
@@ -925,7 +1132,7 @@ describe('the module panel the group sees', () => {
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
+      expect(inPick(`.${classes.faceFoot} .${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     expect(inPick('[data-modulemenu-identifier="records"]')?.getAttribute(attributes.verdict)).toBe('allowed')
   })
@@ -941,7 +1148,7 @@ describe('the module panel the group sees', () => {
     answerNextWriteWith(409)
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
+      expect(inPick(`.${classes.faceFoot} .${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     reply({
       group: { id: 7, title: 'Content Reviewers' },
@@ -1049,7 +1256,7 @@ describe('the module panel the group sees', () => {
     })
     await vi.advanceTimersByTimeAsync(20)
 
-    expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('2 of 3 modules allowed')
+    expect(inPick(`.${classes.faceFoot} .${classes.faceCounted}`)?.textContent).toBe('')
   })
 
   it('turns one card, however often the panel is painted', async () => {
@@ -1174,10 +1381,9 @@ describe('the module panel the group sees', () => {
 
     expect(inPreview(`.${classes.faceEyebrow}`)?.textContent).toBe('Preview')
     expect(inPreview(`.${classes.faceSentence}`)?.textContent).toBe('What Content Reviewers may open')
-    expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
+    expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 menu modules allowed')
     expect(inPick(`.${classes.faceEyebrow}`)?.textContent).toBe('Assign')
     expect(inPick(`.${classes.faceSentence}`)?.textContent).toBe('Pick what Content Reviewers may open')
-    expect(inPick(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
     expect(inPreview(`.${classes.faceCancel}`)?.textContent).toBe('Cancel')
   })
 
@@ -1354,7 +1560,7 @@ describe('the module panel the group sees', () => {
     await armed()
 
     expect(inPreview('[data-modulemenu-identifier="some_removed_module"]')).toBeNull()
-    expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 modules allowed')
+    expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('2 of 3 menu modules allowed')
   })
 
   it('says where an inherited module comes from, and nothing on what it allows itself', async () => {
