@@ -37,7 +37,13 @@ let listening: AbortController | null = null
 
 const flash = createFlash(560)
 
-export function render(doc: Document, menu: Element, outside: readonly (string | undefined)[]): void {
+export interface OutsideModule {
+  readonly verdict: string | undefined
+  readonly parent: string
+  readonly label: string
+}
+
+export function render(doc: Document, menu: Element, outside: readonly OutsideModule[]): void {
   // Every pick on this panel is a change asked for on that group, not just what's shown
   const paintedFor = getState().groupId
   const group = titleOf(doc, paintedFor) ?? ''
@@ -156,6 +162,13 @@ export function render(doc: Document, menu: Element, outside: readonly (string |
     removals.state.textContent = toRemove.length === 0
       ? has
       : counted('allowModules.marked', allowedByGroup.length, toRemove.length, allowedByGroup.length)
+    const leaving = toRemove.map(nameOf)
+    const takenAway = outside
+      .filter(({ verdict, parent }) => isReachable(verdict) && leaving.includes(parent))
+      .map(({ label }) => said(labelOf('allowModules.takenAway.name'), label))
+    removals.waiting.textContent = takenAway.length === 0
+      ? ''
+      : counted('allowModules.takenAway', takenAway.length, takenAway.join(', '))
     removals.ready(toRemove.length > 0, toRemove.length > 0)
 
     additions.state.textContent = ''
@@ -180,7 +193,7 @@ export function render(doc: Document, menu: Element, outside: readonly (string |
       void chooseOutside(paintedFor, group)
     }
   }))
-  const outsideAllowed = outside.filter(isReachable).length
+  const outsideAllowed = outside.filter(({ verdict }) => isReachable(verdict)).length
   choice.append(say(doc, classes.faceCounted, counted('allowModules.outside.tally', outside.length, outsideAllowed, outside.length)))
   pick.sheet.insertBefore(choice, pick.foot)
 
