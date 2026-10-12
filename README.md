@@ -76,10 +76,9 @@ were.
 
 ## Getting started
 
-The extension is in an early phase (alpha). Install it from GitHub:
+The extension is in an early phase (alpha). Install it with Composer:
 
 ```bash
-composer config repositories.visual-permissions vcs https://github.com/wazum/visual-permissions
 composer require wazum/visual-permissions
 ```
 
