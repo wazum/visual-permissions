@@ -178,7 +178,7 @@ export function paintMounts(
   }
 
   const removals = footIn(preview.foot, {
-    label: labelOf('mountBranches.doRemove'),
+    label: labelOf('platform.doRemove'),
     cancel: () => {
       markedIds.clear()
       repaintBranches(doc)

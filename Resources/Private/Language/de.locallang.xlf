@@ -135,17 +135,29 @@
                 <source>"%s" allowed as well, so the group finds the module in the menu</source>
                 <target>„%s“ ebenfalls erlaubt, damit die Gruppe das Modul im Menü findet</target>
             </trans-unit>
+            <trans-unit id="allowModules.alsoRemoved.many" resname="allowModules.alsoRemoved.many" approved="yes">
+                <source>%s are removed as well</source>
+                <target>%s werden ebenfalls entfernt</target>
+            </trans-unit>
+            <trans-unit id="allowModules.alsoRemoved.name" resname="allowModules.alsoRemoved.name" approved="yes">
+                <source>"%s"</source>
+                <target>„%s“</target>
+            </trans-unit>
+            <trans-unit id="allowModules.alsoRemoved.one" resname="allowModules.alsoRemoved.one" approved="yes">
+                <source>%s is removed as well</source>
+                <target>%s wird ebenfalls entfernt</target>
+            </trans-unit>
             <trans-unit id="allowModules.hint" resname="allowModules.hint" approved="yes">
-                <source>or click a module to disallow it</source>
-                <target>oder ein Modul anklicken, um es zu entziehen</target>
+                <source>or click a module to remove it</source>
+                <target>oder ein Modul anklicken, um es zu entfernen</target>
             </trans-unit>
             <trans-unit id="allowModules.marked.many" resname="allowModules.marked.many" approved="yes">
-                <source>%1$s of %2$s modules waiting to be disallowed</source>
-                <target>%1$s von %2$s Modulen noch zu entziehen</target>
+                <source>%1$s of %2$s modules waiting to be removed</source>
+                <target>%1$s von %2$s Modulen noch zu entfernen</target>
             </trans-unit>
             <trans-unit id="allowModules.marked.one" resname="allowModules.marked.one" approved="yes">
-                <source>%1$s of %2$s module waiting to be disallowed</source>
-                <target>%1$s von %2$s Modul noch zu entziehen</target>
+                <source>%1$s of %2$s module waiting to be removed</source>
+                <target>%1$s von %2$s Modul noch zu entfernen</target>
             </trans-unit>
             <trans-unit id="allowModules.outside" resname="allowModules.outside" approved="yes">
                 <source>Choose modules outside the menu</source>
@@ -170,18 +182,6 @@
             <trans-unit id="allowModules.previewFor" resname="allowModules.previewFor" approved="yes">
                 <source>The modules the group "%s" may open</source>
                 <target>Die Module, die die Gruppe „%s“ öffnen darf</target>
-            </trans-unit>
-            <trans-unit id="allowModules.takenAway.many" resname="allowModules.takenAway.many" approved="yes">
-                <source>%s are taken away as well</source>
-                <target>%s werden ebenfalls entzogen</target>
-            </trans-unit>
-            <trans-unit id="allowModules.takenAway.name" resname="allowModules.takenAway.name" approved="yes">
-                <source>"%s"</source>
-                <target>„%s“</target>
-            </trans-unit>
-            <trans-unit id="allowModules.takenAway.one" resname="allowModules.takenAway.one" approved="yes">
-                <source>%s is taken away as well</source>
-                <target>%s wird ebenfalls entzogen</target>
             </trans-unit>
             <trans-unit id="allowModules.tally.many" resname="allowModules.tally.many" approved="yes">
                 <source>%1$s of %2$s menu modules allowed</source>
@@ -250,10 +250,6 @@
             <trans-unit id="mountBranches.doAdd" resname="mountBranches.doAdd" approved="yes">
                 <source>Add</source>
                 <target>Hinzufügen</target>
-            </trans-unit>
-            <trans-unit id="mountBranches.doRemove" resname="mountBranches.doRemove" approved="yes">
-                <source>Remove</source>
-                <target>Entfernen</target>
             </trans-unit>
             <trans-unit id="mountBranches.folders.add" resname="mountBranches.folders.add" approved="yes">
                 <source>Add file mounts</source>
@@ -458,6 +454,10 @@
             <trans-unit id="platform.doDisallow" resname="platform.doDisallow" approved="yes">
                 <source>Disallow</source>
                 <target>Entziehen</target>
+            </trans-unit>
+            <trans-unit id="platform.doRemove" resname="platform.doRemove" approved="yes">
+                <source>Remove</source>
+                <target>Entfernen</target>
             </trans-unit>
             <trans-unit id="platform.failed" resname="platform.failed" approved="yes">
                 <source>The change could not be sent. It is still waiting here.</source>

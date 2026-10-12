@@ -3,7 +3,7 @@ import { LitElement as Ar, html as I } from "lit";
 import { ModuleStateStorage as wn } from "@typo3/backend/storage/module-state-storage.js";
 import Y from "@typo3/core/ajax/ajax-request.js";
 import $r from "@typo3/backend/login-refresh.js";
-import Re from "@typo3/backend/notification.js";
+import De from "@typo3/backend/notification.js";
 import { sudoModeInterceptor as Sr } from "@typo3/backend/security/sudo-mode-interceptor.js";
 import Mt from "@typo3/backend/modal.js";
 import { FileStorageTree as Er } from "@typo3/backend/tree/file-storage-tree.js";
@@ -193,7 +193,7 @@ function xr() {
   return nt;
 }
 const Sn = "vperm.session", En = 1, we = "modules", Fr = "fields", rt = /* @__PURE__ */ new Set();
-let T = Dr();
+let T = Rr();
 document.addEventListener("typo3-module-loaded", () => {
   Ke({ ...T, face: "preview" });
 });
@@ -242,7 +242,7 @@ function Ke(e) {
   for (const t of rt)
     t(T);
 }
-function Dr() {
+function Rr() {
   const e = pe.get(Sn);
   if (e === null || typeof e != "object")
     return { open: !1, active: !1, groupId: null, area: we, picked: we, face: "preview" };
@@ -259,7 +259,7 @@ function Dr() {
     face: "preview"
   };
 }
-function Rr(e) {
+function Dr(e) {
   const t = () => {
     It(document.body);
     const n = document.querySelector("#typo3-contentIframe")?.contentDocument?.body ?? null;
@@ -413,19 +413,19 @@ function N(e, ...t) {
     e
   );
 }
-const Dt = (e, t) => t === 0 || /[\s\-_.]/.test(e.charAt(t - 1));
+const Rt = (e, t) => t === 0 || /[\s\-_.]/.test(e.charAt(t - 1));
 function Kr(e, t, n, r) {
   const o = [e];
-  let i = Dt(r, e) ? 2 : 0, s = e + 1;
+  let i = Rt(r, e) ? 2 : 0, s = e + 1;
   for (let a = 1; a < t.length; a += 1) {
     const c = n.indexOf(t.charAt(a), s);
     if (c === -1)
       return null;
-    c === s && (i += 4), Dt(r, c) && (i += 2), o.push(c), s = c + 1;
+    c === s && (i += 4), Rt(r, c) && (i += 2), o.push(c), s = c + 1;
   }
   return { score: e === 0 ? i + 2 : i, at: o };
 }
-function Rt(e, t) {
+function Dt(e, t) {
   if (e === "")
     return { score: 0, at: [] };
   const n = e.toLowerCase(), r = t.toLowerCase(), o = n.charAt(0);
@@ -483,7 +483,7 @@ class zr extends Ar {
     return this.entries.map((n) => ({
       entry: n,
       band: t.indexOf(n.heading ?? ""),
-      score: Rt(this.query, Bt(n))?.score ?? -1
+      score: Dt(this.query, Bt(n))?.score ?? -1
     })).filter((n) => n.score >= 0).sort((n, r) => n.band - r.band || r.score - n.score).map((n) => n.entry);
   }
   get found() {
@@ -529,7 +529,7 @@ class zr extends Ar {
       <div class=${l.pickerList} role="listbox" tabindex="-1">
         ${this.nothingToShow(t)}
         ${this.state !== "ready" ? "" : t.map((n, r) => {
-      const o = Rt(this.query, Bt(n))?.at ?? [];
+      const o = Dt(this.query, Bt(n))?.at ?? [];
       return I`
           ${this.headingBefore(n, t[r - 1])}
           <div role="option" id=${this.rowId(r)} data-id=${n.id}
@@ -825,14 +825,14 @@ function Xr() {
     }
   };
 }
-const Dn = Xr();
-function R(e, t) {
-  Dn.listen(e, t);
+const Rn = Xr();
+function D(e, t) {
+  Rn.listen(e, t);
 }
 function Wt(e) {
-  Dn.tell(e);
+  Rn.tell(e);
 }
-function D(e) {
+function R(e) {
   return TYPO3.settings.ajaxUrls[e] ?? "";
 }
 const O = {
@@ -857,7 +857,7 @@ const O = {
 let ot = 0;
 async function oe(e, t, n = () => {
 }) {
-  return ot += 1, new Y(D(e)).addMiddleware(Sr).post(t).then(async (r) => {
+  return ot += 1, new Y(R(e)).addMiddleware(Sr).post(t).then(async (r) => {
     const o = Kt(r);
     return o === "taken" && r.raw().status === 200 && n(await r.resolve()), o;
   }, Kt).finally(() => {
@@ -879,7 +879,7 @@ function Zr(e) {
   return e < 300 ? "taken" : e === 422 ? "cancelled" : e === 409 ? "refused" : "failed";
 }
 async function ze(e, t = []) {
-  return Pe(new Y(D(O.inspect)).withQueryArguments({ group: e, tables: [...t] }).get());
+  return Pe(new Y(R(O.inspect)).withQueryArguments({ group: e, tables: [...t] }).get());
 }
 function Ve() {
   let e = 0;
@@ -894,15 +894,15 @@ function Ve() {
     }
   };
 }
-async function Rn(e, t) {
+async function Dn(e, t) {
   const n = e.indexOf(":"), r = e.slice(0, n), o = e.slice(n + 1);
-  return (await (await new Y(D(O.open_document)).withQueryArguments({ table: r, uids: o, returnUrl: t }).get()).resolve()).url ?? "";
+  return (await (await new Y(R(O.open_document)).withQueryArguments({ table: r, uids: o, returnUrl: t }).get()).resolve()).url ?? "";
 }
 async function Pe(e) {
   try {
     return await (await e).resolve();
   } catch {
-    return Re.error(g("platform.notRead")), null;
+    return De.error(g("platform.notRead")), null;
   }
 }
 const $t = ["allowed", "allowedAndInherited", "inherited"], eo = ["allowed", "denied"], ee = "allowed", he = "denied", He = "inherited", St = "allowedAndInherited", Ye = "adminOnly";
@@ -990,7 +990,7 @@ function co(e, t) {
       w !== void 0 && f.setAttribute(d.verdict, w), f.toggleAttribute(d.outOfReach, !U(v.tablesModify.targets[Be(b)]));
     }), o = v.tablesModify, i(), Z("fields-judged", {});
   };
-  R(({ doc: c, fields: u }) => {
+  D(({ doc: c, fields: u }) => {
     r.drop(), c.body.style.setProperty("--vperm-inherited-note", `"${g("platform.from")}"`);
     const p = u.flatMap((m) => {
       const h = m.getAttribute(d.token);
@@ -1095,7 +1095,7 @@ function bo(e, t) {
       }), r();
     }), a.querySelector(":scope > .form-section")?.prepend(u), u;
   };
-  R((s) => {
+  D((s) => {
     const a = s.doc === n;
     if (n = s.doc, r(), a)
       return;
@@ -1180,7 +1180,7 @@ function ko(e, t) {
   }, s = () => {
     r?.showCount();
   };
-  R((a) => {
+  D((a) => {
     n = a.doc, o(), n.defaultView?.addEventListener("click", s, { signal: t }), n.defaultView?.addEventListener("keydown", s, { signal: t });
   }, t), J("fields-judged", o, t), C(o, t);
 }
@@ -1280,7 +1280,7 @@ function _o(e, t) {
       }), v.append(b);
     });
   };
-  R((h) => {
+  D((h) => {
     n = h.doc;
   }, t), J("fields-judged", m, t);
 }
@@ -1291,7 +1291,7 @@ function Oo(e) {
       Po(r);
     });
   };
-  R((r) => {
+  D((r) => {
     t = r.doc, n();
   }, e), J("fields-judged", n, e);
 }
@@ -1373,7 +1373,7 @@ function Mo(e) {
   }
 }
 const Io = "typo3-backend-contextual-record-edit-trigger";
-function Do(e, t) {
+function Ro(e, t) {
   let n = null;
   const r = (p) => {
     const m = p.target.closest(Io);
@@ -1393,11 +1393,11 @@ function Do(e, t) {
       (m.matches(c) || m.shadowRoot !== null) && m.toggleAttribute("inert", p);
     });
   };
-  R((p) => {
+  D((p) => {
     n = p.doc, n.addEventListener("submit", i, { capture: !0, signal: t }), n.addEventListener("click", s, { capture: !0, signal: t }), n.addEventListener("click", r, { capture: !0, signal: t }), u();
   }, t), C(u, t);
 }
-const Ro = ".module-docheader-buttons .btn-toolbar", Bo = (e, t) => {
+const Do = ".module-docheader-buttons .btn-toolbar", Bo = (e, t) => {
   e.location.assign(t);
 };
 function Uo(e, t = Bo) {
@@ -1429,12 +1429,12 @@ function Uo(e, t = Bo) {
       v.className = "form-select form-select-sm", v.setAttribute("aria-label", m), v.append(...[...u.children].map((f) => f.cloneNode(!0))), v.value = u.value, v.addEventListener("change", () => {
         const [f, b, w] = u.name.slice(5, -1).split("]["), k = new URL(i.URL), P = String(b).startsWith("NEW") ? `defVals[${String(f)}][${String(w)}]` : `vperm[value][${String(f)}][${String(b)}][${String(w)}]`;
         k.searchParams.set(P, v.value), t(i, k.toString());
-      }), p.append(h, v), i.querySelector(Ro)?.append(p);
+      }), p.append(h, v), i.querySelector(Do)?.append(p);
     });
   };
   C(() => {
     r(), o();
-  }, e), R(({ doc: i }) => {
+  }, e), D(({ doc: i }) => {
     n = i, r(), o();
   }, e);
 }
@@ -1505,7 +1505,7 @@ function Wo({ value: e, label: t, icon: n }, r, o) {
 async function Wn(e, t) {
   return oe(O.allow_modules, { group: e, operations: [...t] }, (n) => {
     n.alsoAllowed.forEach((r) => {
-      Re.info(N(g("allowModules.alsoAllowed"), r));
+      De.info(N(g("allowModules.alsoAllowed"), r));
     });
   });
 }
@@ -1513,7 +1513,7 @@ async function Ko(e, t) {
   const n = await ze(e);
   if (n === null)
     return;
-  const r = await Pe(new Y(D(O.modules_outside_menu)).get());
+  const r = await Pe(new Y(R(O.modules_outside_menu)).get());
   if (r === null)
     return;
   const o = new Set(Object.entries(n.scopes.modules.targets).filter(([, i]) => U(i)).map(([i]) => i));
@@ -1549,7 +1549,7 @@ function Go(e, t, n) {
       b(!1), Z("permissions-written", {});
     })));
   }, k = _e(c.foot, {
-    label: g("platform.doDisallow"),
+    label: g("platform.doRemove"),
     cancel: () => {
       Qe(c.scroll).forEach((A) => {
         A.classList.remove(l.faceMarked);
@@ -1572,8 +1572,8 @@ function Go(e, t, n) {
     G.textContent = j;
     const W = Qe(c.scroll);
     k.state.textContent = W.length === 0 ? j : K("allowModules.marked", a.length, W.length, a.length);
-    const $ = W.map(Te), q = n.filter(({ verdict: M, parent: te }) => U(M) && $.includes(te)).map(({ label: M }) => N(g("allowModules.takenAway.name"), M));
-    k.waiting.textContent = q.length === 0 ? "" : K("allowModules.takenAway", q.length, q.join(", ")), k.ready(W.length > 0, W.length > 0), x.state.textContent = "", x.waiting.textContent = E.length === 0 ? "" : N(g("platform.waiting"), E.length), x.ready(E.length > 0, !0);
+    const $ = W.map(Te), q = n.filter(({ verdict: M, parent: te }) => U(M) && $.includes(te)).map(({ label: M }) => N(g("allowModules.alsoRemoved.name"), M));
+    k.waiting.textContent = q.length === 0 ? "" : K("allowModules.alsoRemoved", q.length, q.join(", ")), k.ready(W.length > 0, W.length > 0), x.state.textContent = "", x.waiting.textContent = E.length === 0 ? "" : N(g("platform.waiting"), E.length), x.ready(E.length > 0, !0);
   };
   c.bar.append(
     X(e, g("allowModules.allow"), "btn btn-default", () => {
@@ -1693,7 +1693,7 @@ function Zo(e, t) {
       p.filter((w) => w.getAttribute(Hn) === f).forEach((w) => {
         w.setAttribute(d.verdict, b);
       });
-    }), r ??= Pe(new Y(D(O.modules_outside_menu)).get());
+    }), r ??= Pe(new Y(R(O.modules_outside_menu)).get());
     const v = await r;
     if (v === null) {
       r = null;
@@ -1772,7 +1772,7 @@ function ni(e) {
       k.before(w);
     });
   };
-  R((o) => {
+  D((o) => {
     t = o.doc, r();
   }, e), J("permissions-written", () => void r(), e), C(() => void r(), e);
 }
@@ -1839,7 +1839,7 @@ function ai(e) {
       }), i.after(a);
     });
   };
-  R((r) => {
+  D((r) => {
     t = r.doc, n();
   }, e), C(n, e);
 }
@@ -1868,7 +1868,7 @@ async function ui(e, t) {
   const n = await ze(e);
   if (n === null)
     return;
-  const r = await Pe(new Y(D(O.file_operations)).get());
+  const r = await Pe(new Y(R(O.file_operations)).get());
   if (r === null)
     return;
   const o = new Set(Object.keys(n.scopes.fileOperations.targets));
@@ -1887,11 +1887,11 @@ const Qn = {
     return { targets: n, order: Object.keys(n), named: t(e.named), unseen: [] };
   },
   rootedAt: (e) => {
-    const t = D(O.folder_tree);
+    const t = R(O.folder_tree);
     return {
       dataUrl: `${t}${t.includes("?") ? "&" : "?"}group=${String(e)}`,
-      rootlineUrl: D("filestorage_tree_rootline"),
-      filterUrl: D("filestorage_tree_filter"),
+      rootlineUrl: R("filestorage_tree_rootline"),
+      filterUrl: R("filestorage_tree_filter"),
       showIcons: !0
     };
   },
@@ -1925,7 +1925,7 @@ const Qn = {
     named: {},
     unseen: e.unseen
   }),
-  rootedAt: async () => ({ ...await (await new Y(D("page_tree_browser_configuration")).get()).resolve(), rootlineUrl: D("page_tree_rootline") }),
+  rootedAt: async () => ({ ...await (await new Y(R("page_tree_browser_configuration")).get()).resolve(), rootlineUrl: R("page_tree_rootline") }),
   write: async (e, t, n) => oe(O.mount_pages, {
     group: e,
     operations: t.map((r) => ({ page: Number(r), mount: n }))
@@ -1965,18 +1965,18 @@ function hi(e, t, n) {
   e.addEventListener("typo3:tree:node-selected", (o) => {
     o.stopPropagation();
     const { node: i, propagate: s } = rr(o);
-    s === !1 || er(i.identifier) || V.has(i.identifier) || Ce(i) || (z.has(i.identifier) ? z.delete(i.identifier) : z.add(i.identifier), t(), Ze(De(e)));
+    s === !1 || er(i.identifier) || V.has(i.identifier) || Ce(i) || (z.has(i.identifier) ? z.delete(i.identifier) : z.add(i.identifier), t(), Ze(Re(e)));
   }, { capture: !0, signal: n });
   const r = new MutationObserver(() => {
-    const o = De(e);
+    const o = Re(e);
     o !== null && (!Oe.has(o) || e.querySelector(".node[data-id='0']") !== null) && Ze(o);
   });
   r.observe(e, { childList: !0, subtree: !0 }), n.addEventListener("abort", () => {
     r.disconnect();
-  }), Ze(De(e));
+  }), Ze(Re(e));
 }
 function gi(e) {
-  const t = De(e);
+  const t = Re(e);
   if (t === null)
     return;
   const n = Oe.get(t);
@@ -2001,7 +2001,7 @@ function Zt(e) {
     t.__hidden = !0;
   }), e;
 }
-const Oe = /* @__PURE__ */ new WeakMap(), De = (e) => e.querySelector(
+const Oe = /* @__PURE__ */ new WeakMap(), Re = (e) => e.querySelector(
   "typo3-backend-navigation-component-pagetree-tree,typo3-backend-navigation-component-filestorage-tree"
 );
 let et = "", en = () => {
@@ -2130,7 +2130,7 @@ function yi(e, t, n, { groupId: r, kind: o }) {
       E.forEach((W) => S.delete(W)), x(), f(!1), Z("permissions-written", {});
     });
   }, k = _e(m.foot, {
-    label: g("mountBranches.doRemove"),
+    label: g("platform.doRemove"),
     cancel: () => {
       B.clear(), ut(e), b();
     },
@@ -2362,7 +2362,7 @@ function Ti(e, t) {
   r !== 0 && t.body.style.setProperty("--vperm-tab-tall", `${String(r)}px`);
 }
 function Mi(e, t, n) {
-  const r = Di(e, l.tabCard, t);
+  const r = Ri(e, l.tabCard, t);
   if (n === null) {
     r.hidden = !0;
     return;
@@ -2377,16 +2377,16 @@ function Ii(e, t, n, r) {
   if (e === null)
     return;
   const o = t.getBoundingClientRect();
-  xe(e, t), e.hidden = o.width === 0 || o.left === 0 || n || _n(t.ownerDocument) === 0 || Ri(o, r), qt(e, t);
+  xe(e, t), e.hidden = o.width === 0 || o.left === 0 || n || _n(t.ownerDocument) === 0 || Di(o, r), qt(e, t);
 }
-function Di(e, t, n) {
+function Ri(e, t, n) {
   const r = e.querySelector(`.${t}`);
   if (r !== null)
     return r;
   const o = n.createElement("div");
   return o.className = t, e.append(o), o;
 }
-function Ri(e, t) {
+function Di(e, t) {
   const n = t.find((r) => {
     const o = r.getBoundingClientRect();
     return o.width > 0 && Math.round(o.right) === Math.round(e.left);
@@ -2485,7 +2485,7 @@ function es(e, t) {
   e.addEventListener("typo3-module-loaded", o, { signal: t }), C(r, t);
 }
 async function ts(e, t) {
-  const n = ce(e), r = await Rn(t, n?.getAttribute("endpoint") ?? "");
+  const n = ce(e), r = await Dn(t, n?.getAttribute("endpoint") ?? "");
   r !== "" && n?.setAttribute("endpoint", r);
 }
 function ns(e) {
@@ -2515,7 +2515,7 @@ function ss(e, t) {
   }), n();
 }
 function as(e) {
-  R(({ doc: t }) => {
+  D(({ doc: t }) => {
     t.querySelectorAll(".module-docheader-bar-navigation").forEach((n) => {
       n.classList.add("module-docheader-navigation");
     }), t.querySelectorAll(".module-docheader-bar-navigation > .module-docheader-bar-column-left").forEach((n) => {
@@ -2526,7 +2526,7 @@ function as(e) {
   }, e);
 }
 function ls(e) {
-  R(({ doc: t }) => {
+  D(({ doc: t }) => {
     t.querySelectorAll('[data-bs-toggle="tab"][data-bs-target]:not([data-typo3-tab])').forEach((n) => {
       n.setAttribute("data-typo3-tab", n.getAttribute("data-bs-target") ?? "");
     });
@@ -2547,7 +2547,7 @@ function ur(e, t) {
       r.has(a) || (r.add(a), ds(a), dr(a, e));
     });
   };
-  R((i) => {
+  D((i) => {
     n = i.doc, o();
   }, t), C(o, t);
 }
@@ -2599,10 +2599,10 @@ function hs(e, t) {
       typeof b == "string" && (v[f] = b);
     oe(O.write_other_permissions, v).then((f) => {
       if (u.setAttribute("identifier", "actions-document-save"), c.disabled = m !== p, f === "taken") {
-        Re.success(g("notification.record_saved.title.singular"));
+        De.success(g("notification.record_saved.title.singular"));
         return;
       }
-      f !== "cancelled" && Re.error(g("editOtherPermissions.notSaved"));
+      f !== "cancelled" && De.error(g("editOtherPermissions.notSaved"));
     });
   }), a.append(c), i.append(s, a), o.append(i), n.append(o, r);
   let p = null, m = null;
@@ -2620,7 +2620,7 @@ function hs(e, t) {
   h(y()), C(h, t);
 }
 async function gs(e) {
-  return Pe(new Y(D(O.other_permissions)).withQueryArguments({ group: e }).get());
+  return Pe(new Y(R(O.other_permissions)).withQueryArguments({ group: e }).get());
 }
 const Nt = '.form-group:has(> select[name="_langSelector"])', ft = /* @__PURE__ */ new WeakMap();
 function vs(e, t) {
@@ -2680,7 +2680,7 @@ function Ss(e, t) {
     );
     [...i.querySelectorAll(ln)].find((f) => f.contains(a))?.after(h);
   };
-  R((i) => {
+  D((i) => {
     const s = i.doc === n;
     n = i.doc, o(), !s && kt(
       i.doc,
@@ -2799,7 +2799,7 @@ function Ps(e) {
       })
     ), i.append(s, a), o.querySelector(Os)?.append(i), vs(o, i);
   };
-  R((o) => {
+  D((o) => {
     t = o.doc, r();
   }, e), J("fields-judged", r, e), C(r, e);
 }
@@ -2900,7 +2900,7 @@ function Ot(e) {
   } catch {
   }
 }
-const fr = 600, Is = 250, Ds = 2e3, Rs = 320, Pt = "vperm.arriving";
+const fr = 600, Is = 250, Rs = 2e3, Ds = 320, Pt = "vperm.arriving";
 function Bs() {
   return TYPO3.settings.visualPermissions?.animation !== !1;
 }
@@ -2927,7 +2927,7 @@ function js(e) {
   const i = new AbortController(), s = () => {
     !n || !r || o || (o = !0, i.abort(), e.body.removeAttribute(d.settling), e.body.removeAttribute(d.arriving), e.body.setAttribute(d.unwrapping, ""), window.setTimeout(() => {
       e.body.removeAttribute(d.unwrapping);
-    }, Rs));
+    }, Ds));
   }, a = () => {
     n = !0, s();
   }, c = () => {
@@ -2937,7 +2937,7 @@ function js(e) {
   let u = 0;
   e.addEventListener("typo3-module-loaded", () => {
     window.clearTimeout(u), u = window.setTimeout(c, Is);
-  }, { signal: i.signal }), window.setTimeout(c, Ds);
+  }, { signal: i.signal }), window.setTimeout(c, Rs);
 }
 function Ws() {
   return ve(Pt);
@@ -3013,7 +3013,7 @@ function Zs() {
   }
 }
 async function ea(e, t, n) {
-  const r = await Rn(n, t);
+  const r = await Dn(n, t);
   r !== "" && Or(e, r);
 }
 let Ie = null;
@@ -3023,7 +3023,7 @@ function ta(e) {
   return e;
 }
 async function wr() {
-  const e = await new Y(D(O.viewable_users)).get(Ie === null ? {} : { headers: { "If-None-Match": Ie.tag } }).catch(ta), t = e.raw();
+  const e = await new Y(R(O.viewable_users)).get(Ie === null ? {} : { headers: { "If-None-Match": Ie.tag } }).catch(ta), t = e.raw();
   if (t.status === 304)
     return Ie.users;
   const n = await e.resolve(), r = t.headers.get("ETag");
@@ -3124,7 +3124,7 @@ async function yr(e, t, n) {
 }
 function ua(e, t, n) {
   _r(document), mr(document, "down", () => {
-    t.handOver(D(O.view_as_user), {
+    t.handOver(R(O.view_as_user), {
       targetUser: String(e),
       screen: n
     });
@@ -3134,11 +3134,11 @@ function bn() {
   if (window.top !== window)
     return;
   const e = new AbortController();
-  Rr(e.signal), Ur(document, e.signal), Ts(document, e.signal), Yr(document, e.signal), ls(e.signal), as(e.signal);
+  Dr(e.signal), Ur(document, e.signal), Ts(document, e.signal), Yr(document, e.signal), ls(e.signal), as(e.signal);
   const t = po();
   co(t, e.signal);
   const n = uo();
-  bo(n, e.signal), ko(n, e.signal), _o(t, e.signal), Oo(e.signal), Zo(document, e.signal), Ei(document, e.signal), ni(e.signal), oi(e.signal), ai(e.signal), ci(e.signal), Yi(document, e.signal), qs(document, e.signal), Ns(document, e.signal), Zi(document, e.signal), es(document, e.signal), Fo(document, e.signal), _i(document, e.signal), hs(document, e.signal), ss(document, e.signal), Do(document, e.signal), Uo(e.signal), _s(document, e.signal), Ss(document, e.signal), Ps(e.signal), Ms(e.signal), ms(e.signal), Es(document, e.signal);
+  bo(n, e.signal), ko(n, e.signal), _o(t, e.signal), Oo(e.signal), Zo(document, e.signal), Ei(document, e.signal), ni(e.signal), oi(e.signal), ai(e.signal), ci(e.signal), Yi(document, e.signal), qs(document, e.signal), Ns(document, e.signal), Zi(document, e.signal), es(document, e.signal), Fo(document, e.signal), _i(document, e.signal), hs(document, e.signal), ss(document, e.signal), Ro(document, e.signal), Uo(e.signal), _s(document, e.signal), Ss(document, e.signal), Ps(e.signal), Ms(e.signal), ms(e.signal), Es(document, e.signal);
   const r = oa(document, e.signal);
   Js(document, e.signal), r ? Us(document) : (Qs(document), js(document)), Fs(document);
 }
