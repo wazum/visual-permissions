@@ -23,7 +23,7 @@ it on the same screen.
 | Modules | The module menu shows the modules the group can open. |
 | Page mounts | The page tree shows the pages the group can work in. |
 | File mounts | The folder tree shows the folders the group can work in. |
-| Records and fields | The record form shows what the group can do with each field, and if the group can edit records of this table at all. |
+| Records and fields | The record form shows what the group can do with each field, and how far it reaches into the table: no access, read, or read and write. |
 | Other permissions | The rest of the group record, in a panel next to the screen. |
 
 Each area is like a card with two sides. The front shows what the group has. On the back,
@@ -76,12 +76,14 @@ were.
 
 ## Getting started
 
-The extension is in an early phase (alpha) and has no release yet. Install it from GitHub:
+The extension is in an early phase (alpha). Install it from GitHub:
 
 ```bash
 composer config repositories.visual-permissions vcs https://github.com/wazum/visual-permissions
-composer require wazum/visual-permissions:dev-main
+composer require wazum/visual-permissions
 ```
+
+What changed in each release is in the [changelog](CHANGELOG.md).
 
 Log in as an administrator. The toolbar now has a group picker and a switch that shows the
 permissions.

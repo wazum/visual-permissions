@@ -1,0 +1,60 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      # Composer takes the version from the tag, but classic-mode installs read
+      # ext_emconf.php, so that one repeated number must not drift.
+      - name: Assert ext_emconf.php matches the tag
+        run: |
+          declared=$(php -r '$_EXTKEY = "visual_permissions"; $EM_CONF = []; require "ext_emconf.php"; echo $EM_CONF[$_EXTKEY]["version"];')
+          tagged="${GITHUB_REF_NAME#v}"
+          if [ "${declared}" != "${tagged}" ]; then
+            echo "ext_emconf.php says ${declared}, tag says ${tagged}"
+            exit 1
+          fi
+
+      - name: Assert Build/package.json matches the tag
+        run: |
+          declared=$(node -p 'require("./Build/package.json").version')
+          tagged="${GITHUB_REF_NAME#v}"
+          if [ "${declared}" != "${tagged}" ]; then
+            echo "Build/package.json says ${declared}, tag says ${tagged}"
+            exit 1
+          fi
+
+      # The release says what the changelog says for this version, so pushing the
+      # tag is the whole release procedure.
+      - name: Take the release notes from the changelog
+        run: |
+          tagged="${GITHUB_REF_NAME#v}"
+          awk -v version="${tagged}" '
+            $0 ~ "^## \\[" version "\\]" { found = 1; next }
+            found && /^## \[/ { exit }
+            found && /^\[[^]]+\]: / { exit }
+            found { print }
+          ' CHANGELOG.md > release-notes.md
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "CHANGELOG.md has no section for ${tagged}"
+            exit 1
+          fi
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1 \
+            || gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --notes-file release-notes.md
