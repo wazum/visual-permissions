@@ -11,13 +11,11 @@ import {
 } from '../__mocks__/typo3-ajax-request.js'
 
 const labels = {
-  'allowTables.missing': 'The group may not edit records of this kind',
-  'allowTables.allow': 'Allow "%s"',
-  'allowTables.disallow': 'Disallow "%s"',
-  'allowTables.theirs': 'The group may edit records of this kind',
   'allowTables.inherited': 'Reached through a subgroup, not by this group itself. Change it on that group.',
-  'allowTables.alsoInherited': 'Allowed by this group and through a subgroup. Change it on that subgroup.',
   'platform.refused': 'The change could not be saved. It is still waiting here.',
+  'be_groups.tables_modify.permissions.none': 'No Access',
+  'be_groups.tables_modify.permissions.select': 'Read',
+  'be_groups.tables_modify.permissions.modify': 'Read & Write',
 }
 
 // The server says which field holds which, so the gate needs no box of core's to find them
@@ -111,6 +109,17 @@ const anotherRecordOf = (token: string): void => {
   document.querySelector('form')?.append(field)
 }
 
+const levels = (): [string, string | null][] =>
+  [...document.querySelectorAll(`.${classes.tableLevels} [role="radio"]`)]
+    .map(level => [level.textContent, level.getAttribute('aria-checked')])
+
+const level = (name: string): HTMLButtonElement | undefined =>
+  [...document.querySelectorAll<HTMLButtonElement>(`.${classes.tableLevels} [role="radio"]`)]
+    .find(option => option.textContent === name)
+
+const chosen = (): (string | null)[] =>
+  [...document.querySelectorAll(`.${classes.tableLevels} [aria-checked="true"]`)].map(option => option.textContent)
+
 const gates = (): (string | null)[] =>
   [...document.querySelectorAll(`.${classes.tableGate} .callout-body`)].map(said => said.textContent)
 
@@ -129,6 +138,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
       chain: [],
       scopes: {
         fields: { targets: {} },
+        tablesSelect: { targets: {} },
         tablesModify: {
           targets: { sys_file_reference: 'denied' },
           named: { sys_file_reference: 'File Reference' },
@@ -142,7 +152,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     deactivate()
   })
 
-  it('says on the record that the group is not allowed its table', async () => {
+  it('leaves it to the switch to say where the group stands', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -150,14 +160,18 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(gates())
-        .toStrictEqual(['The group may not edit records of this kind'])
+      expect(levels()).toHaveLength(3)
     })
+    expect(gates()).toStrictEqual([''])
   })
 
   it('leaves an answer for a group it has moved on from', async () => {
     const answering = (verdict: string): unknown => ({
-      scopes: { fields: { targets: {} }, tablesModify: { targets: { sys_file_reference: verdict }, named: {} } },
+      scopes: {
+        fields: { targets: {} },
+        tablesSelect: { targets: {} },
+        tablesModify: { targets: { sys_file_reference: verdict }, named: {} },
+      },
     })
     replyTo('group=7', answering('denied'))
     replyTo('group=8', answering('allowed'))
@@ -169,12 +183,12 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     turnTo('pick')
     formReady({ doc: document, fields: [] })
     selectGroup(8)
-    await vi.waitFor(() => { expect(gates()).toStrictEqual([labels['allowTables.theirs']]) })
+    await vi.waitFor(() => { expect(chosen()).toStrictEqual(['Read & Write']) })
 
     releaseFirst()
     await new Promise(settled => { setTimeout(settled, 0) })
 
-    expect(gates()).toStrictEqual([labels['allowTables.theirs']])
+    expect(chosen()).toStrictEqual(['Read & Write'])
   })
 
   it('leaves an answer that comes after the form has turned to what the group gets', async () => {
@@ -199,6 +213,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
       chain: [],
       scopes: {
         fields: { targets: {} },
+        tablesSelect: { targets: {} },
         tablesModify: { targets: { tt_content: 'denied' }, named: { tt_content: 'Page Content' } },
       },
     })
@@ -223,6 +238,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
       chain: [],
       scopes: {
         fields: { targets: {} },
+        tablesSelect: { targets: {} },
         tablesModify: {
           targets: { sys_file_metadata: 'denied' },
           named: { sys_file_metadata: 'File Metadata' },
@@ -256,12 +272,13 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     expect(document.querySelector(`.${classes.tableToken}`)?.textContent).toBe('sys_file_reference')
   })
 
-  it('offers to disallow a table the group may write', async () => {
+  it('chooses reading and writing for a table the group may write', async () => {
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],
       scopes: {
         fields: { targets: {} },
+        tablesSelect: { targets: {} },
         tablesModify: {
           targets: { sys_file_reference: 'allowed' },
           named: { sys_file_reference: 'File Reference' },
@@ -275,7 +292,28 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableDisallow}`)?.textContent).toBe('Disallow "File Reference"')
+      expect(levels()).toStrictEqual([['No Access', 'false'], ['Read', 'false'], ['Read & Write', 'true']])
+    })
+  })
+
+  it('chooses reading for a table the group may only read', async () => {
+    reply({
+      group: { id: 7, title: 'Editors' },
+      chain: [],
+      scopes: {
+        fields: { targets: {} },
+        tablesModify: { targets: { sys_file_reference: 'denied' }, named: { sys_file_reference: 'File Reference' } },
+        tablesSelect: { targets: { sys_file_reference: 'allowed' } },
+      },
+    })
+    recordOf('sys_file_reference:title')
+    initialise(listening.signal)
+    pickFieldsToGive()
+
+    formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
+
+    await vi.waitFor(() => {
+      expect(levels()).toStrictEqual([['No Access', 'false'], ['Read', 'true'], ['Read & Write', 'false']])
     })
   })
 
@@ -285,6 +323,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
       chain: [],
       scopes: {
         fields: { targets: {} },
+        tablesSelect: { targets: {} },
         tablesModify: {
           targets: { sys_file_reference: 'allowed', sys_file_metadata: 'denied' },
           named: { sys_file_reference: 'File Reference', sys_file_metadata: 'File Metadata' },
@@ -299,10 +338,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(gates()).toStrictEqual([
-        'The group may edit records of this kind',
-        'The group may not edit records of this kind',
-      ])
+      expect(chosen()).toStrictEqual(['Read & Write', 'No Access'])
     })
   })
 
@@ -317,10 +353,10 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableAllow}`)).not.toBeNull()
+      expect(document.querySelector(`.${classes.tableLevels}`)).not.toBeNull()
     })
 
-    expect(document.querySelector(`.${classes.tableAllow}`)?.closest('[inert]')).toBeNull()
+    expect(document.querySelector(`.${classes.tableLevels}`)?.closest('[inert]')).toBeNull()
   })
 
   it('finds the records from what the server said, not from a box of core\'s', async () => {
@@ -331,7 +367,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(gates()).toStrictEqual(['The group may not edit records of this kind'])
+      expect(chosen()).toStrictEqual(['No Access'])
     })
   })
 
@@ -370,7 +406,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
   })
 
-  it('offers to allow a table the group is not allowed', async () => {
+  it('offers the levels core names, the one the group has chosen', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -378,7 +414,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableAllow}`)?.textContent).toBe('Allow "File Reference"')
+      expect(levels()).toStrictEqual([['No Access', 'true'], ['Read', 'false'], ['Read & Write', 'false']])
     })
   })
 
@@ -393,7 +429,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields })
 
     await vi.waitFor(() => {
-      expect(document.querySelectorAll(`.${classes.tableAllow}`)).toHaveLength(1)
+      expect(document.querySelectorAll(`.${classes.tableLevels}`)).toHaveLength(1)
     })
 
     formReady({ doc: document, fields })
@@ -402,11 +438,11 @@ describe('the gate a record stands behind while its table is not allowed', () =>
       expect(document.querySelectorAll(`.${classes.tableGate}`)).toHaveLength(1)
     })
 
-    expect(document.querySelectorAll(`.${classes.tableAllow}`)).toHaveLength(1)
+    expect(document.querySelectorAll(`.${classes.tableLevels}`)).toHaveLength(1)
   })
 
   // There is nothing else on this form to decide alongside it
-  it('allows the table when the offer is pressed', async () => {
+  it('writes the level that is pressed', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -414,19 +450,19 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
+      expect(levels()).toHaveLength(3)
     })
 
     sent.length = 0
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    level('Read')?.click()
 
     await vi.waitFor(() => {
       expect(sent.at(-1)?.body)
-        .toStrictEqual({ group: 7, operations: [{ table: 'sys_file_reference', allow: true }] })
+        .toStrictEqual({ group: 7, operations: [{ table: 'sys_file_reference', select: true, modify: false }] })
     })
   })
 
-  it('allows the table once while the first press is still unanswered', async () => {
+  it('names the switch after its table for whoever cannot see it', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -434,20 +470,58 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
+      expect(document.querySelector(`[role="radiogroup"].${classes.tableLevels}`)?.getAttribute('aria-label'))
+        .toBe('File Reference')
+    })
+  })
+
+  it('takes reading and writing away when no access is pressed', async () => {
+    reply({
+      group: { id: 7, title: 'Editors' },
+      chain: [],
+      scopes: {
+        fields: { targets: {} },
+        tablesSelect: { targets: { sys_file_reference: 'allowed' } },
+        tablesModify: { targets: { sys_file_reference: 'allowed' }, named: { sys_file_reference: 'File Reference' } },
+      },
+    })
+    recordOf('sys_file_reference:title')
+    initialise(listening.signal)
+    pickFieldsToGive()
+    formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
+    await vi.waitFor(() => { expect(levels()).toHaveLength(3) })
+    sent.length = 0
+
+    level('No Access')?.click()
+
+    await vi.waitFor(() => {
+      expect(sent.at(-1)?.body)
+        .toStrictEqual({ group: 7, operations: [{ table: 'sys_file_reference', select: false, modify: false }] })
+    })
+  })
+
+  it('writes once while the first press is still unanswered', async () => {
+    recordOf('sys_file_reference:title')
+    initialise(listening.signal)
+    pickFieldsToGive()
+
+    formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
+
+    await vi.waitFor(() => {
+      expect(levels()).toHaveLength(3)
     })
 
     sent.length = 0
     const letGo = holdNextWrite()
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    level('Read')?.click()
+    level('Read & Write')?.click()
     letGo()
     await new Promise(settled => { setTimeout(settled, 0) })
 
     expect(sent).toHaveLength(1)
   })
 
-  it('allows the table again once the backend turned the first press down', async () => {
+  it('writes again once the backend turned the first press down', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -455,21 +529,21 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
+      expect(levels()).toHaveLength(3)
     })
 
     sent.length = 0
     answerNextWriteWith(409)
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    level('Read')?.click()
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLButtonElement>(`.${classes.tableAllow}`)?.disabled).toBe(false)
+      expect(level('Read')?.disabled).toBe(false)
     })
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    level('Read')?.click()
 
     await vi.waitFor(() => { expect(sent).toHaveLength(2) })
   })
 
-  it('says that the backend took the table', async () => {
+  it('says that the backend took the level', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -478,17 +552,17 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
+      expect(levels()).toHaveLength(3)
     })
 
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    level('Read')?.click()
 
     await vi.waitFor(() => {
       expect(told).toBe(1)
     })
   })
 
-  it('says nothing about a table the backend turned down', async () => {
+  it('says nothing about a level the backend turned down', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -497,12 +571,12 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
+      expect(levels()).toHaveLength(3)
     })
     sent.length = 0
     answerNextWriteWith(409)
 
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    level('Read')?.click()
 
     await vi.waitFor(() => {
       expect(sent).toHaveLength(1)
@@ -511,18 +585,18 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     expect(told).toBe(0)
   })
 
-  it('says on the band that the backend turned the table down', async () => {
+  it('says on the band that the backend turned the level down', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
+      expect(levels()).toHaveLength(3)
     })
     answerNextWriteWith(409)
 
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    level('Read')?.click()
 
     await vi.waitFor(() => {
       expect(gates()).toStrictEqual([labels['platform.refused']])
@@ -536,22 +610,23 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
     await vi.waitFor(() => {
-      expect(document.querySelector<HTMLElement>(`.${classes.tableAllow}`)).not.toBeNull()
+      expect(levels()).toHaveLength(3)
     })
     sent.length = 0
     cancelNextPassword()
 
-    document.querySelector<HTMLElement>(`.${classes.tableAllow}`)?.click()
+    level('Read')?.click()
 
     await vi.waitFor(() => {
       expect(sent).toHaveLength(1)
     })
     await new Promise(settled => { setTimeout(settled, 0) })
-    expect(gates()).toStrictEqual([labels['allowTables.missing']])
+    expect(gates()).toStrictEqual([''])
+    expect(chosen()).toStrictEqual(['No Access'])
   })
 
   // Whatever wrote it, the table it stands over may be the group's own by now
-  it('turns to disallowing the table once the group is allowed it', async () => {
+  it('chooses the level the group has once something else wrote it', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -560,7 +635,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     await vi.waitFor(() => {
       expect(gates())
-        .toStrictEqual(['The group may not edit records of this kind'])
+        .toStrictEqual([''])
     })
 
     reply({
@@ -568,6 +643,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
       chain: [],
       scopes: {
         fields: { targets: {} },
+        tablesSelect: { targets: {} },
         tablesModify: {
           targets: { sys_file_reference: 'allowed' },
           named: { sys_file_reference: 'File Reference' },
@@ -577,10 +653,8 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     emit('permissions-written', {})
 
     await vi.waitFor(() => {
-      expect(document.querySelector(`.${classes.tableDisallow}`)?.textContent).toBe('Disallow "File Reference"')
+      expect(levels()).toStrictEqual([['No Access', 'false'], ['Read', 'false'], ['Read & Write', 'true']])
     })
-
-    expect(gates()).toStrictEqual(['The group may edit records of this kind'])
   })
 
   it('takes its word back when the form turns to what the group gets', async () => {
@@ -592,7 +666,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     await vi.waitFor(() => {
       expect(gates())
-        .toStrictEqual(['The group may not edit records of this kind'])
+        .toStrictEqual([''])
     })
 
     asked.length = 0
@@ -612,7 +686,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     await vi.waitFor(() => {
       expect(gates())
-        .toStrictEqual(['The group may not edit records of this kind'])
+        .toStrictEqual([''])
     })
 
     asked.length = 0
@@ -633,7 +707,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     await vi.waitFor(() => {
       expect(gates())
-        .toStrictEqual(['The group may not edit records of this kind'])
+        .toStrictEqual([''])
     })
 
     asked.length = 0
@@ -665,7 +739,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     await vi.waitFor(() => {
       expect(gates())
-        .toStrictEqual(['The group may not edit records of this kind'])
+        .toStrictEqual([''])
     })
 
     refuseNextRead()
@@ -693,7 +767,7 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     await vi.waitFor(() => {
       expect(gates())
-        .toStrictEqual(['The group may not edit records of this kind'])
+        .toStrictEqual([''])
     })
   })
 
@@ -711,45 +785,69 @@ describe('the gate a record stands behind while its table is not allowed', () =>
 
     // What the table is called comes from the group's permissions, not from the words
     expect(gates()).toStrictEqual([''])
-    expect(document.querySelector(`.${classes.tableAllow}`)?.textContent).toBe('')
+    expect(levels().map(([word]) => word)).toStrictEqual(['', '', ''])
   })
 
-  it('says a table is inherited, and offers no deed on it', async () => {
+  it('stands an inherited level as the floor, with the reason on every level below it', async () => {
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],
       scopes: {
         fields: { targets: {} },
+        tablesSelect: { targets: { sys_file_reference: 'inherited' } },
         tablesModify: {
-          targets: { sys_file_reference: 'inherited', sys_file_metadata: 'denied' },
-          named: { sys_file_reference: 'File Reference', sys_file_metadata: 'File Metadata' },
+          targets: { sys_file_reference: 'inherited' },
+          named: { sys_file_reference: 'File Reference' },
         },
       },
     })
     recordOf('sys_file_reference:title')
-    anotherRecordOf('sys_file_metadata:alternative')
     initialise(listening.signal)
     pickFieldsToGive()
 
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(gates()).toStrictEqual([
-        'Reached through a subgroup, not by this group itself. Change it on that group.',
-        'The group may not edit records of this kind',
-      ])
+      expect(levels()).toStrictEqual([['No Access', 'false'], ['Read', 'false'], ['↳ Read & Write', 'true']])
     })
-
-    expect(document.querySelectorAll(`.${classes.tableAllow}`)).toHaveLength(1)
-    expect(document.querySelector(`.${classes.tableDisallow}`)).toBeNull()
+    expect([...document.querySelectorAll<HTMLButtonElement>(`.${classes.tableLevels} [role="radio"]`)]
+      .map(option => [option.disabled, option.title]))
+      .toStrictEqual([[true, labels['allowTables.inherited']], [true, labels['allowTables.inherited']], [false, '']])
   })
 
-  it('says a table the group allows itself is inherited too, and offers no deed on it', async () => {
+  it('keeps the levels below the floor out of reach once the backend turned a press down', async () => {
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],
       scopes: {
         fields: { targets: {} },
+        tablesSelect: { targets: { sys_file_reference: 'inherited' } },
+        tablesModify: { targets: { sys_file_reference: 'denied' }, named: { sys_file_reference: 'File Reference' } },
+      },
+    })
+    recordOf('sys_file_reference:title')
+    initialise(listening.signal)
+    pickFieldsToGive()
+    formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
+    await vi.waitFor(() => { expect(levels()).toHaveLength(3) })
+    sent.length = 0
+    answerNextWriteWith(409)
+
+    level('Read & Write')?.click()
+    await vi.waitFor(() => { expect(sent).toHaveLength(1) })
+    await new Promise(settled => { setTimeout(settled, 0) })
+
+    expect(level('No Access')?.disabled).toBe(true)
+    expect(level('↳ Read')?.disabled).toBe(false)
+  })
+
+  it('stands a level the group also gives itself on the floor its subgroup lays', async () => {
+    reply({
+      group: { id: 7, title: 'Editors' },
+      chain: [],
+      scopes: {
+        fields: { targets: {} },
+        tablesSelect: { targets: {} },
         tablesModify: {
           targets: { sys_file_reference: 'allowedAndInherited' },
           named: { sys_file_reference: 'File Reference' },
@@ -763,8 +861,8 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 
     await vi.waitFor(() => {
-      expect(gates()).toStrictEqual(['Allowed by this group and through a subgroup. Change it on that subgroup.'])
+      expect(chosen()).toStrictEqual(['↳ Read & Write'])
     })
-    expect(document.querySelector(`.${classes.tableDisallow}, .${classes.tableAllow}`)).toBeNull()
+    expect(level('Read')?.disabled).toBe(true)
   })
 })

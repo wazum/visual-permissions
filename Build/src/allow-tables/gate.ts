@@ -60,7 +60,8 @@ export function initialise(signal: AbortSignal): void {
         return
       }
 
-      const gate = drawBand(page, { groupId, table, called: named[table] ?? table, verdict })
+      const reads = permissions.scopes.tablesSelect.targets[table]
+      const gate = drawBand(page, { groupId, table, called: named[table] ?? table, verdict, reads })
 
       // The record's own table holds however the form is folded into tabs, so its band stands
       // over all of them; a table held in a field stands against the records themselves

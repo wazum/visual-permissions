@@ -5,11 +5,12 @@ import { isReachable, tableOf } from '../../platform/vocabulary.js'
 export interface Judgement {
   readonly tables: Readonly<Record<string, string>>
   readonly named: Readonly<Record<string, string>>
+  readonly reads: Readonly<Record<string, string>>
 }
 
 export interface PreviewPart {
   readonly hide: (doc: Document, judgement: Judgement, face: 'preview' | 'pick') => void
-  readonly explain: (doc: Document, table: string, verdict: string | undefined, called: string) => Element
+  readonly explain: (doc: Document, table: string, verdict: string | undefined, called: string, reads: string | undefined) => Element
 }
 
 const parts: { tables?: PreviewPart, fields?: PreviewPart } = {}
@@ -92,7 +93,7 @@ function openFirstVisibleTab(doc: Document): void {
 
 // A blank screen explains nothing, and a sentence about it is a dead end: the reader is told
 // what the group is missing and given the one deed that clears it
-function sayWhenEmpty(doc: Document, { tables, named }: Judgement): void {
+function sayWhenEmpty(doc: Document, { tables, named, reads }: Judgement): void {
   if (doc.querySelector(`.form-section:not([${attributes.unseen}])`) !== null) {
     return
   }
@@ -100,7 +101,7 @@ function sayWhenEmpty(doc: Document, { tables, named }: Judgement): void {
   const table = recordTable(doc)
   const verdict = tables[table]
   const answering = isReachable(verdict) ? parts.fields : parts.tables
-  const note = answering?.explain(doc, table, verdict, named[table] ?? table)
+  const note = answering?.explain(doc, table, verdict, named[table] ?? table, reads[table])
   if (note === undefined) {
     return
   }

@@ -195,18 +195,6 @@
                 <source>Only administrators may edit records of this kind</source>
                 <target>Nur Administratoren dürfen Datensätze dieser Art bearbeiten</target>
             </trans-unit>
-            <trans-unit id="allowTables.allow" resname="allowTables.allow" approved="yes">
-                <source>Allow "%s"</source>
-                <target>„%s“ erlauben</target>
-            </trans-unit>
-            <trans-unit id="allowTables.alsoInherited" resname="allowTables.alsoInherited" approved="yes">
-                <source>Allowed by this group and through a subgroup. Change it on that subgroup.</source>
-                <target>Von dieser Gruppe und über eine Untergruppe erlaubt. Dort zu ändern.</target>
-            </trans-unit>
-            <trans-unit id="allowTables.disallow" resname="allowTables.disallow" approved="yes">
-                <source>Disallow "%s"</source>
-                <target>„%s“ entziehen</target>
-            </trans-unit>
             <trans-unit id="allowTables.gone" resname="allowTables.gone" approved="yes">
                 <source>This is empty for the group: it may not edit "%s"</source>
                 <target>Für die Gruppe bleibt das hier leer: sie darf „%s“ nicht bearbeiten</target>
@@ -214,14 +202,6 @@
             <trans-unit id="allowTables.inherited" resname="allowTables.inherited" approved="yes">
                 <source>Reached through a subgroup, not by this group itself. Change it on that group.</source>
                 <target>Über eine Untergruppe erreichbar, nicht durch die Gruppe selbst. Dort zu ändern.</target>
-            </trans-unit>
-            <trans-unit id="allowTables.missing" resname="allowTables.missing" approved="yes">
-                <source>The group may not edit records of this kind</source>
-                <target>Die Gruppe darf keine Datensätze dieser Art bearbeiten</target>
-            </trans-unit>
-            <trans-unit id="allowTables.theirs" resname="allowTables.theirs" approved="yes">
-                <source>The group may edit records of this kind</source>
-                <target>Die Gruppe darf Datensätze dieser Art bearbeiten</target>
             </trans-unit>
             <trans-unit id="allowedValues.choose.CType" resname="allowedValues.choose.CType" approved="yes">
                 <source>Choose page content types</source>

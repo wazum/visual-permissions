@@ -63,6 +63,9 @@ final class VisualPermissionsToolbarItemTest extends FunctionalTestCase
             'one of its own' => ['viewAsUser.leave'],
             'the save core names' => ['rm.saveDoc'],
             'the record saved core reports' => ['notification.record_saved.title.singular'],
+            'no access to a table, as core says it' => ['be_groups.tables_modify.permissions.none'],
+            'reading a table, as core says it' => ['be_groups.tables_modify.permissions.select'],
+            'reading and writing a table, as core says it' => ['be_groups.tables_modify.permissions.modify'],
         ];
     }
 

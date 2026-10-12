@@ -11,12 +11,12 @@ describe('the tables a group is allowed', () => {
     forget()
   })
 
-  it('sends the tables a group is to hold', async () => {
-    await writeTable(7, 'sys_file_reference', true)
+  it('sends how far a group is to reach into a table', async () => {
+    await writeTable(7, 'sys_file_reference', true, false)
 
     expect(sent).toStrictEqual([{
       url: '/typo3/ajax/visual_permissions_allow_tables',
-      body: { group: 7, operations: [{ table: 'sys_file_reference', allow: true }] },
+      body: { group: 7, operations: [{ table: 'sys_file_reference', select: true, modify: false }] },
     }])
   })
 })

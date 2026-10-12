@@ -1,4 +1,4 @@
-import type { Locator } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
 import { expect, test } from '../../fixtures/test.js'
 import { pickArea } from '../../fixtures/areas.js'
 import { moduleContent } from '../../fixtures/module-content.js'
@@ -8,12 +8,19 @@ import { forgetSession } from '../../fixtures/session.js'
 import { verifyIfAsked } from '../../fixtures/sudo-mode.js'
 import { openControls, switchOn } from '../../fixtures/visual-mode.js'
 
+const level = (where: Locator, name: string): Locator =>
+  where.locator('.vperm-table-levels').getByRole('radio', { name, exact: true })
+
+const choose = async (page: Page, where: Locator, name: string): Promise<void> => {
+  await verifyIfAsked(page, () => level(where, name).click())
+}
+
 test.beforeEach(async ({ page }) => {
   await forgetSession(page)
 })
 
 // The fields of such a record cannot be allowed, and the record itself has to say why
-test('a record of a table the group is not allowed says so, and offers the table', async ({ page }) => {
+test('a record of a table the group is not allowed says so, and offers the levels', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -26,15 +33,15 @@ test('a record of a table the group is not allowed says so, and offers the table
   await switchOn(page)
   await pickArea(page, 'fields')
   await turnToFields(page)
+  await form.locator('.nav-tabs').getByText('Media', { exact: true }).click()
 
   // The record's own table stands over the form as well, so this names the one it holds
   const held = form.locator('.vperm-table-gate:has(.vperm-table-token:text-is("sys_file_reference"))')
 
-  await expect(held.locator('.callout-body')).toHaveText('The group may not edit records of this kind')
-  await expect(held.locator('.vperm-table-allow')).toHaveText('Allow "File Reference"')
+  await expect(level(held, 'No Access')).toHaveAttribute('aria-checked', 'true')
 })
 
-test('a record of a table the group is allowed offers to disallow it', async ({ page }) => {
+test('a record of a table the group may write has reading and writing chosen', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -50,10 +57,10 @@ test('a record of a table the group is allowed offers to disallow it', async ({ 
 
   const own = form.locator('.vperm-table-gate:has(.vperm-table-token:text-is("pages"))')
 
-  await expect(own.locator('.vperm-table-disallow')).toHaveText('Disallow "Page"')
+  await expect(level(own, 'Read & Write')).toHaveAttribute('aria-checked', 'true')
 })
 
-test('revoking the table of the record turns the form to what the group gets', async ({ page }) => {
+test('leaving the group only reading the table of the record turns the form to what the group gets', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -62,19 +69,15 @@ test('revoking the table of the record turns the form to what the group gets', a
 
   const form = moduleContent(page)
   const band = (table: string): Locator => form.locator(`.vperm-table-gate:has(.vperm-table-token:text-is("${table}"))`)
-  const press = async (deed: Locator): Promise<void> => {
-    await verifyIfAsked(page, () => deed.click())
-    await expect(deed).toBeHidden({ timeout: 8000 })
-  }
 
   await openControls(page)
   await switchOn(page)
   await pickArea(page, 'fields')
   await turnToFields(page)
   await form.locator('.nav-tabs').getByText('Media', { exact: true }).click()
-  await press(band('sys_file_reference').locator('.vperm-table-allow'))
-  await expect(band('sys_file_reference').locator('.vperm-table-disallow')).toBeVisible()
-  await press(band('tt_content').locator('.vperm-table-disallow'))
+  await choose(page, band('sys_file_reference'), 'Read & Write')
+  await expect(level(band('sys_file_reference'), 'Read & Write')).toHaveAttribute('aria-checked', 'true', { timeout: 8000 })
+  await choose(page, band('tt_content'), 'Read')
 
   await expect(form.locator('body')).toHaveAttribute('data-vperm-face', 'preview')
 })
@@ -112,10 +115,10 @@ test('the form the group gets offers no table a missing record belongs to', asyn
   await pickArea(page, 'fields')
 
   await expect(form.locator('.vperm-table-note')).toBeAttached()
-  await expect(form.locator('.vperm-table-note .vperm-table-allow')).toHaveCount(0)
+  await expect(form.locator('.vperm-table-note .vperm-table-levels')).toHaveCount(0)
 })
 
-test('the form the group gets offers the table of a record it cannot reach', async ({ page }) => {
+test('the form the group gets offers the levels of a record it cannot reach', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -128,7 +131,7 @@ test('the form the group gets offers the table of a record it cannot reach', asy
   await switchOn(page)
   await pickArea(page, 'fields')
 
-  await expect(form.locator('.vperm-nothing-theirs .vperm-table-allow')).toHaveText('Allow "File Reference"')
+  await expect(level(form.locator('.vperm-nothing-theirs'), 'No Access')).toHaveAttribute('aria-checked', 'true')
 })
 
 test('the form the group gets names the table of a record it cannot reach as the band does', async ({ page }) => {
@@ -146,7 +149,6 @@ test('the form the group gets names the table of a record it cannot reach as the
 
   await expect(note.locator('.vperm-table-name')).toHaveText('File Reference')
   await expect(note.locator('.vperm-table-token')).toHaveText('sys_file_reference')
-  await expect(note.locator('.callout-body')).toHaveText('The group may not edit records of this kind')
 })
 
 test('the note on the form the group gets stands the name over the table, as the band does', async ({ page }) => {
@@ -170,7 +172,7 @@ test('the note on the form the group gets stands the name over the table, as the
   expect((token?.y ?? 0) - (name?.y ?? 0) - (name?.height ?? 0)).toBeLessThan(4)
 })
 
-test('the offer on the form the group gets stands at the far edge of its note', async ({ page }) => {
+test('the levels on the form the group gets stand at the far edge of its note', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -184,7 +186,7 @@ test('the offer on the form the group gets stands at the far edge of its note', 
   await pickArea(page, 'fields')
 
   const note = await form.locator('.vperm-nothing-theirs').boundingBox()
-  const offer = await form.locator('.vperm-nothing-theirs .vperm-table-allow').boundingBox()
+  const levels = await form.locator('.vperm-nothing-theirs .vperm-table-levels').boundingBox()
 
-  expect((note?.x ?? 0) + (note?.width ?? 0) - ((offer?.x ?? 0) + (offer?.width ?? 0))).toBeLessThan(40)
+  expect((note?.x ?? 0) + (note?.width ?? 0) - ((levels?.x ?? 0) + (levels?.width ?? 0))).toBeLessThan(40)
 })

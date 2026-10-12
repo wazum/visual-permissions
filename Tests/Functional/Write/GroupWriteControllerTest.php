@@ -41,7 +41,7 @@ final class GroupWriteControllerTest extends FunctionalTestCase
         return [
             'fields' => [AllowFieldsController::class, 'group_fields', 10, 'non_exclude_fields', ['field' => 'tt_content:subheader', 'allow' => true], 'allow'],
             'modules' => [AllowModulesController::class, 'group_chain', 10, 'groupMods', ['module' => 'about', 'allow' => true], 'allow'],
-            'tables' => [AllowTablesController::class, 'group_tables', 20, 'tables_modify', ['table' => 'sys_file_reference', 'allow' => true], 'allow'],
+            'tables' => [AllowTablesController::class, 'group_tables', 20, 'tables_modify', ['table' => 'sys_file_reference', 'select' => true, 'modify' => true], 'modify'],
             'page mounts' => [MountPagesController::class, 'group_mounts', 20, 'db_mountpoints', ['page' => 7, 'mount' => true], 'mount'],
             'file mounts' => [MountFoldersController::class, 'group_file_mounts', 20, 'file_mountpoints', ['folder' => '1:/archive/', 'mount' => true], 'mount'],
             'field values' => [AllowValuesController::class, 'group_values', 10, 'explicit_allowdeny', ['value' => 'tt_content:CType:header', 'allow' => true], 'allow'],

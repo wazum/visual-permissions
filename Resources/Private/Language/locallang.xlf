@@ -147,26 +147,11 @@
             <trans-unit id="allowTables.adminOnly" resname="allowTables.adminOnly">
                 <source>Only administrators may edit records of this kind</source>
             </trans-unit>
-            <trans-unit id="allowTables.allow" resname="allowTables.allow">
-                <source>Allow "%s"</source>
-            </trans-unit>
-            <trans-unit id="allowTables.alsoInherited" resname="allowTables.alsoInherited">
-                <source>Allowed by this group and through a subgroup. Change it on that subgroup.</source>
-            </trans-unit>
-            <trans-unit id="allowTables.disallow" resname="allowTables.disallow">
-                <source>Disallow "%s"</source>
-            </trans-unit>
             <trans-unit id="allowTables.gone" resname="allowTables.gone">
                 <source>This is empty for the group: it may not edit "%s"</source>
             </trans-unit>
             <trans-unit id="allowTables.inherited" resname="allowTables.inherited">
                 <source>Reached through a subgroup, not by this group itself. Change it on that group.</source>
-            </trans-unit>
-            <trans-unit id="allowTables.missing" resname="allowTables.missing">
-                <source>The group may not edit records of this kind</source>
-            </trans-unit>
-            <trans-unit id="allowTables.theirs" resname="allowTables.theirs">
-                <source>The group may edit records of this kind</source>
             </trans-unit>
             <trans-unit id="allowedValues.choose.CType" resname="allowedValues.choose.CType">
                 <source>Choose page content types</source>

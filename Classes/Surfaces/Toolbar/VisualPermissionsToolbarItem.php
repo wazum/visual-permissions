@@ -55,6 +55,10 @@ final class VisualPermissionsToolbarItem implements ToolbarItemInterface, Reques
             'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
             'notification.record_saved.title.singular',
         );
+        $this->pageRenderer->addInlineLanguageLabelFile(
+            'EXT:core/Resources/Private/Language/locallang_tca.xlf',
+            'be_groups.tables_modify.permissions.',
+        );
 
         $view = $this->viewFactory->create($this->request);
         $view->assign('groups', $groups);

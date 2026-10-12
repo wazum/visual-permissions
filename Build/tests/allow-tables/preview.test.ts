@@ -11,6 +11,14 @@ import {
   backendSays, childRecord, fieldHolding, onScreen, recordsOnScreen, row, drawForm, groupForm,
 } from '../surfaces/record-form/preview-fixture.js'
 
+const chosenIn = (where: string): string | null | undefined =>
+  document.querySelector(`${where} .${classes.tableLevels} [aria-checked="true"]`)?.textContent
+
+const pressIn = (where: string, name: string): void => {
+  ;[...document.querySelectorAll<HTMLElement>(`${where} .${classes.tableLevels} [role="radio"]`)]
+    .find(option => option.textContent === name)?.click()
+}
+
 describe('the tables of the form as the group sees it', () => {
   let listening: AbortController
 
@@ -253,7 +261,7 @@ describe('the tables of the form as the group sees it', () => {
     expect(document.querySelector(`.${classes.nothingTheirs}`)).toBe(null)
   })
 
-  it('offers the table when the table is what the group has not got', () => {
+  it('offers the levels when the table is what the group has not got', () => {
     drawForm(row('tt_content:header', 'notApplicable'))
     backendSays()
 
@@ -261,9 +269,7 @@ describe('the tables of the form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { tt_content: 'denied' }, { tt_content: 'Page Content' })
 
-    const note = document.querySelector(`.${classes.nothingTheirs}`)
-
-    expect(note?.querySelector(`.${classes.tableAllow}`)?.textContent).toBe('Allow "Page Content"')
+    expect(chosenIn(`.${classes.nothingTheirs}`)).toBe('No Access')
   })
 
   it('says so in the band the assign side draws', () => {
@@ -277,7 +283,18 @@ describe('the tables of the form as the group sees it', () => {
     expect(document.querySelector(`.${classes.nothingTheirs}`)?.classList.contains(classes.tableGate)).toBe(true)
   })
 
-  it('allows the table when the offer is pressed', async () => {
+  it('chooses reading for a table the group may only read', () => {
+    drawForm(row('tt_content:header', 'notApplicable'))
+    backendSays()
+
+    activate()
+    pickArea('fields')
+    groupForm(document, { tt_content: 'denied' }, { tt_content: 'Page Content' }, { tt_content: 'allowed' })
+
+    expect(chosenIn(`.${classes.nothingTheirs}`)).toBe('Read')
+  })
+
+  it('writes the level that is pressed', async () => {
     drawForm(row('tt_content:header', 'notApplicable'))
     backendSays()
 
@@ -285,14 +302,15 @@ describe('the tables of the form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { tt_content: 'denied' })
 
-    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableAllow}`)?.click()
+    pressIn(`.${classes.nothingTheirs}`, 'Read & Write')
 
     await vi.waitFor(() => {
-      expect(sent.at(-1)?.body).toStrictEqual({ group: 7, operations: [{ table: 'tt_content', allow: true }] })
+      expect(sent.at(-1)?.body)
+        .toStrictEqual({ group: 7, operations: [{ table: 'tt_content', select: true, modify: true }] })
     })
   })
 
-  it('says that the backend took the table', async () => {
+  it('says that the backend took the level', async () => {
     drawForm(row('tt_content:header', 'notApplicable'))
     backendSays()
     let told = 0
@@ -302,7 +320,7 @@ describe('the tables of the form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { tt_content: 'denied' })
 
-    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableAllow}`)?.click()
+    pressIn(`.${classes.nothingTheirs}`, 'Read & Write')
 
     await vi.waitFor(() => {
       expect(told).toBe(1)
@@ -319,14 +337,14 @@ describe('the tables of the form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { tt_content: 'denied' })
 
-    document.querySelector<HTMLElement>(`.${classes.nothingTheirs} .${classes.tableAllow}`)?.click()
+    pressIn(`.${classes.nothingTheirs}`, 'Read & Write')
 
     await vi.waitFor(() => {
       expect(told).toBe(1)
     })
     await new Promise(settled => { setTimeout(settled, 0) })
-    expect(document.querySelector(`.${classes.nothingTheirs} .callout-body`)?.textContent)
-      .toBe('The group may not edit records of this kind')
+    expect(document.querySelector(`.${classes.nothingTheirs} .callout-body`)?.textContent).toBe('')
+    expect(chosenIn(`.${classes.nothingTheirs}`)).toBe('No Access')
   })
 
   // A table only administrators may write cannot be allowed for a group, so there is no deed
@@ -345,7 +363,7 @@ describe('the tables of the form as the group sees it', () => {
     expect(note?.querySelector('button')).toBeNull()
   })
 
-  it('says why the form is empty when none of it is theirs', () => {
+  it('says through the switch why the form is empty when none of it is theirs', () => {
     drawForm(row('tt_content:header', 'notApplicable'))
     backendSays()
 
@@ -353,8 +371,7 @@ describe('the tables of the form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { tt_content: 'denied' })
 
-    expect(document.querySelector(`.${classes.nothingTheirs} .callout-body`)?.textContent)
-      .toBe('The group may not edit records of this kind')
+    expect(chosenIn(`.${classes.nothingTheirs}`)).toBe('No Access')
   })
 
   it('keeps saying why the form is empty when the gate looks again', () => {
@@ -368,8 +385,7 @@ describe('the tables of the form as the group sees it', () => {
     groupForm(document, { tt_content: 'denied' })
     emit('permissions-written', {})
 
-    expect(document.querySelector(`.${classes.nothingTheirs} .callout-body`)?.textContent)
-      .toBe('The group may not edit records of this kind')
+    expect(chosenIn(`.${classes.nothingTheirs}`)).toBe('No Access')
   })
 
   it('carries no word at all where the backend published none', () => {

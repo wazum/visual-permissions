@@ -21,13 +21,18 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
   signal.addEventListener('abort', () => { latest.drop() })
   // The tables the form was last judged by; the form is drawn from them on either side
   let tablesFrom: Permissions['scopes']['tablesModify'] | null = null
+  let readsFrom: Permissions['scopes']['tablesSelect'] | null = null
 
   const draw = (): void => {
     if (form === null) {
       return
     }
 
-    drawPreview(form.doc, { tables: tablesFrom?.targets ?? {}, named: tablesFrom?.named ?? {} })
+    drawPreview(form.doc, {
+      tables: tablesFrom?.targets ?? {},
+      named: tablesFrom?.named ?? {},
+      reads: readsFrom?.targets ?? {},
+    })
   }
 
   const show = async (): Promise<void> => {
@@ -45,6 +50,7 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
         element.removeAttribute(attributes.outOfReach)
       })
       tablesFrom = null
+      readsFrom = null
       draw()
 
       return
@@ -71,6 +77,7 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
     })
 
     tablesFrom = scopes.tablesModify
+    readsFrom = scopes.tablesSelect
     draw()
     emit('fields-judged', {})
   }
