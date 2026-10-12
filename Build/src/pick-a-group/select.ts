@@ -1,6 +1,6 @@
 import Persistent from '@typo3/backend/storage/persistent.js'
 import { attributes } from '../platform/contract.js'
-import { groupsOn, titleOf, type GroupEntry } from '../platform/group-catalogue.js'
+import { groupsOn, refreshGroups, titleOf, type GroupEntry } from '../platform/group-catalogue.js'
 import { labelOf } from '../platform/labels.js'
 import { counted } from '../platform/panel-card.js'
 import { keep } from '../platform/persistence.js'
@@ -33,7 +33,10 @@ export function initialise(doc: Document, signal: AbortSignal): void {
   picker.addNew = { label: labelOf('pickAGroup.new'), url: trigger.getAttribute(attributes.newRecord) ?? '' }
   doc.body.append(picker)
 
-  trigger.addEventListener('click', () => { picker.openedBy(trigger) }, { signal })
+  trigger.addEventListener('click', () => {
+    picker.openedBy(trigger)
+    void refreshGroups(doc).then(() => { picker.entries = entriesFrom(doc, recent) })
+  }, { signal })
 
   // The header is the only place that names the group on screen
   const chooseOne = trigger.textContent

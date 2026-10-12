@@ -143,6 +143,42 @@ export async function documentUrl(record: string, returnUrl: string): Promise<st
   return answered.url ?? ''
 }
 
+type Answer = Awaited<ReturnType<AjaxRequest['get']>>
+
+// A 304 is the answer for a successful conditional request, not a refusal
+function unchanged(refused: unknown): Answer {
+  // Core hands back an answer or a fault, never nothing.
+  if ((refused as { raw?: () => { status: number } }).raw?.().status !== 304) {
+    throw refused
+  }
+
+  return refused as Answer
+}
+
+// Backend sends no-store; the last answer is kept with its tag here
+export function remembered<T>(route: string): () => Promise<T> {
+  let held: { tag: string, value: T } | null = null
+
+  return async () => {
+    const response = await new AjaxRequest(ajaxUrl(route))
+      .get(held === null ? {} : { headers: { 'If-None-Match': held.tag } })
+      .catch(unchanged)
+
+    const raw = response.raw()
+    if (raw.status === 304) {
+      // The tag that asked for this answer came from the note itself, so the note is here.
+      return (held as { tag: string, value: T }).value
+    }
+
+    const value = await response.resolve<T>()
+    const tag = raw.headers.get('ETag')
+
+    held = tag === null ? null : { tag, value }
+
+    return value
+  }
+}
+
 export async function read<T>(request: ReturnType<AjaxRequest['get']>): Promise<T | null> {
   try {
     return await (await request).resolve<T>()

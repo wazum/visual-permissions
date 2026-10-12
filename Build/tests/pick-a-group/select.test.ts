@@ -3,6 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { attributes, classes, elements } from '#src/platform/contract.js'
 import { deactivate, getState, pickArea, selectGroup } from '#src/platform/session.js'
 import { initialise } from '#src/pick-a-group/select.js'
+import { answerNextReadWith, forget, headersSent, refuseNextRead, replyTo, tagNextAnswer } from '../__mocks__/typo3-ajax-request.js'
+import { forgetNotices, notices } from '../__mocks__/typo3-notification.js'
 import { prime, quiet as written } from '../__mocks__/typo3-persistent-storage.js'
 
 const trigger = (): HTMLButtonElement => {
@@ -48,17 +50,23 @@ const row = (at: number): HTMLElement => {
   return found
 }
 
+const drawnGroups = {
+  2: { title: 'Institute Editors', disabled: false, inherits: [{ groupId: 13, title: 'Editors', depth: 1 }] },
+  13: { title: 'Editors', disabled: true, inherits: [] },
+}
+
 const putHeaderInDocument = (more: Record<number, { title: string }> = {}): void => {
   const button = document.createElement('button')
   button.setAttribute(attributes.group, '')
   button.textContent = 'Backend group'
 
   const carrier = document.createElement('span')
-  carrier.setAttribute(attributes.groups, JSON.stringify({
-    2: { title: 'Institute Editors', disabled: false, inherits: [{ groupId: 13, title: 'Editors', depth: 1 }] },
-    13: { title: 'Editors', disabled: true, inherits: [] },
+  const groups = {
+    ...drawnGroups,
     ...Object.fromEntries(Object.entries(more).map(([id, group]) => [id, { ...group, disabled: false, inherits: [] }])),
-  }))
+  }
+  carrier.setAttribute(attributes.groups, JSON.stringify(groups))
+  replyTo('visual_permissions_groups', groups)
   TYPO3.lang = {
     'pickAGroup.search': 'Search groups',
     'pickAGroup.detail': 'Inherits from',
@@ -82,6 +90,8 @@ describe('the group picker', () => {
 
   beforeEach(async () => {
     localStorage.clear()
+    forget()
+    forgetNotices()
     deactivate()
     selectGroup(null)
     await written()
@@ -193,6 +203,57 @@ describe('the group picker', () => {
       'Editors',
       'Institute Editors',
     ])
+  })
+
+  it('offers a group added since the page was drawn', async () => {
+    initialise(document, listening.signal)
+    replyTo('visual_permissions_groups', { ...drawnGroups, 20: { title: 'Translators', disabled: false, inherits: [] } })
+
+    trigger().click()
+
+    await vi.waitFor(async () => {
+      await settled()
+      expect(rows().map(each => each.textContent.trim().split('\n')[0])).toContain('Translators')
+    })
+  })
+
+  it('asks for the groups again only if they changed since the last answer', async () => {
+    initialise(document, listening.signal)
+    tagNextAnswer('"groups-1"')
+    trigger().click()
+    await vi.waitFor(() => { expect(headersSent).toHaveLength(1) })
+    await new Promise(resolve => { setTimeout(resolve, 0) })
+
+    trigger().click()
+
+    await vi.waitFor(() => { expect(headersSent[1]).toEqual({ 'If-None-Match': '"groups-1"' }) })
+  })
+
+  it('keeps the groups it has, and says nothing, when they did not change', async () => {
+    initialise(document, listening.signal)
+    tagNextAnswer('"groups-1"')
+    trigger().click()
+    await vi.waitFor(() => { expect(headersSent).toHaveLength(1) })
+    await new Promise(resolve => { setTimeout(resolve, 0) })
+    answerNextReadWith(304)
+
+    trigger().click()
+    await new Promise(resolve => { setTimeout(resolve, 0) })
+    await settled()
+
+    expect(notices).toEqual([])
+    expect(rows().map(each => each.textContent.trim().split('\n')[0])).toEqual(['Editors', 'Institute Editors'])
+  })
+
+  it('keeps the groups the page carries when they cannot be read again', async () => {
+    initialise(document, listening.signal)
+    refuseNextRead()
+
+    trigger().click()
+    await new Promise(resolve => { setTimeout(resolve, 0) })
+    await settled()
+
+    expect(rows().map(each => each.textContent.trim().split('\n')[0])).toEqual(['Editors', 'Institute Editors'])
   })
 
   // Move to another module is a new page; groups searched for last persist

@@ -72,6 +72,7 @@ describe('switching to a user from the header', () => {
       + `<button ${attributes.viewAs}>view as</button>`
       + `<span ${attributes.groups}='{"10":{"title":"Editors","inherits":[]},`
       + '"13":{"title":"Reviewers","inherits":[]}}\'></span>'
+    replyTo('visual_permissions_groups', { 10: { title: 'Editors', inherits: [] }, 13: { title: 'Reviewers', inherits: [] } })
     TYPO3.lang = {
       'viewAsUser.search': 'Search users',
       'viewAsUser.recent': 'Recently viewed',
@@ -156,6 +157,24 @@ describe('switching to a user from the header', () => {
 
     expect([...userPicker().querySelectorAll<HTMLElement>(`.${classes.pickerDetail} [role="option"]`)]
       .map(each => each.textContent.trim())).toEqual(['Editors'])
+  })
+
+  it('names a group added since the page was drawn', async () => {
+    replyTo('visual_permissions_groups', {
+      10: { title: 'Editors', inherits: [] },
+      13: { title: 'Reviewers', inherits: [] },
+      20: { title: 'Translators', inherits: [] },
+    })
+    replyTo('viewable_users', {
+      recent: [],
+      users: [{ id: 2, username: 'editor', realName: '', groups: [10, 20] }],
+    })
+    start()
+
+    await openPicker()
+
+    expect([...userPicker().querySelectorAll<HTMLElement>(`.${classes.pickerDetail} [role="option"]`)]
+      .map(each => each.textContent.trim())).toEqual(['Editors', 'Translators'])
   })
 
   it('puts the groups a user is in in their own order, by name', async () => {
