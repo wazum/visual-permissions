@@ -212,7 +212,9 @@ export default class AjaxRequest {
 
     const hold = nextHold
     nextHold = null
-    const status = answered ?? (cancelled ? 422 : 200)
+    const told = [...answers.keys()].some(route => this.url.includes(route))
+    const status = answered ?? (cancelled ? 422 : told ? 200 : 204)
+    const payload = answerFor(this.url)
     const broken = unreadable
     const sentElsewhere = redirected
     cancelled = false
@@ -223,7 +225,7 @@ export default class AjaxRequest {
     await (hold ?? Promise.resolve())
 
     const given = {
-      resolve: <T>(): Promise<T> => Promise.resolve(answer as T),
+      resolve: <T>(): Promise<T> => Promise.resolve(payload as T),
       raw: (): { status: number, ok: boolean, redirected: boolean } => {
         if (broken) {
           throw new TypeError("Cannot read properties of undefined (reading 'response')")

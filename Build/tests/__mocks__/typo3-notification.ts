@@ -17,6 +17,9 @@ const Notification = {
   error: (title: string, message?: string): void => {
     notices.push({ kind: 'error', title, message })
   },
+  info: (title: string, message?: string): void => {
+    notices.push({ kind: 'info', title, message })
+  },
 }
 
 export default Notification

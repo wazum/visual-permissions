@@ -17,6 +17,7 @@ import {
   sent,
 } from '../__mocks__/typo3-ajax-request.js'
 import { dialog, press } from '../__mocks__/typo3-modal.js'
+import { forgetNotices, notices } from '../__mocks__/typo3-notification.js'
 
 const menu = (): void => {
   const nav = document.createElement('nav')
@@ -76,6 +77,7 @@ const carrier = (): void => {
     'allowModules.previewFor': 'What %s may open',
     'allowModules.allow': 'Allow modules',
     'allowModules.hint': 'or click a module to remove it',
+    'allowModules.alsoAllowed': '"%s" allowed as well, so the group finds the module in the menu',
     'allowModules.outside': 'Choose modules outside the menu',
     'allowModules.outside.tally.one': '%1$s of %2$s outside the menu allowed',
     'allowModules.outside.tally.many': '%1$s of %2$s outside the menu allowed',
@@ -134,6 +136,7 @@ describe('the module panel the group sees', () => {
     vi.useFakeTimers()
     localStorage.clear()
     forget()
+    forgetNotices()
     deactivate()
     selectGroup(7)
     listening = new AbortController()
@@ -237,6 +240,28 @@ describe('the module panel the group sees', () => {
       expect(sent).toContainEqual({
         url: '/typo3/ajax/visual_permissions_allow_modules',
         body: { group: 7, operations: [{ module: 'about', allow: false }, { module: 'user_setup', allow: true }] },
+      })
+    })
+  })
+
+  it('tells the admin which parent was allowed along with a module outside the menu', async () => {
+    replyTo('visual_permissions_modules_outside_menu', outsideTheMenu)
+    replyTo('visual_permissions_allow_modules', { alsoAllowed: ['Status'] })
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    chooseOutside()
+    await vi.waitFor(() => { expect(dialog()).not.toBeNull() })
+    dialog()?.querySelector('input')?.click()
+
+    await press('apply')
+
+    await vi.waitFor(() => {
+      expect(notices).toContainEqual({
+        kind: 'info',
+        title: '"Status" allowed as well, so the group finds the module in the menu',
+        message: undefined,
       })
     })
   })

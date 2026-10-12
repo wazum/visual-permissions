@@ -6,6 +6,7 @@ namespace Wazum\VisualPermissions\Write;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
 
@@ -35,17 +36,28 @@ abstract readonly class GroupWriteController
             return new Response(null, 400);
         }
 
+        $answer = $this->answerFor($request, $groupId, $operations);
         if (!$this->writeOperations($groupId, $operations)) {
             return new Response(null, 409);
         }
 
-        return new Response(null, 204);
+        return [] === $answer ? new Response(null, 204) : new JsonResponse($answer);
     }
 
     /**
      * @return list<TOperation>|null null when one of them is no operation this can read
      */
     abstract protected function operationsFrom(mixed $sent): ?array;
+
+    /**
+     * @param list<TOperation> $operations
+     *
+     * @return array<string, mixed> what the write changes beyond the operations, empty when nothing
+     */
+    protected function answerFor(ServerRequestInterface $request, int $groupId, array $operations): array
+    {
+        return [];
+    }
 
     /**
      * @param list<TOperation> $operations

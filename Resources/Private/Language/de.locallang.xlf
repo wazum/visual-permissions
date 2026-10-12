@@ -131,6 +131,10 @@
                 <source>Allow modules</source>
                 <target>Module erlauben</target>
             </trans-unit>
+            <trans-unit id="allowModules.alsoAllowed" resname="allowModules.alsoAllowed" approved="yes">
+                <source>"%s" allowed as well, so the group finds the module in the menu</source>
+                <target>„%s“ ebenfalls erlaubt, damit die Gruppe das Modul im Menü findet</target>
+            </trans-unit>
             <trans-unit id="allowModules.hint" resname="allowModules.hint" approved="yes">
                 <source>or click a module to disallow it</source>
                 <target>oder ein Modul anklicken, um es zu entziehen</target>

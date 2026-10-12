@@ -99,6 +99,9 @@
             <trans-unit id="allowModules.allow" resname="allowModules.allow">
                 <source>Allow modules</source>
             </trans-unit>
+            <trans-unit id="allowModules.alsoAllowed" resname="allowModules.alsoAllowed">
+                <source>"%s" allowed as well, so the group finds the module in the menu</source>
+            </trans-unit>
             <trans-unit id="allowModules.hint" resname="allowModules.hint">
                 <source>or click a module to disallow it</source>
             </trans-unit>
