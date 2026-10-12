@@ -31,6 +31,7 @@ const labels = {
   'allowFields.waiting.many': '%s fields waiting to be allowed',
   'allowFields.going.one': '%s field waiting to be disallowed',
   'allowFields.going.many': '%s fields waiting to be disallowed',
+  'platform.back': 'Back',
   'platform.cancel': 'Cancel',
   'platform.doAllow': 'Allow',
   'platform.doDisallow': 'Disallow',
@@ -252,7 +253,7 @@ describe('the foot under the fields a group is allowed', () => {
     pickFieldsToGive()
 
     expect(document.querySelector(`.${classes.faceApply}`)?.textContent).toBe(labels['platform.doAllow'])
-    expect(document.querySelector(`.${classes.faceCancel}`)?.textContent).toBe(labels['platform.cancel'])
+    expect(document.querySelector(`.${classes.faceCancel}`)?.firstChild?.textContent).toBe(labels['platform.back'])
   })
 
   it('offers nothing to press while nothing is marked', () => {

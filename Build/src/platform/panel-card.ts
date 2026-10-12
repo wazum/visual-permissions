@@ -8,7 +8,7 @@ export const burst = 1300
 export interface Foot {
   readonly state: HTMLElement
   readonly waiting: HTMLElement
-  ready: (deed: boolean, leave: boolean) => void
+  ready: (deed: boolean, leave: boolean, waits?: boolean) => void
 }
 
 // Domain rule for side commit structure: group state, pending deed, then Cancel or deed itself
@@ -25,6 +25,7 @@ export function footIn(
   const waiting = say(doc, classes.faceWaiting, '')
   tally.append(state, waiting)
 
+  // Stryker disable next-line StringLiteral: ready() names the button as soon as the panel is painted
   const cancel = button(doc, labelOf('platform.cancel'), `btn btn-default ${classes.faceCancel}`, asked.cancel)
   const apply = button(doc, asked.label, `btn btn-primary ${classes.faceApply}`, asked.apply)
 
@@ -33,9 +34,24 @@ export function footIn(
   return {
     state,
     waiting,
-    ready: (deed, leave) => {
+    ready: (deed, leave, waits = deed) => {
       apply.toggleAttribute('disabled', !deed)
       cancel.toggleAttribute('disabled', !leave)
+      if (!leave || waits) {
+        cancel.textContent = labelOf('platform.cancel')
+
+        return
+      }
+
+      cancel.textContent = labelOf('platform.back')
+      // Stryker disable next-line OptionalChaining: the panel is painted only in a backend that carries the settings
+      if (TYPO3.settings.visualPermissions?.keysOnButtons === false) {
+        return
+      }
+
+      const key = doc.createElement('kbd')
+      key.textContent = 'Esc'
+      cancel.append(key)
     },
   }
 }
