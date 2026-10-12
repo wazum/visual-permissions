@@ -46,8 +46,8 @@ where you were.
 ## Screenshots
 
 **Records and fields.** The front shows the form as the group gets it. On the back, you mark
-the fields to give the group, and the band above the form says if the group may edit
-records of this table.
+the fields to give the group, and the band above the form sets how far the group reaches
+into the table: no access, read, or read and write.
 
 | What the group has | What you give the group |
 |---|---|
