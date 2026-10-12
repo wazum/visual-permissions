@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\UserToolbarItem;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
@@ -121,6 +122,39 @@ final class VisualPermissionsToolbarItemTest extends FunctionalTestCase
         self::assertStringContainsString(
             ContractFixture::readMap('dom-attributes', 'attributes')['toggle'],
             $item->getItem(),
+        );
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function pickersThatAddARecord(): array
+    {
+        return [
+            'the group picker' => ['group', 'be_groups'],
+            'the user picker' => ['viewAs', 'be_users'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('pickersThatAddARecord')]
+    public function handsAPickerTheFormOfANewRecordAtTheRootLevel(string $trigger, string $table): void
+    {
+        $attributes = ContractFixture::readMap('dom-attributes', 'attributes');
+
+        preg_match(
+            '/<button[^>]*' . $attributes[$trigger] . '=""[^>]*' . $attributes['newRecord'] . '="([^"]*)"/',
+            $this->toolbarItem()->getItem(),
+            $found,
+        );
+
+        self::assertStringContainsString(
+            '/record/edit?token=',
+            html_entity_decode($found[1] ?? ''),
+        );
+        self::assertStringContainsString(
+            'edit[' . $table . '][0]=new',
+            urldecode(html_entity_decode($found[1] ?? '')),
         );
     }
 
@@ -261,6 +295,7 @@ final class VisualPermissionsToolbarItemTest extends FunctionalTestCase
             new GroupCatalogue(new BackendGroups($refusing, $this->get(Records::class))),
             $this->get(PageRenderer::class),
             new NullLogger(),
+            $this->get(UriBuilder::class),
         );
         $item->setRequest(
             (new ServerRequest('https://example.com/typo3/'))
@@ -296,6 +331,7 @@ final class VisualPermissionsToolbarItemTest extends FunctionalTestCase
             new GroupCatalogue(new BackendGroups($refusing, $this->get(Records::class))),
             $this->get(PageRenderer::class),
             $logger,
+            $this->get(UriBuilder::class),
         );
         $item->setRequest(
             (new ServerRequest('https://example.com/typo3/'))

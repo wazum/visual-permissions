@@ -342,6 +342,18 @@ describe('switching to a user from the header', () => {
     expect(userPicker().querySelector('input')?.getAttribute('placeholder')).toBe('Search users')
   })
 
+  it('offers a new user through the form the backend names', async () => {
+    document.querySelector(`[${attributes.viewAs}]`)?.setAttribute(attributes.newRecord, '/typo3/record/edit?token=1&edit%5Bbe_users%5D%5B0%5D=new')
+    TYPO3.lang = { ...TYPO3.lang, 'viewAsUser.new': 'New user' }
+    start()
+
+    await openPicker()
+    const link = userPicker().querySelector('a')
+
+    expect(link?.textContent.trim()).toBe('New user')
+    expect(link?.getAttribute('href')).toBe('/typo3/record/edit?token=1&edit%5Bbe_users%5D%5B0%5D=new')
+  })
+
   it('asks for the users when the picker is opened', async () => {
     start()
 

@@ -83,6 +83,8 @@ function setUpUserPicker(
   })
   picker.remembers = searchKey
   picker.placeholder = labelOf('viewAsUser.search')
+  // Stryker disable next-line StringLiteral: the toolbar item's template always writes the form of a new user
+  picker.addNew = { label: labelOf('viewAsUser.new'), url: trigger.getAttribute(attributes.newRecord) ?? '' }
   doc.body.append(picker)
 
   picker.addEventListener('vperm:picked', event => {

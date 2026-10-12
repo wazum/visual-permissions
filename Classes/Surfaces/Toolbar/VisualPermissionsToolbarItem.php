@@ -6,6 +6,7 @@ namespace Wazum\VisualPermissions\Surfaces\Toolbar;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -22,6 +23,7 @@ final class VisualPermissionsToolbarItem implements ToolbarItemInterface, Reques
         private readonly GroupCatalogue $catalogue,
         private readonly PageRenderer $pageRenderer,
         private readonly LoggerInterface $logger,
+        private readonly UriBuilder $uriBuilder,
     ) {
     }
 
@@ -56,6 +58,8 @@ final class VisualPermissionsToolbarItem implements ToolbarItemInterface, Reques
 
         $view = $this->viewFactory->create($this->request);
         $view->assign('groups', $groups);
+        $view->assign('newGroup', $this->newRecord('be_groups'));
+        $view->assign('newUser', $this->newRecord('be_users'));
 
         return $view->render('ToolbarItems/VisualPermissionsToolbarItem');
     }
@@ -81,5 +85,10 @@ final class VisualPermissionsToolbarItem implements ToolbarItemInterface, Reques
     public function getIndex(): int
     {
         return 85;
+    }
+
+    private function newRecord(string $table): string
+    {
+        return (string) $this->uriBuilder->buildUriFromRoute('record_edit', ['edit' => [$table => [0 => 'new']]]);
     }
 }
