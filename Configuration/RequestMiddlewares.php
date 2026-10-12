@@ -9,6 +9,14 @@ return [
             'after' => ['typo3/cms-backend/authentication'],
             'before' => ['typo3/cms-backend/sudo-mode-interceptor'],
         ],
+        'wazum/visual-permissions/backend-user-attribute' => [
+            'target' => Wazum\VisualPermissions\Compatibility\BackendUserAttribute::class,
+            'after' => ['typo3/cms-backend/authentication'],
+            'before' => [
+                'wazum/visual-permissions/inline-settings',
+                'wazum/visual-permissions/leave-user-view',
+            ],
+        ],
         'wazum/visual-permissions/inline-settings' => [
             'target' => Wazum\VisualPermissions\Configuration\InlineSettings::class,
             'after' => ['typo3/cms-backend/authentication'],

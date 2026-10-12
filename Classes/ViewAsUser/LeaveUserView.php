@@ -33,7 +33,7 @@ final readonly class LeaveUserView implements MiddlewareInterface
 
     private function isSwitchedUser(ServerRequestInterface $request): bool
     {
-        $user = $request->getAttribute('backend.user') ?? $GLOBALS['BE_USER'] ?? null;
+        $user = $request->getAttribute('backend.user');
 
         return $user instanceof BackendUserAuthentication
             && null !== $user->getOriginalUserIdWhenInSwitchUserMode();

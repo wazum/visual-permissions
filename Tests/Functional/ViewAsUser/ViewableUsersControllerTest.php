@@ -120,6 +120,7 @@ final class ViewableUsersControllerTest extends FunctionalTestCase
 
     private function request(): ServerRequest
     {
-        return new ServerRequest('https://example.com/typo3/ajax/visual-permissions/viewable-users');
+        return (new ServerRequest('https://example.com/typo3/ajax/visual-permissions/viewable-users'))
+            ->withAttribute('backend.user', $GLOBALS['BE_USER']);
     }
 }
