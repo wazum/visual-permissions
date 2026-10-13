@@ -157,6 +157,46 @@ final class WriteGuardTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function letsThePagePermissionsBeChangedWhileThePermissionsAreShown(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $backendUser->uc = ['vperm' => ['session' => ['active' => 'true']]];
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start(['pages' => [1 => ['perms_everybody' => 31, 'editlock' => 1]]], []);
+        $dataHandler->process_datamap();
+
+        self::assertSame(
+            [31, 1],
+            $this->getConnectionPool()
+                ->getConnectionForTable('pages')
+                ->fetchNumeric('SELECT perms_everybody, editlock FROM pages WHERE uid = 1'),
+        );
+    }
+
+    #[Test]
+    public function turnsDownAPageWriteThatChangesMoreThanThePermissions(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $backendUser->uc = ['vperm' => ['session' => ['active' => 'true']]];
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start(['pages' => [1 => ['perms_everybody' => 31, 'title' => 'Changed']]], []);
+        $dataHandler->process_datamap();
+
+        self::assertSame(
+            ['Root', 0],
+            $this->getConnectionPool()
+                ->getConnectionForTable('pages')
+                ->fetchNumeric('SELECT title, perms_everybody FROM pages WHERE uid = 1'),
+        );
+    }
+
+    #[Test]
     public function letsTheFileMountsForPermissionsBeMadeWhileThePermissionsAreShown(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

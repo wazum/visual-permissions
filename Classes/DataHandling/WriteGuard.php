@@ -15,6 +15,8 @@ use Wazum\VisualPermissions\Configuration\PermissionMode;
 
 final class WriteGuard
 {
+    private const PAGE_PERMISSION_COLUMNS = ['perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody', 'editlock'];
+
     /**
      * @var \WeakMap<DataHandler, true>|null
      */
@@ -32,7 +34,7 @@ final class WriteGuard
             return;
         }
 
-        if (PermissionMode::isOn($dataHandler->BE_USER->uc)) {
+        if (PermissionMode::isOn($dataHandler->BE_USER->uc) && !$this->changesOnlyPagePermissions($dataHandler->datamap)) {
             $dataHandler->datamap = [];
             $this->logRefusal($dataHandler);
         }
@@ -48,6 +50,24 @@ final class WriteGuard
             $dataHandler->cmdmap = [];
             $this->logRefusal($dataHandler);
         }
+    }
+
+    /**
+     * @param array<string, array<int|string, array<array-key, mixed>>> $datamap
+     */
+    private function changesOnlyPagePermissions(array $datamap): bool
+    {
+        if (['pages'] !== array_keys($datamap)) {
+            return false;
+        }
+
+        foreach ($datamap['pages'] as $columns) {
+            if ([] !== array_diff(array_keys($columns), self::PAGE_PERMISSION_COLUMNS)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function logRefusal(DataHandler $dataHandler): void
