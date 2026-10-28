@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { emit } from '#src/platform/bus.js'
 import { classes } from '#src/platform/contract.js'
 import { activate, deactivate, pickArea, selectGroup } from '#src/platform/session.js'
 import { initialise } from '#src/mount-branches/mount-branches.js'
@@ -84,6 +85,66 @@ describe('the pages scope', () => {
       expect(notices).toStrictEqual([{ kind: 'error', title: 'Not read', message: undefined }])
     })
     expect(document.querySelector(`.${classes.panelCard}`)).toBeNull()
+  })
+
+  it('asks no more after a refusal while the backend keeps drawing', async () => {
+    tree()
+    TYPO3.lang = { 'platform.notRead': 'Not read' }
+    initialise(document, listening.signal)
+    refuseNextRead()
+
+    activate()
+    pickArea('pageMounts')
+    await vi.waitFor(() => {
+      expect(notices).toHaveLength(1)
+    })
+    document.body.append(document.createElement('div'))
+    await new Promise(resolve => { setTimeout(resolve, 0) })
+    await new Promise(resolve => { setTimeout(resolve, 0) })
+
+    expect(asked.filter(url => url.includes('group=7'))).toHaveLength(1)
+  })
+
+  it('asks again for a tree that returns after a write follows a refusal', async () => {
+    tree()
+    TYPO3.lang = { 'platform.notRead': 'Not read' }
+    initialise(document, listening.signal)
+    refuseNextRead()
+
+    activate()
+    pickArea('pageMounts')
+    await vi.waitFor(() => {
+      expect(notices).toHaveLength(1)
+    })
+    document.body.replaceChildren()
+    emit('permissions-written', {})
+    await new Promise(resolve => { setTimeout(resolve, 0) })
+    tree()
+
+    await vi.waitFor(() => {
+      expect(asked.filter(url => url.includes('group=7'))).toHaveLength(2)
+    })
+  })
+
+  it('paints a redrawn tree after a late answer for the same group', async () => {
+    tree()
+    mounted(3)
+    initialise(document, listening.signal)
+    const release = holdNextRead()
+
+    activate()
+    pickArea('pageMounts')
+    emit('permissions-written', {})
+    await vi.waitFor(() => {
+      expect(previewTree()).not.toBeNull()
+    })
+    release()
+    await new Promise(resolve => { setTimeout(resolve, 0) })
+    tree()
+
+    await vi.waitFor(() => {
+      expect(previewTree()).not.toBeNull()
+    })
   })
 
   it('asks nothing when a stored session says on but names no group', async () => {

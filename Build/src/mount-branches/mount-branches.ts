@@ -10,9 +10,11 @@ const kinds: Readonly<Partial<Record<string, Kind>>> = { pageMounts: pages, file
 
 export function initialise(doc: Document, signal: AbortSignal): void {
   const latest = createLatestInspect()
-  let asking = false
+  let asking = 0
+  let refusedFor: number | null = null
 
   const show = async (): Promise<void> => {
+    refusedFor = null
     const { active, groupId, area } = getState()
     const kind = kinds[area]
     if (!active || groupId === null || kind === undefined) {
@@ -27,10 +29,14 @@ export function initialise(doc: Document, signal: AbortSignal): void {
       return
     }
 
-    asking = true
+    asking += 1
     const permissions = await latest.inspect(groupId)
-    asking = false
+    asking -= 1
     if (permissions === null) {
+      if (doc.querySelector(`${kind.component} > .${classes.panelCard}`) === null) {
+        refusedFor = groupId
+      }
+
       return
     }
 
@@ -38,7 +44,11 @@ export function initialise(doc: Document, signal: AbortSignal): void {
   }
 
   const watch = new MutationObserver(() => {
-    if (!asking && [pages, folders].every(({ component }) => doc.querySelector(`${component} > .${classes.panelCard}`) === null)) {
+    if (asking > 0 || getState().groupId === refusedFor) {
+      return
+    }
+
+    if ([pages, folders].every(({ component }) => doc.querySelector(`${component} > .${classes.panelCard}`) === null)) {
       void show()
     }
   })
@@ -47,8 +57,6 @@ export function initialise(doc: Document, signal: AbortSignal): void {
   signal.addEventListener('abort', () => { watch.disconnect() })
 
   void show()
-  // Whatever wrote it, what the panel holds about the group is old
   on('permissions-written', () => void show(), signal)
-
   subscribe(() => void show(), signal)
 }
