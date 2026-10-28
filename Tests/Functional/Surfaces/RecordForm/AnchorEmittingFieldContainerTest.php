@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use Wazum\VisualPermissions\AllowValues\ValueChoices;
+use Wazum\VisualPermissions\Surfaces\RecordForm\ValueChoices;
 use Wazum\VisualPermissions\Tests\Functional\Fixtures\LabellessElement;
 
 final class AnchorEmittingFieldContainerTest extends FunctionalTestCase

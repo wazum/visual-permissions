@@ -9,9 +9,9 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Wazum\VisualPermissions\AllowValues\AllowValuesController;
-use Wazum\VisualPermissions\AllowValues\ValueChoices;
 use Wazum\VisualPermissions\Authorization\Scope;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
+use Wazum\VisualPermissions\Surfaces\RecordForm\ValueChoices;
 
 final class AllowValuesControllerTest extends FunctionalTestCase
 {

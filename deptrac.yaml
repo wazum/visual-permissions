@@ -16,6 +16,7 @@ deptrac:
     - { name: AllowFields, collectors: [{ type: directory, value: Classes/AllowFields/.* }] }
     - { name: AllowModules, collectors: [{ type: directory, value: Classes/AllowModules/.* }] }
     - { name: AllowTables, collectors: [{ type: directory, value: Classes/AllowTables/.* }] }
+    - { name: AllowValues, collectors: [{ type: directory, value: Classes/AllowValues/.* }] }
     - { name: MountBranches, collectors: [{ type: directory, value: Classes/MountBranches/.* }] }
     - { name: ViewAsUser, collectors: [{ type: directory, value: Classes/ViewAsUser/.* }] }
     - { name: Inspect, collectors: [{ type: directory, value: Classes/Inspect/.* }] }
@@ -36,6 +37,7 @@ deptrac:
     AllowFields: *slice
     AllowModules: *slice
     AllowTables: *slice
+    AllowValues: *slice
     MountBranches: *slice
     ViewAsUser: *slice
     Inspect: [Authorization, BackendGroups, AllowFields, AllowModules, AllowTables, MountBranches]

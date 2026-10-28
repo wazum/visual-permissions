@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Wazum\VisualPermissions\Surfaces\RecordForm;
 
 use TYPO3\CMS\Backend\Form\Container\SingleFieldContainer;
-use Wazum\VisualPermissions\AllowValues\ValueChoices;
 
 /**
  * @phpstan-import-type SelectConfiguration from ValueChoices

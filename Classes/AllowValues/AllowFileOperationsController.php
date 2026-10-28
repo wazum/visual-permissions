@@ -12,6 +12,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use Wazum\VisualPermissions\Authorization\AllowOperations;
 use Wazum\VisualPermissions\Authorization\Scope;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
+use Wazum\VisualPermissions\Surfaces\RecordForm\ValueChoices;
 use Wazum\VisualPermissions\Write\GroupWriteController;
 
 /**

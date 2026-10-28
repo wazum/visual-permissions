@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Wazum\VisualPermissions\Tests\Unit\AllowValues;
+namespace Wazum\VisualPermissions\Tests\Unit\Surfaces\RecordForm;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use Wazum\VisualPermissions\AllowValues\ValueChoices;
+use Wazum\VisualPermissions\Surfaces\RecordForm\ValueChoices;
 
 final class ValueChoicesTest extends TestCase
 {
