@@ -83,6 +83,21 @@ describe('sliding from one backend to the other', () => {
     expect(document.body.hasAttribute(attributes.unwrapping)).toBe(false)
   })
 
+  it('keeps the wraps on while an animation inside the page ends', () => {
+    vi.useFakeTimers()
+    sessionStorage.setItem('vperm.arriving', 'down')
+    const inside = document.createElement('div')
+    document.body.append(inside)
+
+    slideIn(document)
+    document.dispatchEvent(new CustomEvent('typo3-module-loaded'))
+    vi.advanceTimersByTime(300)
+    inside.dispatchEvent(new Event('animationend', { bubbles: true }))
+
+    expect(document.body.getAttribute(attributes.arriving)).toBe('down')
+    inside.remove()
+  })
+
   it('stops listening for modules once the page is unwrapped', () => {
     vi.useFakeTimers()
     sessionStorage.setItem('vperm.arriving', 'down')
@@ -172,6 +187,18 @@ describe('sliding from one backend to the other', () => {
     vi.advanceTimersByTime(1000)
 
     expect(went).toStrictEqual(['gone'])
+  })
+
+  it('stays while an animation inside the page ends', () => {
+    const went: string[] = []
+    const inside = document.createElement('div')
+    document.body.append(inside)
+
+    slideAway(document, 'down', () => { went.push('gone') })
+    inside.dispatchEvent(new Event('animationend', { bubbles: true }))
+
+    expect(went).toStrictEqual([])
+    inside.remove()
   })
 
   it('slides the backend away before it goes', () => {

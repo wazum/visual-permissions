@@ -2964,7 +2964,9 @@ function gr(e, t, n) {
   const o = () => {
     r || (r = !0, n());
   };
-  be(Pt, t), e.body.setAttribute(d.leaving, t), e.body.addEventListener("animationend", o, { once: !0 }), window.setTimeout(o, hr);
+  be(Pt, t), e.body.setAttribute(d.leaving, t), e.body.addEventListener("animationend", (i) => {
+    i.target === e.body && o();
+  }), window.setTimeout(o, hr);
 }
 function Ks(e) {
   e.body.setAttribute(d.settling, "");
@@ -2984,7 +2986,9 @@ function zs(e) {
   }, c = () => {
     r = !0, s();
   };
-  e.body.addEventListener("animationend", a, { once: !0 }), window.setTimeout(a, hr);
+  e.body.addEventListener("animationend", (p) => {
+    p.target === e.body && a();
+  }), window.setTimeout(a, hr);
   let u = 0;
   e.addEventListener("typo3-module-loaded", () => {
     window.clearTimeout(u), u = window.setTimeout(c, Us);
