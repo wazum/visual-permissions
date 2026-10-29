@@ -118,6 +118,29 @@ final class ViewableUsersControllerTest extends FunctionalTestCase
         self::assertStringContainsString('Someone Else', (string) $again->getBody());
     }
 
+    #[Test]
+    public function answersInFullOnceAUserHasLeftTheTimeWindow(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+
+        $tag = $this->get(ViewableUsersController::class)
+            ->list($this->request())
+            ->getHeaderLine('ETag');
+
+        $this->get(ConnectionPool::class)->getConnectionForTable('be_users')->update(
+            'be_users',
+            ['endtime' => time() - 3600],
+            ['uid' => 2],
+        );
+
+        $again = $this->get(ViewableUsersController::class)
+            ->list($this->request()->withHeader('If-None-Match', $tag));
+
+        self::assertSame(200, $again->getStatusCode());
+        self::assertStringNotContainsString('Hans Huber', (string) $again->getBody());
+    }
+
     private function request(): ServerRequest
     {
         return (new ServerRequest('https://example.com/typo3/ajax/visual-permissions/viewable-users'))
