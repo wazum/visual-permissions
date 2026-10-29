@@ -102,7 +102,11 @@ function stand(next: SessionState): void {
   state = next
 
   for (const listener of listeners) {
-    listener(state)
+    try {
+      listener(state)
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 

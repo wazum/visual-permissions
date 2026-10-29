@@ -3,6 +3,8 @@ import { routes } from '#src/platform/routes.js'
 
 beforeEach(() => {
   TYPO3.lang = {}
+  // An error the code only reports still fails a test
+  vi.spyOn(console, 'error').mockImplementation((reported: unknown) => { throw reported })
 })
 
 afterEach(() => {
