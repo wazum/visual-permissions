@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Wazum\VisualPermissions\MountBranches\Folders;
 
+use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
 use Wazum\VisualPermissions\Write\GroupWriteController;
 
@@ -15,6 +17,7 @@ final readonly class MountFoldersController extends GroupWriteController
     public function __construct(
         BackendGroups $groups,
         private FileMounts $mounts,
+        private ResourceFactory $resources,
     ) {
         parent::__construct($groups);
     }
@@ -42,7 +45,7 @@ final readonly class MountFoldersController extends GroupWriteController
             }
 
             // Removing a mount leaves the reader with no access, so a mount on a whole storage is exclusive
-            if ($mount && 1 === preg_match('#^\d+:/$#', $folder)) {
+            if ($mount && (1 === preg_match('#^\d+:/$#', $folder) || !$this->exists($folder))) {
                 return null;
             }
 
@@ -64,5 +67,16 @@ final readonly class MountFoldersController extends GroupWriteController
     protected function writeOperations(int $groupId, array $operations): bool
     {
         return $this->mounts->write($groupId, $operations);
+    }
+
+    private function exists(string $folder): bool
+    {
+        try {
+            $this->resources->getFolderObjectFromCombinedIdentifier($folder);
+        } catch (Exception) {
+            return false;
+        }
+
+        return true;
     }
 }

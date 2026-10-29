@@ -68,6 +68,20 @@ final class MountPagesControllerTest extends FunctionalTestCase
         );
     }
 
+    #[Test]
+    public function refusesToMountAPageThatIsNotThere(): void
+    {
+        $this->arrange();
+
+        $response = $this->get(MountPagesController::class)->write($this->asked([
+            'group' => 20,
+            'operations' => [['page' => 999, 'mount' => true]],
+        ]));
+
+        self::assertSame(400, $response->getStatusCode());
+        self::assertSame(['3', '5'], $this->get(BackendGroups::class)->listOf(20, Scope::PageMounts));
+    }
+
     private function arrange(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/group_mounts.csv');

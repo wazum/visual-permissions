@@ -6,6 +6,7 @@ namespace Wazum\VisualPermissions\Tests\Functional\MountBranches\Folders;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
 use Wazum\VisualPermissions\MountBranches\Folders\MountFoldersController;
@@ -106,6 +107,20 @@ final class MountFoldersControllerTest extends FunctionalTestCase
             ->fetchOne('SELECT title FROM sys_filemounts WHERE identifier = ?', ['1:/library/']));
     }
 
+    #[Test]
+    public function refusesToMountAFolderThatIsNotThere(): void
+    {
+        $this->arrange();
+
+        $response = $this->get(MountFoldersController::class)->write($this->asked([
+            'group' => 20,
+            'operations' => [['folder' => '1:/nowhere/', 'mount' => true, 'title' => 'Nowhere']],
+        ]));
+
+        self::assertSame(400, $response->getStatusCode());
+        self::assertSame('1,2', $this->mountsOf(20));
+    }
+
     private function mountsOf(int $groupId): string
     {
         $mounts = $this->getConnectionPool()
@@ -117,6 +132,9 @@ final class MountFoldersControllerTest extends FunctionalTestCase
 
     private function arrange(): void
     {
+        GeneralUtility::mkdir_deep($this->instancePath . '/fileadmin/archive/');
+        GeneralUtility::mkdir_deep($this->instancePath . '/fileadmin/library/');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/group_file_mounts.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
