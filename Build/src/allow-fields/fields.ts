@@ -43,7 +43,9 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
     const { fields } = form
 
     const { active, groupId } = getState()
-    if (!active || groupId === null) {
+    // Stryker disable next-line ConditionalExpression: this only narrows the type; the mode is never on without a group
+    const nobody = groupId === null
+    if (!active || nobody) {
       latest.drop()
       fields.forEach(([element]) => {
         element.removeAttribute(attributes.verdict)
