@@ -474,6 +474,9 @@
             <trans-unit id="viewAsUser.noModule.title" resname="viewAsUser.noModule.title">
                 <source>No module access</source>
             </trans-unit>
+            <trans-unit id="viewAsUser.notSwitched" resname="viewAsUser.notSwitched">
+                <source>The backend could not switch to this user</source>
+            </trans-unit>
             <trans-unit id="viewAsUser.recent" resname="viewAsUser.recent">
                 <source>Recently viewed</source>
             </trans-unit>

@@ -631,6 +631,10 @@
                 <source>No module access</source>
                 <target>Kein Modulzugriff</target>
             </trans-unit>
+            <trans-unit id="viewAsUser.notSwitched" resname="viewAsUser.notSwitched" approved="yes">
+                <source>The backend could not switch to this user</source>
+                <target>Das Backend konnte nicht zu diesem Benutzer wechseln</target>
+            </trans-unit>
             <trans-unit id="viewAsUser.recent" resname="viewAsUser.recent" approved="yes">
                 <source>Recently viewed</source>
                 <target>Zuletzt angesehen</target>
