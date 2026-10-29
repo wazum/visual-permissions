@@ -1539,6 +1539,19 @@ describe('the module panel the group sees', () => {
     expect(inPreview(`.${classes.faceSentence}`)?.textContent).toBe('What  may open')
   })
 
+  it('names a group with dollar signs in its title as it is', async () => {
+    menu()
+    const hidden = document.createElement('span')
+    hidden.setAttribute(attributes.groups, JSON.stringify({ 7: { title: 'Sales $$ & $& Team', inherits: [] } }))
+    document.body.append(hidden)
+    TYPO3.lang = { 'allowModules.previewFor': 'What %s may open' }
+    initialise(document, listening.signal)
+
+    await armed()
+
+    expect(inPreview(`.${classes.faceSentence}`)?.textContent).toBe('What Sales $$ & $& Team may open')
+  })
+
   it('turns the card to our side once the backend has painted', async () => {
     menu()
     carrier()

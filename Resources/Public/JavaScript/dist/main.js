@@ -513,7 +513,7 @@ function G(e, t, ...n) {
 }
 function x(e, ...t) {
   return t.reduce(
-    (n, r, o) => n.replace(`%${String(o + 1)}$s`, String(r)).replace("%s", String(r)),
+    (n, r, o) => n.replace(`%${String(o + 1)}$s`, () => String(r)).replace("%s", () => String(r)),
     e
   );
 }
