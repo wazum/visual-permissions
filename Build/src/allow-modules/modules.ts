@@ -4,7 +4,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request.js'
 import { ajaxUrl } from '../platform/ajax-url.js'
 import { routes } from '../platform/routes.js'
 import { createLatestInspect, read } from '../platform/transport.js'
-import { getState, subscribe } from '../platform/session.js'
+import { getState, type SessionState, subscribe } from '../platform/session.js'
 import { render, restoreMenu } from './panel.js'
 
 interface OutsideMenu {
@@ -26,6 +26,7 @@ export function initialise(doc: Document, signal: AbortSignal): void {
     // Stryker disable next-line UpdateOperator: counting down works as well, since only "is this still the newest" is asked
     const mine = ++shows
     const { active, groupId, area } = getState()
+    // Stryker disable next-line ConditionalExpression: the mode is on only for a group; the check only narrows the type for inspect
     if (!active || groupId === null || area !== 'modules') {
       latest.drop()
       doc.querySelectorAll(`${menu} [${attributes.verdict}]`)
@@ -84,9 +85,21 @@ export function initialise(doc: Document, signal: AbortSignal): void {
     }
   }
 
-  void show()
+  // A change of side or of the controls leaves the panel, and with it the modules marked but not yet written
+  let shownFor: string | null = null
+  const showFor = ({ active, groupId, area }: SessionState): void => {
+    const asking = `${String(active)}:${String(groupId)}:${area}`
+    if (asking === shownFor) {
+      return
+    }
+
+    shownFor = asking
+    void show()
+  }
+
+  showFor(getState())
   // Whatever wrote it, what the panel holds about the group is old
   on('permissions-written', () => void show(), signal)
 
-  subscribe(() => void show(), signal)
+  subscribe(showFor, signal)
 }

@@ -327,6 +327,25 @@ describe('the modules scope', () => {
     expect(verdictOf('some_removed_module')).toBeNull()
   })
 
+  it('keeps the modules marked for removal when another module loads', async () => {
+    menu('web_layout', 'records')
+    initialise(document, listening.signal)
+
+    activate()
+    pickArea('modules')
+    await vi.waitFor(() => {
+      expect(inPreview('web_layout')).not.toBeNull()
+    })
+    const read = asked.length
+    inPreview('web_layout')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+    document.dispatchEvent(new CustomEvent('typo3-module-loaded'))
+    await new Promise(settled => { window.setTimeout(settled, 20) })
+
+    expect(inPreview('web_layout')?.classList.contains(classes.faceMarked)).toBe(true)
+    expect(asked).toHaveLength(read)
+  })
+
   it('reads the truth again once the panel has applied a change', async () => {
     menu('web_layout', 'records')
     initialise(document, listening.signal)

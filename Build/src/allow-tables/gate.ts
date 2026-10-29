@@ -1,7 +1,7 @@
 import { on } from '../platform/bus.js'
 import { attributes, classes } from '../platform/contract.js'
 import { onFormReady } from '../surfaces/record-form/form.js'
-import { createLatestInspect } from '../platform/transport.js'
+import { inspect } from '../platform/transport.js'
 import { drawBand } from './band.js'
 import { getState, subscribe } from '../platform/session.js'
 import { alsoInherited, dropped, inherited, picked, tableOf } from '../platform/vocabulary.js'
@@ -11,7 +11,7 @@ const wholeForm = '.typo3-TCEforms'
 
 export function initialise(signal: AbortSignal): void {
   let doc: Document | null = null
-  const latest = createLatestInspect()
+  let shows = 0
 
   const show = async (): Promise<void> => {
     if (doc === null) {
@@ -19,14 +19,17 @@ export function initialise(signal: AbortSignal): void {
     }
 
     const page = doc
-
-    page.querySelectorAll(`.${classes.tableGate}:not(.${classes.nothingTheirs})`).forEach(gone => { gone.remove() })
+    // Stryker disable next-line UpdateOperator: counting down works as well, since only "is this still the newest" is asked
+    const mine = ++shows
+    const clear = (): void => {
+      page.querySelectorAll(`.${classes.tableGate}:not(.${classes.nothingTheirs})`).forEach(gone => { gone.remove() })
+    }
 
     const { active, area, face, groupId } = getState()
 
     // Stryker disable next-line ConditionalExpression,LogicalOperator: an area is armed only for a group; the last check only narrows the type for inspect
     if (!active || area !== 'fields' || face !== 'pick' || groupId === null) {
-      latest.drop()
+      clear()
 
       return
     }
@@ -48,7 +51,12 @@ export function initialise(signal: AbortSignal): void {
       }
     })
 
-    const permissions = await latest.inspect(groupId, [...new Set(holders.values())])
+    const permissions = await inspect(groupId, [...new Set(holders.values())])
+    if (mine !== shows) {
+      return
+    }
+
+    clear()
     if (permissions === null) {
       return
     }
@@ -84,5 +92,15 @@ export function initialise(signal: AbortSignal): void {
   // Whatever wrote it, the tables the group may write are old
   on('permissions-written', () => void show(), signal)
 
-  subscribe(() => void show(), signal)
+  // The controls coming or going leave the bands standing
+  let shownFor: string | null = null
+  subscribe(({ active, groupId, area, face }) => {
+    const asking = `${String(active)}:${String(groupId)}:${area}:${face}`
+    if (asking === shownFor) {
+      return
+    }
+
+    shownFor = asking
+    void show()
+  }, signal)
 }
