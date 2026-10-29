@@ -20,8 +20,11 @@ const rows = `[${moduleIdentifier}]:not([aria-controls])`
 export function initialise(doc: Document, signal: AbortSignal): void {
   const latest = createLatestInspect()
   let outsideMenu: Promise<OutsideMenu | null> | null = null
+  let shows = 0
 
   const show = async (): Promise<void> => {
+    // Stryker disable next-line UpdateOperator: counting down works as well, since only "is this still the newest" is asked
+    const mine = ++shows
     const { active, groupId, area } = getState()
     if (!active || groupId === null || area !== 'modules') {
       latest.drop()
@@ -60,6 +63,10 @@ export function initialise(doc: Document, signal: AbortSignal): void {
     if (outside === null) {
       outsideMenu = null
 
+      return
+    }
+
+    if (mine !== shows) {
       return
     }
 

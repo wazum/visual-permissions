@@ -210,6 +210,24 @@ describe('the modules scope', () => {
     expect(verdictOf('web_layout')).toBeNull()
   })
 
+  it('leaves the menu alone when the modules outside it arrive after permissions were hidden', async () => {
+    menu('web_layout')
+    initialise(document, listening.signal)
+
+    activate()
+    pickArea('modules')
+    const letGo = holdNextRead()
+    await vi.waitFor(() => {
+      expect(asked).toHaveLength(2)
+    })
+    deactivate()
+    letGo()
+    await new Promise(settled => { window.setTimeout(settled, 20) })
+
+    expect(inPreview('web_layout')).toBeNull()
+    expect(document.querySelector('#modulemenu')?.hasAttribute('inert')).toBe(false)
+  })
+
   it('says what the group may do with every module in the menu', async () => {
     menu('web_layout', 'site_configuration')
     initialise(document, listening.signal)
