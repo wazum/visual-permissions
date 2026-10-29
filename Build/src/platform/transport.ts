@@ -135,12 +135,11 @@ export async function documentUrl(record: string, returnUrl: string): Promise<st
   const table = record.slice(0, between)
   const uids = record.slice(between + 1)
 
-  const response = await new AjaxRequest(ajaxUrl(routes.open_document))
+  const answered = await read<{ url?: string }>(new AjaxRequest(ajaxUrl(routes.open_document))
     .withQueryArguments({ table, uids, returnUrl })
-    .get()
-  const answered = await response.resolve<{ url?: string }>()
+    .get())
 
-  return answered.url ?? ''
+  return answered?.url ?? ''
 }
 
 type Answer = Awaited<ReturnType<AjaxRequest['get']>>

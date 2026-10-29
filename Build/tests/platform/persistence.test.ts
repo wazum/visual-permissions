@@ -29,12 +29,18 @@ describe('persistence', () => {
 
   it('keeps a write asked for after one the backend refused', async () => {
     refuseNextSet()
-    keep('vperm.userSearch', 'huber').catch(() => undefined)
+    void keep('vperm.userSearch', 'huber')
     void keep('vperm.groupSearch', 'editors')
 
     await written()
 
     expect(stored()).toStrictEqual({ vperm: { groupSearch: 'editors' } })
+  })
+
+  it('settles a write the backend refused, since nobody waits on it', async () => {
+    refuseNextSet()
+
+    await expect(keep('vperm.userSearch', 'huber')).resolves.toBeUndefined()
   })
 
   // Writes leave one at a time, so one asked for while it was ours can leave after it is not

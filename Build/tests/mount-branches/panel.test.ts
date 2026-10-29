@@ -18,6 +18,7 @@ import {
 } from '../__mocks__/typo3-ajax-request.js'
 import { type PageTree, type PreparedNode } from '../__mocks__/typo3-page-tree.js'
 import { coreTree } from '../__mocks__/typo3-tree.js'
+import { forgetNotices, notices } from '../__mocks__/typo3-notification.js'
 import { shown } from '../__mocks__/typo3-module-menu.js'
 import { chosen } from '../__mocks__/typo3-module-state-storage.js'
 
@@ -92,6 +93,7 @@ const carrier = (): void => {
     'mountBranches.toAdd': 'to add',
     'platform.refused': 'The change could not be saved',
     'platform.failed': 'The change could not be sent',
+    'platform.notRead': 'The answer could not be read',
   }
 }
 
@@ -189,6 +191,7 @@ describe('the mounts panel', () => {
     deactivate()
     selectGroup(7)
     forget()
+    forgetNotices()
     listening = new AbortController()
     document.body.replaceChildren()
     tree()
@@ -568,6 +571,16 @@ describe('the mounts panel', () => {
     })
     expect(asked.find(url => url.includes('page_tree_browser_configuration')))
       .not.toContain('alternativeEntryPoints')
+  })
+
+  it('says so when the tree configuration could not be read', async () => {
+    activate()
+    pickArea('pageMounts')
+    refuseNextRead()
+
+    await vi.waitFor(() => {
+      expect(notices).toStrictEqual([{ kind: 'error', title: 'The answer could not be read', message: undefined }])
+    })
   })
 
   it('shows no tree at all for a group that mounts nothing', async () => {
