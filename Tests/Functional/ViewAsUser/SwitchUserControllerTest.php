@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Wazum\VisualPermissions\ViewAsUser\SwitchUserController;
 
@@ -16,6 +17,14 @@ final class SwitchUserControllerTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = ['beuser'];
 
     protected array $testExtensionsToLoad = ['wazum/visual-permissions'];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        GeneralUtility::flushInternalRuntimeCaches();
+    }
 
     // The browser is sent on rather than told where to go, so the page it leaves is gone
     #[Test]
@@ -51,7 +60,7 @@ final class SwitchUserControllerTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
 
-        foreach (['https://example.org/typo3', '//example.org/typo3', '/\\example.org'] as $elsewhere) {
+        foreach (['https://example.org/typo3', '//example.org/typo3', '/\\example.org', "/\t/example.org"] as $elsewhere) {
             $response = $this->get(SwitchUserController::class)->switchUser($this->asked([
                 'targetUser' => 2,
                 'screen' => $elsewhere,

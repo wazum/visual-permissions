@@ -6,6 +6,7 @@ namespace Wazum\VisualPermissions\Tests\Functional\Surfaces\RecordForm;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Wazum\VisualPermissions\Surfaces\RecordForm\OpenDocumentController;
 
@@ -21,6 +22,9 @@ final class OpenDocumentControllerTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        GeneralUtility::flushInternalRuntimeCaches();
     }
 
     #[Test]
@@ -50,7 +54,7 @@ final class OpenDocumentControllerTest extends FunctionalTestCase
     #[Test]
     public function sendsThemNowhereButThisBackend(): void
     {
-        foreach (['https://example.org/somewhere', '//example.org/somewhere', 'javascript:alert(1)'] as $elsewhere) {
+        foreach (['https://example.org/somewhere', '//example.org/somewhere', 'javascript:alert(1)', "/\t/example.org"] as $elsewhere) {
             $url = $this->urlFor(['table' => 'tt_content', 'uids' => '81', 'returnUrl' => $elsewhere]);
 
             self::assertStringNotContainsString('example.org', $url, $elsewhere);
