@@ -19,6 +19,11 @@ final class AnchorEmittingFieldContainer extends SingleFieldContainer
         /** @var array<string, mixed> $result */
         $result = parent::render();
 
+        // Only an administrator assigns permissions; an editor's form stays as core draws it
+        if (!$this->getBackendUserAuthentication()->isAdmin()) {
+            return $result;
+        }
+
         /** @var string $table */
         $table = $this->data['tableName'];
         /** @var string $fieldName */
@@ -50,7 +55,7 @@ final class AnchorEmittingFieldContainer extends SingleFieldContainer
 
     private function labelled(string $html, string $fieldName): string
     {
-        if ('' === trim($html) || str_contains($html, 'form-label') || !$this->getBackendUserAuthentication()->isAdmin()) {
+        if ('' === trim($html) || str_contains($html, 'form-label')) {
             return $html;
         }
 
@@ -72,7 +77,7 @@ final class AnchorEmittingFieldContainer extends SingleFieldContainer
          */
         $processedTca = $this->data['processedTca'];
         $configuration = $processedTca['columns'][$fieldName]['config'] ?? [];
-        if (!$this->getBackendUserAuthentication()->isAdmin() || !\in_array($configuration['type'] ?? '', ['inline', 'file'], true)) {
+        if (!\in_array($configuration['type'] ?? '', ['inline', 'file'], true)) {
             return '';
         }
 
