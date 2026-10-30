@@ -137,6 +137,40 @@ describe('the panel of the other permissions', () => {
     })
   })
 
+  it('asks again for a group whose form could not be read', async () => {
+    framed()
+    words()
+    reply({ html: '<input name="data[be_groups][7][TSconfig]">', scriptItems: [] })
+    refuseNextRead()
+    initialise(document, listening.signal)
+    selectGroup(7)
+    activate()
+    pickArea('other')
+    await vi.waitFor(() => { expect(notices).toHaveLength(1) })
+
+    selectGroup(7)
+
+    await vi.waitFor(() => {
+      expect(shownFace()?.querySelector('input')?.getAttribute('name')).toBe('data[be_groups][7][TSconfig]')
+    })
+  })
+
+  it('takes the last form away when the next one could not be read', async () => {
+    framed()
+    words()
+    reply({ html: '<input name="data[be_groups][7][TSconfig]">', scriptItems: [] })
+    initialise(document, listening.signal)
+    selectGroup(7)
+    activate()
+    pickArea('other')
+    await vi.waitFor(() => { expect(shownFace()).not.toBeNull() })
+
+    refuseNextRead()
+    selectGroup(9)
+
+    await vi.waitFor(() => { expect(shownFace()).toBeNull() })
+  })
+
   it('lets go of the form name when the panel leaves', async () => {
     framed()
     words()
