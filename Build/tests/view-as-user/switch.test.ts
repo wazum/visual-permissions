@@ -407,8 +407,8 @@ describe('switching to a user from the header', () => {
 
     await openPicker()
 
-    expect([...userPicker().querySelectorAll(`.${classes.pickerList} [role="option"]`)]
-      .map(row => row.getAttribute('data-id'))).toEqual(['5', '2', '7'])
+    expect([...userPicker().querySelectorAll(`.${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(name => name.textContent)).toEqual(['Anna Huber', 'editor', 'someone'])
     expect([...userPicker().querySelectorAll('.dropdown-header')]
       .map(each => each.textContent)).toEqual(['Recently viewed', 'All users'])
   })
@@ -423,8 +423,8 @@ describe('switching to a user from the header', () => {
 
     await openPicker()
 
-    expect([...userPicker().querySelectorAll(`.${classes.pickerList} [role="option"]`)]
-      .map(row => row.getAttribute('data-id'))).toEqual(['2'])
+    expect([...userPicker().querySelectorAll(`.${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(name => name.textContent)).toEqual(['editor'])
   })
 
   it('names a user by their real name, and falls back to the one they sign in with', async () => {
@@ -567,7 +567,7 @@ describe('switching to a user from the header', () => {
 
     press('v')
 
-    await vi.waitFor(() => { expect(userPicker().hasAttribute('data-open')).toBe(true) })
+    await vi.waitFor(() => { expect(userPicker().hasAttribute(attributes.open)).toBe(true) })
 
     expect(handed).toStrictEqual([])
   })
@@ -578,7 +578,7 @@ describe('switching to a user from the header', () => {
 
     press('v')
 
-    await vi.waitFor(() => { expect(userPicker().hasAttribute('data-open')).toBe(true) })
+    await vi.waitFor(() => { expect(userPicker().hasAttribute(attributes.open)).toBe(true) })
 
     expect(handed).toStrictEqual([])
   })

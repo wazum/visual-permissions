@@ -109,8 +109,10 @@ export default tseslint.config(
 
   {
     files: ['src/platform/**/*.ts'],
+    ignores: ['src/platform/vocabulary.ts'],
     rules: {
       'no-restricted-properties': ['error', ...noCssInTypeScript],
+      'no-restricted-syntax': ['error', noVocabularyLiterals],
     },
   },
 

@@ -50,6 +50,7 @@ export const attributes = {
   label: 'data-vperm-label',
   leaving: 'data-vperm-leaving',
   newRecord: 'data-vperm-new-record',
+  open: 'data-vperm-open',
   outOfReach: 'data-vperm-out-of-reach',
   picked: 'data-vperm-picked',
   settling: 'data-vperm-settling',

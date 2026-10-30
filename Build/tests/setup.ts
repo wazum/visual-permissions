@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, vi } from 'vitest'
+import { attributes } from '#src/platform/contract.js'
 import { routes } from '#src/platform/routes.js'
 
 beforeEach(() => {
@@ -68,21 +69,21 @@ Object.assign(HTMLElement.prototype, {
       throw new DOMException('Not a popover', 'InvalidStateError')
     }
 
-    if (this.hasAttribute('data-open')) {
+    if (this.hasAttribute(attributes.open)) {
       return
     }
 
     this.dispatchEvent(Object.assign(new Event('beforetoggle'), { newState: 'open' }))
-    this.toggleAttribute('data-open', true)
+    this.toggleAttribute(attributes.open, true)
     this.dispatchEvent(new Event('toggle'))
   },
   hidePopover(this: HTMLElement) {
-    if (!this.hasAttribute('data-open')) {
+    if (!this.hasAttribute(attributes.open)) {
       return
     }
 
     this.dispatchEvent(Object.assign(new Event('beforetoggle'), { newState: 'closed' }))
-    this.removeAttribute('data-open')
+    this.removeAttribute(attributes.open)
     this.dispatchEvent(new Event('toggle'))
   },
   scrollIntoView: (): undefined => undefined,
