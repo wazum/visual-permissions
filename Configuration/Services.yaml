@@ -6,6 +6,8 @@ services:
 
   Wazum\VisualPermissions\:
     resource: '../Classes/*'
+    # Built where the form is drawn, with the language service of the user reading it
+    exclude: '../Classes/Surfaces/RecordForm/ValueChoices.php'
 
   Wazum\VisualPermissions\AllowFields\AllowFieldsController:
     public: true

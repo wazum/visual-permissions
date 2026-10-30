@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Wazum\VisualPermissions\MountBranches\Folders;
 
-use Doctrine\DBAL\ArrayParameterType;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use Wazum\VisualPermissions\Authorization\Scope;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
@@ -99,7 +99,7 @@ final readonly class FileMounts
             ->from(self::FILE_MOUNTS)
             ->where(
                 $builder->expr()->eq('identifier', $builder->createNamedParameter($folder)),
-                $builder->expr()->in('uid', $builder->createNamedParameter($mounts, ArrayParameterType::INTEGER)),
+                $builder->expr()->in('uid', $builder->createNamedParameter($mounts, Connection::PARAM_INT_ARRAY)),
             )
             ->executeQuery()
             ->fetchFirstColumn());
