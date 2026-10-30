@@ -39,7 +39,6 @@ return [
     'SYS' => [
         'devIPmask' => '*',
         'displayErrors' => 1,
-        'encryptionKey' => 'e2e0000000000000000000000000000000000000000000000000000000000e2e',
         'exceptionalErrors' => 4096,
         'features' => [
             'security.backend.enforceReferrer' => false,
