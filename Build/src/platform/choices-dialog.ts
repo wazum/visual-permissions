@@ -1,4 +1,4 @@
-import Modal, { type ModalButton } from '@typo3/backend/modal.js'
+import Modal, { type ModalButton, type ModalElement } from '@typo3/backend/modal.js'
 import { classes } from './contract.js'
 import { labelOf } from './labels.js'
 import { said, say } from './panel-card.js'
@@ -11,6 +11,8 @@ export interface Choices {
   }[]
 }
 
+let open: ModalElement | null = null
+
 export function openChoices(
   choices: Choices,
   group: string,
@@ -18,6 +20,10 @@ export function openChoices(
   apply: (marked: readonly { value: string, allow: boolean }[]) => Promise<boolean>,
   inherited: ReadonlySet<string> = new Set(),
 ): void {
+  if (open?.isConnected === true) {
+    return
+  }
+
   const content = document.createElement('div')
   content.className = classes.allowChoices
   content.style.setProperty('--vperm-inherited-note', `"${labelOf('platform.from')}"`)
@@ -69,6 +75,7 @@ export function openChoices(
     size: Modal.sizes.large,
     buttons: [cancelling, applying],
   })
+  open = modal
 
   // Core draws the button and leaves an attribute of its own alone once it has
   const offer = (): void => {

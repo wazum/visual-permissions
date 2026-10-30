@@ -150,6 +150,22 @@ describe('choosing the values a group may use', () => {
       .toContain('--vperm-inherited-note: "from a subgroup"')
   })
 
+  it('opens one dialog when the button is pressed twice', async () => {
+    initialise(listening.signal)
+    drawForm(field('tt_content:CType', 'fieldValues'))
+    activate()
+    pickArea('fields')
+    turnTo('pick')
+    const button = document.querySelector<HTMLElement>(`.${classes.allowChoose}`)
+
+    button?.click()
+    button?.click()
+
+    await vi.waitFor(() => { expect(dialog()).not.toBeNull() })
+    await new Promise(settled => { setTimeout(settled, 0) })
+    expect(document.querySelectorAll('.modal')).toHaveLength(1)
+  })
+
   it('opens no dialog when the permissions cannot be read', async () => {
     refuseNextRead()
     initialise(listening.signal)
