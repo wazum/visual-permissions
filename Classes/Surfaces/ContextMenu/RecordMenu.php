@@ -17,7 +17,7 @@ final class RecordMenu implements ProviderInterface
      */
     public function addItems(array $items): array
     {
-        if (!PermissionMode::isOn($this->getBackendUser()->uc)) {
+        if (!PermissionMode::isOn($this->getBackendUser())) {
             return $items;
         }
 

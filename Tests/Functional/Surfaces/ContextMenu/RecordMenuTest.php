@@ -61,6 +61,19 @@ final class RecordMenuTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function offersEverythingCoreOffersToAnEditorWhoseSettingsSayTheModeIsOn(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(2);
+        (new BackendUserConfiguration($backendUser))->set('vperm.session', ['active' => 'true']);
+
+        $menu = $this->get(RecordMenu::class);
+        $menu->setContext('pages', '1');
+
+        self::assertSame(['view', 'edit', 'new'], array_keys($menu->addItems(array_fill_keys(['view', 'edit', 'new'], ['type' => 'item']))));
+    }
+
+    #[Test]
     public function offersOnlyWhatChangesNoRecordOfAnyTableWhileTheModeIsOn(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users.csv');

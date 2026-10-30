@@ -18,7 +18,7 @@ final class SwitchedValues implements FormDataProviderInterface
      */
     public function addData(array $result): array
     {
-        if (!PermissionMode::isOn($this->getBackendUser()->uc)) {
+        if (!PermissionMode::isOn($this->getBackendUser())) {
             return $result;
         }
 
