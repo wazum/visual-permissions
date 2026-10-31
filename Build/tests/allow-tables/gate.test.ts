@@ -512,6 +512,32 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     })
   })
 
+  it.each([
+    ['allowed', 'Read'],
+    ['inherited', '↳ Read'],
+  ])('writes nothing when the level the group stands on through %s is pressed', async (reads, pressed) => {
+    reply({
+      group: { id: 7, title: 'Editors' },
+      chain: [],
+      scopes: {
+        fields: { targets: {} },
+        tablesSelect: { targets: { sys_file_reference: reads } },
+        tablesModify: { targets: { sys_file_reference: 'denied' }, named: { sys_file_reference: 'File Reference' } },
+      },
+    })
+    recordOf('sys_file_reference:title')
+    initialise(listening.signal)
+    pickFieldsToGive()
+    formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
+    await vi.waitFor(() => { expect(levels()).toHaveLength(3) })
+    sent.length = 0
+
+    level(pressed)?.click()
+    await new Promise(settled => { setTimeout(settled, 0) })
+
+    expect(sent).toHaveLength(0)
+  })
+
   it('takes reading and writing away when no access is pressed', async () => {
     reply({
       group: { id: 7, title: 'Editors' },

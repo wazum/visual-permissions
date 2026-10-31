@@ -1773,6 +1773,8 @@ function Xn(e, { groupId: t, table: n, called: r, verdict: o, reads: i }) {
   return m.className = `btn-group btn-group-sm ${l.tableLevels}`, m.setAttribute("role", "radiogroup"), m.setAttribute("aria-label", r), m.append(...si.map((h, v) => {
     const f = e.createElement("button");
     return f.type = "button", f.className = "btn btn-default", f.setAttribute("role", "radio"), f.setAttribute("aria-checked", String(v === c)), f.textContent = (v === a && a > 0 ? "↳ " : "") + g(`be_groups.tables_modify.permissions.${h}`), f.disabled = v < a, f.title = v < a ? g("allowTables.inherited") : "", f.addEventListener("click", () => {
+      if (v === c)
+        return;
       const b = [...m.querySelectorAll("button")];
       b.forEach((w) => {
         w.disabled = !0;
