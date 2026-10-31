@@ -50,7 +50,7 @@ export function footIn(
       }
 
       const key = doc.createElement('kbd')
-      key.textContent = 'Esc'
+      key.textContent = labelOf('platform.key.escape')
       cancel.append(key)
     },
   }

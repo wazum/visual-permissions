@@ -455,6 +455,10 @@
                 <source>%s waiting to be disallowed</source>
                 <target>%s noch zu entziehen</target>
             </trans-unit>
+            <trans-unit id="platform.key.escape" resname="platform.key.escape" approved="yes">
+                <source>Esc</source>
+                <target>Esc</target>
+            </trans-unit>
             <trans-unit id="platform.loggedOut" resname="platform.loggedOut" approved="yes">
                 <source>Your login has run out. The change was not saved and is still waiting here.</source>
                 <target>Ihre Anmeldung ist abgelaufen. Die Änderung wurde nicht gespeichert und wartet weiterhin hier.</target>

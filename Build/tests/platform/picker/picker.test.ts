@@ -14,6 +14,7 @@ const words: PickerWords = {
   take: 'view as',
   close: 'close',
   clear: 'clear',
+  escape: 'Esc',
   detail: 'inherits',
   loading: 'Loading users…',
   failed: 'The list of users could not be loaded',
@@ -877,7 +878,7 @@ describe('the picker', () => {
 
     expect(key.defaultPrevented).toBe(false)
     expect(element.textContent.replace(/\s+/g, ' ').trim())
-      .toBe('Nothing matches ↑↓ move ⇥ inherits ↵ view as esc clear 0 users')
+      .toBe('Nothing matches ↑↓ move ⇥ inherits ↵ view as Esc clear 0 users')
   })
 
   it('lets the tab go by when the row has no detail to cross into', async () => {
@@ -1068,14 +1069,14 @@ describe('the picker', () => {
     await type(element, '')
 
     expect(element.querySelector(`.${classes.pickerHints}`)?.textContent.replace(/\s+/g, ' ').trim())
-      .toBe('↑↓ ⇥ ↵ esc')
+      .toBe('↑↓ ⇥ ↵')
     expect(element.querySelector(`.${classes.pickerTally}`)?.textContent).toBe('')
 
     await type(element, 'nobody')
 
     expect(element.querySelector(`.${classes.pickerList}`)?.textContent.trim()).toBe('')
     expect(element.querySelector(`.${classes.pickerHints}`)?.textContent.replace(/\s+/g, ' ').trim())
-      .toBe('↑↓ ⇥ ↵ esc')
+      .toBe('↑↓ ⇥ ↵')
   })
 
   it('says so rather than standing empty when nothing matches', async () => {

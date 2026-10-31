@@ -39,6 +39,7 @@ export interface PickerWords {
   readonly take: string
   readonly close: string
   readonly clear: string
+  readonly escape: string
   readonly detail: string
   readonly loading: string
   readonly failed: string
@@ -102,7 +103,7 @@ export class Picker extends LitElement {
     this.state = 'ready'
     this.words = {
       countMany: '', totalOne: '', totalMany: '', move: '', take: '', close: '', clear: '',
-      detail: '',
+      escape: '', detail: '',
       loading: '', failed: '', retry: '', empty: '',
     }
   }
@@ -230,7 +231,7 @@ export class Picker extends LitElement {
           <span><kbd>↑</kbd><kbd>↓</kbd> ${this.words.move}</span>
           <span><kbd>⇥</kbd> ${this.words.detail}</span>
           <span><kbd>↵</kbd> ${this.words.take}</span>
-          <span><kbd>esc</kbd> ${this.query === '' ? this.words.close : this.words.clear}</span>
+          <span><kbd>${this.words.escape}</kbd> ${this.query === '' ? this.words.close : this.words.clear}</span>
         </span>
         <span class=${classes.pickerTally}>${this.counted()}</span>
       </p>
@@ -550,6 +551,7 @@ export function createPicker(
     move: labelOf('platform.picker.key.move'),
     close: labelOf('platform.picker.key.close'),
     clear: labelOf('platform.picker.key.clear'),
+    escape: labelOf('platform.key.escape'),
     retry: labelOf('platform.picker.retry'),
     empty: labelOf('platform.picker.empty'),
   }
