@@ -94,7 +94,6 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
     })
 
     form = fields.length === 0 ? null : { doc, fields }
-    tablesFrom = null
     void show()
   }, signal)
 
