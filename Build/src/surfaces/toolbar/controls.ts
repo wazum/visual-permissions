@@ -33,8 +33,6 @@ export function initialise(doc: Document, signal: AbortSignal): void {
     } else {
       showControls()
     }
-
-    stand()
   }, { signal })
 
   signal.addEventListener('abort', () => { controls.remove() })

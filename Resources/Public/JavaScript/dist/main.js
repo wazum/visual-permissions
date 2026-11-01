@@ -305,7 +305,7 @@ function Gr(e, t) {
     r.classList.toggle(l.controlsOpen, i()), o?.setAttribute("aria-pressed", String(i()));
   };
   s(), L(s, t), o?.addEventListener("click", () => {
-    i() ? Dr() : Rr(), s();
+    i() ? Dr() : Rr();
   }, { signal: t }), t.addEventListener("abort", () => {
     r.remove();
   });
