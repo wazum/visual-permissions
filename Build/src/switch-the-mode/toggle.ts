@@ -1,4 +1,5 @@
 import { attributes } from '../platform/contract.js'
+import { bindShortcut } from '../platform/shortcuts.js'
 import { activate, deactivate, getState, subscribe, type SessionState } from '../platform/session.js'
 
 export function initialise(doc: Document, signal: AbortSignal): void {
@@ -23,6 +24,8 @@ export function initialise(doc: Document, signal: AbortSignal): void {
 
     activate()
   }, { signal })
+
+  bindShortcut(TYPO3.settings.visualPermissions?.toggleKey ?? '', toggle, () => { toggle.click() }, true)
 
   subscribe(show, signal)
 }

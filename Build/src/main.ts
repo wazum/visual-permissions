@@ -32,7 +32,6 @@ import { initialise as newContent } from './surfaces/page-module/new-content.js'
 import { initialise as redrawRecords } from './surfaces/record-list/redraw.js'
 import { initialise as closeForm } from './surfaces/record-form/close.js'
 import { initialise as showMenu } from './surfaces/record-form/show-menu.js'
-import { initialise as shortcut } from './switch-the-mode/shortcut.js'
 import { initialise as toggleVisualMode } from './switch-the-mode/toggle.js'
 import { initialise as unfoldRecords } from './surfaces/record-form/unfold.js'
 import { initialise as leaveUser } from './view-as-user/leave.js'
@@ -98,7 +97,6 @@ function start(): void {
     reopenDocument(document)
     slideIn(document)
   }
-  shortcut(document)
 }
 
 if (document.readyState === 'loading') {
