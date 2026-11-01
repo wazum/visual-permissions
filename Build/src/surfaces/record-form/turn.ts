@@ -1,11 +1,12 @@
 import { classes } from '../../platform/contract.js'
+import { isStill } from '../../platform/motion.js'
 
 // The form stands edge-on half way, so the side is swapped where there is nothing to see
 const halfWay = 280
 
 export function flipForm(doc: Document, half: () => void): void {
   const form = doc.querySelector<HTMLElement>('form[name="editform"]')
-  if (form === null) {
+  if (form === null || isStill(doc)) {
     half()
 
     return

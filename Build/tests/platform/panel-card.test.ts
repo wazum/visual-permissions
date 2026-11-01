@@ -13,6 +13,7 @@ describe('a count in words', () => {
 describe('the flash on a card', () => {
   afterEach(() => {
     vi.useRealTimers()
+    document.body.removeAttribute('style')
   })
 
   it('lights what was added once the card has turned, then lets it go', () => {
@@ -25,6 +26,19 @@ describe('the flash on a card', () => {
     vi.advanceTimersByTime(500 + burst)
 
     expect(seen).toStrictEqual([true, false])
+  })
+
+  it('lights nothing where nothing may move', () => {
+    vi.useFakeTimers()
+    document.body.style.setProperty('--vperm-motion', '0')
+    const flash = createFlash(500)
+    let repainted = 0
+
+    flash.add('records')
+    flash.start(() => { repainted += 1 })
+    vi.advanceTimersByTime(500 + burst)
+
+    expect(repainted).toBe(0)
   })
 
   it('lights nothing once it is stopped before the card has turned', () => {
