@@ -16,6 +16,7 @@ import {
   type Face,
 } from '../platform/panel-card.js'
 import { labelOf } from '../platform/labels.js'
+import { isStill } from '../platform/motion.js'
 import { isWriting, type Permissions, type UnseenPage, type WriteOutcome } from '../platform/transport.js'
 import { createNamingForm, validateFolderNames, namesIn } from './naming.js'
 import { flash, inheritedIds, markedIds, mountedIds, pickedIds, unseenIds } from './marks.js'
@@ -320,7 +321,7 @@ export function restoreTree(doc: Document): void {
 
     component.append(...holder.childNodes)
     card.remove()
-  }, crossing)
+  }, isStill(doc) ? 0 : crossing)
 }
 
 function cardAround(doc: Document, component: Element): Element {

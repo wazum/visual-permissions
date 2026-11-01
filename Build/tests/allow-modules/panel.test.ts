@@ -147,6 +147,7 @@ describe('the module panel the group sees', () => {
     selectGroup(7)
     listening = new AbortController()
     document.body.replaceChildren()
+    document.body.removeAttribute('style')
     replyTo('visual_permissions_modules_outside_menu', { title: '', groups: [] })
     reply({
       group: { id: 7, title: 'Content Reviewers' },
@@ -512,6 +513,19 @@ describe('the module panel the group sees', () => {
     await vi.waitFor(() => {
       expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
     })
+  })
+
+  it('gives the menu back within a frame where nothing may move', async () => {
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+    await armed()
+    document.body.style.setProperty('--vperm-motion', '0')
+
+    pickArea('fields')
+    vi.advanceTimersByTime(16)
+
+    expect(document.querySelector(`.${classes.allowed}`)).toBeNull()
   })
 
   it('leaves the menu alone when the area is let go of a second time', async () => {

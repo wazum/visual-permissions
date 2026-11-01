@@ -9,12 +9,12 @@ describe('sliding from one backend to the other', () => {
     document.body.removeAttribute(attributes.settling)
     document.body.removeAttribute(attributes.arriving)
     document.body.removeAttribute(attributes.unwrapping)
+    document.body.removeAttribute('style')
   })
 
   afterEach(() => {
     vi.useRealTimers()
     vi.restoreAllMocks()
-    delete TYPO3.settings.visualPermissions
   })
 
   // The page that slid away is gone, so the one that arrives is told which way it came.
@@ -157,8 +157,8 @@ describe('sliding from one backend to the other', () => {
     expect(document.body.getAttribute(attributes.arriving)).toBe('down')
   })
 
-  it('goes at once where the installation wants no animation', () => {
-    TYPO3.settings.visualPermissions = { animation: false }
+  it('goes at once where nothing may move', () => {
+    document.body.style.setProperty('--vperm-motion', '0')
     const went: string[] = []
 
     slideAway(document, 'down', () => { went.push('gone') })

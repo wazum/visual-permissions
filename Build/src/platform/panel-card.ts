@@ -1,5 +1,6 @@
 import { classes } from './contract.js'
 import { labelOf } from './labels.js'
+import { isStill } from './motion.js'
 import { getState, subscribe } from './session.js'
 
 export const crossing = 220
@@ -122,7 +123,7 @@ export function createFlash(turning: number): Flash {
     delete: key => { added.delete(key) },
     isLit: key => lit.has(key),
     start: repaint => {
-      if (added.size === 0) {
+      if (added.size === 0 || isStill(document)) {
         return
       }
 

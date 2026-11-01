@@ -16,6 +16,7 @@ import {
   type Face,
 } from '../platform/panel-card.js'
 import { labelOf } from '../platform/labels.js'
+import { isStill } from '../platform/motion.js'
 import { chooseOutside } from './outside.js'
 import { writeModules } from './write.js'
 import { getState } from '../platform/session.js'
@@ -249,7 +250,7 @@ export function restoreMenu(doc: Document, menu: Element): void {
 
       stage.remove()
       card.replaceWith(menu)
-    }, crossing)
+    }, isStill(doc) ? 0 : crossing)
   })
 }
 

@@ -1,4 +1,5 @@
 import { attributes } from '../platform/contract.js'
+import { isStill } from '../platform/motion.js'
 import { dropNote, readNote, writeNote } from './tab-notes.js'
 
 export type Way = 'down' | 'up'
@@ -14,13 +15,9 @@ const lifting = 320
 
 const wayKey = 'vperm.arriving'
 
-function animated(): boolean {
-  return TYPO3.settings.visualPermissions?.animation !== false
-}
-
 export function slideAway(doc: Document, way: Way, then: () => void): void {
   // An installation that wants no motion still wants the switch
-  if (!animated()) {
+  if (isStill(doc)) {
     then()
 
     return

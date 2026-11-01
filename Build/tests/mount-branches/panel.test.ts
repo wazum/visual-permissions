@@ -194,6 +194,7 @@ describe('the mounts panel', () => {
     forgetNotices()
     listening = new AbortController()
     document.body.replaceChildren()
+    document.body.removeAttribute('style')
     tree()
     carrier()
     mounted(3, 5)
@@ -845,6 +846,16 @@ describe('the mounts panel', () => {
     await vi.advanceTimersByTimeAsync(20)
 
     expect(inPreview(`.${classes.faceCounted}`)?.textContent).toBe('3 branches mounted')
+  })
+
+  it('takes the card away at once where nothing may move', async () => {
+    await armed()
+    document.body.style.setProperty('--vperm-motion', '0')
+
+    deactivate()
+    vi.advanceTimersByTime(0)
+
+    expect(card()).toBeNull()
   })
 
   // Area armed again inside the moment leaves no tree; keep the card that was armed
