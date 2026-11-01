@@ -6,3 +6,9 @@
 [#{contract.$attribute-still}] {
   --vperm-motion: 0;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --vperm-motion: 0;
+  }
+}

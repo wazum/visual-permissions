@@ -351,9 +351,3 @@ $filled: var(--typo3-component-hover-bg);
     }
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  #{$column} .#{contract.$class-panel-card} {
-    transition: none;
-  }
-}

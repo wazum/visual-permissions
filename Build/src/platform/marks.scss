@@ -41,12 +41,6 @@
   animation: vperm-just-added calc(var(--vperm-motion, 1) * 1300ms) ease-in-out;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .#{contract.$class-just-added} {
-    animation: none;
-  }
-}
-
 // A panel says what a group reaches by the rows it shows, so a mark there would say it
 // twice. It keeps away from a panel card altogether, box and all: that box would sit on
 // the very spot a note of the panel's own belongs in. A field of a record form is marked in

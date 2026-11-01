@@ -58,7 +58,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
     .#{contract.$class-face-bar},
     .#{contract.$class-face-foot} {
       opacity: 1;
-      transition-delay: 340ms;
+      transition-delay: calc(var(--vperm-motion, 1) * 340ms);
     }
   }
 }

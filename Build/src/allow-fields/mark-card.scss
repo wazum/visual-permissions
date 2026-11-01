@@ -193,9 +193,3 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
 @position-try --vperm-mark-above {
   position-area: left span-top;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .#{contract.$class-mark-card} {
-    transition: none;
-  }
-}
