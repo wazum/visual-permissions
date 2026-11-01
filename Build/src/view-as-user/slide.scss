@@ -109,10 +109,3 @@ html:has([#{contract.$attribute-unwrapping}])::after {
 [#{contract.$attribute-unwrapping}] #typo3-contentIframe {
   animation: vperm-sharpening calc(var(--vperm-motion, 1) * 300ms) ease-out forwards;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  [#{contract.$attribute-leaving}],
-  [#{contract.$attribute-arriving}] {
-    animation-duration: 1ms;
-  }
-}

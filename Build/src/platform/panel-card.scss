@@ -9,12 +9,6 @@
   transform: rotateY(180deg);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .#{contract.$class-panel-card} {
-    transition: none;
-  }
-}
-
 // Our side of the card holds a card of its own, so it must not flatten what is inside it:
 // no overflow and no perspective here, both would end the 3D the column started.
 .#{contract.$class-allowed} {
@@ -160,12 +154,4 @@
 .#{contract.$class-face-waiting}:not(:empty) {
   color: color-mix(in srgb, currentColor 70%, transparent);
   font-style: italic;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .#{contract.$class-coin},
-  .#{contract.$class-face-bar},
-  .#{contract.$class-face-foot} {
-    transition: none;
-  }
 }
