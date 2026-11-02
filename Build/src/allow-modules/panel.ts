@@ -285,7 +285,7 @@ function fillPreview(
   into: HTMLElement,
   reachable: Element[],
   from: string,
-  marked: () => void,
+  onMarked: () => void,
 ): void {
   let heading: string | null = null
 
@@ -304,7 +304,7 @@ function fillPreview(
     if (clone.getAttribute(attributes.verdict) === picked) {
       answersTo(clone, () => {
         clone.classList.toggle(classes.faceMarked)
-        marked()
+        onMarked()
       })
     } else {
       clone.append(say(doc, classes.allowedFrom, from))
@@ -314,7 +314,7 @@ function fillPreview(
   })
 }
 
-function fillPick(into: HTMLElement, menu: Element, marked: () => void): void {
+function fillPick(into: HTMLElement, menu: Element, onMarked: () => void): void {
   into.replaceChildren(...[...menu.children].map(child => child.cloneNode(true)))
 
   into.querySelectorAll(groupContainer).forEach(container => { container.classList.add('show') })
@@ -331,7 +331,7 @@ function fillPick(into: HTMLElement, menu: Element, marked: () => void): void {
     // A row opens nothing here, and only what this group decides answers at all.
     answersTo(row, () => {
       ask(row)
-      marked()
+      onMarked()
     })
   })
 

@@ -178,7 +178,7 @@ export default class AjaxRequest {
     tagged = null
     readStatus = 200
 
-    const answer = {
+    const response = {
       resolve: <T>(): Promise<T> => Promise.resolve(payload as T),
       raw: () => ({
         status,
@@ -191,10 +191,10 @@ export default class AjaxRequest {
       .then(() => {
         if (status < 200 || status > 299) {
           // eslint-disable-next-line @typescript-eslint/only-throw-error -- as core does
-          throw answer
+          throw response
         }
 
-        return answer
+        return response
       })
   }
 

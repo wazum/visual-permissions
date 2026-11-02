@@ -586,8 +586,6 @@ describe('switching to a user from the header', () => {
   // A page that stays behind goes on asking the backend, and an answer to one of those
   // questions carries the session that was just replaced
   it('leaves the page to hand the session over', async () => {
-    const handed: { url: string, fields: Record<string, string> }[] = []
-
     initialise(document, listening.signal, {
       go: () => undefined,
       handOver: (url, fields) => { handed.push({ url, fields }) },
@@ -677,7 +675,6 @@ describe('switching to a user from the header', () => {
     prime({ vperm: { returnTo: {
       place: '/typo3/record/edit?edit[tt_content][82]=edit',
     } } })
-    const went: string[] = []
 
     initialise(document, listening.signal, {
       go: url => { went.push(url) },
@@ -740,7 +737,6 @@ describe('switching to a user from the header', () => {
   // The note is crossed out before going back: going there navigates, and an unanswered
   // write would go with it and send every later page load to the same place again.
   it('crosses the place off, and goes there once however often it comes back', async () => {
-    const went: string[] = []
     const goes = { go: (url: string) => { went.push(url) }, handOver: () => undefined }
 
     prime({ vperm: { returnTo: { place: '/typo3/module/form' } } })

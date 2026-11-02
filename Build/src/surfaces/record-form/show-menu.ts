@@ -82,14 +82,14 @@ export function initialise(signal: AbortSignal): void {
 
     list.append(
       // The names and the marks are what a permission is read from; the controls say nothing
-      itemIn(inner, labelOf('recordForm.show.listOnly'), 'actions-list', () => inner.body.hasAttribute(attributes.show), on => {
-        remember(note, 'list', on)
-        readAs(inner, on)
+      itemIn(inner, labelOf('recordForm.show.listOnly'), 'actions-list', () => inner.body.hasAttribute(attributes.show), checked => {
+        remember(note, 'list', checked)
+        readAs(inner, checked)
       }),
       // A permission is written for tt_content:header, and the form says only "Header"
-      itemIn(inner, labelOf('recordForm.show.identifiers'), 'actions-tag', () => inner.body.hasAttribute(attributes.identify), on => {
-        remember(identifyNote, 'said', on)
-        nameFields(inner, on)
+      itemIn(inner, labelOf('recordForm.show.identifiers'), 'actions-tag', () => inner.body.hasAttribute(attributes.identify), checked => {
+        remember(identifyNote, 'said', checked)
+        nameFields(inner, checked)
       }),
     )
 
@@ -153,7 +153,7 @@ function itemIn(
   word: string,
   identifier: string,
   reading: () => boolean,
-  asked: (on: boolean) => void,
+  asked: (checked: boolean) => void,
 ): HTMLElement {
   const item = inner.createElement('button')
   // Stryker disable next-line StringLiteral: a button submits by default; jsdom submits nothing, so only a browser can tell

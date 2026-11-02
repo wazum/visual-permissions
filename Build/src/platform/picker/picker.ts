@@ -523,11 +523,11 @@ export class Picker extends LitElement {
         end += 1
       }
 
-      const from = at[start] ?? 0
-      const to = (at[end] ?? 0) + 1
+      const markFrom = at[start] ?? 0
+      const markTo = (at[end] ?? 0) + 1
 
-      parts.push(html`${text.slice(plain, from)}<mark>${text.slice(from, to)}</mark>`)
-      plain = to
+      parts.push(html`${text.slice(plain, markFrom)}<mark>${text.slice(markFrom, markTo)}</mark>`)
+      plain = markTo
       start = end + 1
     }
 

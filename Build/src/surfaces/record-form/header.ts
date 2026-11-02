@@ -48,7 +48,7 @@ export function initialise(outer: Document, signal: AbortSignal): void {
     })
 
     // The form's own heading says the record twice over, once the header is ours
-    inner.querySelectorAll(heading).forEach(said => { said.toggleAttribute('hidden', taken) })
+    inner.querySelectorAll(heading).forEach(title => { title.toggleAttribute('hidden', taken) })
 
     if (!taken) {
       return

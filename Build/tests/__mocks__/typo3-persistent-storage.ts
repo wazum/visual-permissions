@@ -1,10 +1,10 @@
-const held = globalThis as { ucForTests?: Record<string, unknown> }
-held.ucForTests ??= {}
+const shared = globalThis as { ucForTests?: Record<string, unknown> }
+shared.ucForTests ??= {}
 
-const uc = (): Record<string, unknown> => held.ucForTests ?? {}
+const uc = (): Record<string, unknown> => shared.ucForTests ?? {}
 
 export function prime(settings: Record<string, unknown>): void {
-  held.ucForTests = settings
+  shared.ucForTests = settings
 }
 
 export function stored(): Record<string, unknown> {

@@ -253,13 +253,13 @@ describe('the mounts panel', () => {
     await armed()
     await vi.waitFor(() => { expect(previewTree()).not.toBeNull() })
     const parent: PreparedNode = { identifier: '1', depth: 0, __parents: [], __expanded: true }
-    const mounted: PreparedNode = { identifier: '3', depth: 1, __parents: [], __expanded: true }
+    const mountedPage: PreparedNode = { identifier: '3', depth: 1, __parents: [], __expanded: true }
 
     previewTree()?.hideChildren(parent)
-    previewTree()?.hideChildren(mounted)
+    previewTree()?.hideChildren(mountedPage)
 
     expect(parent.__expanded).toBe(true)
-    expect(mounted.__expanded).toBe(false)
+    expect(mountedPage.__expanded).toBe(false)
   })
 
   it('loads the way down to a mount deeper than the tree first loads', async () => {
@@ -1022,10 +1022,10 @@ describe('the mounts panel', () => {
 
     await vi.advanceTimersByTimeAsync(50)
 
-    const shown = ((late as unknown as { nodes: PreparedNode[] }).nodes)
+    const visible = ((late as unknown as { nodes: PreparedNode[] }).nodes)
       .filter(node => node.__hidden !== true).map(node => node.identifier)
 
-    expect(shown).toStrictEqual(['3'])
+    expect(visible).toStrictEqual(['3'])
   })
 
   // Rows that arrive after the card was built are unseen by the card; no row for unseen install
@@ -1036,12 +1036,12 @@ describe('the mounts panel', () => {
     const theirs = document.querySelector(
       `.${classes.facePick} typo3-backend-navigation-component-pagetree-tree`,
     ) as unknown as { prepareNodes: (nodes: PreparedNode[]) => PreparedNode[] } | null
-    const shown = (theirs?.prepareNodes([
+    const visible = (theirs?.prepareNodes([
       { identifier: '0', depth: 0 },
       { identifier: '7', depth: 1 },
     ]) ?? []).filter(node => node.__hidden !== true).map(node => node.identifier)
 
-    expect(shown).toStrictEqual(['7'])
+    expect(visible).toStrictEqual(['7'])
   })
 
   // The row is borrowed from the backend; return it or the tree is left without a root
@@ -1056,11 +1056,11 @@ describe('the mounts panel', () => {
     deactivate()
     await vi.advanceTimersByTimeAsync(300)
 
-    const shown = (theirs?.nodes ?? [])
+    const visible = (theirs?.nodes ?? [])
       .filter(node => node.__hidden !== true)
       .map(node => node.identifier)
 
-    expect(shown).toStrictEqual(['0', '1', '3'])
+    expect(visible).toStrictEqual(['0', '1', '3'])
   })
 
   // The installation row does not answer any questions; do not show it
@@ -1071,11 +1071,11 @@ describe('the mounts panel', () => {
     const theirs = document.querySelector(
       `.${classes.facePick} typo3-backend-navigation-component-pagetree-tree`,
     ) as unknown as { nodes: PreparedNode[] } | null
-    const shown = (theirs?.nodes ?? [])
+    const visible = (theirs?.nodes ?? [])
       .filter(node => node.__hidden !== true)
       .map(node => node.identifier)
 
-    expect(shown).toStrictEqual(['1', '3'])
+    expect(visible).toStrictEqual(['1', '3'])
   })
 
   // Row 0 is the root, not a page; the first page is 1

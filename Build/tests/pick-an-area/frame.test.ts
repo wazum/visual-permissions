@@ -41,8 +41,8 @@ const treeInside = (around: Element): HTMLElement => {
   return host
 }
 
-const showing = (tree: HTMLElement, shown: boolean): void => {
-  tree.style.display = shown ? 'flex' : 'none'
+const showing = (host: HTMLElement, shown: boolean): void => {
+  host.style.display = shown ? 'flex' : 'none'
 }
 
 const eitherTree = (): { page: HTMLElement, folders: HTMLElement } => {
