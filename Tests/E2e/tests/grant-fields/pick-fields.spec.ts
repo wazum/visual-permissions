@@ -139,7 +139,7 @@ test('every field of its own the tab holds is marked to be given at once', async
   await expect(own.first()).toBeVisible()
   const givableCount = await own.count()
 
-  await tab.getByRole('button', { name: 'Grant all on this tab' }).click()
+  await tab.getByRole('button', { name: 'Allow all on this tab' }).click()
 
   await expect(tab.locator(`.vperm-anchor[data-vperm-inside='']${marked}`)).toHaveCount(givableCount)
 })

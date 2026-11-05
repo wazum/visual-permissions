@@ -140,7 +140,7 @@ describe('a field\'s mark', () => {
 
     markOf('pages:nav_title')?.click()
 
-    expect(cardOf().querySelector('h3')?.textContent).toBe('Given by')
+    expect(cardOf().querySelector('h3')?.textContent).toBe('Allowed by')
     expect([...cardOf().querySelectorAll('li')].map(line => line.querySelector('span')?.textContent))
       .toStrictEqual(['Consectetur', 'Aliquam'])
     const show = [...cardOf().querySelectorAll('button')]
@@ -297,9 +297,9 @@ describe('a field\'s mark', () => {
   })
 
   it.each([
-    ['preview', 'allowed', false, 'Press the field to take it away'],
+    ['preview', 'allowed', false, 'Press the field to disallow it'],
     ['preview', 'allowed', true, 'Press again to keep it'],
-    ['pick', 'denied', false, 'Press the field to give it'],
+    ['pick', 'denied', false, 'Press the field to allow it'],
     ['pick', 'denied', true, 'Press again to leave it out'],
     ['preview', 'inherited', false, null],
     ['preview', 'notApplicable', false, null],

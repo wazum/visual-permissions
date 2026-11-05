@@ -263,7 +263,7 @@ describe('the tables of the form as the group sees it', () => {
 
     const note = document.querySelector(`.${classes.nothingTheirs}`)
 
-    expect(note?.querySelector(`.${classes.tableGive}`)?.textContent).toBe('Grant "Page Content"')
+    expect(note?.querySelector(`.${classes.tableGive}`)?.textContent).toBe('Allow "Page Content"')
   })
 
   it('says so in the band the side that gives tables away draws', () => {

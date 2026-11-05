@@ -100,7 +100,7 @@ export const backendSays = (): void => {
     'recordForm.add': 'Assign permissions',
     'grantTables.missing': 'The group may not edit records of this kind',
     'grantTables.adminOnly': 'Only administrators may edit records of this kind',
-    'grantTables.give': 'Grant "%s"',
+    'grantTables.allow': 'Allow "%s"',
     'grantTables.gone': 'This is empty for the group: it may not edit "%s"',
   }
 }

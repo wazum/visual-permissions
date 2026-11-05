@@ -45,11 +45,10 @@ const drawForm = (...fields: string[]): void => {
   TYPO3.lang = {
     'allowedValues.choose.CType': 'Choose page content types',
     'platform.cancel': 'Cancel',
-    'platform.doAdd': 'Add',
     'platform.doApply': 'Apply',
     'platform.from': 'from a subgroup',
-    'platform.going': '%s waiting to be taken away',
-    'platform.waiting': '%s waiting to be added',  }
+    'platform.going': '%s waiting to be disallowed',
+    'platform.waiting': '%s waiting to be allowed',  }
 
   formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
 }
@@ -172,7 +171,7 @@ describe('choosing the values a group may use', () => {
 
     boxNamed('Text & Media').click()
 
-    expect(waiting()).toBe('1 waiting to be added')
+    expect(waiting()).toBe('1 waiting to be allowed')
     expect(applyButton()?.textContent).toBe('Apply')
   })
 
@@ -292,7 +291,7 @@ describe('choosing the values a group may use', () => {
 
     boxNamed('Regular Text Element').click()
 
-    expect(waiting()).toBe('1 waiting to be taken away')
+    expect(waiting()).toBe('1 waiting to be disallowed')
     expect(applyButton()?.textContent).toBe('Apply')
   })
 
@@ -303,7 +302,7 @@ describe('choosing the values a group may use', () => {
     boxNamed('Regular Text Element').click()
     boxNamed('Text & Media').click()
 
-    expect(waiting()).toBe('1 waiting to be added\n1 waiting to be taken away')
+    expect(waiting()).toBe('1 waiting to be allowed\n1 waiting to be disallowed')
     expect(applyButton()?.textContent).toBe('Apply')
   })
 
@@ -313,7 +312,7 @@ describe('choosing the values a group may use', () => {
     boxNamed('Text & Media').click()
 
     await vi.waitFor(() => {
-      expect(dialog()?.querySelector('.modal-footer > :first-child')?.textContent).toBe('1 waiting to be added')
+      expect(dialog()?.querySelector('.modal-footer > :first-child')?.textContent).toBe('1 waiting to be allowed')
     })
   })
 

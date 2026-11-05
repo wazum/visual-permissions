@@ -30,10 +30,10 @@ const hintOf = (field: Element): string => {
 
   const marked = field.classList.contains(classes.faceMarked)
   if (getState().face === 'pick') {
-    return labelOf(marked ? 'grantFields.hint.leave' : 'grantFields.hint.give')
+    return labelOf(marked ? 'grantFields.hint.leave' : 'grantFields.hint.allow')
   }
 
-  return labelOf(marked ? 'grantFields.hint.keep' : 'grantFields.hint.take')
+  return labelOf(marked ? 'grantFields.hint.keep' : 'grantFields.hint.disallow')
 }
 
 function givers(card: HTMLElement, groups: readonly ChainStep[]): HTMLElement[] {
@@ -43,7 +43,7 @@ function givers(card: HTMLElement, groups: readonly ChainStep[]): HTMLElement[] 
 
   const doc = card.ownerDocument
   const heading = doc.createElement('h3')
-  heading.textContent = labelOf('grantFields.givenBy')
+  heading.textContent = labelOf('grantFields.allowedBy')
   const list = doc.createElement('ul')
   list.append(...groups.map(group => {
     const name = doc.createElement('span')

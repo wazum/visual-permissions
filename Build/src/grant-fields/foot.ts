@@ -94,7 +94,7 @@ export function initialise(draft: Draft, signal: AbortSignal): void {
     }
 
     const card = footIn(foot, {
-      label: labelOf(adding ? 'platform.doAdd' : 'platform.doRemove'),
+      label: labelOf(adding ? 'platform.doAllow' : 'platform.doDisallow'),
       cancel: () => {
         draft.drop()
         settle()

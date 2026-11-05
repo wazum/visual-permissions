@@ -31,7 +31,7 @@ test('a record of a table the group was not given says so, and offers the table'
   const held = form.locator('.vperm-table-gate:has(.vperm-table-token:text-is("sys_file_reference"))')
 
   await expect(held.locator('.callout-body')).toHaveText('The group may not edit records of this kind')
-  await expect(held.locator('.vperm-table-give')).toHaveText('Grant "File Reference"')
+  await expect(held.locator('.vperm-table-give')).toHaveText('Allow "File Reference"')
 })
 
 test('a record of a table the group was given offers to take the table back', async ({ page }) => {
@@ -50,7 +50,7 @@ test('a record of a table the group was given offers to take the table back', as
 
   const own = form.locator('.vperm-table-gate:has(.vperm-table-token:text-is("pages"))')
 
-  await expect(own.locator('.vperm-table-take')).toHaveText('Revoke "Page"')
+  await expect(own.locator('.vperm-table-take')).toHaveText('Disallow "Page"')
 })
 
 test('revoking the table of the record turns the form to what the group gets', async ({ page }) => {
@@ -128,7 +128,7 @@ test('the form the group gets offers the table of a record it cannot reach', asy
   await switchOn(page)
   await pickArea(page, 'fields')
 
-  await expect(form.locator('.vperm-nothing-theirs .vperm-table-give')).toHaveText('Grant "File Reference"')
+  await expect(form.locator('.vperm-nothing-theirs .vperm-table-give')).toHaveText('Allow "File Reference"')
 })
 
 test('the form the group gets names the table of a record it cannot reach as the band does', async ({ page }) => {

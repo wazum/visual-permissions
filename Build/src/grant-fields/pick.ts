@@ -36,7 +36,7 @@ const stateOf = (field: Element, marked: boolean, face: string): FieldState => {
     // The group has it after the change unless this side is about to take it away
     on: has !== marked,
     operable: field.matches(decides(face)),
-    waiting: marked ? labelOf(face === 'pick' ? 'platform.toAdd' : 'grantFields.toTakeAway') : '',
+    waiting: marked ? labelOf(face === 'pick' ? 'platform.toAllow' : 'grantFields.toDisallow') : '',
   }
 }
 
@@ -131,7 +131,7 @@ export function initialise(draft: Draft, signal: AbortSignal): void {
     // Stryker disable next-line StringLiteral: a form button submits by default and would take the backend along; jsdom submits nothing, only a browser can tell
     button.type = 'button'
     button.className = `btn btn-default btn-sm ${classes.tabGive}`
-    button.textContent = labelOf('grantFields.grantTab')
+    button.textContent = labelOf('grantFields.allowTab')
     button.addEventListener('click', () => {
       unmarked().forEach(field => { draft.toggle(field) })
       markFields()

@@ -68,12 +68,12 @@ const carrier = (): void => {
     'mountBranches.pages.pickFor': 'Pick what %s may work in',
     'mountBranches.pages.previewFor': 'What %s may work in',
     'platform.cancel': 'Cancel',
-    'platform.doAdd': 'Add',
-    'platform.doRemove': 'Remove',
+    'mountBranches.doAdd': 'Add',
+    'mountBranches.doRemove': 'Remove',
     'platform.notRead': 'Not read',
     'platform.pick': 'Assign',
     'platform.preview': 'Preview',
-    'platform.waiting': '%s waiting to be added',
+    'mountBranches.waiting': '%s waiting to be added',
   }
 }
 

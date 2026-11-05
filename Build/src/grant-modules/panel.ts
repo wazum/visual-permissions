@@ -117,7 +117,7 @@ export function render(doc: Document, menu: Element): void {
   }
 
   const removals = footIn(preview.foot, {
-    label: labelOf('platform.doRemove'),
+    label: labelOf('platform.doDisallow'),
     cancel: () => {
       marked(preview.scroll).forEach(row => { row.classList.remove(classes.faceMarked) })
       showCount()
@@ -134,7 +134,7 @@ export function render(doc: Document, menu: Element): void {
   }
 
   const additions = footIn(pick.foot, {
-    label: labelOf('platform.doAdd'),
+    label: labelOf('platform.doAllow'),
     cancel: leavePicking,
     apply: () => {
       const changed = ownIn(pick.scroll).filter(row => verdictOf(row) !== was.get(row))
@@ -162,11 +162,11 @@ export function render(doc: Document, menu: Element): void {
   }
 
   preview.bar.append(
-    button(doc, labelOf('grantModules.add'), 'btn btn-default', () => { turnTo(true) }),
+    button(doc, labelOf('grantModules.allow'), 'btn btn-default', () => { turnTo(true) }),
     say(doc, classes.faceHint, labelOf('grantModules.hint')),
   )
 
-  pick.scroll.style.setProperty('--vperm-queued-note', `"${labelOf('platform.toAdd')}"`)
+  pick.scroll.style.setProperty('--vperm-queued-note', `"${labelOf('platform.toAllow')}"`)
 
   fillPreview(doc, preview.scroll, reachable, labelOf('platform.from'), showCount)
   fillPick(pick.scroll, menu, showCount)

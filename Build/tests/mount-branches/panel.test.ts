@@ -71,8 +71,8 @@ const carrier = (): void => {
     'platform.preview': 'Preview',
     'platform.pick': 'Assign',
     'platform.cancel': 'Cancel',
-    'platform.doAdd': 'Add',
-    'platform.doRemove': 'Remove',
+    'mountBranches.doAdd': 'Add',
+    'mountBranches.doRemove': 'Remove',
     'platform.from': 'from a subgroup',
     'mountBranches.pages.previewFor': 'What %s may work in',
     'mountBranches.pages.add': 'Add page mounts',
@@ -80,7 +80,7 @@ const carrier = (): void => {
     'mountBranches.pages.pickFor': 'Pick what %s may work in',
     'mountBranches.pages.tally.one': '%s branch mounted',
     'mountBranches.pages.tally.many': '%s branches mounted',
-    'platform.waiting': '%s waiting to be added',
+    'mountBranches.waiting': '%s waiting to be added',
     'mountBranches.pages.marked.one': '%1$s of %2$s branch marked to remove',
     'mountBranches.pages.marked.many': '%1$s of %2$s branches marked to remove',
     'mountBranches.pages.unseen.one': '%s page the group cannot see:',
@@ -88,8 +88,8 @@ const carrier = (): void => {
     'mountBranches.pages.unseenWhy': 'their page permissions show them to nobody in the group.',
     'mountBranches.pages.unseenLink': 'Page permissions of "%s"',
     'mountBranches.pages.unseenPage': '"%s"',
-    'platform.toAdd': 'to add',
-    'platform.refused': 'The backend did not take the change',
+    'mountBranches.toAdd': 'to add',
+    'platform.refused': 'The change could not be saved',
     'platform.failed': 'The change could not be sent',
   }
 }
@@ -1319,7 +1319,7 @@ describe('the mounts panel', () => {
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The backend did not take the change')
+      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     expect(told).toBe(0)
   })
@@ -1332,7 +1332,7 @@ describe('the mounts panel', () => {
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The backend did not take the change')
+      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     expect(inPick(`.${classes.faceWaiting}`)?.textContent).toBe('1 waiting to be added')
   })
@@ -1356,7 +1356,7 @@ describe('the mounts panel', () => {
     answerNextWriteWith(409)
     inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     await vi.waitFor(() => {
-      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The backend did not take the change')
+      expect(inPick(`.${classes.faceCounted}`)?.textContent).toBe('The change could not be saved')
     })
     mounted(3, 5, 9)
     const read = asked.length

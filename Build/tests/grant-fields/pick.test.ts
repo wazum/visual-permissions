@@ -9,9 +9,9 @@ import { pickFieldsToGive } from '../platform/session-fixture.js'
 import { around, drawForm, row } from './form-fixture.js'
 
 const labels = {
-  'platform.toAdd': 'to add',
-  'grantFields.toTakeAway': 'to take away',
-  'grantFields.grantTab': 'Grant all on this tab',
+  'platform.toAllow': 'to allow',
+  'grantFields.toDisallow': 'to disallow',
+  'grantFields.allowTab': 'Allow all on this tab',
 }
 
 const fieldOf = (token: string): HTMLElement => {
@@ -301,7 +301,7 @@ describe('picking the fields a group may edit', () => {
 
     // In the heading, where it is read beside the name and the mark
     expect(fieldOf('tt_content:layout').querySelector('label')?.getAttribute(attributes.waiting))
-      .toBe('to add')
+      .toBe('to allow')
   })
 
   it('leaves the keyboard on the field it has just turned', async () => {
@@ -363,7 +363,7 @@ describe('picking the fields a group may edit', () => {
     fieldOf('tt_content:header').querySelector('label')?.click()
 
     expect(fieldOf('tt_content:header').querySelector('label')?.getAttribute(attributes.waiting))
-      .toBe('to take away')
+      .toBe('to disallow')
   })
 
   it('takes that word off again when the field is no longer waiting for anything', () => {
@@ -595,7 +595,7 @@ describe('picking the fields a group may edit', () => {
 
     pickFieldsToGive()
 
-    expect(document.querySelector(`.${classes.tabGive}`)?.textContent).toBe('Grant all on this tab')
+    expect(document.querySelector(`.${classes.tabGive}`)?.textContent).toBe('Allow all on this tab')
   })
 
   it('keeps a field marked that was marked before the tab was taken at once', () => {
