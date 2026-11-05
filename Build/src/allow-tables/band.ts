@@ -13,7 +13,7 @@ export interface BandState {
 
 export function drawBand(doc: Document, { groupId, table, called, verdict }: BandState): HTMLElement {
   const theirs = verdict === picked
-  const handedDown = verdict === inherited || verdict === alsoInherited
+  const fromSubgroup = verdict === inherited || verdict === alsoInherited
   const nobodys = verdict === adminsOnly
   const band = doc.createElement('div')
 
@@ -24,11 +24,11 @@ export function drawBand(doc: Document, { groupId, table, called, verdict }: Ban
   band.append(body)
 
   // Only the subgroup changes what it handed down, and nobody can give an administrator's table
-  if (!handedDown && !nobodys) {
+  if (!fromSubgroup && !nobodys) {
     const deed = button(
       doc,
-      said(labelOf(theirs ? 'grantTables.disallow' : 'grantTables.allow'), called),
-      `btn btn-default btn-sm ${theirs ? classes.tableTake : classes.tableGive}`,
+      said(labelOf(theirs ? 'allowTables.disallow' : 'allowTables.allow'), called),
+      `btn btn-default btn-sm ${theirs ? classes.tableDisallow : classes.tableAllow}`,
       () => {
         deed.toggleAttribute('disabled', true)
         void writeTable(groupId, table, !theirs).then(outcome => {
@@ -47,16 +47,16 @@ export function drawBand(doc: Document, { groupId, table, called, verdict }: Ban
 
 function verdictLabel(verdict: string | undefined): string {
   if (verdict === picked) {
-    return 'grantTables.theirs'
+    return 'allowTables.theirs'
   }
 
   if (verdict === adminsOnly) {
-    return 'grantTables.adminOnly'
+    return 'allowTables.adminOnly'
   }
 
   if (verdict === alsoInherited) {
-    return 'grantTables.alsoHandedDown'
+    return 'allowTables.alsoInherited'
   }
 
-  return verdict === inherited ? 'grantTables.handedDown' : 'grantTables.missing'
+  return verdict === inherited ? 'allowTables.inherited' : 'allowTables.missing'
 }

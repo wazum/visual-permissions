@@ -140,12 +140,12 @@ final class InspectControllerTest extends FunctionalTestCase
 
         $response = $this->get(InspectController::class)->inspect($request);
 
-        /** @var array{scopes: array{fields: array{givenBy?: array<string, list<int>>}}} $payload */
+        /** @var array{scopes: array{fields: array{allowedBy?: array<string, list<int>>}}} $payload */
         $payload = json_decode((string) $response->getBody(), true);
-        $givenBy = $payload['scopes']['fields']['givenBy'] ?? [];
-        ksort($givenBy);
+        $allowedBy = $payload['scopes']['fields']['allowedBy'] ?? [];
+        ksort($allowedBy);
 
-        self::assertSame(['pages:author' => [23], 'pages:nav_title' => [21, 23]], $givenBy);
+        self::assertSame(['pages:author' => [23], 'pages:nav_title' => [21, 23]], $allowedBy);
     }
 
     #[Test]

@@ -36,7 +36,7 @@ const stateOf = (field: Element, marked: boolean, face: string): FieldState => {
     // The group has it after the change unless this side is about to take it away
     on: has !== marked,
     operable: field.matches(decides(face)),
-    waiting: marked ? labelOf(face === 'pick' ? 'platform.toAllow' : 'grantFields.toDisallow') : '',
+    waiting: marked ? labelOf(face === 'pick' ? 'platform.toAllow' : 'allowFields.toDisallow') : '',
   }
 }
 
@@ -112,7 +112,7 @@ export function initialise(draft: Draft, signal: AbortSignal): void {
   // A tab's fields of its own are marked at once; what records of other tables hold is theirs
   const offerTabs = (form: Document, face: string): void => {
     form.querySelectorAll('.tab-pane').forEach(pane => {
-      const offered = pane.querySelector<HTMLButtonElement>(`.${classes.tabGive}`)
+      const offered = pane.querySelector<HTMLButtonElement>(`.${classes.tabAllow}`)
       if (face !== 'pick') {
         offered?.remove()
 
@@ -130,8 +130,8 @@ export function initialise(draft: Draft, signal: AbortSignal): void {
     const button = form.createElement('button')
     // Stryker disable next-line StringLiteral: a form button submits by default and would take the backend along; jsdom submits nothing, only a browser can tell
     button.type = 'button'
-    button.className = `btn btn-default btn-sm ${classes.tabGive}`
-    button.textContent = labelOf('grantFields.allowTab')
+    button.className = `btn btn-default btn-sm ${classes.tabAllow}`
+    button.textContent = labelOf('allowFields.allowTab')
     button.addEventListener('click', () => {
       unmarked().forEach(field => { draft.toggle(field) })
       markFields()

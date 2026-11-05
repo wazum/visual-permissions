@@ -32,15 +32,15 @@ const recordWithAFile = async (page: Page, filesGranted = true): Promise<FrameLo
   const files = form.locator('.vperm-table-gate:has(.vperm-table-token:text-is("sys_file_reference"))')
 
   if (!filesGranted) {
-    await expect(files.locator('.vperm-table-give')).toBeVisible()
+    await expect(files.locator('.vperm-table-allow')).toBeVisible()
 
     return form
   }
 
   // The first press asks for the password and writes nothing; the second one writes
   await expect(async () => {
-    await verifyIfAsked(page, () => files.locator('.vperm-table-give').click({ timeout: 2000 }))
-    await expect(files.locator('.vperm-table-take')).toBeVisible({ timeout: 3000 })
+    await verifyIfAsked(page, () => files.locator('.vperm-table-allow').click({ timeout: 2000 }))
+    await expect(files.locator('.vperm-table-disallow')).toBeVisible({ timeout: 3000 })
   }).toPass({ timeout: 20000 })
 
   return form

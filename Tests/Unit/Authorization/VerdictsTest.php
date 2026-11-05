@@ -15,15 +15,15 @@ final class VerdictsTest extends TestCase
     #[Test]
     public function namesEveryGroupBehindTheGroupThatGivesATarget(): void
     {
-        $givenBy = (new Verdicts())->givenBy([20, 21, 22, 23], [20 => [5], 21 => [7], 22 => [], 23 => [7, 5]]);
+        $allowedBy = (new Verdicts())->allowedBy([20, 21, 22, 23], [20 => [5], 21 => [7], 22 => [], 23 => [7, 5]]);
 
-        self::assertSame([7 => [21, 23], 5 => [23]], $givenBy);
+        self::assertSame([7 => [21, 23], 5 => [23]], $allowedBy);
     }
 
     #[Test]
     public function callsATargetNobodyGrantedDenied(): void
     {
-        $verdicts = (new Verdicts())->resolve([13], [13 => []], ['pages:layout' => TargetKind::Grantable]);
+        $verdicts = (new Verdicts())->resolve([13], [13 => []], ['pages:layout' => TargetKind::Allowable]);
 
         self::assertSame(['pages:layout' => AccessVerdict::Denied], $verdicts);
     }
@@ -75,7 +75,7 @@ final class VerdictsTest extends TestCase
         $verdicts = (new Verdicts())->resolve(
             [13],
             [13 => ['site_configuration', 'web_layout']],
-            ['site_configuration' => TargetKind::AdminOnly, 'web_layout' => TargetKind::Grantable],
+            ['site_configuration' => TargetKind::AdminOnly, 'web_layout' => TargetKind::Allowable],
         );
 
         self::assertSame([

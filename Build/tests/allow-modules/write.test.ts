@@ -12,11 +12,11 @@ describe('the modules a group is given', () => {
   })
 
   it('sends the grants a group is to hold', async () => {
-    await writeModules(7, [{ module: 'web_layout', grant: true }])
+    await writeModules(7, [{ module: 'web_layout', allow: true }])
 
     expect(sent).toStrictEqual([{
       url: '/typo3/ajax/visual_permissions_allow_modules',
-      body: { group: 7, operations: [{ module: 'web_layout', grant: true }] },
+      body: { group: 7, operations: [{ module: 'web_layout', allow: true }] },
     }])
   })
 })

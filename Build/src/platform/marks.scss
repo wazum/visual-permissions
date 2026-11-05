@@ -10,7 +10,7 @@
   --vperm-square: 18px;
 
   --vperm-fill-quiet: color-mix(in srgb, var(--typo3-text-color-base) 7%, transparent);
-  --vperm-fill-granted: color-mix(in srgb, var(--vperm-ink-allowed) 14%, transparent);
+  --vperm-fill-allowed: color-mix(in srgb, var(--vperm-ink-allowed) 14%, transparent);
   --vperm-fill-dropped: color-mix(in srgb, var(--vperm-ink-denied) 14%, transparent);
   --vperm-mark-quiet: color-mix(in srgb, var(--typo3-text-color-base) 70%, transparent);
   --vperm-edge-focus: color-mix(in srgb, var(--typo3-state-default-focus-border-color), black 15%);

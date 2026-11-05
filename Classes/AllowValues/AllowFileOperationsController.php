@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use Wazum\VisualPermissions\Authorization\GrantOperations;
+use Wazum\VisualPermissions\Authorization\AllowOperations;
 use Wazum\VisualPermissions\Authorization\Scope;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
 use Wazum\VisualPermissions\Write\GroupWriteController;
@@ -17,7 +17,7 @@ use Wazum\VisualPermissions\Write\GroupWriteController;
 /**
  * @phpstan-import-type SelectConfiguration from ValueChoices
  *
- * @extends GroupWriteController<array{target: string, grant: bool}>
+ * @extends GroupWriteController<array{target: string, add: bool}>
  */
 final readonly class AllowFileOperationsController extends GroupWriteController
 {
@@ -41,7 +41,7 @@ final readonly class AllowFileOperationsController extends GroupWriteController
 
     protected function operationsFrom(mixed $sent): ?array
     {
-        return GrantOperations::from($sent, 'value', $this->grantable(...));
+        return AllowOperations::from($sent, 'value', $this->allowable(...));
     }
 
     /**
@@ -49,7 +49,7 @@ final readonly class AllowFileOperationsController extends GroupWriteController
      */
     protected function writeOperations(int $groupId, array $operations): bool
     {
-        return $this->groups->grant($groupId, Scope::FileOperations, $operations);
+        return $this->groups->change($groupId, Scope::FileOperations, $operations);
     }
 
     /**
@@ -65,7 +65,7 @@ final readonly class AllowFileOperationsController extends GroupWriteController
         return $tableConfigurations['be_groups']['columns']['file_permissions']['config'];
     }
 
-    private function grantable(string $fileOperation): bool
+    private function allowable(string $fileOperation): bool
     {
         $offered = array_map(strval(...), array_column($this->filePermissionsConfiguration()['items'] ?? [], 'value'));
 

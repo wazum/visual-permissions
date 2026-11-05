@@ -74,7 +74,7 @@
                 "pages:l10n_diffsource": "notApplicable",
                 "pages:l10n_source": "notApplicable"
             },
-            "givenBy": []
+            "allowedBy": []
         },
         "fieldValues": {
             "targets": []

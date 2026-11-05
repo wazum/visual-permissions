@@ -49,7 +49,7 @@ final readonly class FieldCatalogue
         }
 
         return ($configuration['exclude'] ?? false)
-            ? TargetKind::Grantable
+            ? TargetKind::Allowable
             : TargetKind::NotApplicable;
     }
 }

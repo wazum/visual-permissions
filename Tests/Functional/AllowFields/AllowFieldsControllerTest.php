@@ -31,8 +31,8 @@ final class AllowFieldsControllerTest extends FunctionalTestCase
         $response = $this->get(AllowFieldsController::class)->write($this->asked([
             'group' => 10,
             'operations' => [
-                ['field' => 'tt_content:subheader', 'grant' => true],
-                ['field' => 'tt_content:imageorient', 'grant' => false],
+                ['field' => 'tt_content:subheader', 'allow' => true],
+                ['field' => 'tt_content:imageorient', 'allow' => false],
             ],
         ]));
 
@@ -45,7 +45,7 @@ final class AllowFieldsControllerTest extends FunctionalTestCase
     {
         $response = $this->get(AllowFieldsController::class)->write($this->asked([
             'group' => 10,
-            'operations' => [['field' => 'tt_content:no_such_field', 'grant' => true]],
+            'operations' => [['field' => 'tt_content:no_such_field', 'allow' => true]],
         ]));
 
         self::assertSame(400, $response->getStatusCode());
@@ -57,7 +57,7 @@ final class AllowFieldsControllerTest extends FunctionalTestCase
     {
         $response = $this->get(AllowFieldsController::class)->write($this->asked([
             'group' => 10,
-            'operations' => [['field' => 'tt_content:no_such_field', 'grant' => false]],
+            'operations' => [['field' => 'tt_content:no_such_field', 'allow' => false]],
         ]));
 
         self::assertSame(204, $response->getStatusCode());

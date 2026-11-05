@@ -31,7 +31,7 @@ test('a record of a table the group was not given says so, and offers the table'
   const held = form.locator('.vperm-table-gate:has(.vperm-table-token:text-is("sys_file_reference"))')
 
   await expect(held.locator('.callout-body')).toHaveText('The group may not edit records of this kind')
-  await expect(held.locator('.vperm-table-give')).toHaveText('Allow "File Reference"')
+  await expect(held.locator('.vperm-table-allow')).toHaveText('Allow "File Reference"')
 })
 
 test('a record of a table the group was given offers to take the table back', async ({ page }) => {
@@ -50,7 +50,7 @@ test('a record of a table the group was given offers to take the table back', as
 
   const own = form.locator('.vperm-table-gate:has(.vperm-table-token:text-is("pages"))')
 
-  await expect(own.locator('.vperm-table-take')).toHaveText('Disallow "Page"')
+  await expect(own.locator('.vperm-table-disallow')).toHaveText('Disallow "Page"')
 })
 
 test('revoking the table of the record turns the form to what the group gets', async ({ page }) => {
@@ -72,9 +72,9 @@ test('revoking the table of the record turns the form to what the group gets', a
   await pickArea(page, 'fields')
   await turnToFields(page)
   await form.locator('.nav-tabs').getByText('Media', { exact: true }).click()
-  await press(band('sys_file_reference').locator('.vperm-table-give'))
-  await expect(band('sys_file_reference').locator('.vperm-table-take')).toBeVisible()
-  await press(band('tt_content').locator('.vperm-table-take'))
+  await press(band('sys_file_reference').locator('.vperm-table-allow'))
+  await expect(band('sys_file_reference').locator('.vperm-table-disallow')).toBeVisible()
+  await press(band('tt_content').locator('.vperm-table-disallow'))
 
   await expect(form.locator('body')).toHaveAttribute('data-vperm-face', 'preview')
 })
@@ -112,7 +112,7 @@ test('the form the group gets offers no table a missing record belongs to', asyn
   await pickArea(page, 'fields')
 
   await expect(form.locator('.vperm-table-note')).toBeAttached()
-  await expect(form.locator('.vperm-table-note .vperm-table-give')).toHaveCount(0)
+  await expect(form.locator('.vperm-table-note .vperm-table-allow')).toHaveCount(0)
 })
 
 test('the form the group gets offers the table of a record it cannot reach', async ({ page }) => {
@@ -128,7 +128,7 @@ test('the form the group gets offers the table of a record it cannot reach', asy
   await switchOn(page)
   await pickArea(page, 'fields')
 
-  await expect(form.locator('.vperm-nothing-theirs .vperm-table-give')).toHaveText('Allow "File Reference"')
+  await expect(form.locator('.vperm-nothing-theirs .vperm-table-allow')).toHaveText('Allow "File Reference"')
 })
 
 test('the form the group gets names the table of a record it cannot reach as the band does', async ({ page }) => {
@@ -184,7 +184,7 @@ test('the offer on the form the group gets stands at the far edge of its note', 
   await pickArea(page, 'fields')
 
   const note = await form.locator('.vperm-nothing-theirs').boundingBox()
-  const offer = await form.locator('.vperm-nothing-theirs .vperm-table-give').boundingBox()
+  const offer = await form.locator('.vperm-nothing-theirs .vperm-table-allow').boundingBox()
 
   expect((note?.x ?? 0) + (note?.width ?? 0) - ((offer?.x ?? 0) + (offer?.width ?? 0))).toBeLessThan(40)
 })

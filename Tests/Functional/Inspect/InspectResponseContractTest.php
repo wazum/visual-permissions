@@ -44,7 +44,7 @@ final class InspectResponseContractTest extends FunctionalTestCase
             return get_debug_type($value);
         }
 
-        if (array_is_list($value) || in_array($key, ['targets', 'named', 'givenBy'], true)) {
+        if (array_is_list($value) || in_array($key, ['targets', 'named', 'allowedBy'], true)) {
             return array_values(array_unique(array_map(
                 fn(mixed $entry): string => (string) json_encode($this->shapeOf($entry)),
                 array_values($value),

@@ -30,7 +30,7 @@ final readonly class ModuleCatalogue
     private function kindOf(ModuleInterface $module): TargetKind
     {
         return match ($module->getAccess()) {
-            'user' => TargetKind::Grantable,
+            'user' => TargetKind::Allowable,
             'admin', 'systemMaintainer' => TargetKind::AdminOnly,
             default => TargetKind::NotApplicable,
         };

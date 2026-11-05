@@ -16,7 +16,7 @@ describe('the tables a group is given', () => {
 
     expect(sent).toStrictEqual([{
       url: '/typo3/ajax/visual_permissions_allow_tables',
-      body: { group: 7, operations: [{ table: 'sys_file_reference', grant: true }] },
+      body: { group: 7, operations: [{ table: 'sys_file_reference', allow: true }] },
     }])
   })
 })

@@ -10,8 +10,8 @@ import { around, drawForm, row } from './form-fixture.js'
 
 const labels = {
   'platform.toAllow': 'to allow',
-  'grantFields.toDisallow': 'to disallow',
-  'grantFields.allowTab': 'Allow all on this tab',
+  'allowFields.toDisallow': 'to disallow',
+  'allowFields.allowTab': 'Allow all on this tab',
 }
 
 const fieldOf = (token: string): HTMLElement => {
@@ -544,7 +544,7 @@ describe('picking the fields a group may edit', () => {
 
     pickFieldsToGive()
 
-    document.querySelector<HTMLElement>(`.${classes.tabGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tabAllow}`)?.click()
 
     expect([...document.querySelectorAll(`.${classes.faceMarked}`)].map(field => field.getAttribute(attributes.token)))
       .toStrictEqual(['tt_content:layout', 'tt_content:date'])
@@ -556,7 +556,7 @@ describe('picking the fields a group may edit', () => {
 
     pickFieldsToGive()
 
-    expect(document.querySelector<HTMLButtonElement>(`.${classes.tabGive}`)?.disabled).toBe(true)
+    expect(document.querySelector<HTMLButtonElement>(`.${classes.tabAllow}`)?.disabled).toBe(true)
   })
 
   it('offers no tab at once on the side that shows what the group has', () => {
@@ -566,7 +566,7 @@ describe('picking the fields a group may edit', () => {
     pickFieldsToGive()
     turnTo('preview')
 
-    expect(document.querySelectorAll(`.${classes.tabGive}`)).toHaveLength(0)
+    expect(document.querySelectorAll(`.${classes.tabAllow}`)).toHaveLength(0)
   })
 
   it('offers a tab at once only once however often the fields are offered again', () => {
@@ -576,7 +576,7 @@ describe('picking the fields a group may edit', () => {
     pickFieldsToGive()
     emit('fields-judged', {})
 
-    expect(document.querySelectorAll(`.${classes.tabGive}`)).toHaveLength(1)
+    expect(document.querySelectorAll(`.${classes.tabAllow}`)).toHaveLength(1)
   })
 
   // A section that opens the tab draws no edge on top; one standing below the button would
@@ -595,7 +595,7 @@ describe('picking the fields a group may edit', () => {
 
     pickFieldsToGive()
 
-    expect(document.querySelector(`.${classes.tabGive}`)?.textContent).toBe('Allow all on this tab')
+    expect(document.querySelector(`.${classes.tabAllow}`)?.textContent).toBe('Allow all on this tab')
   })
 
   it('keeps a field marked that was marked before the tab was taken at once', () => {
@@ -605,7 +605,7 @@ describe('picking the fields a group may edit', () => {
     pickFieldsToGive()
     fieldOf('tt_content:layout').dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-    document.querySelector<HTMLElement>(`.${classes.tabGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tabAllow}`)?.click()
 
     expect(fieldOf('tt_content:layout').classList.contains(classes.faceMarked)).toBe(true)
   })
@@ -616,7 +616,7 @@ describe('picking the fields a group may edit', () => {
 
     pickFieldsToGive()
 
-    document.querySelector<HTMLElement>(`.${classes.tabGive}`)?.click()
+    document.querySelector<HTMLElement>(`.${classes.tabAllow}`)?.click()
 
     expect(document.querySelectorAll(`.${classes.faceMarked}`)).toHaveLength(0)
   })

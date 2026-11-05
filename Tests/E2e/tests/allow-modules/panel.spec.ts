@@ -35,7 +35,7 @@ test('the backend gets its own module menu back when the area is left', async ({
 
   await pickArea(page, 'fields')
 
-  await expect(page.locator('.vperm-granted')).toHaveCount(0)
+  await expect(page.locator('.vperm-allowed')).toHaveCount(0)
   await expect(page.locator(menu)).not.toHaveAttribute('inert', '')
 })
 

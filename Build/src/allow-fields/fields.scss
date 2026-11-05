@@ -188,10 +188,10 @@ form[name='editform'] > .#{contract.$class-face-foot} {
 }
 
 [#{contract.$attribute-face}='pick'] .#{contract.$class-anchor}.#{contract.$class-face-marked}::before {
-  background: var(--vperm-fill-granted);
+  background: var(--vperm-fill-allowed);
 }
 
-.#{contract.$class-tab-give} {
+.#{contract.$class-tab-allow} {
   display: block;
   margin: 0 0 0.5rem auto;
 }

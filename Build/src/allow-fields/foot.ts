@@ -101,7 +101,7 @@ export function initialise(draft: Draft, signal: AbortSignal): void {
       },
       apply: () => {
         // Stryker disable next-line StringLiteral: the field was matched on that very attribute
-        const marked = markedFields().map(field => ({ field: field.getAttribute(attributes.token) ?? '', grant: adding }))
+        const marked = markedFields().map(field => ({ field: field.getAttribute(attributes.token) ?? '', allow: adding }))
 
         if (isWriting()) {
           return
@@ -145,10 +145,10 @@ export function initialise(draft: Draft, signal: AbortSignal): void {
 
       toldAbout = null
 
-      card.state.textContent = counted('grantFields.tally', recordFields.length, theirs.length, recordFields.length)
+      card.state.textContent = counted('allowFields.tally', recordFields.length, theirs.length, recordFields.length)
       card.waiting.textContent = waiting === 0
         ? ''
-        : counted(`grantFields.${adding ? 'waiting' : 'going'}`, waiting, waiting)
+        : counted(`allowFields.${adding ? 'waiting' : 'going'}`, waiting, waiting)
       // The side that hands fields over is left by cancelling it; the side the form settles
       // on has nowhere to go, so there is only a mark to take back
       card.ready(waiting > 0, adding || waiting > 0)

@@ -19,7 +19,7 @@ final readonly class TableCatalogue
         return array_map(
             static fn(array $table): TargetKind => ($table['ctrl']['adminOnly'] ?? false)
                 ? TargetKind::AdminOnly
-                : TargetKind::Grantable,
+                : TargetKind::Allowable,
             $tableConfigurations,
         );
     }

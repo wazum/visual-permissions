@@ -18,7 +18,7 @@ final class ModuleCatalogueTest extends TestCase
     {
         $catalogue = $this->catalogueOf('web_layout', 'user');
 
-        self::assertSame(TargetKind::Grantable, $catalogue['web_layout']);
+        self::assertSame(TargetKind::Allowable, $catalogue['web_layout']);
     }
 
     #[Test]
@@ -54,7 +54,7 @@ final class ModuleCatalogueTest extends TestCase
         ])))->all();
 
         self::assertSame([
-            'web_layout' => TargetKind::Grantable,
+            'web_layout' => TargetKind::Allowable,
             'site_configuration' => TargetKind::AdminOnly,
         ], $catalogue);
     }

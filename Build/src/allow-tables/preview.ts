@@ -50,7 +50,7 @@ function explainMissing(doc: Document, table: string, called: string): void {
     field.append(say(
       doc,
       `callout callout-notice callout-sm ${classes.tableNote}`,
-      said(labelOf('grantTables.gone'), called),
+      said(labelOf('allowTables.gone'), called),
     ))
   })
 }

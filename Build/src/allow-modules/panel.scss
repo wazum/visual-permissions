@@ -27,7 +27,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
   transition: transform calc(var(--vperm-motion, 1) * 520ms) cubic-bezier(0.23, 1, 0.32, 1);
 
   > #modulemenu,
-  > .#{contract.$class-granted} {
+  > .#{contract.$class-allowed} {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
@@ -40,7 +40,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
     overflow: hidden;
   }
 
-  > .#{contract.$class-granted} {
+  > .#{contract.$class-allowed} {
     transform: rotateY(180deg);
   }
 }
@@ -80,7 +80,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
 }
 
 // The note keeps its width and the module name gives way, never the other way round.
-.#{contract.$class-granted-from} {
+.#{contract.$class-allowed-from} {
   flex: none;
   margin-inline-start: auto;
   padding-inline-end: 0.5rem;
@@ -110,14 +110,14 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
 
 // The group a module belongs to: the same words at the same size, only bolder. Its inset is
 // the row's own, so a heading starts where the module names start.
-.#{contract.$class-granted-group} {
+.#{contract.$class-allowed-group} {
   display: block;
   padding: 0.5rem 5px 0.25rem;
   font-weight: 600;
 }
 
 // Core's fold control belongs to core's menu, and there is nothing to fold here.
-.#{contract.$class-granted} .modulemenu-indicator {
+.#{contract.$class-allowed} .modulemenu-indicator {
   display: none;
 }
 

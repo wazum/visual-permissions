@@ -25,7 +25,7 @@ const wordsIn = (file: string): Map<string, string> => {
   ]))
 }
 
-const labels = verdicts.flatMap(verdict => [`grantFields.mark.${verdict}.title`, `grantFields.mark.${verdict}.meaning`])
+const labels = verdicts.flatMap(verdict => [`allowFields.mark.${verdict}.title`, `allowFields.mark.${verdict}.meaning`])
 
 describe.each(['locallang.xlf', 'de.locallang.xlf'])('%s', file => {
   const words = wordsIn(file)
@@ -40,7 +40,7 @@ const markOf = (token: string): HTMLButtonElement | null =>
 
 const cardOf = (): HTMLElement => document.querySelector<HTMLElement>('[role="dialog"]') ?? document.createElement('div')
 
-const judged = (targets: Record<string, string>, givenBy: Record<string, number[]> = {}): void => {
+const judged = (targets: Record<string, string>, allowedBy: Record<string, number[]> = {}): void => {
   reply({
     group: { id: 7, title: 'Editors' },
     chain: [
@@ -48,7 +48,7 @@ const judged = (targets: Record<string, string>, givenBy: Record<string, number[
       { groupId: 6, title: 'Consectetur', depth: 1 },
       { groupId: 5, title: 'Aliquam', depth: 2 },
     ],
-    scopes: { fields: { targets, givenBy }, tablesModify: { targets: { pages: 'allowed' } } },
+    scopes: { fields: { targets, allowedBy }, tablesModify: { targets: { pages: 'allowed' } } },
   })
 }
 

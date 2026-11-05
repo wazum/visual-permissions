@@ -21,7 +21,7 @@ export function initialise(signal: AbortSignal): void {
       const note = doc.createElement('div')
       note.className = 'callout callout-notice'
       note.append(
-        say(doc, 'callout-body', said(labelOf('grantFields.recordNoFields'), called)),
+        say(doc, 'callout-body', said(labelOf('allowFields.recordNoFields'), called)),
         button(doc, labelOf('recordForm.add'), 'btn btn-default btn-sm', () => {
           flipForm(doc, () => { turnTo('pick') })
         }),

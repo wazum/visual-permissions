@@ -27,8 +27,8 @@ final class AllowFileOperationsControllerTest extends FunctionalTestCase
         $response = $this->get(AllowFileOperationsController::class)->write($this->asked([
             'group' => 10,
             'operations' => [
-                ['value' => 'deleteFile', 'grant' => true],
-                ['value' => 'readFile', 'grant' => false],
+                ['value' => 'deleteFile', 'allow' => true],
+                ['value' => 'readFile', 'allow' => false],
             ],
         ]));
 
@@ -45,7 +45,7 @@ final class AllowFileOperationsControllerTest extends FunctionalTestCase
 
         $response = $this->get(AllowFileOperationsController::class)->write($this->asked([
             'group' => 10,
-            'operations' => [['value' => 'burnFile', 'grant' => true]],
+            'operations' => [['value' => 'burnFile', 'allow' => true]],
         ]));
 
         self::assertSame(400, $response->getStatusCode());

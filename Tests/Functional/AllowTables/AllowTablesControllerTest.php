@@ -31,8 +31,8 @@ final class AllowTablesControllerTest extends FunctionalTestCase
         $response = $this->get(AllowTablesController::class)->write($this->asked([
             'group' => 20,
             'operations' => [
-                ['table' => 'sys_file_reference', 'grant' => true],
-                ['table' => 'pages', 'grant' => false],
+                ['table' => 'sys_file_reference', 'allow' => true],
+                ['table' => 'pages', 'allow' => false],
             ],
         ]));
 
@@ -45,7 +45,7 @@ final class AllowTablesControllerTest extends FunctionalTestCase
     {
         $response = $this->get(AllowTablesController::class)->write($this->asked([
             'group' => 20,
-            'operations' => [['table' => 'no_such_table', 'grant' => true]],
+            'operations' => [['table' => 'no_such_table', 'allow' => true]],
         ]));
 
         self::assertSame(400, $response->getStatusCode());
@@ -57,7 +57,7 @@ final class AllowTablesControllerTest extends FunctionalTestCase
     {
         $response = $this->get(AllowTablesController::class)->write($this->asked([
             'group' => 20,
-            'operations' => [['table' => 'no_such_table', 'grant' => false]],
+            'operations' => [['table' => 'no_such_table', 'allow' => false]],
         ]));
 
         self::assertSame(204, $response->getStatusCode());

@@ -10,22 +10,22 @@ final readonly class Verdicts
      * @template Target of array-key
      *
      * @param list<int>                 $chain     group ids, nearest first
-     * @param array<int, list<Target>>  $grants    group id to the targets it grants
+     * @param array<int, list<Target>>  $held      group id to the targets it holds
      * @param array<Target, TargetKind> $catalogue
      *
      * @return array<Target, AccessVerdict>
      */
-    public function resolve(array $chain, array $grants, array $catalogue = []): array
+    public function resolve(array $chain, array $held, array $catalogue = []): array
     {
         $verdicts = array_map(static fn(TargetKind $kind): AccessVerdict => match ($kind) {
             TargetKind::AdminOnly => AccessVerdict::AdminOnly,
             TargetKind::NotApplicable => AccessVerdict::NotApplicable,
             TargetKind::NeverEditable => AccessVerdict::NeverEditable,
-            TargetKind::Grantable => AccessVerdict::Denied,
+            TargetKind::Allowable => AccessVerdict::Denied,
         }, $catalogue);
 
         foreach ($chain as $depth => $groupId) {
-            foreach ($grants[$groupId] ?? [] as $target) {
+            foreach ($held[$groupId] ?? [] as $target) {
                 if (AccessVerdict::Allowed === ($verdicts[$target] ?? null)) {
                     $verdicts[$target] = 0 === $depth ? AccessVerdict::Allowed : AccessVerdict::AllowedAndInherited;
 
@@ -46,20 +46,20 @@ final readonly class Verdicts
     /**
      * @template Target of array-key
      *
-     * @param list<int>                $chain  group ids, nearest first
-     * @param array<int, list<Target>> $grants group id to the targets it grants
+     * @param list<int>                $chain group ids, nearest first
+     * @param array<int, list<Target>> $held  group id to the targets it holds
      *
      * @return array<Target, list<int>>
      */
-    public function givenBy(array $chain, array $grants): array
+    public function allowedBy(array $chain, array $held): array
     {
-        $givenBy = [];
+        $allowedBy = [];
         foreach (array_slice($chain, 1) as $groupId) {
-            foreach ($grants[$groupId] ?? [] as $target) {
-                $givenBy[$target][] = $groupId;
+            foreach ($held[$groupId] ?? [] as $target) {
+                $allowedBy[$target][] = $groupId;
             }
         }
 
-        return $givenBy;
+        return $allowedBy;
     }
 }
