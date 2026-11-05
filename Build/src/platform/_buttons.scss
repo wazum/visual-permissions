@@ -1,0 +1,5 @@
+// Core's disabled buttons take no pointer, which would show whatever lies under them instead
+@mixin cannot-be-pressed {
+  cursor: not-allowed;
+  pointer-events: auto;
+}

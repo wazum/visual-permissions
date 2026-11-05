@@ -1,0 +1,34 @@
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:asset.module identifier="@wazum/visual-permissions/main.js"/>
+<f:variable name="title"><f:translate key="LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:toolbar.title"/></f:variable>
+<f:variable name="shortcutLabel"><f:translate key="LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:switchTheMode.shortcut"/></f:variable>
+<span hidden="hidden" data-vperm-groups="{groups -> f:format.json()}"></span>
+
+<button type="button" class="toolbar-item-link" data-vperm-toolbar="" aria-pressed="false">
+    <span class="toolbar-item-icon" title="{title}">
+        <core:icon identifier="vperm-shield-eye" size="small" alternativeMarkupIdentifier="inline"/>
+    </span>
+    <span class="visually-hidden">{title}</span>
+</button>
+
+<!--
+    The toolbar item is only the way in: it loads the module and holds these until the
+    browser stands them in the header.
+-->
+<div data-vperm-controls="" hidden="hidden">
+    <f:variable name="toggleLabel"><f:translate key="LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:switchTheMode.toggle"/></f:variable>
+    <!--
+        A group to show comes first: there is nothing to switch on without one. Its name
+        stands inside the select rather than beside it, so the bar stays narrow.
+    -->
+    <button type="button" class="form-select vperm-picker-trigger" id="vperm-group" data-vperm-group="" aria-expanded="false"><f:translate key="LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:pickAGroup.button"/></button>
+    <button type="button" class="btn btn-default vperm-switch" data-vperm-toggle="" aria-pressed="false" title="{shortcutLabel}" disabled="disabled">
+        <span class="vperm-switch-label">{toggleLabel}</span>
+    </button>
+    <button type="button" class="btn btn-default" data-vperm-view-as="" aria-expanded="false">
+        <f:translate key="LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:viewAsUser.button"/>
+    </button>
+</div>
+
+</html>

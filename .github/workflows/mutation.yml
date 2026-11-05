@@ -1,0 +1,97 @@
+name: mutation
+
+# Too slow for every push. Runs each night, for a side only if it changed since the last
+# night that passed; started by hand, it runs both.
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: mutation
+  cancel-in-progress: false
+
+env:
+  COMPOSER_NO_BLOCKING: '1'
+
+jobs:
+  changes:
+    name: what changed
+    runs-on: ubuntu-latest
+    outputs:
+      php: ${{ steps.compare.outputs.php }}
+      frontend: ${{ steps.compare.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: compare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event_name }}" = 'workflow_dispatch' ]; then
+            echo 'php=true' >> "$GITHUB_OUTPUT"
+            echo 'frontend=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          last=$(gh run list --workflow mutation.yml --branch main --status success --limit 1 \
+            --json headSha --jq '.[0].headSha // empty')
+          changed() {
+            [ -z "$last" ] || ! git cat-file -e "$last^{commit}" 2>/dev/null \
+              || ! git diff --quiet "$last" HEAD -- "$@"
+          }
+
+          if changed Classes Tests/Unit Tests/Functional infection.json5 composer.json; then
+            echo 'php=true' >> "$GITHUB_OUTPUT"
+          fi
+          if changed Build/src Build/tests Build/stryker.config.json Build/package.json Build/package-lock.json; then
+            echo 'frontend=true' >> "$GITHUB_OUTPUT"
+          fi
+
+  php:
+    name: php (mutation)
+    needs: changes
+    if: needs.changes.outputs.php == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo, pdo_sqlite, intl
+          coverage: xdebug
+
+      - run: composer update --no-interaction --no-progress
+
+      - run: composer test:mutation
+        env:
+          XDEBUG_MODE: coverage
+
+  frontend:
+    name: frontend (mutation)
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    defaults:
+      run:
+        working-directory: Build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Build/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run test:mutation

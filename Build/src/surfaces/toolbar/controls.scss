@@ -1,0 +1,101 @@
+@use '../../platform/buttons';
+@use '../../platform/contract';
+
+// Core's own toolbar button, in core's own frame. Only the state it stands in is ours,
+// and it is the one core gives an item that is switched on, as the workspace selector is.
+[#{contract.$attribute-toolbar}][aria-pressed='true'] {
+  --toolbar-item-link-color-state: var(--typo3-state-primary-color);
+  --toolbar-item-link-bg-state: var(--typo3-state-primary-bg);
+  --toolbar-item-link-border-color-state: var(--typo3-state-primary-border-color);
+
+  &:hover {
+    --toolbar-item-link-color-state: var(--typo3-state-primary-hover-color);
+    --toolbar-item-link-bg-state: var(--typo3-state-primary-hover-bg);
+    --toolbar-item-link-border-color-state: var(--typo3-state-primary-hover-border-color);
+  }
+}
+
+// Stacked controls overflow a header that stays 60px tall. Scoped, so no other install's
+// header is restyled.
+.topbar-site-container:has(.#{contract.$class-view-as-controls}),
+.topbar-site-container:has(.#{contract.$class-leave-room}) {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+
+  // The site may be narrower than its name; core then cuts the name with an ellipsis
+  .topbar-site {
+    min-width: 0;
+  }
+}
+
+// The room our controls stand in is as wide as the controls, and the way back out of a
+// user's backend stands in a room as wide as the one the admin left: what stands last in
+// either ends at the same place, so pressing View and then the way back never moves the
+// pointer. The room left over cannot decide it, since a switched user's toolbar is shorter.
+.#{contract.$class-view-as-controls},
+.#{contract.$class-leave-room} {
+  display: flex;
+  align-items: center;
+  // A room too narrow for what it holds spills past its end, never over the site's name
+  justify-content: safe flex-end;
+  gap: 0.5rem;
+  margin-inline-start: 1.5rem;
+  flex-shrink: 0;
+  width: max-content;
+
+  // A hint to read rather than a cap to press, in the button's own ink so it holds on a
+  // pressed button too: core's cap is black on black there, in a monospace face that
+  // leaves ⌘⇧ no air at this size.
+  kbd {
+    margin-inline-start: .5em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    color: inherit;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: .04em;
+  }
+}
+
+.#{contract.$class-leave-room} {
+  width: var(--vperm-room-width, max-content);
+}
+
+.#{contract.$class-view-as-controls} {
+
+  // Setting permissions is not an everyday errand, so the header keeps nothing of this
+  // until the toolbar icon asks for it.
+  display: none;
+
+  &.#{contract.$class-controls-open} {
+    display: flex;
+  }
+
+  .btn:disabled {
+    @include buttons.cannot-be-pressed;
+  }
+
+  select {
+    inline-size: auto;
+    max-inline-size: 14rem;
+  }
+
+  .form-label {
+    margin-block-end: 0;
+    white-space: nowrap;
+  }
+
+  // Core's own btn-primary, so a theme that retunes its colours retunes this too.
+  .#{contract.$class-switch}[aria-pressed='true'] {
+    --typo3-btn-color: var(--typo3-state-primary-color);
+    --typo3-btn-bg: var(--typo3-state-primary-bg);
+    --typo3-btn-border-color: var(--typo3-state-primary-border-color);
+    --typo3-btn-hover-color: var(--typo3-state-primary-hover-color);
+    --typo3-btn-hover-bg: var(--typo3-state-primary-hover-bg);
+    --typo3-btn-hover-border-color: var(--typo3-state-primary-hover-border-color);
+  }
+}

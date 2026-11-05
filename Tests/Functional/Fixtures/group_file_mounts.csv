@@ -1,0 +1,9 @@
+"be_groups",,,,,,
+,"uid","pid","title","subgroup","file_mountpoints","hidden","deleted"
+,20,0,"Editorial Lead","21","1,2",0,0
+,21,0,"Editors","","2",0,0
+"sys_filemounts",,,,,,
+,"uid","pid","title","identifier","hidden","deleted",
+,1,0,"Campaign","1:/campaign/",0,0,
+,2,0,"Press","1:/press/",0,0,
+,3,0,"Archive","1:/archive/",0,0,

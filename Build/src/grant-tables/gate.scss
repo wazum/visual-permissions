@@ -1,0 +1,37 @@
+@use '../platform/contract';
+
+// It belongs to the field under it, so it keeps the field's own edges and only stands off it.
+// The name stands over what it is called, the sentence beside them, the deed at the far edge.
+.#{contract.$class-table-gate} {
+  display: grid;
+  grid-template-areas:
+    'name said deed'
+    'token said deed';
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0 1rem;
+  margin: 0 0 0.75rem;
+
+  .#{contract.$class-table-name} {
+    grid-area: name;
+    align-self: end;
+    font-weight: 600;
+  }
+
+  .#{contract.$class-table-token} {
+    grid-area: token;
+    align-self: start;
+    margin-block-start: 1px;
+    color: color-mix(in srgb, currentColor 55%, transparent);
+    font-family: var(--typo3-font-family-monospace, monospace);
+    font-size: 11px;
+  }
+
+  .callout-body {
+    grid-area: said;
+  }
+
+  .btn {
+    grid-area: deed;
+  }
+}

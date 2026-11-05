@@ -1,0 +1,183 @@
+@use '../platform/contract';
+
+// The column carries the perspective for the turn. It is named by what it holds: the menu,
+// or the card the menu rides on while ours is there.
+$column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
+
+#{$column} {
+  position: relative;
+  perspective: 1800px;
+  perspective-origin: 50% 40%;
+}
+
+// Both sides of the card are out of flow, so the column has no height of its own left.
+#{$column}:has(> .#{contract.$class-panel-card}) {
+  flex-grow: 1;
+  height: 100%;
+}
+
+// One card, the backend's menu on one side and ours on the other. Any overflow of its own
+// would flatten the two sides into one plane, and the turn would come out mirrored.
+#{$column} .#{contract.$class-panel-card} {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-style: preserve-3d;
+  transition: transform calc(var(--vperm-motion, 1) * 520ms) cubic-bezier(0.23, 1, 0.32, 1);
+
+  > #modulemenu,
+  > .#{contract.$class-granted} {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+  }
+
+  // The backend's own menu is longer than the column and rides the far side of the card,
+  // where what sticks out of it would still be measured and give the column a scrollbar of
+  // its own. Only this side is clipped: the other one carries the turn.
+  > #modulemenu {
+    overflow: hidden;
+  }
+
+  > .#{contract.$class-granted} {
+    transform: rotateY(180deg);
+  }
+}
+
+// A painted slab riding the turn from the backend's menu to ours reads as a card of its own,
+// so the bar and the foot leave as that turn starts. Between our own faces they stay.
+#{$column} {
+  .#{contract.$class-face-bar},
+  .#{contract.$class-face-foot} {
+    opacity: 0;
+    transition: opacity calc(var(--vperm-motion, 1) * 180ms) ease;
+  }
+
+  .#{contract.$class-panel-card-turned} {
+    .#{contract.$class-face-bar},
+    .#{contract.$class-face-foot} {
+      opacity: 1;
+      transition-delay: 340ms;
+    }
+  }
+}
+
+// A module this group grants itself is removed by clicking it, so it says so under the pointer.
+.#{contract.$class-face-preview}
+  .#{contract.$class-face-scroll}
+  [#{contract.$attribute-verdict}='#{contract.$verdict-allowed}'] {
+  cursor: pointer;
+}
+
+// What a subgroup grants cannot be taken away here, and says as much.
+.#{contract.$class-face-preview} .#{contract.$class-face-scroll} {
+  [#{contract.$attribute-verdict}='#{contract.$verdict-inherited}'],
+  [#{contract.$attribute-verdict}='#{contract.$verdict-allowed-and-inherited}'] {
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
+}
+
+// The note keeps its width and the module name gives way, never the other way round.
+.#{contract.$class-granted-from} {
+  flex: none;
+  margin-inline-start: auto;
+  padding-inline-end: 0.5rem;
+  color: color-mix(in srgb, currentColor 60%, transparent);
+  font-size: 11px;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.#{contract.$class-face-scroll} .modulemenu-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// What is marked to go reads as struck through until the change is applied, and keeps its
+// fill under the pointer.
+.#{contract.$class-face-marked} {
+  --modulemenu-action-bg: color-mix(in srgb, var(--vperm-ink-denied, #a72e25) 14%, transparent);
+  --modulemenu-action-bg-state: var(--modulemenu-action-bg);
+
+  .modulemenu-name {
+    text-decoration: line-through;
+  }
+}
+
+// The group a module belongs to: the same words at the same size, only bolder. Its inset is
+// the row's own, so a heading starts where the module names start.
+.#{contract.$class-granted-group} {
+  display: block;
+  padding: 0.5rem 5px 0.25rem;
+  font-weight: 600;
+}
+
+// Core's fold control belongs to core's menu, and there is nothing to fold here.
+.#{contract.$class-granted} .modulemenu-indicator {
+  display: none;
+}
+
+.#{contract.$class-face-scroll} .modulemenu-action {
+  margin: 0;
+}
+
+.#{contract.$class-face-pick} {
+  // What this group decides itself can be picked. What a subgroup gave it cannot, and
+  // neither can what nobody may be given.
+  [#{contract.$attribute-verdict}='#{contract.$verdict-allowed}']:not([aria-disabled='true']),
+  [#{contract.$attribute-verdict}='#{contract.$verdict-denied}'] {
+    cursor: pointer;
+  }
+
+  [#{contract.$attribute-verdict}='#{contract.$verdict-inherited}'],
+  [#{contract.$attribute-verdict}='#{contract.$verdict-allowed-and-inherited}'] {
+    cursor: not-allowed;
+  }
+
+  // A grant the group already had is taken away on the preview, so this face only adds.
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  [#{contract.$attribute-verdict}='#{contract.$verdict-admin-only}'],
+  [#{contract.$attribute-verdict}='#{contract.$verdict-not-applicable}'],
+  [#{contract.$attribute-verdict}='#{contract.$verdict-never-editable}'] {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  // Picked reads as a filled row, the way the backend fills the module in view. The fill is
+  // pinned through the hover state as well, so the pointer only adds the backend's border.
+  [#{contract.$attribute-verdict}='#{contract.$verdict-allowed}'] {
+    --modulemenu-action-bg: color-mix(in srgb, var(--vperm-ink-allowed, #247554) 14%, transparent);
+    --modulemenu-action-bg-state: var(--modulemenu-action-bg);
+  }
+
+  // A row waiting for the deed says what it is waiting for: the fill alone reads the same
+  // as one the group may open already, and that one is not picked but disabled. The row
+  // lays its parts out in a line, so the word takes the end of it, where the note saying
+  // where an inherited grant comes from sits on the other face.
+  [#{contract.$attribute-verdict}='#{contract.$verdict-allowed}']:not([aria-disabled='true'])::after {
+    content: var(--vperm-queued-note, '');
+    flex: none;
+    margin-inline-start: auto;
+    padding-inline-start: 0.5rem;
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-size: 11px;
+    font-style: italic;
+    white-space: nowrap;
+  }
+
+  // A long name gives way to the word, never the other way round.
+  .modulemenu-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+

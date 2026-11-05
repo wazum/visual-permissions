@@ -1,0 +1,29 @@
+{
+    "comment": "Owned here. PHP AccessVerdict, TargetKind and the composed state assert against this file; TypeScript derives its unions from it. Every list is in alphabetical order.",
+    "scopes": [
+        "fields",
+        "fieldValues",
+        "fileMounts",
+        "fileOperations",
+        "modules",
+        "pageMounts",
+        "pageTypes",
+        "tablesModify",
+        "tablesSelect"
+    ],
+    "verdicts": [
+        "adminOnly",
+        "allowed",
+        "allowedAndInherited",
+        "denied",
+        "inherited",
+        "neverEditable",
+        "notApplicable"
+    ],
+    "kinds": [
+        "adminOnly",
+        "grantable",
+        "neverEditable",
+        "notApplicable"
+    ]
+}

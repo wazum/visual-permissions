@@ -1,0 +1,338 @@
+name: checks
+
+on:
+  push:
+    branches: [main, 'fix/**', 'feature/**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  COMPOSER_NO_BLOCKING: '1'
+
+jobs:
+  php-qa:
+    name: php (qa)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo, pdo_sqlite, intl
+          coverage: none
+
+      - run: composer validate --strict
+
+      - run: composer update --no-interaction --no-progress
+
+      - run: composer qa
+
+      - name: Security advisories
+        run: composer audit --locked --abandoned=ignore --ignore-unreachable
+
+  php-tests:
+    name: php (typo3 ${{ matrix.typo3 }}, php ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        typo3: ['13.4', '14.3']
+        php: ['8.2', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pdo, pdo_sqlite, intl
+          coverage: none
+
+      - name: Pin TYPO3 ${{ matrix.typo3 }}
+        run: |
+          # phpstan-typo3 needs cms-core ^13.4.3 and cannot install beside 14.3.
+          composer remove --dev --no-update --no-interaction \
+            phpstan/phpstan phpstan/extension-installer saschaegerer/phpstan-typo3 \
+            friendsofphp/php-cs-fixer rector/rector infection/infection
+          composer require --no-update --no-interaction \
+            "typo3/cms-core:^${{ matrix.typo3 }}" "typo3/cms-backend:^${{ matrix.typo3 }}"
+          composer update --no-interaction --no-progress
+
+      - run: composer test:unit
+
+      - run: composer test:functional
+
+  typo3-api:
+    name: php (api against typo3 ${{ matrix.typo3 }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        typo3: ['13.4', '14.3']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: extension
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, intl
+          coverage: none
+
+      - name: Install beside TYPO3 ${{ matrix.typo3 }}
+        run: |
+          mkdir -p /tmp/matrix && cd /tmp/matrix
+          composer init --no-interaction --name=tmp/matrix
+          composer config repositories.pkg path "$GITHUB_WORKSPACE/extension"
+          composer config allow-plugins.typo3/class-alias-loader true
+          composer config allow-plugins.typo3/cms-composer-installers true
+          composer require --no-interaction --no-scripts --no-audit \
+            wazum/visual-permissions:@dev \
+            "typo3/cms-core:^${{ matrix.typo3 }}" \
+            "typo3/cms-backend:^${{ matrix.typo3 }}" \
+            phpstan/phpstan:^2.1
+
+      - name: The pinned Lit matches the one TYPO3 ${{ matrix.typo3 }} ships
+        run: |
+          set -eu
+          contrib=/tmp/matrix/vendor/typo3/cms-core/Resources/Public/JavaScript/Contrib
+          check() {
+            shipped=$(grep -o 'Versions??=\[\])\.push("[0-9.]*")' "$contrib/$1" \
+              | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | head -1)
+            pinned=$(node -p "require('$GITHUB_WORKSPACE/extension/Build/package.json').overrides['$2']")
+            echo "$2: shipped=$shipped pinned=$pinned"
+            test "$shipped" = "$pinned"
+          }
+          check lit-html/lit-html.js lit-html
+          check lit-element/lit-element.js lit-element
+          check @lit/reactive-element/reactive-element.js @lit/reactive-element
+
+      - name: Analyse against the real ${{ matrix.typo3 }} API
+        run: |
+          cd /tmp/matrix
+          php -d memory_limit=1G vendor/bin/phpstan analyse \
+            -c "$GITHUB_WORKSPACE/extension/phpstan.neon.dist" \
+            "$GITHUB_WORKSPACE/extension/Classes" \
+            --autoload-file=vendor/autoload.php \
+            --no-progress --error-format=table
+
+  e2e:
+    name: e2e (typo3 ${{ matrix.typo3 }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        typo3: ['13.4', '14.3']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo, pdo_sqlite, intl
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Tests/E2e/package-lock.json
+
+      - name: Install beside TYPO3 ${{ matrix.typo3 }}
+        run: |
+          # phpstan-typo3 needs cms-core ^13.4.3 and cannot install beside 14.3.
+          composer remove --dev --no-update --no-interaction \
+            phpstan/phpstan phpstan/extension-installer saschaegerer/phpstan-typo3 \
+            friendsofphp/php-cs-fixer rector/rector infection/infection
+          composer require --no-interaction --no-update --with-all-dependencies \
+            "typo3/cms-core:^${{ matrix.typo3 }}" \
+            "typo3/cms-backend:^${{ matrix.typo3 }}" \
+            "typo3/cms-fluid:^${{ matrix.typo3 }}"
+          composer update --no-interaction --no-progress
+
+      - run: composer test:e2e:seed
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('Tests/E2e/package-lock.json') }}
+
+      - name: Install the suite
+        working-directory: Tests/E2e
+        run: npm ci
+
+      - name: Typecheck the suite
+        working-directory: Tests/E2e
+        run: npm run typecheck
+
+      - name: Lint the suite
+        working-directory: Tests/E2e
+        run: npm run lint
+
+      - name: Install the browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 6
+        working-directory: Tests/E2e
+        run: |
+          for attempt in 1 2 3; do
+            if timeout -k 10 120 npx playwright install chromium; then
+              exit 0
+            fi
+            echo "::warning::Browser download attempt $attempt stalled, retrying"
+            sleep 10
+          done
+          exit 1
+
+      - name: Serve the instance
+        working-directory: Tests/E2e
+        run: |
+          # The seed ran as the runner; PHP in the container runs as another user and writes var/,
+          # fileadmin/, and config/ when core fills in extension settings the seed left out
+          chmod -R a+rwX ../../var ../../config ../../public/fileadmin
+          docker compose up --detach --wait
+
+      - name: Run the suite
+        working-directory: Tests/E2e
+        run: npx playwright test
+        env:
+          TYPO3_BASE_URL: http://127.0.0.1:8321
+
+      - name: What the webserver said
+        if: ${{ failure() }}
+        working-directory: Tests/E2e
+        run: |
+          docker compose logs --no-color web
+          ls -la ../../var ../../var/log || true
+          tail -n 40 ../../var/log/*.log || true
+
+      - name: Send the webserver away
+        if: ${{ !cancelled() }}
+        working-directory: Tests/E2e
+        run: docker compose down --volumes
+
+      - name: Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-report-typo3-${{ matrix.typo3 }}
+          path: |
+            Tests/E2e/test-results/
+            Tests/E2e/playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  screens:
+    name: screens
+    # The snapshots are drawn in ddev's web image on an arm64 Mac; the same image on the same
+    # architecture draws the same pixels
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo, pdo_sqlite, intl
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Tests/E2e/package-lock.json
+
+      - name: Install beside TYPO3 13.4
+        run: |
+          composer remove --dev --no-update --no-interaction \
+            phpstan/phpstan phpstan/extension-installer saschaegerer/phpstan-typo3 \
+            friendsofphp/php-cs-fixer rector/rector infection/infection
+          composer require --no-interaction --no-update --with-all-dependencies \
+            "typo3/cms-core:^13.4" "typo3/cms-backend:^13.4" "typo3/cms-fluid:^13.4"
+          composer update --no-interaction --no-progress
+
+      - run: composer test:e2e:seed
+
+      - name: Install the suite
+        working-directory: Tests/E2e
+        run: npm ci
+
+      - name: Serve the instance
+        working-directory: Tests/E2e
+        run: |
+          chmod -R a+rwX ../../var ../../config ../../public/fileadmin
+          docker compose up --detach --wait
+
+      - name: Compare the screens in ddev's browser
+        run: |
+          docker run --rm --network host --entrypoint bash \
+            --volume "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE" \
+            --workdir "$GITHUB_WORKSPACE/Tests/E2e" \
+            --env CI=1 --env VPERM_SCREENS=1 --env TYPO3_BASE_URL=http://127.0.0.1:8321 \
+            ddev/ddev-webserver:v1.25.4 \
+            -c 'npx playwright install --with-deps chromium && npx playwright test screens'
+
+      - name: Send the webserver away
+        if: ${{ !cancelled() }}
+        working-directory: Tests/E2e
+        run: docker compose down --volumes
+
+      - name: Playwright report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: screens-report
+          path: Tests/E2e/test-results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  frontend:
+    name: frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Build/package-lock.json
+
+      - run: npm ci
+
+      - name: Generated contract sources are current
+        run: |
+          npm run contract
+          git diff --exit-code -- \
+            src/platform/contract.ts \
+            src/platform/routes.ts \
+            src/platform/_contract.scss
+
+      - run: npm run typecheck
+
+      - run: npm run lint
+
+      - run: npm test
+
+      - run: npm run build
+
+      - name: Committed assets match a fresh build
+        run: |
+          git add --intent-to-add -- ../Resources/Public
+          git diff --exit-code -- ../Resources/Public
+
+      - name: Security advisories
+        run: npm audit --omit=dev --audit-level=high

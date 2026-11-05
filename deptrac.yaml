@@ -1,0 +1,41 @@
+deptrac:
+  paths:
+    - ./Classes
+  layers:
+    - { name: Authorization, collectors: [{ type: directory, value: Classes/Authorization/.* }] }
+    - { name: BackendGroups, collectors: [{ type: directory, value: Classes/BackendGroups/.* }] }
+    - { name: Compatibility, collectors: [{ type: directory, value: Classes/Compatibility/.* }] }
+    - { name: Configuration, collectors: [{ type: directory, value: Classes/Configuration/.* }] }
+    - { name: DataHandling, collectors: [{ type: directory, value: Classes/DataHandling/.* }] }
+    - { name: Write, collectors: [{ type: directory, value: Classes/Write/.* }] }
+    - { name: ContextMenu, collectors: [{ type: directory, value: Classes/Surfaces/ContextMenu/.* }] }
+    - { name: RecordForm, collectors: [{ type: directory, value: Classes/Surfaces/RecordForm/.* }] }
+    - { name: RecordList, collectors: [{ type: directory, value: Classes/Surfaces/RecordList/.* }] }
+    - { name: Toolbar, collectors: [{ type: directory, value: Classes/Surfaces/Toolbar/.* }] }
+    - { name: EditOtherPermissions, collectors: [{ type: directory, value: Classes/EditOtherPermissions/.* }] }
+    - { name: GrantFields, collectors: [{ type: directory, value: Classes/GrantFields/.* }] }
+    - { name: GrantModules, collectors: [{ type: directory, value: Classes/GrantModules/.* }] }
+    - { name: GrantTables, collectors: [{ type: directory, value: Classes/GrantTables/.* }] }
+    - { name: MountBranches, collectors: [{ type: directory, value: Classes/MountBranches/.* }] }
+    - { name: ViewAsUser, collectors: [{ type: directory, value: Classes/ViewAsUser/.* }] }
+    - { name: Inspect, collectors: [{ type: directory, value: Classes/Inspect/.* }] }
+  # A surface stands on the platform; a slice on the platform and the surfaces; no slice
+  # reaches into another. Inspect is the one read every slice answers, so it alone reads them.
+  ruleset:
+    Authorization: ~
+    Compatibility: ~
+    Configuration: ~
+    DataHandling: [Configuration]
+    BackendGroups: [Authorization, DataHandling]
+    Write: [BackendGroups]
+    ContextMenu: &surface [Authorization, BackendGroups, Compatibility, Configuration, DataHandling, Write]
+    RecordForm: *surface
+    RecordList: *surface
+    Toolbar: *surface
+    EditOtherPermissions: &slice [Authorization, BackendGroups, Compatibility, Configuration, DataHandling, Write, RecordForm, Toolbar]
+    GrantFields: *slice
+    GrantModules: *slice
+    GrantTables: *slice
+    MountBranches: *slice
+    ViewAsUser: *slice
+    Inspect: [Authorization, BackendGroups, GrantFields, GrantModules, GrantTables, MountBranches]

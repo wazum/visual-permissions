@@ -1,0 +1,5 @@
+@use '../platform/contract';
+
+.#{contract.$class-leave-user} {
+  white-space: nowrap;
+}

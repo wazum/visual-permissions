@@ -1,0 +1,48 @@
+{
+  "name": "@wazum/visual-permissions",
+  "version": "0.1.0",
+  "description": "Edit TYPO3 backend group permissions directly on the relevant screens.",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "overrides": {
+    "lit-html": "3.2.0",
+    "lit-element": "4.1.0",
+    "@lit/reactive-element": "2.0.4"
+  },
+  "scripts": {
+    "build": "npm run build:js && npm run build:css",
+    "build:js": "vite build",
+    "build:css": "sass --no-source-map --style=compressed src/main.scss ../Resources/Public/Css/visual-permissions.css",
+    "contract": "node scripts/generate-contract.mjs",
+    "dev": "vite build --watch & sass --watch src/main.scss ../Resources/Public/Css/visual-permissions.css",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:mutation": "stryker run"
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "^9.4.0",
+    "@stryker-mutator/vitest-runner": "^9.4.0",
+    "@types/node": "^26.4.0",
+    "@vitest/coverage-v8": "^4.1.6",
+    "eslint": "^10.4.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-boundaries": "^6.0.2",
+    "jsdom": "^29.1.1",
+    "lit": "3.2.0",
+    "sass": "^1.83.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.59.3",
+    "vite": "^6.0.3",
+    "vitest": "^4.1.6"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "unrs-resolver@1.12.2": true,
+    "@parcel/watcher@2.6.0": true
+  }
+}

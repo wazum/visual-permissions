@@ -1,0 +1,6 @@
+"sys_file",,,,,,,,,
+,"uid","pid","storage","type","identifier","identifier_hash","folder_hash","name","extension"
+,1,0,1,1,"/lorem.txt","0000000000000000000000000000000000000001","0000000000000000000000000000000000000002","lorem.txt","txt"
+"sys_file_reference",,,,,,,,
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","title","deleted"
+,2,1,1,1,"pages","media","Lorem",0

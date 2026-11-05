@@ -1,0 +1,208 @@
+@use '../platform/contract';
+
+// The record has a document to itself, so its foot lies on that document's bottom edge.
+form[name='editform'] > .#{contract.$class-face-foot} {
+  // The frame around an area names the grounds, and this document has no such frame.
+  --vperm-region-bg: var(--typo3-surface-container-lowest);
+  --vperm-region-ink: var(--typo3-text-color-base);
+  --vperm-region-edge: var(--typo3-component-border-color);
+
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 10;
+  flex-wrap: nowrap;
+  align-items: center;
+  // The module body's own room, so the count and the buttons line up with the form.
+  padding-inline: 1.5rem;
+
+  .#{contract.$class-face-tally} {
+    flex: 1;
+    text-align: start;
+  }
+
+  .btn {
+    flex: none;
+  }
+}
+
+.#{contract.$class-table-note} {
+  margin-block: 0.5rem 0;
+}
+
+// Room under the last field, so it is never read off the edge of the window.
+[#{contract.$attribute-picked}='fields'] form[name='editform'] {
+  padding-block-end: 1.5rem;
+}
+
+// And room for the foot as well, which lies over the form while the fields are picked.
+[#{contract.$attribute-picked}='fields'][#{contract.$attribute-face}='pick'] form[name='editform'] {
+  padding-block-end: 6rem;
+}
+
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor}[#{contract.$attribute-verdict}] {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    z-index: 0;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: background-color calc(var(--vperm-motion, 1) * 120ms) ease,
+      border-color calc(var(--vperm-motion, 1) * 120ms) ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    z-index: 2;
+  }
+
+  // A field that holds a record lies over that record's own fields, and they answer for
+  // themselves
+  &:has(.#{contract.$class-anchor})::after {
+    content: none;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor}[#{contract.$attribute-verdict}] {
+  > .form-label,
+  > fieldset > legend {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: 100%;
+  }
+}
+
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor}[#{contract.$attribute-verdict}] {
+  .formengine-field-item,
+  .form-control-wrap,
+  .form-wizards-wrap,
+  .form-wizards-item-element,
+  .input-group {
+    width: 100%;
+    max-width: none;
+  }
+
+  .form-control-adapt {
+    max-width: none;
+  }
+
+  .input-group > .form-control-adapt {
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+  }
+}
+
+[#{contract.$attribute-picked}='fields'] .form-group:has(> .#{contract.$class-anchor}[#{contract.$attribute-verdict}]) {
+  margin-block-end: 24px;
+}
+
+// A bar of tabs that all stand for nothing is a bar over nothing
+[#{contract.$attribute-picked}='fields'] .nav-tabs:not(:has(.nav-item:not([hidden]))) {
+  display: none;
+}
+
+// The room around it is the form's own; a margin of its own would set it in from the fields
+// and the buttons above them
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-nothing-theirs} {
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+// A section names a group of fields; at core's size it shouts over the fields themselves
+[#{contract.$attribute-picked}='fields'] .form-section-headline {
+  margin-block-end: 0.5rem;
+  color: color-mix(in srgb, currentColor 70%, transparent);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor} [inert] {
+  opacity: 0.45;
+}
+
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor} {
+  textarea,
+  .ck-editor__editable,
+  .ck-editor__main {
+    max-height: 5rem;
+    min-height: 0;
+    overflow: hidden;
+    resize: none;
+    mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+  }
+}
+
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor}[#{contract.$attribute-verdict}] {
+  cursor: not-allowed;
+
+  &[role='switch']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+}
+
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor}[role='switch']:not([aria-disabled='true']):hover::before {
+  background: var(--vperm-fill-quiet);
+}
+
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor}[role='switch']:focus-visible {
+  outline: none;
+
+  &::before {
+    background: var(--vperm-fill-quiet);
+    border-color: var(--vperm-edge-focus);
+  }
+}
+
+// A queued field strikes its own mark: this is what it is now, and it is about to stop being
+// that. The fill says which way, and the word beside it says it in letters as well.
+[#{contract.$attribute-picked}='fields'] .#{contract.$class-anchor}.#{contract.$class-face-marked} {
+  // In the line, between the name and the mark, so a long name shortens the room it takes
+  // rather than being written over
+  > .form-label::before,
+  > fieldset > legend::before {
+    content: attr(#{contract.$attribute-waiting});
+    order: 1;
+    flex: none;
+    margin-inline-start: auto;
+    padding-inline-start: 0.5rem;
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+}
+
+[#{contract.$attribute-face}='pick'] .#{contract.$class-anchor}.#{contract.$class-face-marked}::before {
+  background: var(--vperm-fill-granted);
+}
+
+.#{contract.$class-tab-give} {
+  display: block;
+  margin: 0 0 0.5rem auto;
+}
+
+[#{contract.$attribute-face}='preview'] .#{contract.$class-anchor}.#{contract.$class-face-marked} {
+  &::before {
+    background: var(--vperm-fill-dropped);
+  }
+
+  // The name alone: a strike over the heading crosses the word beside it as well
+  .#{contract.$class-field-name} {
+    text-decoration: line-through;
+  }
+}

@@ -1,0 +1,91 @@
+@use '../../platform/contract';
+
+// 14.3 leads: what only 13.4 needs is said here, under the class its scaffold still uses
+// and 14.3 has renamed.
+body:has(.t3js-scaffold-modulemenu) {
+  // 13.4 divides its columns with a line, and that pixel lies outside them: a tab, or the
+  // edge of an armed card, stands on it. 14.3 divides them by their surfaces alone.
+  --vperm-divider: 1px;
+  // 14.3 names its header's ground; 13.4 paints the same surface as the page around it.
+  --vperm-bar-bg: var(--typo3-surface-base, #f5f5f5);
+
+  // 13.4's header casts a shadow onto whatever lies below it, and the bar lies there: the
+  // line it draws falls across the tops of the tabs. While the bar is up it is itself the
+  // separation that shadow was there to give. 14.3 casts none.
+  &[#{contract.$attribute-active}] .t3js-scaffold-header {
+    --scaffold-header-box-shadow: none;
+  }
+
+  // 13.4 puts the tree's own menu among the pages offered to drag in; the menu stays usable.
+  &[#{contract.$attribute-active}] .tree-toolbar__submenu {
+    .dropdown-menu {
+      cursor: auto;
+    }
+
+    .dropdown-toggle,
+    .dropdown-item {
+      cursor: pointer;
+    }
+  }
+
+  // 13.4 folds the page tree away with buttons of its own.
+  &[#{contract.$attribute-active}] .scaffold-content-navigation-switcher .scaffold-content-navigation-switcher-btn {
+    display: none;
+  }
+
+  // 13.4's handle is one pixel wide, on the line two areas share, where the sheet over the
+  // area out of play answers the pointer first: so it stands above the sheets, where the
+  // header reaches nothing, and starts below the tabs rather than drawing a line across one.
+  &[#{contract.$attribute-active}] .scaffold-content-navigation-drag {
+    position: relative;
+    z-index: 990;
+    margin-block-start: var(--vperm-tab-band, 41px);
+    height: calc(100% - var(--vperm-tab-band, 41px));
+  }
+
+  // 13.4 has no sidebar of its own: its module menu is a light column on the page, and is
+  // written in the page's own ink. The colours are for whatever stands on that ground, a
+  // tab as much as the area itself; the scrolling below is the area's alone.
+  [#{contract.$attribute-ground}='panel'] {
+    --vperm-region-bg: var(--typo3-surface-container-secondary, #e6e6e6);
+    --vperm-region-ink: var(--typo3-text-color-base, #1a1a1a);
+    --vperm-region-edge: var(--typo3-component-border-color, #d1d1d1);
+
+  }
+
+  // 13.4 scrolls the column itself, which would drag the bar along with it. Never the card:
+  // an overflow anywhere in the turn flattens it, and the far side comes out mirrored. What
+  // the card holds scrolls inside it.
+  .#{contract.$class-frame}[#{contract.$attribute-ground}='panel'] >:not(.#{contract.$class-panel-card}) {
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  // 13.4 divides its columns with a line of its own, and the armed card takes over that
+  // very pixel down both its sides: the boundary stays where the reader saw it, drawn in a
+  // darker ink and fading as it goes. 14.3 has no such pixel to lend.
+  .#{contract.$class-tab-card} {
+    border-inline: 1px solid transparent;
+    border-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--vperm-region-ink) 45%, transparent) 0%,
+      color-mix(in srgb, var(--vperm-region-ink) 20%, transparent) 30%,
+      transparent 100%
+    ) 1;
+  }
+
+  // 13.4 paints the tree's own toolbar a step darker than the component surface 14.3 uses.
+  [#{contract.$attribute-ground}='tree'] {
+    --vperm-region-bg: var(--typo3-surface-container-secondary, #e6e6e6);
+  }
+
+  // Both cores let the module name its own head, and each names a different surface.
+  [#{contract.$attribute-ground}='module'] {
+    --vperm-region-bg: var(--typo3-surface-container-high, #e6e6e6);
+  }
+}
+
+// 13.4 draws the page module's views as a select inside the module's own document
+[#{contract.$attribute-active}] .module-docheader .form-group:has(> select[name='actionMenu']) {
+  display: none;
+}

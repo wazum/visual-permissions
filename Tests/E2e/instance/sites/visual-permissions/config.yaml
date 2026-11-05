@@ -1,0 +1,20 @@
+rootPageId: 1
+base: /
+identifier: visual-permissions
+languages:
+  -
+    languageId: 0
+    title: English
+    navigationTitle: English
+    enabled: true
+    base: /
+    locale: en_US.UTF-8
+    flag: us
+  -
+    languageId: 1
+    title: German
+    navigationTitle: Deutsch
+    enabled: true
+    base: /de/
+    locale: de_DE.UTF-8
+    flag: de

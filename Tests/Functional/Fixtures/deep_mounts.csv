@@ -1,0 +1,7 @@
+"pages",,,,,,
+,"uid","pid","title","doktype","sorting","hidden","deleted"
+,1,0,"Root",1,256,0,0
+,10,1,"First branch",1,128,0,0
+,11,10,"Under the first",1,256,0,0
+,12,11,"Deeper under the first",1,256,0,0
+,20,1,"Second branch",1,512,0,0

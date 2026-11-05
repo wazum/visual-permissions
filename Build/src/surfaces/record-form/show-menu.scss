@@ -1,0 +1,36 @@
+@use '../../platform/contract';
+
+[#{contract.$attribute-show}='list'] {
+  .#{contract.$class-anchor} .formengine-field-item
+    > *:not(.form-description):not(:has(.#{contract.$class-anchor})) {
+    display: none;
+  }
+
+  // A palette is a grid of its own, and a list gives every field a row of its own, spaced
+  // by the field alone
+  .form-grid {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+    margin-block-end: 0;
+  }
+
+  .#{contract.$class-anchor}[#{contract.$attribute-verdict}] {
+    margin-block-end: 0;
+  }
+
+  .form-group:has(> .#{contract.$class-anchor}[#{contract.$attribute-verdict}]) {
+    margin-block-end: 20px;
+  }
+}
+
+.#{contract.$class-field-token} {
+  display: block;
+  margin-block-start: 1px;
+  color: color-mix(in srgb, currentColor 55%, transparent);
+  font-family: var(--typo3-font-family-monospace, monospace);
+  font-size: 11px;
+}
+
+.#{contract.$class-anchor}:has(.form-description) .#{contract.$class-field-token} {
+  margin-block-end: 6px;
+}

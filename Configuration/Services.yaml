@@ -1,0 +1,94 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Wazum\VisualPermissions\:
+    resource: '../Classes/*'
+
+  Wazum\VisualPermissions\AllowValues\AllowFileOperationsController:
+    public: true
+
+  Wazum\VisualPermissions\AllowValues\AllowPageTypesController:
+    public: true
+
+  Wazum\VisualPermissions\AllowValues\AllowValuesController:
+    public: true
+
+  Wazum\VisualPermissions\BackendGroups\BackendGroups:
+    public: true
+
+  Wazum\VisualPermissions\Compatibility\NoModuleAccessNotice:
+    public: true
+    tags:
+      - name: event.listener
+        identifier: 'wazum/visual-permissions/no-module-access-notice'
+
+  Wazum\VisualPermissions\Configuration\Settings:
+    public: true
+
+  Wazum\VisualPermissions\DataHandling\Records:
+    public: true
+
+  Wazum\VisualPermissions\EditOtherPermissions\OtherPermissionsController:
+    public: true
+
+  Wazum\VisualPermissions\GrantFields\GrantFieldsController:
+    public: true
+
+  Wazum\VisualPermissions\GrantModules\GrantModulesController:
+    public: true
+
+  Wazum\VisualPermissions\GrantTables\GrantTablesController:
+    public: true
+
+  Wazum\VisualPermissions\Inspect\InspectController:
+    public: true
+
+  Wazum\VisualPermissions\MountBranches\Folders\FileMounts:
+    public: true
+
+  Wazum\VisualPermissions\MountBranches\Folders\FolderTreeController:
+    public: true
+
+  Wazum\VisualPermissions\MountBranches\Folders\MountFoldersController:
+    public: true
+
+  Wazum\VisualPermissions\MountBranches\Pages\MountOrder:
+    public: true
+
+  Wazum\VisualPermissions\MountBranches\Pages\MountPagesController:
+    public: true
+
+  Wazum\VisualPermissions\MountBranches\Pages\PageVisibility:
+    public: true
+
+  Wazum\VisualPermissions\Surfaces\ContextMenu\RecordMenu:
+    public: true
+
+  Wazum\VisualPermissions\Surfaces\RecordForm\OpenDocumentController:
+    public: true
+
+  Wazum\VisualPermissions\Surfaces\RecordList\RecordActions:
+    tags:
+      - name: event.listener
+        identifier: 'wazum/visual-permissions/record-actions'
+
+  Wazum\VisualPermissions\Surfaces\Toolbar\VisualPermissionsToolbarItem:
+    tags: ['backend.toolbar.item']
+
+  Wazum\VisualPermissions\ViewAsUser\NoAccessibleModule:
+    public: true
+
+  Wazum\VisualPermissions\ViewAsUser\NoAccessiblePage:
+    public: true
+
+  Wazum\VisualPermissions\ViewAsUser\SwitchUserController:
+    public: true
+
+  Wazum\VisualPermissions\ViewAsUser\ViewableUsers:
+    public: true
+
+  Wazum\VisualPermissions\ViewAsUser\ViewableUsersController:
+    public: true

@@ -1,0 +1,9 @@
+"be_groups",,,,,,
+,"uid","pid","title","subgroup","groupMods","hidden","deleted"
+,10,0,"Editors","11,12","web_layout",0,0
+,11,0,"Base Editors","13","",0,0
+,12,0,"Reviewers","13","",0,0
+,13,0,"Everyone","","about",0,0
+"be_users",,,,,,
+,"uid","pid","username","password","admin","usergroup"
+,3,0,"editor-in-chain","$argon2i$v=19$m=65536,t=16,p=1$dummy",0,"10"

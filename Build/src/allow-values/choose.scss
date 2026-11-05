@@ -1,0 +1,6 @@
+@use '../platform/contract';
+
+// The field's own frame reaches 8px past it
+.#{contract.$class-allow-choose} {
+  margin-block-start: 12px;
+}

@@ -1,0 +1,91 @@
+@use 'contract';
+
+.modal:has(.#{contract.$class-allow-choices}) {
+  --modal-height: auto;
+
+  .modal-footer > .#{contract.$class-face-waiting} {
+    margin-inline-end: auto;
+  }
+}
+
+.#{contract.$class-allow-choices} {
+  display: grid;
+  gap: 1rem;
+
+  section {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--typo3-text-color-variant);
+  }
+
+  section > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 6px;
+  }
+}
+
+.#{contract.$class-allow-value} {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--typo3-component-border-color);
+  border-radius: var(--typo3-component-border-radius);
+  background: var(--typo3-component-bg);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--typo3-component-hover-bg);
+  }
+
+  > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // The backend's own document carries no form styles, so the box is the browser's own
+  > input {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin: 0 0 0 auto;
+    appearance: auto;
+    accent-color: var(--typo3-state-primary-bg, #0078e6);
+  }
+
+  &:has(> input:disabled) {
+    flex-wrap: wrap;
+    row-gap: 0;
+    cursor: not-allowed;
+    opacity: 0.75;
+
+    &:hover {
+      background: var(--typo3-component-bg);
+    }
+
+    > input {
+      pointer-events: none;
+    }
+
+    &::after {
+      content: var(--vperm-inherited-note, '');
+      order: 1;
+      flex-basis: 100%;
+      padding-inline-start: calc(16px + 0.5rem);
+      font-size: 11px;
+      color: color-mix(in srgb, currentColor 60%, transparent);
+    }
+  }
+}

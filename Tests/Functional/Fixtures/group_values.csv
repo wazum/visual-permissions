@@ -1,0 +1,4 @@
+"be_groups",,,,,,,,
+,"uid","pid","title","subgroup","explicit_allowdeny","pagetypes_select","file_permissions","hidden","deleted"
+,10,0,"Editors","11","tt_content:CType:textmedia","1","readFile",0,0
+,11,0,"Everyone","","tt_content:CType:header","254","readFolder",0,0

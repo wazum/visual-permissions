@@ -1,0 +1,179 @@
+{
+    "group": {
+        "id": 10,
+        "title": "Editors"
+    },
+    "chain": [
+        {
+            "groupId": 10,
+            "title": "Editors",
+            "depth": 0
+        },
+        {
+            "groupId": 11,
+            "title": "Base Editors",
+            "depth": 1
+        },
+        {
+            "groupId": 13,
+            "title": "Everyone",
+            "depth": 2
+        },
+        {
+            "groupId": 12,
+            "title": "Reviewers",
+            "depth": 1
+        }
+    ],
+    "scopes": {
+        "fields": {
+            "targets": {
+                "pages:doktype": "denied",
+                "pages:title": "notApplicable",
+                "pages:slug": "notApplicable",
+                "pages:TSconfig": "adminOnly",
+                "pages:php_tree_stop": "denied",
+                "pages:categories": "denied",
+                "pages:layout": "denied",
+                "pages:extendToSubpages": "denied",
+                "pages:nav_title": "denied",
+                "pages:nav_hide": "denied",
+                "pages:subtitle": "denied",
+                "pages:target": "denied",
+                "pages:url": "notApplicable",
+                "pages:lastUpdated": "denied",
+                "pages:newUntil": "denied",
+                "pages:cache_timeout": "denied",
+                "pages:cache_tags": "denied",
+                "pages:no_search": "denied",
+                "pages:shortcut": "notApplicable",
+                "pages:shortcut_mode": "denied",
+                "pages:content_from_pid": "denied",
+                "pages:mount_pid": "notApplicable",
+                "pages:keywords": "denied",
+                "pages:description": "denied",
+                "pages:abstract": "denied",
+                "pages:author": "denied",
+                "pages:author_email": "denied",
+                "pages:media": "denied",
+                "pages:is_siteroot": "denied",
+                "pages:mount_pid_ol": "denied",
+                "pages:module": "denied",
+                "pages:l18n_cfg": "denied",
+                "pages:backend_layout": "denied",
+                "pages:backend_layout_next_level": "denied",
+                "pages:tsconfig_includes": "adminOnly",
+                "pages:hidden": "denied",
+                "pages:starttime": "denied",
+                "pages:endtime": "denied",
+                "pages:fe_group": "denied",
+                "pages:editlock": "adminOnly",
+                "pages:rowDescription": "denied",
+                "pages:sys_language_uid": "notApplicable",
+                "pages:l10n_parent": "notApplicable",
+                "pages:l10n_diffsource": "notApplicable",
+                "pages:l10n_source": "notApplicable"
+            },
+            "givenBy": []
+        },
+        "fieldValues": {
+            "targets": []
+        },
+        "fileMounts": {
+            "targets": [],
+            "named": []
+        },
+        "fileOperations": {
+            "targets": {
+                "readFolder": "allowedAndInherited",
+                "writeFolder": "allowedAndInherited",
+                "addFolder": "allowedAndInherited",
+                "renameFolder": "allowedAndInherited",
+                "moveFolder": "allowedAndInherited",
+                "deleteFolder": "allowedAndInherited",
+                "readFile": "allowedAndInherited",
+                "writeFile": "allowedAndInherited",
+                "addFile": "allowedAndInherited",
+                "renameFile": "allowedAndInherited",
+                "replaceFile": "allowedAndInherited",
+                "moveFile": "allowedAndInherited",
+                "copyFile": "allowedAndInherited",
+                "deleteFile": "allowedAndInherited"
+            }
+        },
+        "modules": {
+            "targets": {
+                "web": "notApplicable",
+                "web_layout": "allowed",
+                "web_list": "denied",
+                "file": "notApplicable",
+                "site": "notApplicable",
+                "site_configuration": "adminOnly",
+                "site_settings": "adminOnly",
+                "pagetsconfig": "adminOnly",
+                "pagetsconfig_pages": "adminOnly",
+                "pagetsconfig_active": "adminOnly",
+                "pagetsconfig_includes": "adminOnly",
+                "user": "notApplicable",
+                "tools": "notApplicable",
+                "tools_csp": "adminOnly",
+                "system": "notApplicable",
+                "permissions_pages": "adminOnly",
+                "backend_user_management": "adminOnly",
+                "help": "notApplicable",
+                "about": "inherited"
+            }
+        },
+        "pageMounts": {
+            "targets": [],
+            "order": [],
+            "unseen": []
+        },
+        "pageTypes": {
+            "targets": []
+        },
+        "tablesModify": {
+            "targets": {
+                "be_groups": "adminOnly",
+                "be_users": "adminOnly",
+                "pages": "denied",
+                "sys_category": "denied",
+                "sys_file": "denied",
+                "sys_file_collection": "denied",
+                "sys_file_metadata": "denied",
+                "sys_file_reference": "denied",
+                "sys_file_storage": "denied",
+                "sys_filemounts": "adminOnly",
+                "sys_news": "adminOnly",
+                "backend_layout": "denied",
+                "fe_groups": "denied",
+                "fe_users": "denied",
+                "sys_template": "adminOnly",
+                "tt_content": "denied"
+            },
+            "named": {
+                "pages": "Page"
+            }
+        },
+        "tablesSelect": {
+            "targets": {
+                "be_groups": "adminOnly",
+                "be_users": "adminOnly",
+                "pages": "denied",
+                "sys_category": "denied",
+                "sys_file": "denied",
+                "sys_file_collection": "denied",
+                "sys_file_metadata": "denied",
+                "sys_file_reference": "denied",
+                "sys_file_storage": "denied",
+                "sys_filemounts": "adminOnly",
+                "sys_news": "adminOnly",
+                "backend_layout": "denied",
+                "fe_groups": "denied",
+                "fe_users": "denied",
+                "sys_template": "adminOnly",
+                "tt_content": "denied"
+            }
+        }
+    }
+}

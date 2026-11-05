@@ -1,0 +1,7 @@
+{
+    "comment": "Notifications only; session state is read synchronously, not announced. An event is added together with the code that emits and hears it. Values list the required payload keys.",
+    "events": {
+        "fields-judged": [],
+        "permissions-written": []
+    }
+}

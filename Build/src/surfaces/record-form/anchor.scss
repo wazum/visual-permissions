@@ -1,0 +1,10 @@
+@use '../../platform/contract';
+
+.#{contract.$class-anchor} {
+  position: relative;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  // A fieldset otherwise refuses to shrink below its content.
+  min-inline-size: 0;
+}

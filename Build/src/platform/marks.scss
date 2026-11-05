@@ -1,0 +1,135 @@
+@use 'contract';
+
+// Core's text colours carry the theme and the colour scheme, and they are made to be
+// read against a ground.
+[#{contract.$attribute-active}] {
+  --vperm-ink-allowed: var(--typo3-text-color-success, #247554);
+  --vperm-ink-denied: var(--typo3-text-color-danger, #a72e25);
+  --vperm-ink-admin: var(--typo3-text-color-warning, #664d00);
+  --vperm-ink-quiet: var(--typo3-text-color-variant, #666);
+  --vperm-square: 18px;
+
+  --vperm-fill-quiet: color-mix(in srgb, var(--typo3-text-color-base) 7%, transparent);
+  --vperm-fill-granted: color-mix(in srgb, var(--vperm-ink-allowed) 14%, transparent);
+  --vperm-fill-dropped: color-mix(in srgb, var(--vperm-ink-denied) 14%, transparent);
+  --vperm-mark-quiet: color-mix(in srgb, var(--typo3-text-color-base) 70%, transparent);
+  --vperm-edge-focus: color-mix(in srgb, var(--typo3-state-default-focus-border-color), black 15%);
+}
+
+// A row the change just landed on has an edge drawn round it three times, so the eye finds
+// it on a list it was not looking at a moment ago. An edge and not a fill: the ground under
+// the row is the backend's, and it goes on saying whatever it says.
+// The edge is drawn inside the row: a page tree row is as wide as the box that scrolls it,
+// and an edge outside that box is clipped down to a line above and below.
+@keyframes vperm-just-added {
+  0%,
+  30%,
+  60%,
+  90%,
+  100% {
+    box-shadow: inset 0 0 0 2px transparent;
+  }
+
+  15%,
+  45%,
+  75% {
+    box-shadow: inset 0 0 0 2px var(--typo3-component-hover-border-color, #b4b4b4);
+  }
+}
+
+.#{contract.$class-just-added} {
+  animation: vperm-just-added calc(var(--vperm-motion, 1) * 1300ms) ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .#{contract.$class-just-added} {
+    animation: none;
+  }
+}
+
+// A panel says what a group reaches by the rows it shows, so a mark there would say it
+// twice. It keeps away from a panel card altogether, box and all: that box would sit on
+// the very spot a note of the panel's own belongs in. A field of a record form is marked in
+// its own heading instead.
+$marked: '[#{contract.$attribute-verdict}]:not(.#{contract.$class-panel-card} *):not(.#{contract.$class-anchor})';
+
+#{$marked} {
+  --vperm-mark: var(--vperm-ink-quiet);
+
+  position: relative;
+}
+
+// An outline and a glyph, so a mark needs no knowledge of the ground behind it.
+#{$marked}::after {
+  content: var(--vperm-glyph, '');
+  position: absolute;
+  inset-inline-end: 0.5rem;
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: var(--vperm-square, 18px);
+  height: var(--vperm-square, 18px);
+  border: 2px solid var(--vperm-mark);
+  border-radius: 2px;
+  color: var(--vperm-mark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+[#{contract.$attribute-verdict}='#{contract.$verdict-allowed}'],
+[#{contract.$attribute-verdict}='#{contract.$verdict-allowed-and-inherited}'] {
+  --vperm-glyph: '✓';
+}
+
+[#{contract.$attribute-verdict}='#{contract.$verdict-inherited}'] {
+  --vperm-glyph: '↳';
+}
+
+[#{contract.$attribute-verdict}='#{contract.$verdict-denied}'] {
+  --vperm-glyph: '✗';
+}
+
+[#{contract.$attribute-verdict}='#{contract.$verdict-never-editable}'] {
+  --vperm-glyph: '—';
+}
+
+[#{contract.$attribute-verdict}='#{contract.$verdict-admin-only}'] {
+  --vperm-glyph: 'A';
+}
+
+[#{contract.$attribute-verdict}='#{contract.$verdict-not-applicable}'] {
+  --vperm-glyph: '·';
+}
+
+#{$marked}[#{contract.$attribute-verdict}='#{contract.$verdict-allowed}'],
+#{$marked}[#{contract.$attribute-verdict}='#{contract.$verdict-allowed-and-inherited}'],
+#{$marked}[#{contract.$attribute-verdict}='#{contract.$verdict-inherited}'] {
+  --vperm-mark: var(--vperm-ink-allowed);
+}
+
+#{$marked}[#{contract.$attribute-verdict}='#{contract.$verdict-denied}'] {
+  --vperm-mark: var(--vperm-ink-denied);
+}
+
+#{$marked}[#{contract.$attribute-verdict}='#{contract.$verdict-never-editable}'] {
+  --vperm-mark: var(--vperm-ink-quiet);
+
+  cursor: not-allowed;
+}
+
+#{$marked}[#{contract.$attribute-verdict}='#{contract.$verdict-admin-only}'] {
+  --vperm-mark: var(--vperm-ink-admin);
+
+  cursor: not-allowed;
+}
+
+#{$marked}[#{contract.$attribute-verdict}='#{contract.$verdict-not-applicable}'] {
+  --vperm-mark: var(--vperm-ink-quiet);
+
+  &::after {
+    border-style: dotted;
+  }
+}
