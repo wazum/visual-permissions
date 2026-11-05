@@ -30,6 +30,10 @@ function flattened(value: unknown): unknown {
     return String(value)
   }
 
+  if (Array.isArray(value)) {
+    return value.map(flattened)
+  }
+
   return Object.fromEntries(
     Object.entries(value as Record<string, unknown>).map(([name, held]) => [name, flattened(held)]),
   )

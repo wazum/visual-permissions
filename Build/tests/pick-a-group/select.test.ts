@@ -1,6 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import Persistent from '@typo3/backend/storage/persistent.js'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { attributes, classes, elements } from '#src/platform/contract.js'
-import { deactivate, getState, selectGroup } from '#src/platform/session.js'
+import { deactivate, getState, pickArea, selectGroup } from '#src/platform/session.js'
 import { initialise } from '#src/pick-a-group/select.js'
 import { prime, quiet as written } from '../__mocks__/typo3-persistent-storage.js'
 
@@ -47,7 +48,7 @@ const row = (at: number): HTMLElement => {
   return found
 }
 
-const putHeaderInDocument = (): void => {
+const putHeaderInDocument = (more: Record<number, { title: string }> = {}): void => {
   const button = document.createElement('button')
   button.setAttribute(attributes.group, '')
   button.textContent = 'Backend group'
@@ -56,6 +57,7 @@ const putHeaderInDocument = (): void => {
   carrier.setAttribute(attributes.groups, JSON.stringify({
     2: { title: 'Institute Editors', disabled: false, inherits: [{ groupId: 13, title: 'Editors', depth: 1 }] },
     13: { title: 'Editors', disabled: true, inherits: [] },
+    ...Object.fromEntries(Object.entries(more).map(([id, group]) => [id, { ...group, disabled: false, inherits: [] }])),
   }))
   TYPO3.lang = {
     'pickAGroup.search': 'Search groups',
@@ -68,6 +70,8 @@ const putHeaderInDocument = (): void => {
     'platform.picker.key.close': 'close',
     'pickAGroup.key.take': 'select',
     'pickAGroup.disabled': 'disabled',
+    'pickAGroup.recent': 'Recently shown',
+    'pickAGroup.all': 'All groups',
   }
 
   document.body.replaceChildren(button, carrier)
@@ -358,6 +362,116 @@ describe('the group picker', () => {
     await settled()
 
     expect(picker().style.left).toBe('140px')
+  })
+
+  it('lists the group shown before first, under a heading of its own, and leaves out the one shown now', async () => {
+    initialise(document, listening.signal)
+    selectGroup(2)
+    selectGroup(13)
+
+    trigger().click()
+    await settled()
+
+    expect([...picker().querySelectorAll(`.${classes.pickerList} .dropdown-header, .${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(each => each.textContent.trim())).toEqual(['Recently shown', 'Institute Editors', 'All groups', 'Editors'])
+  })
+
+  it('has the groups shown last back on the next page, newest first', async () => {
+    putHeaderInDocument({ 20: { title: 'Authors' }, 21: { title: 'Reviewers' } })
+    initialise(document, listening.signal)
+    for (const groupId of [2, 13, 20, 21]) {
+      selectGroup(groupId)
+    }
+    await written()
+
+    listening.abort()
+    listening = new AbortController()
+    putHeaderInDocument({ 20: { title: 'Authors' }, 21: { title: 'Reviewers' } })
+    initialise(document, listening.signal)
+    trigger().click()
+    await settled()
+
+    expect([...picker().querySelectorAll(`.${classes.pickerList} .dropdown-header, .${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(each => each.textContent.trim())).toEqual(['Recently shown', 'Authors', 'Editors', 'Institute Editors', 'All groups', 'Reviewers'])
+  })
+
+  it('lists only the three groups shown last as recent, as core does for users', async () => {
+    putHeaderInDocument({ 20: { title: 'Authors' }, 21: { title: 'Reviewers' }, 22: { title: 'Translators' } })
+    initialise(document, listening.signal)
+    for (const groupId of [2, 13, 20, 21, 22]) {
+      selectGroup(groupId)
+    }
+
+    trigger().click()
+    await settled()
+
+    expect([...picker().querySelectorAll(`.${classes.pickerList} .dropdown-header, .${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(each => each.textContent.trim())).toEqual(['Recently shown', 'Reviewers', 'Authors', 'Editors', 'All groups', 'Institute Editors', 'Translators'])
+  })
+
+  it('keeps no place among the recent groups for a stored one that is no group', async () => {
+    prime({ vperm: { recentGroups: ['x', '98', '99', '13'] } })
+    initialise(document, listening.signal)
+
+    selectGroup(2)
+    trigger().click()
+    await settled()
+
+    expect([...picker().querySelectorAll(`.${classes.pickerList} .dropdown-header, .${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(each => each.textContent.trim())).toEqual(['Recently shown', 'Editors', 'All groups', 'Institute Editors'])
+  })
+
+  it('moves a group shown again to the front of the recent ones, once', async () => {
+    putHeaderInDocument({ 20: { title: 'Authors' } })
+    initialise(document, listening.signal)
+    for (const groupId of [2, 13, 2, 20]) {
+      selectGroup(groupId)
+    }
+
+    trigger().click()
+    await settled()
+
+    expect([...picker().querySelectorAll(`.${classes.pickerList} .dropdown-header, .${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(each => each.textContent.trim())).toEqual(['Recently shown', 'Institute Editors', 'Editors', 'All groups', 'Authors'])
+  })
+
+  it('keeps no place among the recent groups for dropping the group', async () => {
+    putHeaderInDocument({ 20: { title: 'Authors' }, 21: { title: 'Reviewers' } })
+    initialise(document, listening.signal)
+    for (const groupId of [2, null, 13, 20, 21]) {
+      selectGroup(groupId)
+    }
+
+    trigger().click()
+    await settled()
+
+    expect([...picker().querySelectorAll(`.${classes.pickerList} .dropdown-header, .${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(each => each.textContent.trim())).toEqual(['Recently shown', 'Authors', 'Editors', 'Institute Editors', 'All groups', 'Reviewers'])
+  })
+
+  it('lists the group dropped last as recent while none is shown', async () => {
+    initialise(document, listening.signal)
+    for (const groupId of [2, 13, null]) {
+      selectGroup(groupId)
+    }
+
+    trigger().click()
+    await settled()
+
+    expect([...picker().querySelectorAll(`.${classes.pickerList} .dropdown-header, .${classes.pickerList} [role="option"] > span:first-child`)]
+      .map(each => each.textContent.trim())).toEqual(['Recently shown', 'Editors', 'Institute Editors'])
+  })
+
+  it('writes the recent groups down only when the group changes', async () => {
+    initialise(document, listening.signal)
+    selectGroup(2)
+    await written()
+    const writes = vi.spyOn(Persistent, 'set')
+
+    pickArea('fields')
+    await written()
+
+    expect(writes.mock.calls.filter(([key]) => key === 'vperm.recentGroups')).toHaveLength(0)
   })
 
   it('records the group an admin takes', async () => {
