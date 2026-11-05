@@ -6,12 +6,12 @@
 @use 'surfaces/record-form/compatibility/form' as compatibility-form;
 @use 'pick-an-area/compatibility/scaffold';
 @use 'surfaces/record-form/anchor';
-@use 'grant-fields/fields';
-@use 'grant-fields/mark-card';
-@use 'grant-fields/other-kinds';
-@use 'grant-modules/panel';
+@use 'allow-fields/fields';
+@use 'allow-fields/mark-card';
+@use 'allow-fields/other-kinds';
+@use 'allow-modules/panel';
 @use 'mount-branches/panel' as mounts-panel;
-@use 'grant-tables/gate' as tables-gate;
+@use 'allow-tables/gate' as tables-gate;
 @use 'allow-values/choose' as allow-choose;
 @use 'platform/choices-dialog';
 @use 'pick-an-area/frame';

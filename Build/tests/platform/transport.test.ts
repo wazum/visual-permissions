@@ -15,7 +15,7 @@ import {
 import { forgetSessionChecks, sessionChecks } from '../__mocks__/typo3-login-refresh.js'
 import { on } from '#src/platform/bus.js'
 
-const sendWrite = async (): Promise<WriteOutcome> => write(routes.grant_tables, {})
+const sendWrite = async (): Promise<WriteOutcome> => write(routes.allow_tables, {})
 
 describe('the changes the panels ask the backend for', () => {
   let listening: AbortController

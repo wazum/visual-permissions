@@ -11,8 +11,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use Wazum\VisualPermissions\AllowTables\TableCatalogue;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
-use Wazum\VisualPermissions\GrantTables\TableCatalogue;
 use Wazum\VisualPermissions\MountBranches\Pages\MountOrder;
 use Wazum\VisualPermissions\MountBranches\Pages\PageVisibility;
 
