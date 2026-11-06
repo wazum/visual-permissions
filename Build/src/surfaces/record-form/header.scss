@@ -15,6 +15,16 @@
   white-space: nowrap;
 }
 
+.#{contract.$class-type-switch} {
+  flex: none;
+  width: auto;
+
+  > select {
+    width: auto;
+    max-width: 16rem;
+  }
+}
+
 // The language menu has nothing to assign
 [#{contract.$attribute-face}='pick'] .module-docheader-navigation > .module-docheader-column:last-child > * {
   display: none;

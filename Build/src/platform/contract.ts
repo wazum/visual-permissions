@@ -54,6 +54,7 @@ export const attributes = {
   settling: 'data-vperm-settling',
   show: 'data-vperm-show',
   still: 'data-vperm-still',
+  switch: 'data-vperm-switch',
   toggle: 'data-vperm-toggle',
   token: 'data-vperm-token',
   toolbar: 'data-vperm-toolbar',
@@ -144,6 +145,7 @@ export const classes = {
   tableToken: 'vperm-table-token',
   toolbarItem: 'vperm-toolbar-item',
   turning: 'vperm-turning',
+  typeSwitch: 'vperm-type-switch',
   unseenPages: 'vperm-unseen-pages',
   viewAsControls: 'vperm-view-as-controls',
 } as const

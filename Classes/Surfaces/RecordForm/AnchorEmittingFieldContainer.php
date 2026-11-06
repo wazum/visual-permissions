@@ -29,6 +29,8 @@ final class AnchorEmittingFieldContainer extends SingleFieldContainer
         /** @var array{uid?: string|int} $record */
         $record = $this->data['databaseRow'];
         $uid = $record['uid'] ?? '';
+        /** @var array{ctrl?: array{type?: string}, columns?: array<string, array{onChange?: string, label?: string}>} $processedTca */
+        $processedTca = $this->data['processedTca'];
 
         $renderer = new FieldAnchorRenderer();
         $result['html'] = $renderer->wrap(
@@ -39,6 +41,9 @@ final class AnchorEmittingFieldContainer extends SingleFieldContainer
             $this->inlineParent(),
             $this->allows($fieldName),
             $this->choices($fieldName),
+            TypeSwitch::is($processedTca, $fieldName)
+                ? $this->getLanguageService()->sL($processedTca['columns'][$fieldName]['label'] ?? $fieldName)
+                : '',
         );
 
         return $result;

@@ -54,6 +54,22 @@ final class FieldAnchorRendererTest extends TestCase
         self::assertStringNotContainsString(ContractFixture::readMap('dom-attributes', 'attributes')['allows'], $anchored);
     }
 
+    #[Test]
+    public function marksAFieldThatSwitchesTheTypeOfTheRecord(): void
+    {
+        $anchored = (new FieldAnchorRenderer())->wrap('<select></select>', 'tt_content', 'CType', switchLabel: 'Type');
+
+        self::assertStringContainsString(sprintf('%s="Type"', ContractFixture::readMap('dom-attributes', 'attributes')['switch']), $anchored);
+    }
+
+    #[Test]
+    public function marksNoOtherFieldAsASwitch(): void
+    {
+        $anchored = (new FieldAnchorRenderer())->wrap('<input name="title">', 'pages', 'title');
+
+        self::assertStringNotContainsString(ContractFixture::readMap('dom-attributes', 'attributes')['switch'], $anchored);
+    }
+
     // A record of another table is drawn inside the field that holds it, and says which one
     #[Test]
     public function namesTheFieldTheRecordIsHeldBy(): void

@@ -95,6 +95,26 @@ final class AnchorEmittingFieldContainerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function marksTheFieldThatSwitchesTheTypeOfTheRecord(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tt_content.csv');
+
+        $html = $this->renderField('tt_content', 1, 'CType');
+
+        self::assertStringContainsString('data-vperm-switch="Type"', $html);
+    }
+
+    #[Test]
+    public function marksNoOtherFieldAsASwitch(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tt_content.csv');
+
+        $html = $this->renderField('tt_content', 1, 'header');
+
+        self::assertStringNotContainsString('data-vperm-switch', $html);
+    }
+
+    #[Test]
     public function saysWhichListAllowsTheValuesOfAFieldThatAsksForThem(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tt_content.csv');

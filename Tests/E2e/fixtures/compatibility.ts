@@ -19,6 +19,7 @@ const olderSelectors: Readonly<Record<string, string>> = {
   "[title='Copy'], [title='Cut']": '.dropdown-item:text-is("Copy"), .dropdown-item:text-is("Cut")',
   "[title='Re-position content element']": '.dropdown-item:has-text("Re-position content element")',
   '[data-modulemenu-identifier="records"]': '[data-modulemenu-identifier="web_list"]',
+  '[data-vperm-token="pages:link"]': '[data-vperm-token="pages:url"]',
 }
 
 let olderCore: Promise<boolean> | undefined
