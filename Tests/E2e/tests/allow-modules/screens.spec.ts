@@ -16,7 +16,7 @@ test.describe('the modules', () => {
     await matchesSnapshot(page, 'modules-preview')
   })
 
-  test('as they are given', async ({ page }) => {
+  test('on the assign side', async ({ page }) => {
     await page.goto('/typo3/')
     await showPermissions(page, 'modules')
     await page.locator('.vperm-face-preview .vperm-face-bar button').click()
@@ -25,7 +25,7 @@ test.describe('the modules', () => {
     await matchesSnapshot(page, 'modules-pick')
   })
 
-  test('with a module marked to be taken away', async ({ page }) => {
+  test('with a module marked to be disallowed', async ({ page }) => {
     await page.goto('/typo3/')
     await showPermissions(page, 'modules')
     await page.locator(`.vperm-face-preview ${moduleRows}`).first().click()

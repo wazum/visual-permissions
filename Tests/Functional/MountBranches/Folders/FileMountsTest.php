@@ -36,7 +36,7 @@ final class FileMountsTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function takesAwayTheMountTheGroupHoldsWhenAnotherRecordNamesTheSameFolder(): void
+    public function removesTheMountTheGroupHoldsWhenAnotherRecordNamesTheSameFolder(): void
     {
         $this->arrange();
         $this->getConnectionPool()->getConnectionForTable('sys_filemounts')
@@ -147,7 +147,7 @@ final class FileMountsTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function makesNoFileMountToTakeAwayFromAFolderThatHasNone(): void
+    public function makesNoFileMountToRemoveFromAFolderThatHasNone(): void
     {
         $this->arrange();
 

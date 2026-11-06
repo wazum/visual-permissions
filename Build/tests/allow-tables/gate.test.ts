@@ -115,7 +115,7 @@ const anotherRecordOf = (token: string): void => {
 const gates = (): (string | null)[] =>
   [...document.querySelectorAll(`.${classes.tableGate} .callout-body`)].map(said => said.textContent)
 
-describe('the gate a record stands behind while its table is not given', () => {
+describe('the gate a record stands behind while its table is not allowed', () => {
   let listening: AbortController
 
   beforeEach(() => {
@@ -143,7 +143,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     deactivate()
   })
 
-  it('says on the record that the group was not given its table', async () => {
+  it('says on the record that the group is not allowed its table', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -257,7 +257,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     expect(document.querySelector(`.${classes.tableToken}`)?.textContent).toBe('sys_file_reference')
   })
 
-  it('offers to take back a table the group may write', async () => {
+  it('offers to disallow a table the group may write', async () => {
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],
@@ -371,7 +371,7 @@ describe('the gate a record stands behind while its table is not given', () => {
 
   })
 
-  it('offers to give a table the group was not given', async () => {
+  it('offers to allow a table the group is not allowed', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -407,7 +407,7 @@ describe('the gate a record stands behind while its table is not given', () => {
   })
 
   // There is nothing else on this form to decide alongside it
-  it('grants the table when the offer is pressed', async () => {
+  it('allows the table when the offer is pressed', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -427,7 +427,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     })
   })
 
-  it('grants the table once while the first press is still unanswered', async () => {
+  it('allows the table once while the first press is still unanswered', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -448,7 +448,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     expect(sent).toHaveLength(1)
   })
 
-  it('grants the table again once the backend turned the first press down', async () => {
+  it('allows the table again once the backend turned the first press down', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -552,7 +552,7 @@ describe('the gate a record stands behind while its table is not given', () => {
   })
 
   // Whatever wrote it, the table it stands over may be the group's own by now
-  it('turns to taking the table back once the group has been given it', async () => {
+  it('turns to disallowing the table once the group is allowed it', async () => {
     recordOf('sys_file_reference:title')
     initialise(listening.signal)
     pickFieldsToGive()
@@ -715,7 +715,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     expect(document.querySelector(`.${classes.tableAllow}`)?.textContent).toBe('')
   })
 
-  it('says a table was handed down, and offers no deed on it', async () => {
+  it('says a table is inherited, and offers no deed on it', async () => {
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],
@@ -745,7 +745,7 @@ describe('the gate a record stands behind while its table is not given', () => {
     expect(document.querySelector(`.${classes.tableDisallow}`)).toBeNull()
   })
 
-  it('says a table the group gives itself is handed down too, and offers no deed on it', async () => {
+  it('says a table the group allows itself is inherited too, and offers no deed on it', async () => {
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],

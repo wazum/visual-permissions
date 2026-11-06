@@ -18,7 +18,7 @@ export const unseenIds = new Set<string>()
 export const isStorageRoot = (identifier: string): boolean =>
   decodeURIComponent(identifier).endsWith(':/') || Number(identifier) < 1
 
-// Only a branch root can be taken away; everything below one is carried by it
+// Only a branch root can be removed; everything below one is carried by it
 export const actionRow = (page: string): boolean =>
   mountedIds.has(page) && !inheritedIds.has(page)
 

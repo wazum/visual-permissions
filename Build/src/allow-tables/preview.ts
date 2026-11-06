@@ -10,8 +10,8 @@ import { rowOf } from '../surfaces/record-form/records.js'
 export function initialise(signal: AbortSignal): void {
   registerTables({
     hide: (doc, { tables, named }, face) => {
-      // The group is given no record of a table they may not write, but the side that gives
-      // tables away has still to name the record the decision is about
+      // The group gets no record of a table they may not write, but the assign side
+      // has still to name the record the decision is about
       const home = face === 'preview' ? '.form-irre-object' : '.form-group'
 
       Object.entries(tables)

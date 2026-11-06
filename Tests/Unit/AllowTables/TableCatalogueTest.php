@@ -20,7 +20,7 @@ final class TableCatalogueTest extends TestCase
     }
 
     #[Test]
-    public function saysEveryTableCanBeGranted(): void
+    public function saysEveryTableCanBeAllowed(): void
     {
         self::assertSame(
             [

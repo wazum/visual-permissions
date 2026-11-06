@@ -12,8 +12,8 @@ test.beforeEach(async ({ page }) => {
   await forgetSession(page)
 })
 
-// The fields of such a record are nobody's to give, and the record itself has to say why
-test('a record of a table the group was not given says so, and offers the table', async ({ page }) => {
+// The fields of such a record cannot be allowed, and the record itself has to say why
+test('a record of a table the group is not allowed says so, and offers the table', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -34,7 +34,7 @@ test('a record of a table the group was not given says so, and offers the table'
   await expect(held.locator('.vperm-table-allow')).toHaveText('Allow "File Reference"')
 })
 
-test('a record of a table the group was given offers to take the table back', async ({ page }) => {
+test('a record of a table the group is allowed offers to disallow it', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
   await pickFirstGroup(page)
@@ -97,7 +97,7 @@ test('the form the group gets says why a record of that table is missing', async
     .toHaveText('This is empty for the group: it may not edit "File Reference"')
 })
 
-// Tables are given where the fields are, never on the form as the group gets it
+// Tables are allowed where the fields are, never on the form as the group gets it
 test('the form the group gets offers no table a missing record belongs to', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)

@@ -139,7 +139,7 @@ export function render(doc: Document, menu: Element): void {
     apply: () => {
       const changed = ownIn(pick.scroll).filter(row => verdictOf(row) !== was.get(row))
 
-      // Only a module the group has not got can be picked here; every change is a grant
+      // Only a module the group has not got can be picked here; every change allows one
       write(changed.map(row => ({ module: nameOf(row), allow: true })))
     },
   })
@@ -268,7 +268,7 @@ function fillPreview(
 
     const clone = plain(row)
 
-    // Only this group's grants can be revoked here; the rest tracks origin
+    // Only what this group allows itself can be disallowed here; the rest tracks origin
     if (clone.getAttribute(attributes.verdict) === picked) {
       answersTo(clone, () => {
         clone.classList.toggle(classes.faceMarked)
@@ -291,7 +291,7 @@ function fillPick(into: HTMLElement, menu: Element, marked: () => void): void {
     strip(row)
     was.set(row, verdictOf(row))
 
-    // This face cannot pick what the group already had taken away on the preview
+    // This face cannot pick what the group already had disallowed on the preview
     if (isReachable(verdictOf(row))) {
       row.setAttribute('aria-disabled', 'true')
     }
@@ -359,7 +359,7 @@ function marked(where: HTMLElement): Element[] {
   return [...where.querySelectorAll(`.${classes.faceMarked}`)]
 }
 
-// What this group decides itself can be picked or dropped here; inherited grants belong to the subgroup that gave them
+// What this group decides itself can be picked or dropped here; what is inherited belongs to the subgroup that allows it
 function ownIn(where: HTMLElement): Element[] {
   return [...where.querySelectorAll(rows)].filter(row => isOwn(verdictOf(row)))
 }

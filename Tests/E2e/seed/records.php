@@ -49,11 +49,11 @@ $group = static fn(int $uid, string $title, string $subgroup = '', string $modul
     'subgroup' => $subgroup,
     'groupMods' => $modules,
     'db_mountpoints' => '',
-    // a group with subgroups grants nothing itself, so what it has is told apart as inherited
+    // a group with subgroups allows nothing itself, so what it has is told apart as inherited
     'tables_select' => '' === $subgroup ? 'pages,tt_content' : '',
     'tables_modify' => '' === $subgroup ? 'pages,tt_content' : '',
-    // core marks the title of a page as everyone's, so a grant of it says nothing; nav_title
-    // is one a group is given, and the suite needs a field the group may edit
+    // core marks the title of a page as everyone's, so allowing it says nothing; nav_title
+    // is one a group is allowed, and the suite needs a field the group may edit
     'non_exclude_fields' => '' === $subgroup ? 'pages:nav_title,tt_content:header' : '',
     'explicit_allowdeny' => '' === $subgroup ? 'tt_content:CType:text' : '',
 ];
@@ -82,7 +82,7 @@ return [
     'be_groups' => [
         $group(5, 'Aliquam', '', 'web_layout'),
         $group(6, 'Consectetur', '', 'web_list'),
-        // a grant of theirs is inherited rather than their own; do not override
+        // what they allow is inherited rather than their own; do not override
         $group(7, 'Dolor', '5'),
         $group(8, 'Elit', '6,7'),
     ],

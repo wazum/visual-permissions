@@ -2,13 +2,13 @@ import { describe, expect, it } from 'vitest'
 import { fieldOf, isReachable, tableOf } from '#src/platform/vocabulary.js'
 
 describe('what a group reaches', () => {
-  it('counts a grant of its own and one from behind it', () => {
+  it('counts what it allows itself and what a group behind it allows', () => {
     expect(isReachable('allowed')).toBe(true)
     expect(isReachable('allowedAndInherited')).toBe(true)
     expect(isReachable('inherited')).toBe(true)
   })
 
-  it('does not count what nobody granted', () => {
+  it('does not count what nobody allowed', () => {
     expect(isReachable('denied')).toBe(false)
   })
 

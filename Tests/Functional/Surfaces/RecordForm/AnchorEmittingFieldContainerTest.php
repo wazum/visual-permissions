@@ -182,7 +182,7 @@ final class AnchorEmittingFieldContainerTest extends FunctionalTestCase
         self::assertStringNotContainsString('form-label', $html);
     }
 
-    // Only an administrator gives permissions away; an editor's form stays as core draws it
+    // Only an administrator assigns permissions; an editor's form stays as core draws it
     #[Test]
     public function listsNoFieldsOfOtherKindsForAnEditor(): void
     {

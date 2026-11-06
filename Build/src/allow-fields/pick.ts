@@ -3,15 +3,15 @@ import { onFormReady } from '../surfaces/record-form/form.js'
 import { attributes, classes } from '../platform/contract.js'
 import { labelOf } from '../platform/labels.js'
 import { getState, subscribe } from '../platform/session.js'
-import { dropped, givable, isReachable, picked, reachable } from '../platform/vocabulary.js'
+import { allowable, dropped, isReachable, picked, reachable } from '../platform/vocabulary.js'
 import type { Draft } from './draft.js'
 
 const anyOf = (verdicts: readonly string[]): string => verdicts
   .map(verdict => `[${attributes.verdict}='${verdict}']:not([${attributes.outOfReach}])`)
   .join(',')
 
-// One side is about the fields the group could be given, the other about the ones they hold
-const shownOn = (face: string): string => anyOf(face === 'pick' ? givable : reachable)
+// One side is about the fields the group could be allowed, the other about the ones they hold
+const shownOn = (face: string): string => anyOf(face === 'pick' ? allowable : reachable)
 
 // And on each, only what that side decides answers to a press
 const decides = (face: string): string => anyOf([face === 'pick' ? dropped : picked])

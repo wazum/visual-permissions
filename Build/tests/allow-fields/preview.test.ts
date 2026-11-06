@@ -27,7 +27,7 @@ describe('the fields of the form as the group sees it', () => {
     deactivate()
   })
 
-  it('takes a field the group was not given off the form', () => {
+  it('takes a field the group is not allowed off the form', () => {
     drawForm(row('tt_content:header', 'notApplicable'), row('tt_content:layout', 'denied'))
 
     activate()
@@ -101,7 +101,7 @@ describe('the fields of the form as the group sees it', () => {
     expect(document.querySelector(`.${classes.nothingTheirs}`)?.textContent).toBe('')
   })
 
-  it('gives the whole form back on the side where the fields are given', () => {
+  it('gives the whole form back on the assign side', () => {
     drawForm(row('tt_content:header', 'notApplicable'), row('tt_content:layout', 'denied'))
 
     activate()

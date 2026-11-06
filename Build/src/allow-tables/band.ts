@@ -23,7 +23,7 @@ export function drawBand(doc: Document, { groupId, table, called, verdict }: Ban
   const body = say(doc, 'callout-body', labelOf(verdictLabel(verdict)))
   band.append(body)
 
-  // Only the subgroup changes what it handed down, and nobody can give an administrator's table
+  // Only the subgroup changes what it passes on, and an administrator's table cannot be allowed
   if (!fromSubgroup && !nobodys) {
     const deed = button(
       doc,

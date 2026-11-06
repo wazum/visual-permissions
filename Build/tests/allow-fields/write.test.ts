@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { writeFields } from '#src/allow-fields/write.js'
 import { forget, sent } from '../__mocks__/typo3-ajax-request.js'
 
-describe('the fields a group is given', () => {
+describe('the fields a group is allowed', () => {
   beforeEach(() => {
     forget()
   })

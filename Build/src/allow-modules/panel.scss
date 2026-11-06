@@ -63,14 +63,14 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
   }
 }
 
-// A module this group grants itself is removed by clicking it, so it says so under the pointer.
+// A module this group allows itself is disallowed by clicking it, so it says so under the pointer.
 .#{contract.$class-face-preview}
   .#{contract.$class-face-scroll}
   [#{contract.$attribute-verdict}='#{contract.$verdict-allowed}'] {
   cursor: pointer;
 }
 
-// What a subgroup grants cannot be taken away here, and says as much.
+// What a subgroup allows cannot be disallowed here, and says as much.
 .#{contract.$class-face-preview} .#{contract.$class-face-scroll} {
   [#{contract.$attribute-verdict}='#{contract.$verdict-inherited}'],
   [#{contract.$attribute-verdict}='#{contract.$verdict-allowed-and-inherited}'] {
@@ -126,8 +126,8 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
 }
 
 .#{contract.$class-face-pick} {
-  // What this group decides itself can be picked. What a subgroup gave it cannot, and
-  // neither can what nobody may be given.
+  // What this group decides itself can be picked. What a subgroup allows cannot, and
+  // neither can what cannot be allowed for a group.
   [#{contract.$attribute-verdict}='#{contract.$verdict-allowed}']:not([aria-disabled='true']),
   [#{contract.$attribute-verdict}='#{contract.$verdict-denied}'] {
     cursor: pointer;
@@ -138,7 +138,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
     cursor: not-allowed;
   }
 
-  // A grant the group already had is taken away on the preview, so this face only adds.
+  // What the group already has is disallowed on the preview, so this face only allows.
   [aria-disabled='true'] {
     cursor: not-allowed;
   }
@@ -160,7 +160,7 @@ $column: ':has(> #modulemenu, > .#{contract.$class-panel-card} > #modulemenu)';
   // A row waiting for the deed says what it is waiting for: the fill alone reads the same
   // as one the group may open already, and that one is not picked but disabled. The row
   // lays its parts out in a line, so the word takes the end of it, where the note saying
-  // where an inherited grant comes from sits on the other face.
+  // where an inherited module comes from sits on the other face.
   [#{contract.$attribute-verdict}='#{contract.$verdict-allowed}']:not([aria-disabled='true'])::after {
     content: var(--vperm-queued-note, '');
     flex: none;

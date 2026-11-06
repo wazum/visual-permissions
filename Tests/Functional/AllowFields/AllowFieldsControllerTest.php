@@ -41,7 +41,7 @@ final class AllowFieldsControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function refusesToGrantWhatCannotBeGranted(): void
+    public function refusesToAllowWhatCannotBeAllowed(): void
     {
         $response = $this->get(AllowFieldsController::class)->write($this->asked([
             'group' => 10,
@@ -53,7 +53,7 @@ final class AllowFieldsControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function takesAwayWhatCanNoLongerBeGranted(): void
+    public function disallowsWhatCanNoLongerBeAllowed(): void
     {
         $response = $this->get(AllowFieldsController::class)->write($this->asked([
             'group' => 10,

@@ -99,7 +99,7 @@ describe('the modules scope', () => {
     })
   })
 
-  // Painting a late answer would show another group's grants under the wrong name
+  // Painting a late answer would show what another group is allowed under the wrong name
   it('leaves the rows alone when an answer older than the newest arrives last', async () => {
     menu('web_layout', 'records', 'site_configuration')
     initialise(document, listening.signal)

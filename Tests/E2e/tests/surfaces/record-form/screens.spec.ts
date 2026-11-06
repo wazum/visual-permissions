@@ -32,7 +32,7 @@ test.describe('the records and fields', () => {
     await matchesSnapshot(page, 'record-preview')
   })
 
-  test('a record with its fields to give', async ({ page }) => {
+  test('a record with its fields to allow', async ({ page }) => {
     await openRecordForGroup(page, contentRecord)
     await turnToFields(page)
     await expect(moduleContent(page).locator('.vperm-table-gate').first()).toBeVisible()
@@ -40,7 +40,7 @@ test.describe('the records and fields', () => {
     await matchesSnapshot(page, 'record-pick')
   })
 
-  test('a record with a field marked to be given', async ({ page }) => {
+  test('a record with a field marked to be allowed', async ({ page }) => {
     await openRecordForGroup(page, contentRecord)
     await turnToFields(page)
     await moduleContent(page).locator('[data-vperm-verdict="denied"]:not([data-vperm-out-of-reach])').first().click()

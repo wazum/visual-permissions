@@ -131,9 +131,9 @@ final class InspectControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function namesTheSubgroupsThatGiveAField(): void
+    public function namesTheSubgroupsThatAllowAField(): void
     {
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/fields_given_by_subgroups.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/fields_allowed_by_subgroups.csv');
 
         $request = (new ServerRequest('https://example.com/typo3/ajax/visual-permissions/inspect'))
             ->withQueryParams(['group' => '20', 'tables' => ['pages']]);
@@ -149,7 +149,7 @@ final class InspectControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function reportsAModuleTheGroupIsGranted(): void
+    public function reportsAModuleTheGroupIsAllowed(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_chain.csv');
 
@@ -238,7 +238,7 @@ final class InspectControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function reportsAModuleThatOnlyASubgroupGrants(): void
+    public function reportsAModuleThatOnlyASubgroupAllows(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_chain.csv');
 
@@ -254,7 +254,7 @@ final class InspectControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function reportsAModuleNoGroupCanBeGivenAsAdministratorsOnly(): void
+    public function reportsAModuleNoGroupCanBeAllowedAsAdministratorsOnly(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_chain.csv');
 

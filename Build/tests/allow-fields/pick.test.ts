@@ -43,7 +43,7 @@ describe('picking the fields a group may edit', () => {
   })
 
   // The field is the control: you press the field itself, never a checkbox beside it
-  it('marks a field to be given when it is pressed', () => {
+  it('marks a field to be allowed when it is pressed', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'))
 
@@ -54,7 +54,7 @@ describe('picking the fields a group may edit', () => {
     expect(fieldOf('tt_content:layout').classList.contains(classes.faceMarked)).toBe(true)
   })
 
-  it('marks a field to be given when Enter is pressed on it', () => {
+  it('marks a field to be allowed when Enter is pressed on it', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'))
 
@@ -75,7 +75,7 @@ describe('picking the fields a group may edit', () => {
     expect(fieldOf('tt_content:layout').getAttribute('tabindex')).toBe('0')
   })
 
-  it('offers the fields of a table the group was just given', () => {
+  it('offers the fields of a table the group was just allowed', () => {
     initialise(draft, listening.signal)
     drawForm(row('sys_file_reference:title', 'denied').replace('class="vperm-anchor"', `class="vperm-anchor" ${attributes.outOfReach}`))
 
@@ -100,7 +100,7 @@ describe('picking the fields a group may edit', () => {
     expect(fieldOf('tt_content:assets').classList.contains(classes.faceMarked)).toBe(false)
   })
 
-  it('leaves a field that holds a record alone when nobody can be given it', () => {
+  it('leaves a field that holds a record alone when it cannot be allowed for a group', () => {
     initialise(draft, listening.signal)
     drawForm(around(row('sys_file_reference:title', 'denied'), 'tt_content:assets', 'notApplicable'))
 
@@ -111,7 +111,7 @@ describe('picking the fields a group may edit', () => {
     expect(fieldOf('tt_content:assets').classList.contains(classes.faceMarked)).toBe(false)
   })
 
-  it('offers no switch on a field nobody can be given', () => {
+  it('offers no switch on a field that cannot be allowed for a group', () => {
     initialise(draft, listening.signal)
     drawForm(around(row('sys_file_reference:title', 'denied'), 'tt_content:assets', 'notApplicable'))
 
@@ -223,7 +223,7 @@ describe('picking the fields a group may edit', () => {
   })
 
   // Space is what a toggle answers to, and the page must not scroll under it
-  it('marks a field to be given when space is pressed on it', () => {
+  it('marks a field to be allowed when space is pressed on it', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'))
 
@@ -249,7 +249,7 @@ describe('picking the fields a group may edit', () => {
     expect(fieldOf('tt_content:layout').classList.contains(classes.faceMarked)).toBe(false)
   })
 
-  it('marks a field to be taken away when it is pressed on the side that shows what they have', () => {
+  it('marks a field to be disallowed when it is pressed on the side that shows what they have', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:header', 'allowed'))
 
@@ -278,7 +278,7 @@ describe('picking the fields a group may edit', () => {
     expect(theirs.getAttribute('aria-checked')).toBe('false')
   })
 
-  // A field reached through a subgroup is that group's to take away, not this one's
+  // A field reached through a subgroup is that group's to disallow, not this one's
   it('leaves a field the group has through a subgroup alone', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:header', 'inherited'))
@@ -488,8 +488,8 @@ describe('picking the fields a group may edit', () => {
     expect(fieldOf('sys_file_reference:title').classList.contains(classes.faceMarked)).toBe(false)
   })
 
-  // Nobody can be given a field everyone already has, so pressing it decides nothing
-  it('leaves a field nobody can be given alone', () => {
+  // A field everyone already has cannot be allowed, so pressing it decides nothing
+  it('leaves a field alone that cannot be allowed for a group', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:header', 'notApplicable'), row('tt_content:editlock', 'adminOnly'))
 
@@ -538,7 +538,7 @@ describe('picking the fields a group may edit', () => {
     expect(fieldOf('tt_content:layout').getAttribute('aria-checked')).toBe('false')
   })
 
-  it('marks every field of its own the tab holds to be given at once', () => {
+  it('marks every field of its own the tab holds to be allowed at once', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:layout', 'denied'), row('tt_content:header', 'allowed'), row('tt_content:date', 'denied'))
 
@@ -550,7 +550,7 @@ describe('picking the fields a group may edit', () => {
       .toStrictEqual(['tt_content:layout', 'tt_content:date'])
   })
 
-  it('disables the grant button of a tab with nothing to grant', () => {
+  it('disables the allow button of a tab with nothing to allow', () => {
     initialise(draft, listening.signal)
     drawForm(row('tt_content:header', 'allowed'))
 

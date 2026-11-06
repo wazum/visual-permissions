@@ -24,7 +24,7 @@ export function registerFields(part: PreviewPart, signal: AbortSignal): void {
   signal.addEventListener('abort', () => { delete parts.fields })
 }
 
-// Draws the form as the group gets it: what they were not given is off the screen, and so is
+// Draws the form as the group gets it: what they are not allowed is off the screen, and so is
 // a section or a tab with nothing of theirs left in it. Every other state gives it all back.
 export function drawPreview(doc: Document, judgement: Judgement): void {
   doc.querySelectorAll(`.${classes.nothingTheirs}, .${classes.tableNote}`)
@@ -63,7 +63,7 @@ export function drawPreview(doc: Document, judgement: Judgement): void {
 
   openFirstVisibleTab(doc)
 
-  // The side that gives fields away says why a record is bare on the record itself, not here
+  // The assign side says why a record is bare on the record itself, not here
   if (face === 'preview') {
     sayWhenEmpty(doc, judgement)
   }

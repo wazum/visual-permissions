@@ -21,10 +21,10 @@ test.beforeEach(async ({ page }) => {
 test('picking the modules area turns the panel to what the group may open', async ({ page }) => {
   await showModules(page)
 
-  const granted = page.locator(`${preview} ${rows}`).first()
+  const allowed = page.locator(`${preview} ${rows}`).first()
 
-  await expect(granted).toBeAttached()
-  await expect(granted).toHaveAttribute('data-vperm-verdict', 'allowed')
+  await expect(allowed).toBeAttached()
+  await expect(allowed).toHaveAttribute('data-vperm-verdict', 'allowed')
   await expect(page.locator(menu)).toHaveAttribute('inert', '')
 })
 
@@ -39,7 +39,7 @@ test('the backend gets its own module menu back when the area is left', async ({
   await expect(page.locator(menu)).not.toHaveAttribute('inert', '')
 })
 
-test('asking to add modules turns the panel to every module there is', async ({ page }) => {
+test('asking to allow modules turns the panel to every module there is', async ({ page }) => {
   await showModules(page)
   const granted = await page.locator(`${preview} ${rows}`).count()
 
@@ -63,7 +63,7 @@ test('the list of every module scrolls inside its face', async ({ page }) => {
     .toBeGreaterThan(0)
 })
 
-test('a module marked to be added waits for the deed to be asked for', async ({ page }) => {
+test('a module marked to be allowed waits for the deed to be asked for', async ({ page }) => {
   await showModules(page)
   await page.locator(`${preview} .vperm-face-bar button`).click()
 

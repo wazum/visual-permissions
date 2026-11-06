@@ -75,7 +75,7 @@ test('a page content type the group may use is ticked', async ({ page, databaseN
   await expect(dialog.getByRole('checkbox', { name: 'Header Only' })).not.toBeChecked()
 })
 
-test('a page content type ticked and added is one the group may use', async ({ page, databaseNumber }) => {
+test('a page content type ticked and allowed is one the group may use', async ({ page, databaseNumber }) => {
   groupAllows(databaseNumber)
 
   await page.goto('/typo3/')
@@ -103,7 +103,7 @@ test('a page content type ticked and added is one the group may use', async ({ p
   await expect(dialog.getByRole('checkbox', { name: 'Text & Media' })).toBeChecked()
 })
 
-test('a page type ticked and added is one the group may create', async ({ page, databaseNumber }) => {
+test('a page type ticked and allowed is one the group may create', async ({ page, databaseNumber }) => {
   groupCreates(databaseNumber)
 
   await page.goto('/typo3/')

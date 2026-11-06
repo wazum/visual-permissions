@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { writeTable } from '#src/allow-tables/write.js'
 import { forget, sent } from '../__mocks__/typo3-ajax-request.js'
 
-describe('the tables a group is given', () => {
+describe('the tables a group is allowed', () => {
   beforeEach(() => {
     forget()
   })

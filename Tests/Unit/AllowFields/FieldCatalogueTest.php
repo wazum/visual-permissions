@@ -22,7 +22,7 @@ final class FieldCatalogueTest extends TestCase
     }
 
     #[Test]
-    public function saysWhichOfATablesFieldsCanBeGranted(): void
+    public function saysWhichOfATablesFieldsCanBeAllowed(): void
     {
         self::assertSame(
             [
@@ -34,7 +34,7 @@ final class FieldCatalogueTest extends TestCase
         );
     }
 
-    // Field is for administrators only; do not grant to groups or hide it
+    // Field is for administrators only; do not allow it for groups or hide it
     #[Test]
     public function saysAFieldHiddenFromEveryoneButAdministratorsIsTheirsAlone(): void
     {
@@ -49,7 +49,7 @@ final class FieldCatalogueTest extends TestCase
     }
 
     #[Test]
-    public function saysAFieldNobodyEditsIsNobodysToGrant(): void
+    public function saysAFieldNobodyEditsIsNobodysToAllow(): void
     {
         $GLOBALS['TCA'] = ['pages' => ['columns' => [
             'layout' => ['exclude' => true, 'config' => ['type' => 'select', 'readOnly' => true]],

@@ -19,7 +19,7 @@ test.describe('the page mounts', () => {
     await matchesSnapshot(page, 'mounts-preview')
   })
 
-  test('as they are given', async ({ page }) => {
+  test('on the assign side', async ({ page }) => {
     await page.goto('/typo3/module/web/layout')
     await showTree(page)
     await showPermissions(page, 'pageMounts')
@@ -40,7 +40,7 @@ test.describe('the folder mounts', () => {
     await matchesSnapshot(page, 'folders-preview')
   })
 
-  test('as they are given', async ({ page, databaseNumber }) => {
+  test('on the assign side', async ({ page, databaseNumber }) => {
     groupFileMounts(databaseNumber, 1)
     await page.goto('/typo3/module/file/list')
     await showPermissions(page, 'fileMounts')

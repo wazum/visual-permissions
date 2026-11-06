@@ -65,7 +65,7 @@ export async function showBranches(
     }
   })
 
-  // Only a branch root is a mount of the group's, so only that one can be taken away.
+  // Only a branch root is a mount of the group's, so only that one can be removed.
   tree.addEventListener('typo3:tree:node-selected', event => {
     // This tree is the panel's own; a row click never opens a page elsewhere
     event.stopPropagation()
@@ -150,7 +150,7 @@ function register(named: string, base: typeof Tree): void {
         painted.push(classes.mountContext)
       }
 
-      // This group cannot take away the branch; it is inherited from a subgroup
+      // This group cannot remove the branch; it is inherited from a subgroup
       if (inheritedIds.has(node.identifier)) {
         painted.push(classes.mountInherited)
       }

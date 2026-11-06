@@ -37,7 +37,7 @@ final class AllowFileOperationsControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function refusesToGrantAFileOperationThatIsNotThere(): void
+    public function refusesToAllowAFileOperationThatIsNotThere(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_values.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

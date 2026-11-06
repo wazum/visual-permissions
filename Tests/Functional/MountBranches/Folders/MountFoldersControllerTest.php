@@ -78,7 +78,7 @@ final class MountFoldersControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function takesAwayAFolderNoFileMountNamesWithoutATitle(): void
+    public function removesAFolderNoFileMountNamesWithoutATitle(): void
     {
         $this->arrange();
 

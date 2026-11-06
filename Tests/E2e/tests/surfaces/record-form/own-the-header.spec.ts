@@ -57,7 +57,7 @@ test('the assign side offers no language menu', async ({ page }) => {
   await expect(languages).toBeHidden()
 })
 
-// A record of a table the group may not write has no field to give, and no other side
+// A record of a table the group may not write has no field to allow, and no other side
 test('a record the group cannot reach offers no way to the fields', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
@@ -140,7 +140,7 @@ test('the header of a form we have taken over names the group and keeps the way 
   await expect(form.locator(controls).filter({ visible: true }).nth(1)).toBeVisible()
 })
 
-// The area opens showing what the group has, and the fields are given on the other side
+// The area opens showing what the group has, and the fields are allowed on the other side
 test('the form shows what the group gets, and every field on the other side', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)

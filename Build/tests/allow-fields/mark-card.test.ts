@@ -133,7 +133,7 @@ describe('a field\'s mark', () => {
     expect(markOf('pages:title')?.getAttribute('aria-expanded')).toBe('true')
   })
 
-  it('names the groups that give an inherited field, and shows the one pressed', async () => {
+  it('names the groups that allow an inherited field, and shows the one pressed', async () => {
     judged({ 'pages:nav_title': 'inherited' }, { 'pages:nav_title': [6, 5] })
     drawForm(row('pages:nav_title', 'inherited'))
     await vi.waitFor(() => { expect(markOf('pages:nav_title')).not.toBeNull() })
@@ -155,7 +155,7 @@ describe('a field\'s mark', () => {
     expect(cardOf().hasAttribute('data-open')).toBe(false)
   })
 
-  it('names no group for a field the group gives itself', async () => {
+  it('names no group for a field the group allows itself', async () => {
     judged({ 'pages:title': 'allowed', 'pages:nav_title': 'inherited' }, { 'pages:nav_title': [6] })
     drawForm(row('pages:title', 'allowed'), row('pages:nav_title', 'inherited'))
     await vi.waitFor(() => { expect(markOf('pages:title')).not.toBeNull() })

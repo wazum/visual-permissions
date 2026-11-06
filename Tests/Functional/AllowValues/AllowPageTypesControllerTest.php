@@ -41,7 +41,7 @@ final class AllowPageTypesControllerTest extends FunctionalTestCase
     /**
      * @return array<string, array{string}>
      */
-    public static function pageTypesNoGroupCanBeGiven(): array
+    public static function pageTypesNoGroupCanBeAllowed(): array
     {
         return [
             'one that is not there' => ['9999'],
@@ -50,8 +50,8 @@ final class AllowPageTypesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
-    #[DataProvider('pageTypesNoGroupCanBeGiven')]
-    public function refusesToGrantAPageType(string $pageType): void
+    #[DataProvider('pageTypesNoGroupCanBeAllowed')]
+    public function refusesToAllowAPageType(string $pageType): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_values.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

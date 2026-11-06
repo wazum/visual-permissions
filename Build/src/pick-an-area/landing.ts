@@ -15,7 +15,7 @@ export function initialise(doc: Document, signal: AbortSignal): void {
   let landedFor: string | null = null
 
   const show = (state: SessionState): void => {
-    // Folded row in modules scope is a grant nobody could give; do not narrow there
+    // A folded row in the modules scope cannot be allowed for a group; do not narrow there
     narrowMenu(doc, state.active && state.area !== 'modules')
 
     // Only switching the mode on or picking an area moves the admin; a screen they open stays
