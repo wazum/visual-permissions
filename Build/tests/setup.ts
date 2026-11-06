@@ -41,6 +41,7 @@ declare global {
 const published = [
   ...Object.values(routes),
   'page_tree_browser_configuration',
+  'page_tree_rootline',
   'filestorage_tree_rootline',
   'filestorage_tree_filter',
   'switch_user',

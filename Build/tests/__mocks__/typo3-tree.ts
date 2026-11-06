@@ -9,20 +9,38 @@ export interface PreparedNode {
   readonly identifier: string
   readonly depth: number
   readonly __parents?: string[]
+  loaded?: boolean
   __hidden?: boolean
   __expanded?: boolean
 }
 
 export class Tree extends HTMLElement {
-  public setup: unknown = null
+  public setup: { rootlineUrl?: string } | null = null
 
   public nodes: PreparedNode[] = []
+
+  public childrenOf: Record<string, PreparedNode[]> = {}
 
   public allowNodeEdit = true
 
   public allowNodeDrag = true
 
   public allowNodeSorting = true
+
+  public get settings(): { rootlineUrl?: string } {
+    return this.setup ?? {}
+  }
+
+  public async loadData(): Promise<void> {
+    await Promise.resolve()
+  }
+
+  public async loadChildren(node: PreparedNode): Promise<void> {
+    await Promise.resolve()
+    const children = this.prepareNodes(this.childrenOf[node.identifier] ?? [])
+    this.nodes.splice(this.nodes.indexOf(node) + 1, 0, ...children)
+    node.loaded = true
+  }
 
   public getNodeClasses(node: TreeNode): string[] {
     return node.checked === true ? ['node', 'node-selected'] : ['node']

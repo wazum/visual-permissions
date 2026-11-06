@@ -1,6 +1,6 @@
 import { type Page } from '@playwright/test'
 import { expect, test } from '../../fixtures/test.js'
-import { groupMounts, shownToNobody } from '../../fixtures/mounts.js'
+import { fileMountOn, groupFileMounts, groupMounts, shownToNobody } from '../../fixtures/mounts.js'
 import { showTree } from '../../fixtures/page-tree.js'
 import { forgetSession } from '../../fixtures/session.js'
 import { verifyIfAsked } from '../../fixtures/sudo-mode.js'
@@ -9,6 +9,7 @@ import { showPermissions } from '../../fixtures/visual-mode.js'
 const mounts = '.vperm-frame[data-vperm-area="pageMounts"]'
 const preview = `${mounts} .vperm-face-preview`
 const pick = `${mounts} .vperm-face-pick`
+const folders = '.vperm-frame[data-vperm-area="fileMounts"]'
 
 // The preview shows the way down to a mount too, so the branch is the row neither above nor
 // below one
@@ -122,6 +123,31 @@ test('asking for the deed takes the marked branch away', async ({ page }) => {
   await expect.poll(() => sent.length, { message: `the deed never reached the backend; seen: ${posted.join(' | ')}` })
     .toBeGreaterThan(0)
   await expect(tally, 'the panel came back with the same branches').not.toHaveText(before ?? '')
+})
+
+test('a page mounted deeper than the tree first loads stands in the preview', async ({ page, databaseNumber }) => {
+  groupMounts(databaseNumber, 31)
+
+  await showMounts(page)
+
+  await expect(page.locator(`${preview} ${mounted}[data-id="31"]`)).toBeVisible()
+})
+
+test('a mount on a page that no longer exists leaves the other mounts in the preview', async ({ page, databaseNumber }) => {
+  groupMounts(databaseNumber, 2, 31)
+
+  await showMounts(page)
+
+  await expect(page.locator(`${preview} ${mounted}[data-id="31"]`)).toBeVisible()
+})
+
+test('a mount on a folder that no longer exists leaves the other mounts in the preview', async ({ page, databaseNumber }) => {
+  groupFileMounts(databaseNumber, fileMountOn(databaseNumber, '1:/removed/'), 1)
+
+  await page.goto('/typo3/module/file/list')
+  await showPermissions(page, 'fileMounts')
+
+  await expect(page.locator(`${folders} .vperm-face-preview .node`, { hasText: 'campaign' })).toBeVisible()
 })
 
 test('a mounted page the group cannot see links to its page permissions', async ({ page, databaseNumber }) => {

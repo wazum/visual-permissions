@@ -29,6 +29,17 @@ export const shownToNobody = (databaseNumber: number, page: number): void => {
   }
 }
 
+export const fileMountOn = (databaseNumber: number, folder: string): number => {
+  const database = opened(databaseNumber)
+
+  try {
+    return Number(database.prepare('INSERT INTO sys_filemounts (pid, title, identifier) VALUES (0, ?, ?)')
+      .run(folder, folder).lastInsertRowid)
+  } finally {
+    database.close()
+  }
+}
+
 export const groupFileMounts =(databaseNumber: number, ...mounts: number[]): void => {
   const database = opened(databaseNumber)
 

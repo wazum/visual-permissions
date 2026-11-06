@@ -21,7 +21,7 @@ export const pages: Kind = {
   rootedAt: async () => {
     const response = await new AjaxRequest(ajaxUrl('page_tree_browser_configuration')).get()
 
-    return response.resolve<TreeConfiguration>()
+    return { ...await response.resolve<TreeConfiguration>(), rootlineUrl: ajaxUrl('page_tree_rootline') }
   },
   write: async (groupId, branches, mount) => write(routes.mount_pages, {
     group: groupId,
