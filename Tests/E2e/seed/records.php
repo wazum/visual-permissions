@@ -81,7 +81,7 @@ return [
     ],
     'be_groups' => [
         $group(5, 'Faculty Editors', '', 'web_layout'),
-        $group(6, 'News Office', '', 'web_list'),
+        $group(6, 'News Office', '', 'records'),
         // what they allow is inherited rather than their own; do not override
         $group(7, 'Research Staff', '5'),
         $group(8, 'Student Services', '6,7'),
