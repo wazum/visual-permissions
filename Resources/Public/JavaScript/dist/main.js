@@ -1358,7 +1358,7 @@ function Io(e, t) {
     o() && u.preventDefault();
   }, s = (u) => {
     u.target.closest(`.${l.anchor}`) !== null && i(u);
-  }, a = `.${l.anchor} :is(input,select,textarea,button,[contenteditable]):not(.${l.tableGate} *):not(.${l.mark})`, c = () => {
+  }, a = `.${l.anchor} :is(a,input,select,textarea,button,[contenteditable]):not(.${l.tableGate} *):not(.${l.mark})`, c = () => {
     const u = o();
     n?.querySelectorAll(a).forEach((p) => {
       p.toggleAttribute("inert", u);

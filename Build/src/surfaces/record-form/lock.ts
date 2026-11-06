@@ -45,7 +45,7 @@ export function initialise(outer: Document, signal: AbortSignal): void {
 
   // The controls, never the field around them: a field is pressed to pick it, and a field
   // that holds a record holds that record's fields too. Ours are not the form's to lock.
-  const controls = `.${classes.anchor} :is(input,select,textarea,button,[contenteditable])`
+  const controls = `.${classes.anchor} :is(a,input,select,textarea,button,[contenteditable])`
     + `:not(.${classes.tableGate} *):not(.${classes.mark})`
 
   const apply = (): void => {
