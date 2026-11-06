@@ -1,7 +1,7 @@
 @use 'contract';
 
 .modal:has(.#{contract.$class-allow-choices}) {
-  --modal-height: auto;
+  --typo3-modal-height: var(--typo3-modal-height-default);
 
   .modal-footer > .#{contract.$class-face-waiting} {
     margin-inline-end: auto;

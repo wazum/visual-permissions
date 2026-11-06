@@ -1,0 +1,8 @@
+@use '../contract';
+
+// 14.3 sizes a modal with --typo3-modal-height; 13.4 calls the same property --modal-height.
+// Delete this with 13.4 support.
+
+.modal:has(.#{contract.$class-allow-choices}) {
+  --modal-height: auto;
+}

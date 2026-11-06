@@ -8,6 +8,22 @@ test.beforeEach(async ({ page }) => {
   await forgetSession(page)
 })
 
+test('the file operations dialog is as tall as its choices', async ({ page }) => {
+  await page.goto('/typo3/module/web/layout')
+  await showPermissions(page, 'fileMounts')
+
+  await page.getByRole('button', { name: 'Choose file operations' }).click()
+  const dialog = page.getByRole('dialog')
+  const choices = dialog.locator('.vperm-allow-choices')
+  await expect(choices).toBeVisible()
+
+  const choicesEnd = (await choices.boundingBox())?.y ?? 0
+  const choicesHeight = (await choices.boundingBox())?.height ?? 0
+  const footerTop = (await dialog.locator('.modal-footer').boundingBox())?.y ?? 0
+
+  expect(footerTop - (choicesEnd + choicesHeight)).toBeLessThan(60)
+})
+
 test('a file operation ticked and allowed is one the group may do', async ({ page, databaseNumber }) => {
   groupOperates(databaseNumber, 'readFile')
 
