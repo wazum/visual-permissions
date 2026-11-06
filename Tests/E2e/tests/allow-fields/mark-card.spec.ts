@@ -178,7 +178,7 @@ test('a marked field\'s mark stands right after the word that says what waits', 
 test('an inherited field names the groups that allow it, and shows one of them', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
-  await pickGroup(page, 'Elit')
+  await pickGroup(page, 'Student Services')
 
   const form = await openFirstPage(page)
 
@@ -189,20 +189,20 @@ test('an inherited field names the groups that allow it, and shows one of them',
   const card = form.getByRole('dialog', { name: 'Inherited' })
 
   await expect(card.getByRole('heading', { name: 'Allowed by' })).toBeVisible()
-  await expect(card.getByRole('listitem')).toContainText(['Consectetur', 'Aliquam'])
-  await expect(card.getByRole('button', { name: 'Show group "Aliquam"' })).toHaveText('Show group')
-  await expect(card.getByRole('button', { name: 'Show group "Consectetur"' })).toBeFocused()
+  await expect(card.getByRole('listitem')).toContainText(['News Office', 'Faculty Editors'])
+  await expect(card.getByRole('button', { name: 'Show group "Faculty Editors"' })).toHaveText('Show group')
+  await expect(card.getByRole('button', { name: 'Show group "News Office"' })).toBeFocused()
 
   await page.keyboard.press('Enter')
 
-  await expect(shownGroup(page)).toHaveText('Consectetur')
+  await expect(shownGroup(page)).toHaveText('News Office')
   await expect(card).toBeHidden()
 })
 
 test('escape closes the card and hands the keyboard back to the mark', async ({ page }) => {
   await page.goto('/typo3/')
   await openControls(page)
-  await pickGroup(page, 'Elit')
+  await pickGroup(page, 'Student Services')
 
   const form = await openFirstPage(page)
 

@@ -33,7 +33,7 @@ $element = static fn(int $uid, int $pid, string $header, int $sorting, string $k
     'hidden' => 0,
     'CType' => $kind,
     'header' => $header,
-    'bodytext' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
+    'bodytext' => '<p>Find the programme that fits you and apply online.</p>',
     'sorting' => $sorting,
     'colPos' => 0,
 ];
@@ -76,32 +76,32 @@ $user = static fn(int $uid, string $username, string $groups): array => [
 
 return [
     'be_users' => [
-        $user(2, 'ipsum', '5'),
-        $user(3, 'lorem', '6'),
+        $user(2, 'anna.lindner', '5'),
+        $user(3, 'tom.okafor', '6'),
     ],
     'be_groups' => [
-        $group(5, 'Aliquam', '', 'web_layout'),
-        $group(6, 'Consectetur', '', 'web_list'),
+        $group(5, 'Faculty Editors', '', 'web_layout'),
+        $group(6, 'News Office', '', 'web_list'),
         // what they allow is inherited rather than their own; do not override
-        $group(7, 'Dolor', '5'),
-        $group(8, 'Elit', '6,7'),
+        $group(7, 'Research Staff', '5'),
+        $group(8, 'Student Services', '6,7'),
     ],
     'pages' => [
-        $page(1, 0, 'Lorem', 256, true),
-        $page(25, 1, 'Ipsum', 256),
-        $page(26, 25, 'Dolor', 256),
-        $page(27, 26, 'Sit', 256),
-        $page(30, 1, 'Amet', 512),
-        $page(31, 30, 'Consectetur', 256),
-        $page(40, 1, 'Adipiscing', 768),
+        $page(1, 0, 'University', 256, true),
+        $page(25, 1, 'Studies', 256),
+        $page(26, 25, 'Programmes', 256),
+        $page(27, 26, 'Computer Science', 256),
+        $page(30, 1, 'Research', 512),
+        $page(31, 30, 'Projects', 256),
+        $page(40, 1, 'Contact', 768),
         // Core offers its language views only for a translated page
-        $page(125, 1, 'Ipsum auf Deutsch', 256, translates: 25),
+        $page(125, 1, 'Studium', 256, translates: 25),
     ],
     'tt_content' => [
-        $element(1, 25, 'Lorem ipsum', 256),
-        $element(2, 25, 'Dolor sit amet', 512),
+        $element(1, 25, 'Study with us', 256),
+        $element(2, 25, 'Application deadlines', 512),
         // only this kind carries media, and a file reference needs a record to hang on
-        $element(3, 25, 'Consectetur', 768, 'textmedia'),
+        $element(3, 25, 'Campus life', 768, 'textmedia'),
     ],
     // a record of a table the group may not write, so the form carries one it cannot reach
     'sys_file_storage' => [[
@@ -139,12 +139,12 @@ return [
         'pid' => 0,
         'tstamp' => $now,
         'storage' => 1,
-        'identifier' => '/lorem.txt',
-        'identifier_hash' => sha1('/lorem.txt'),
+        'identifier' => '/welcome.txt',
+        'identifier_hash' => sha1('/welcome.txt'),
         'folder_hash' => sha1('/'),
         'extension' => 'txt',
         'mime_type' => 'text/plain',
-        'name' => 'lorem.txt',
+        'name' => 'welcome.txt',
         'size' => 11,
         'type' => 1,
     ]],
@@ -160,6 +160,6 @@ return [
         'tablenames' => 'tt_content',
         'fieldname' => 'assets',
         'sorting_foreign' => 1,
-        'title' => 'Lorem',
+        'title' => 'Campus',
     ]],
 ];

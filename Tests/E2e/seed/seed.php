@@ -95,7 +95,7 @@ foreach (['campaign', 'press', 'user_upload', '_temp_'] as $folder) {
     @mkdir($root . '/public/fileadmin/' . $folder, 0o775, true);
     touch($root . '/public/fileadmin/' . $folder, 1700000000);
 }
-file_put_contents($root . '/public/fileadmin/lorem.txt', 'Lorem ipsum');
+file_put_contents($root . '/public/fileadmin/welcome.txt', 'Hello world');
 
 foreach (require __DIR__ . '/records.php' as $table => $rows) {
     $insert($database, $table, $rows);
