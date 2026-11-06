@@ -62,7 +62,7 @@
     height: 16px;
     margin: 0 0 0 auto;
     appearance: auto;
-    accent-color: var(--typo3-state-primary-bg, #0078e6);
+    accent-color: var(--typo3-state-primary-bg);
   }
 
   &:has(> input:disabled) {
@@ -85,7 +85,7 @@
       flex-basis: 100%;
       padding-inline-start: calc(16px + 0.5rem);
       font-size: 11px;
-      color: color-mix(in srgb, currentColor 60%, transparent);
+      color: var(--typo3-text-color-variant);
     }
   }
 }

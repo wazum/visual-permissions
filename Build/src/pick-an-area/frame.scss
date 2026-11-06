@@ -49,7 +49,7 @@
   --vperm-region-bg: var(--typo3-component-bg);
   --vperm-region-ink: var(--typo3-component-color);
   --vperm-region-edge: var(--typo3-component-border-color);
-  --vperm-frame-ink: var(--typo3-text-color-primary, #1f5aad);
+  --vperm-frame-ink: var(--typo3-text-color-primary);
 }
 
 // The module paints its own head, and that is the surface the tab meets.
@@ -57,7 +57,7 @@
   --vperm-region-bg: var(--typo3-surface-container-lowest);
   --vperm-region-ink: var(--typo3-text-color-base);
   --vperm-region-edge: var(--typo3-component-border-color);
-  --vperm-frame-ink: var(--typo3-text-color-primary, #1f5aad);
+  --vperm-frame-ink: var(--typo3-text-color-primary);
 }
 
 // The panel's ground is dark in one version and light in the other, so its inks are
@@ -72,8 +72,8 @@
   overflow: hidden;
 
   --vperm-frame-ink: color-mix(in srgb, currentColor 55%, transparent);
-  --vperm-ink-allowed: color-mix(in srgb, var(--typo3-text-color-success, #247554), currentColor 60%);
-  --vperm-ink-denied: color-mix(in srgb, var(--typo3-text-color-danger, #a72e25), currentColor 60%);
-  --vperm-ink-admin: color-mix(in srgb, var(--typo3-text-color-warning, #664d00), currentColor 60%);
+  --vperm-ink-allowed: color-mix(in srgb, var(--typo3-text-color-success), currentColor 60%);
+  --vperm-ink-denied: color-mix(in srgb, var(--typo3-text-color-danger), currentColor 60%);
+  --vperm-ink-admin: color-mix(in srgb, var(--typo3-text-color-warning), currentColor 60%);
   --vperm-ink-quiet: color-mix(in srgb, currentColor 65%, transparent);
 }

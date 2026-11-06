@@ -119,7 +119,7 @@ form[name='editform'] > .#{contract.$class-face-foot} {
 // A section names a group of fields; at core's size it shouts over the fields themselves
 [#{contract.$attribute-picked}='fields'] .form-section-headline {
   margin-block-end: 0.5rem;
-  color: color-mix(in srgb, currentColor 70%, transparent);
+  color: var(--typo3-text-color-variant);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -174,7 +174,7 @@ form[name='editform'] > .#{contract.$class-face-foot} {
     flex: none;
     margin-inline-start: auto;
     padding-inline-start: 0.5rem;
-    color: color-mix(in srgb, currentColor 60%, transparent);
+    color: var(--typo3-text-color-variant);
     font-size: 11px;
     font-style: italic;
     font-weight: 400;

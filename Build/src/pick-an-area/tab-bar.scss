@@ -40,7 +40,7 @@ $with-the-columns: 989;
   // The bar reaches up into the header's air, so it stands on the header's own ground. The
   // rule the tabs stand on belongs to the areas below and is drawn by each of them.
   background: #{$bar-ground};
-  font: 400 13px / 1 var(--typo3-font-family, sans-serif);
+  font: 400 13px / 1 var(--typo3-font-family);
 }
 
 // The weight the armed tab is set in, which every tab keeps room for.
@@ -129,13 +129,13 @@ $divider: var(--vperm-divider, 0px);
   font: inherit;
   // Out of play is said with the ink: dimming the tab itself would let the rule show
   // through its face.
-  color: color-mix(in srgb, var(--vperm-region-ink) 45%, transparent);
+  color: color-mix(in srgb, var(--vperm-region-ink) 70%, transparent);
   cursor: pointer;
   white-space: nowrap;
 
   &:hover {
     border-color: color-mix(in srgb, var(--vperm-region-ink) 35%, transparent);
-    color: color-mix(in srgb, var(--vperm-region-ink) 78%, transparent);
+    color: var(--vperm-region-ink);
   }
 
   // The word the reader reads, and the copy of it the width comes from: both in the one

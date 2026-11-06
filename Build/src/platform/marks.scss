@@ -3,17 +3,17 @@
 // Core's text colours carry the theme and the colour scheme, and they are made to be
 // read against a ground.
 [#{contract.$attribute-active}] {
-  --vperm-ink-allowed: var(--typo3-text-color-success, #247554);
-  --vperm-ink-denied: var(--typo3-text-color-danger, #a72e25);
-  --vperm-ink-admin: var(--typo3-text-color-warning, #664d00);
-  --vperm-ink-quiet: var(--typo3-text-color-variant, #666);
+  --vperm-ink-allowed: var(--typo3-text-color-success);
+  --vperm-ink-denied: var(--typo3-text-color-danger);
+  --vperm-ink-admin: var(--typo3-text-color-warning);
+  --vperm-ink-quiet: var(--typo3-text-color-variant);
   --vperm-square: 18px;
 
   --vperm-fill-quiet: color-mix(in srgb, var(--typo3-text-color-base) 7%, transparent);
   --vperm-fill-allowed: color-mix(in srgb, var(--vperm-ink-allowed) 14%, transparent);
   --vperm-fill-dropped: color-mix(in srgb, var(--vperm-ink-denied) 14%, transparent);
   --vperm-mark-quiet: color-mix(in srgb, var(--typo3-text-color-base) 70%, transparent);
-  --vperm-edge-focus: color-mix(in srgb, var(--typo3-state-default-focus-border-color), black 15%);
+  --vperm-edge-focus: var(--typo3-state-default-focus-border-color);
 }
 
 // A row the change just landed on has an edge drawn round it three times, so the eye finds
@@ -33,7 +33,7 @@
   15%,
   45%,
   75% {
-    box-shadow: inset 0 0 0 2px var(--typo3-component-hover-border-color, #b4b4b4);
+    box-shadow: inset 0 0 0 2px var(--typo3-component-hover-border-color);
   }
 }
 

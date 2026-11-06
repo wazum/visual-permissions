@@ -49,6 +49,14 @@ test.describe('the records and fields', () => {
     await matchesSnapshot(page, 'record-marked')
   })
 
+  test('a record with a mark explained', async ({ page }) => {
+    await openRecordForGroup(page, contentRecord)
+    await moduleContent(page).locator('[data-vperm-verdict] .vperm-mark').filter({ visible: true }).first().press('Enter')
+    await expect(moduleContent(page).getByRole('dialog')).toBeVisible()
+
+    await matchesSnapshot(page, 'record-mark-card')
+  })
+
   test('a record with the ways to read it offered', async ({ page }) => {
     await openRecordForGroup(page, contentRecord)
     await moduleContent(page).locator('.vperm-show-menu .dropdown-toggle').click()

@@ -22,8 +22,8 @@
     grid-area: token;
     align-self: start;
     margin-block-start: 1px;
-    color: color-mix(in srgb, currentColor 55%, transparent);
-    font-family: var(--typo3-font-family-monospace, monospace);
+    color: var(--typo3-text-color-variant);
+    font-family: var(--typo3-font-family-monospace);
     font-size: 11px;
   }
 

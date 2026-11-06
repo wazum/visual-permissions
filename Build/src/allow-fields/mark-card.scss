@@ -28,9 +28,9 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
   margin: 0 0 0 auto;
   padding: 0;
   border: 0;
-  border-radius: var(--typo3-component-border-radius, 4px);
+  border-radius: var(--typo3-component-border-radius);
   background: none;
-  color: var(--typo3-text-color-variant, #555);
+  color: var(--typo3-text-color-variant);
   font: inherit;
   font-weight: 400;
   line-height: 1;
@@ -52,13 +52,13 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
 
   &:hover,
   &[aria-expanded='true'] {
-    color: var(--typo3-text-color-base, #1a1a1a);
+    color: var(--typo3-text-color-base);
   }
 
   &:focus-visible {
     outline: 2px solid var(--vperm-edge-focus);
     outline-offset: 3px;
-    color: var(--typo3-text-color-base, #1a1a1a);
+    color: var(--typo3-text-color-base);
   }
 }
 
@@ -96,13 +96,13 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
   margin: 0 0.5rem 0 0;
   padding: 0;
   overflow: hidden;
-  border: var(--typo3-dropdown-border-width, 1px) solid var(--typo3-dropdown-border-color, #ccc);
-  border-radius: var(--typo3-dropdown-border-radius, 4px);
-  background: var(--typo3-dropdown-bg, #fff);
-  box-shadow: var(--typo3-component-box-shadow-flyout, 0 8px 24px rgb(0 0 0 / 15%));
-  color: var(--typo3-dropdown-color, #1a1a1a);
-  font-size: var(--typo3-component-font-size, 0.75rem);
-  line-height: var(--typo3-component-line-height, 1.5);
+  border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+  border-radius: var(--typo3-component-border-radius);
+  background: var(--typo3-component-bg);
+  box-shadow: var(--typo3-component-box-shadow-flyout);
+  color: var(--typo3-component-color);
+  font-size: var(--typo3-component-font-size);
+  line-height: var(--typo3-component-line-height);
   opacity: 0;
   translate: 4px 0;
   transition: opacity calc(var(--vperm-motion, 1) * 150ms) ease,
@@ -124,7 +124,7 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 0.75rem;
-    padding: 0.75rem var(--typo3-component-padding-x, 1rem);
+    padding: 0.75rem var(--typo3-component-padding-x);
 
     &::before {
       content: var(--vperm-glyph, '');
@@ -133,9 +133,9 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
       box-sizing: border-box;
       width: var(--vperm-square, 18px);
       height: var(--vperm-square, 18px);
-      border: 2px var(--vperm-square-edge, solid) var(--typo3-text-color-variant, #555);
+      border: 2px var(--vperm-square-edge, solid) var(--typo3-text-color-variant);
       border-radius: 2px;
-      color: var(--typo3-text-color-variant, #555);
+      color: var(--typo3-text-color-variant);
       font-size: 0.75rem;
       font-weight: 600;
       line-height: 1;
@@ -144,7 +144,7 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
 
   h2 {
     margin: 0 0 0.25rem;
-    font-size: var(--typo3-dropdown-header-font-size, 14px);
+    font-size: 14px;
     font-weight: 600;
     line-height: 18px;
     text-wrap: balance;
@@ -152,24 +152,24 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
 
   p {
     margin: 0;
-    color: var(--typo3-text-color-variant, #555);
+    color: var(--typo3-text-color-variant);
     text-wrap: pretty;
   }
 
   section,
   footer {
-    padding: 0.75rem var(--typo3-component-padding-x, 1rem);
-    border-block-start: 1px solid var(--typo3-dropdown-divider-bg, #ddd);
+    padding: 0.75rem var(--typo3-component-padding-x);
+    border-block-start: 1px solid var(--typo3-component-border-color);
   }
 
   footer {
-    color: var(--typo3-text-color-variant, #555);
+    color: var(--typo3-text-color-variant);
   }
 
   h3 {
     margin: 0 0 0.5rem;
-    color: var(--typo3-text-color-variant, #555);
-    font-size: var(--typo3-component-font-size, 0.75rem);
+    color: var(--typo3-text-color-variant);
+    font-size: var(--typo3-component-font-size);
     font-weight: 600;
   }
 
