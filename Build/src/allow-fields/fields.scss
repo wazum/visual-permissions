@@ -30,13 +30,8 @@ form[name='editform'] > .#{contract.$class-face-foot} {
   margin-block: 0.5rem 0;
 }
 
-// Room under the last field, so it is never read off the edge of the window.
+// Room under the last field for the foot, which lies over the form on either side.
 [#{contract.$attribute-picked}='fields'] form[name='editform'] {
-  padding-block-end: 1.5rem;
-}
-
-// And room for the foot as well, which lies over the form while the fields are picked.
-[#{contract.$attribute-picked}='fields'][#{contract.$attribute-face}='pick'] form[name='editform'] {
   padding-block-end: 6rem;
 }
 
