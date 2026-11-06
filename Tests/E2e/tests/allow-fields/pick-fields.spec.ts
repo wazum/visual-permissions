@@ -117,7 +117,7 @@ test('a field that was allowed turns up on the form the group gets', async ({ pa
 
   await expect(
     form.locator(`[data-vperm-token='${token ?? ''}']`),
-    'the field given away is still kept from the group',
+    'the field that was allowed is still kept from the group',
   ).toBeVisible()
 })
 

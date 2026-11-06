@@ -41,14 +41,14 @@ test('the backend gets its own module menu back when the area is left', async ({
 
 test('asking to allow modules turns the panel to every module there is', async ({ page }) => {
   await showModules(page)
-  const granted = await page.locator(`${preview} ${rows}`).count()
+  const allowed = await page.locator(`${preview} ${rows}`).count()
 
   await page.locator(`${preview} .vperm-face-bar button`).click()
 
   const offered = page.locator(`${pick} ${rows}`)
 
   await expect(offered.first()).toBeAttached()
-  expect(await offered.count()).toBeGreaterThan(granted)
+  expect(await offered.count()).toBeGreaterThan(allowed)
 })
 
 test('the list of every module scrolls inside its face', async ({ page }) => {

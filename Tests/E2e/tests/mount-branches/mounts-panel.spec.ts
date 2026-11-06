@@ -67,7 +67,7 @@ test('marking a mounted branch offers the deed to take it away', async ({ page }
   await page.locator(`${preview} ${mounted}`).first().click()
 
   await expect(marked).toHaveCount(1)
-  await expect(remove, 'a marked branch cannot be taken away').toBeEnabled()
+  await expect(remove, 'a marked branch cannot be removed').toBeEnabled()
   await expect(tally, 'the foot says nothing about what is marked').not.toHaveText(said ?? '')
 })
 

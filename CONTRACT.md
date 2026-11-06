@@ -42,7 +42,7 @@ to prevent.
 names and zero UI concepts. If it needs one, the abstraction is wrong.
 
 **A verdict is derived server-side, once.** The client renders it; it never reasons
-about grants, inheritance or admin status. `pending` is the one fact the browser owns, and
+about what is allowed, inheritance or admin status. `pending` is the one fact the browser owns, and
 it is never a verdict.
 
 **`comment` is stripped by both readers.** A fixture explains itself; it does not get a
@@ -62,16 +62,16 @@ made against one group says nothing about another.
 neither to the settings nor to the tab. An admin who leaves and comes back starts with
 nothing waiting.
 
-## What the response says about where a grant comes from
+## What the response says about where a permission comes from
 
 The inspection carries the whole inheritance chain, every group in it with its title and
 its depth, and one verdict per target. A verdict says whether the group holds the target
 itself or through a subgroup.
 
-For fields, `givenBy` names the subgroups that give a target themselves, by id, in chain
-order; their titles are in the chain. A target the group gives only itself is not listed.
-It names the group that holds the grant, never the way to it: that is the group to open
-and change.
+For fields, `allowedBy` names the subgroups that allow a target themselves, by id, in chain
+order; their titles are in the chain. A target only the group itself allows is not listed.
+It names the group that holds the permission, never the way to it: that is the group to
+open and change.
 
 ## Fixtures that record behaviour, not just values
 
