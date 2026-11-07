@@ -240,15 +240,6 @@ $filled: var(--typo3-component-hover-bg);
     }
   }
 
-  .#{contract.$class-face-choice} {
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    padding: 0.625rem 0.75rem;
-    border-block-start: 1px solid var(--vperm-region-edge);
-    background: var(--vperm-region-bg);
-  }
-
   // Between the tree and the foot, and never inside the tree's scrolling: the tree draws
   // only the rows in view, and anything above or below them there shifts or scrolls away.
   // It scrolls as one piece, the sentence with the list.

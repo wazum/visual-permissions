@@ -92,6 +92,25 @@
   padding-block-end: 1.5rem;
 }
 
+.#{contract.$class-face-choice} {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-block-start: 1px solid var(--vperm-region-edge);
+  background: var(--vperm-region-bg);
+  color: var(--vperm-region-ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+  text-align: center;
+
+  > .btn {
+    padding-block: 0.5rem;
+    text-wrap: balance;
+  }
+}
+
 .#{contract.$class-face-foot} {
   flex: none;
   display: flex;

@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { emit } from '#src/platform/bus.js'
 import { attributes, classes } from '#src/platform/contract.js'
 import { activate, deactivate, pickArea, selectGroup } from '#src/platform/session.js'
 import { initialise } from '#src/allow-modules/modules.js'
-import { asked, holdNextRead, refuseNextRead, reply, sent } from '../__mocks__/typo3-ajax-request.js'
+import { asked, holdNextRead, refuseNextRead, reply, replyTo, sent } from '../__mocks__/typo3-ajax-request.js'
 import { forgetNotices, notices } from '../__mocks__/typo3-notification.js'
 import { prime } from '../__mocks__/typo3-persistent-storage.js'
 
@@ -40,6 +41,7 @@ describe('the modules scope', () => {
     sent.length = 0
     listening = new AbortController()
     document.body.replaceChildren()
+    replyTo('visual_permissions_modules_outside_menu', { title: '', groups: [] })
     reply({
       group: { id: 7, title: 'Editors' },
       chain: [],
@@ -69,6 +71,22 @@ describe('the modules scope', () => {
     })
     expect(verdictOf('web_layout')).toBeNull()
     expect(document.querySelector(`.${classes.panelCard}`)).toBeNull()
+  })
+
+  it('asks again for the modules outside the menu once they could not be read', async () => {
+    menu('web_layout', 'records', 'site_configuration')
+    TYPO3.lang = { 'platform.notRead': 'Not read' }
+    initialise(document, listening.signal)
+    const release = holdNextRead()
+    activate()
+    pickArea('modules')
+    refuseNextRead()
+    release()
+    await vi.waitFor(() => { expect(notices).toHaveLength(1) })
+
+    emit('permissions-written', {})
+
+    await vi.waitFor(() => { expect(inPreview('web_layout')).not.toBeNull() })
   })
 
   it('asks nothing when a stored session says on but names no group', async () => {

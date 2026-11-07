@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Wazum\VisualPermissions\Tests\Functional\AllowModules;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Backend\Module\ModuleRegistry;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Wazum\VisualPermissions\AllowModules\AllowModulesController;
@@ -66,6 +67,53 @@ final class AllowModulesControllerTest extends FunctionalTestCase
         ]));
 
         self::assertSame(204, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function offersTheModulesOutsideTheMenu(): void
+    {
+        $values = array_merge(...array_column($this->outsideTheMenu()['groups'], 'values'));
+
+        self::assertContains('about', array_column($values, 'value'));
+        self::assertNotContains('web_layout', array_column($values, 'value'));
+    }
+
+    #[Test]
+    public function namesAModuleOutsideTheMenuUnderItsMainModule(): void
+    {
+        $byMainModule = array_column($this->outsideTheMenu()['groups'], 'values', 'label');
+
+        self::assertContains('About TYPO3 CMS', array_column($byMainModule['Help'] ?? [], 'label'));
+    }
+
+    #[Test]
+    public function showsAModuleOutsideTheMenuWithItsOwnIcon(): void
+    {
+        $values = array_column(array_merge(...array_column($this->outsideTheMenu()['groups'], 'values')), 'icon', 'value');
+
+        self::assertSame($this->get(ModuleRegistry::class)->getModule('about')->getIconIdentifier(), $values['about'] ?? null);
+    }
+
+    #[Test]
+    public function titlesTheModulesOutsideTheMenuInTheLanguageOfTheBackendUser(): void
+    {
+        self::assertSame('Module außerhalb des Menüs, die die Gruppe „%s“ öffnen darf', $this->outsideTheMenu()['title']);
+    }
+
+    /**
+     * @return array{title: string, groups: list<array{label: string, values: list<array{value: string, label: string, icon: string}>}>}
+     */
+    private function outsideTheMenu(): array
+    {
+        $response = $this->get(AllowModulesController::class)->choices(
+            (new ServerRequest('https://example.com/typo3/ajax/visual-permissions/modules-outside-menu'))
+                ->withAttribute('backend.user', $GLOBALS['BE_USER']),
+        );
+
+        /** @var array{title: string, groups: list<array{label: string, values: list<array{value: string, label: string, icon: string}>}>} $choices */
+        $choices = json_decode((string) $response->getBody(), true);
+
+        return $choices;
     }
 
     /**

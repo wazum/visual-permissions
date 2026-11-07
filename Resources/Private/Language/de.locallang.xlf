@@ -143,6 +143,22 @@
                 <source>%1$s of %2$s module waiting to be disallowed</source>
                 <target>%1$s von %2$s Modul noch zu entziehen</target>
             </trans-unit>
+            <trans-unit id="allowModules.outside" resname="allowModules.outside" approved="yes">
+                <source>Choose modules outside the menu</source>
+                <target>Module außerhalb des Menüs auswählen</target>
+            </trans-unit>
+            <trans-unit id="allowModules.outside.tally.many" resname="allowModules.outside.tally.many" approved="yes">
+                <source>%1$s of %2$s outside the menu allowed</source>
+                <target>%1$s von %2$s außerhalb des Menüs erlaubt</target>
+            </trans-unit>
+            <trans-unit id="allowModules.outside.tally.one" resname="allowModules.outside.tally.one" approved="yes">
+                <source>%1$s of %2$s outside the menu allowed</source>
+                <target>%1$s von %2$s außerhalb des Menüs erlaubt</target>
+            </trans-unit>
+            <trans-unit id="allowModules.outside.title" resname="allowModules.outside.title" approved="yes">
+                <source>Modules outside the menu the group "%s" may open</source>
+                <target>Module außerhalb des Menüs, die die Gruppe „%s“ öffnen darf</target>
+            </trans-unit>
             <trans-unit id="allowModules.pickFor" resname="allowModules.pickFor" approved="yes">
                 <source>Pick what the group "%s" may open</source>
                 <target>Auswählen, was die Gruppe „%s“ öffnen darf</target>
@@ -152,12 +168,12 @@
                 <target>Die Module, die die Gruppe „%s“ öffnen darf</target>
             </trans-unit>
             <trans-unit id="allowModules.tally.many" resname="allowModules.tally.many" approved="yes">
-                <source>%1$s of %2$s modules allowed</source>
-                <target>%1$s von %2$s Modulen erlaubt</target>
+                <source>%1$s of %2$s menu modules allowed</source>
+                <target>%1$s von %2$s Modulen im Menü erlaubt</target>
             </trans-unit>
             <trans-unit id="allowModules.tally.one" resname="allowModules.tally.one" approved="yes">
-                <source>%1$s of %2$s module allowed</source>
-                <target>%1$s von %2$s Modul erlaubt</target>
+                <source>%1$s of %2$s menu module allowed</source>
+                <target>%1$s von %2$s Modul im Menü erlaubt</target>
             </trans-unit>
             <trans-unit id="allowTables.adminOnly" resname="allowTables.adminOnly" approved="yes">
                 <source>Only administrators may edit records of this kind</source>

@@ -1,6 +1,10 @@
 import { on } from '../platform/bus.js'
 import { attributes } from '../platform/contract.js'
-import { createLatestInspect } from '../platform/transport.js'
+import AjaxRequest from '@typo3/core/ajax/ajax-request.js'
+import { ajaxUrl } from '../platform/ajax-url.js'
+import type { Choices } from '../platform/choices-dialog.js'
+import { routes } from '../platform/routes.js'
+import { createLatestInspect, read } from '../platform/transport.js'
 import { getState, subscribe } from '../platform/session.js'
 import { render, restoreMenu } from './panel.js'
 
@@ -10,6 +14,7 @@ const rows = `[${moduleIdentifier}]:not([aria-controls])`
 
 export function initialise(doc: Document, signal: AbortSignal): void {
   const latest = createLatestInspect()
+  let outsideMenu: Promise<Choices | null> | null = null
 
   const show = async (): Promise<void> => {
     const { active, groupId, area } = getState()
@@ -45,7 +50,15 @@ export function initialise(doc: Document, signal: AbortSignal): void {
         .forEach(row => { row.setAttribute(attributes.verdict, verdict) })
     })
 
-    render(doc, panel)
+    outsideMenu ??= read<Choices>(new AjaxRequest(ajaxUrl(routes.modules_outside_menu)).get())
+    const outside = await outsideMenu
+    if (outside === null) {
+      outsideMenu = null
+
+      return
+    }
+
+    render(doc, panel, outside.groups.flatMap(({ values }) => values.map(({ value }) => scopes.modules.targets[value])))
   }
 
   const restoreMenuIn = (where: Document): void => {
