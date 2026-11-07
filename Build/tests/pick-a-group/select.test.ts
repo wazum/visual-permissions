@@ -102,6 +102,18 @@ describe('the group picker', () => {
     }).not.toThrow()
   })
 
+  it('offers a new group through the form the backend names', async () => {
+    trigger().setAttribute(attributes.newRecord, '/typo3/record/edit?token=1&edit%5Bbe_groups%5D%5B0%5D=new')
+    TYPO3.lang = { ...TYPO3.lang, 'pickAGroup.new': 'New group' }
+    initialise(document, listening.signal)
+    await settled()
+
+    const link = picker().querySelector('a')
+
+    expect(link?.textContent.trim()).toBe('New group')
+    expect(link?.getAttribute('href')).toBe('/typo3/record/edit?token=1&edit%5Bbe_groups%5D%5B0%5D=new')
+  })
+
   it('hands the picker every word the backend has for the list', () => {
     TYPO3.lang = {
       'pickAGroup.search': 'Search groups',

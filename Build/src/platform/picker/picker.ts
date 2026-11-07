@@ -1,8 +1,10 @@
 import { LitElement, html, type TemplateResult } from 'lit'
+import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage.js'
 import Persistent from '@typo3/backend/storage/persistent.js'
 import { attributes, classes, elements } from '../contract.js'
 import { labelOf } from '../labels.js'
 import { keep } from '../persistence.js'
+import { shellIn } from '../shell.js'
 import { match } from './match.js'
 
 export interface PickerDetailRow {
@@ -20,6 +22,11 @@ export interface PickerEntry {
   readonly detail: readonly PickerDetailRow[]
   readonly detailHeading: string
   readonly heading?: string
+}
+
+export interface PickerAddNew {
+  readonly label: string
+  readonly url: string
 }
 
 export interface PickerWords {
@@ -53,6 +60,7 @@ export class Picker extends LitElement {
   static override properties = {
     entries: { attribute: false },
     words: { attribute: false },
+    addNew: { attribute: false },
     placeholder: { type: String },
     remembers: { type: String },
     query: { state: true },
@@ -66,6 +74,7 @@ export class Picker extends LitElement {
   // entries is readonly; plain fields shadow prototype accessors and break repaints
   declare entries: readonly PickerEntry[]
   declare words: PickerWords
+  declare addNew: PickerAddNew | null
   declare placeholder: string
   declare remembers: string
   declare query: string
@@ -82,6 +91,7 @@ export class Picker extends LitElement {
   constructor() {
     super()
     this.entries = []
+    this.addNew = null
     this.placeholder = ''
     this.remembers = ''
     this.query = ''
@@ -190,6 +200,7 @@ export class Picker extends LitElement {
                  this.inPane = false
                  this.active = 0
                }}>
+        ${this.addNewLink()}
       </div>
       <div class=${classes.pickerPanes}>
       <div class=${classes.pickerList} role="listbox" tabindex="-1">
@@ -223,6 +234,29 @@ export class Picker extends LitElement {
         <span class=${classes.pickerTally}>${this.counted()}</span>
       </p>
     `
+  }
+
+  private addNewLink(): TemplateResult | string {
+    if (this.addNew === null) {
+      return ''
+    }
+
+    return html`
+      <a class="btn btn-default" href=${this.addNew.url} target="list_frame"
+         @click=${(event: Event) => { this.leaveForNew(event.currentTarget as HTMLAnchorElement) }}>
+        <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
+        ${this.addNew.label}
+      </a>
+    `
+  }
+
+  private leaveForNew(link: HTMLAnchorElement): void {
+    const url = new URL(link.href)
+    // Stryker disable next-line OptionalChaining,StringLiteral: the backend always has its module router
+    url.searchParams.set('returnUrl', shellIn(this.ownerDocument)?.getAttribute('endpoint') ?? '')
+    link.href = url.href
+    ModuleStateStorage.update('web', 0, true)
+    this.hidePopover()
   }
 
   private kept(): string {

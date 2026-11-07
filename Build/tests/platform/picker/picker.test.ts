@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import '#src/platform/picker/picker.js'
 import { classes, elements } from '#src/platform/contract.js'
 import type { PickerEntry, PickerWords } from '#src/platform/picker/picker.js'
+import { chosen } from '../../__mocks__/typo3-module-state-storage.js'
 import { prime, quiet as written, stored } from '../../__mocks__/typo3-persistent-storage.js'
 
 const words: PickerWords = {
@@ -88,6 +89,48 @@ afterEach(() => {
 })
 
 describe('the picker', () => {
+  it('offers to add a new one in the module frame', async () => {
+    const element = picker([...groups])
+    Object.assign(element, { addNew: { label: 'New group', url: '/typo3/record/edit?token=1&edit%5Bbe_groups%5D%5B0%5D=new' } })
+    await settled(element)
+
+    const link = element.querySelector('a')
+
+    expect(link?.textContent.trim()).toBe('New group')
+    expect(link?.getAttribute('href')).toBe('/typo3/record/edit?token=1&edit%5Bbe_groups%5D%5B0%5D=new')
+    expect(link?.getAttribute('target')).toBe('list_frame')
+  })
+
+  it('closes on the way to the new one, and leads back to the screen it was opened on', async () => {
+    const shell = document.createElement('typo3-backend-module-router')
+    shell.setAttribute('endpoint', '/typo3/module/content/records?token=2&id=3')
+    document.body.append(shell)
+    const element = picker([...groups])
+    Object.assign(element, { addNew: { label: 'New group', url: '/typo3/record/edit?token=1&edit%5Bbe_groups%5D%5B0%5D=new' } })
+    await settled(element)
+    openedBy(element)
+
+    const link = element.querySelector('a')
+    link?.addEventListener('click', event => { event.preventDefault() })
+    link?.click()
+
+    expect(new URL(link?.href ?? '').searchParams.get('returnUrl')).toBe('/typo3/module/content/records?token=2&id=3')
+    expect(element.matches(':popover-open') || element.hasAttribute('data-open')).toBe(false)
+  })
+
+  it('stands the page tree on the root level, where the new one is made', async () => {
+    const element = picker([...groups])
+    Object.assign(element, { addNew: { label: 'New group', url: '/typo3/record/edit?token=1&edit%5Bbe_groups%5D%5B0%5D=new' } })
+    await settled(element)
+    openedBy(element)
+
+    const link = element.querySelector('a')
+    link?.addEventListener('click', event => { event.preventDefault() })
+    link?.click()
+
+    expect(chosen('web')).toBe('0')
+  })
+
   it.each([['users', users], ['groups', groups]] as const)(
     'shows every %s entry before anything is typed',
     async (_kind, entries) => {

@@ -20,6 +20,19 @@ test.beforeEach(async ({ page }) => {
   await forgetSession(page)
 })
 
+test('the user picker opens the form of a new user at the root level', async ({ page }) => {
+  await page.goto('/typo3/')
+  await openControls(page)
+  await page.locator(viewAsButton).click()
+
+  await page.locator('vperm-picker:visible').getByRole('link', { name: 'New user' }).click()
+
+  const form = moduleContent(page).locator('form[name="editform"]')
+
+  await expect(form.locator('[data-formengine-input-name^="data[be_users][NEW"][data-formengine-input-name$="[username]"]')).toBeVisible()
+  await expect(form.locator('input[name^="data[be_users][NEW"][name$="[pid]"]')).toHaveValue('0')
+})
+
 // The group and mode must persist through user switches for admin workflow
 test('the group and the mode survive switching to a user and back', async ({ page }) => {
   await page.goto('/typo3/')

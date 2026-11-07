@@ -29,6 +29,8 @@ export function initialise(doc: Document, signal: AbortSignal): void {
   picker.entries = entriesFrom(doc, recent)
   picker.remembers = searchKey
   picker.placeholder = labelOf('pickAGroup.search')
+  // Stryker disable next-line StringLiteral: the toolbar item's template always writes the form of a new group
+  picker.addNew = { label: labelOf('pickAGroup.new'), url: trigger.getAttribute(attributes.newRecord) ?? '' }
   doc.body.append(picker)
 
   trigger.addEventListener('click', () => { picker.openedBy(trigger) }, { signal })

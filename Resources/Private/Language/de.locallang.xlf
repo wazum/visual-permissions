@@ -367,6 +367,10 @@
                 <source>select</source>
                 <target>auswählen</target>
             </trans-unit>
+            <trans-unit id="pickAGroup.new" resname="pickAGroup.new" approved="yes">
+                <source>New group</source>
+                <target>Neue Gruppe</target>
+            </trans-unit>
             <trans-unit id="pickAGroup.recent" resname="pickAGroup.recent" approved="yes">
                 <source>Recently shown</source>
                 <target>Zuletzt angezeigt</target>
@@ -598,6 +602,10 @@
             <trans-unit id="viewAsUser.loading" resname="viewAsUser.loading" approved="yes">
                 <source>Loading users…</source>
                 <target>Benutzer werden geladen …</target>
+            </trans-unit>
+            <trans-unit id="viewAsUser.new" resname="viewAsUser.new" approved="yes">
+                <source>New user</source>
+                <target>Neuer Benutzer</target>
             </trans-unit>
             <trans-unit id="viewAsUser.noModule.message" resname="viewAsUser.noModule.message" approved="yes">
                 <source>Your user account does not have access to any backend module. Please contact your administrator.</source>

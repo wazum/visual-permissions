@@ -22,11 +22,11 @@
         A group to show comes first: there is nothing to switch on without one. Its name
         stands inside the select rather than beside it, so the bar stays narrow.
     -->
-    <button type="button" class="form-select vperm-picker-trigger" id="vperm-group" data-vperm-group="" aria-expanded="false"><f:translate key="LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:pickAGroup.button"/></button>
+    <button type="button" class="form-select vperm-picker-trigger" id="vperm-group" data-vperm-group="" data-vperm-new-record="{newGroup}" aria-expanded="false"><f:translate key="LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:pickAGroup.button"/></button>
     <button type="button" class="btn btn-default vperm-switch" data-vperm-toggle="" aria-pressed="false" title="{shortcutLabel}" disabled="disabled">
         <span class="vperm-switch-label">{toggleLabel}</span>
     </button>
-    <button type="button" class="btn btn-default" data-vperm-view-as="" aria-expanded="false">
+    <button type="button" class="btn btn-default" data-vperm-view-as="" data-vperm-new-record="{newUser}" aria-expanded="false">
         <f:translate key="LLL:EXT:visual_permissions/Resources/Private/Language/locallang.xlf:viewAsUser.button"/>
     </button>
 </div>
