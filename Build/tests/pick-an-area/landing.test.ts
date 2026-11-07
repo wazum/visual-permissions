@@ -164,8 +164,8 @@ describe('the modules a session of ours keeps to', () => {
     activate()
     forget()
 
-    setCurrentModule('help_AboutAbout')
-    document.dispatchEvent(new CustomEvent('typo3-module-loaded', { detail: { module: 'help_AboutAbout' } }))
+    setCurrentModule('about')
+    document.dispatchEvent(new CustomEvent('typo3-module-loaded', { detail: { module: 'about' } }))
 
     expect(shown()).toStrictEqual([])
   })
@@ -305,13 +305,13 @@ describe('the modules a session of ours keeps to', () => {
 
   it('leaves a group standing while one of its modules still shows permissions', () => {
     menu()
-    grouped('web', 'web_layout', 'system_config')
+    grouped('content', 'web_layout', 'system_config')
     setCurrentModule('web_layout')
     initialise(document, listening.signal)
 
     activate()
 
-    expect(groupOf('web')?.hidden).toBe(false)
+    expect(groupOf('content')?.hidden).toBe(false)
   })
 
   // The note is where to come back to when the permissions go back on.

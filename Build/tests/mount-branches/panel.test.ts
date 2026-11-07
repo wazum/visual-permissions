@@ -145,7 +145,7 @@ const mountedButUnseen = (...titles: string[]): void => {
         unseen: titles.map((title, index) => ({
           page: index + 3,
           title,
-          link: `/typo3/module/system/permissions?id=${String(index + 3)}`,
+          link: `/typo3/module/users/permissions?id=${String(index + 3)}`,
         })),
       },
     },
@@ -343,7 +343,7 @@ describe('the mounts panel', () => {
     await vi.waitFor(() => {
       const link = document.querySelector(`.${classes.facePreview} a[aria-label='Page permissions of "Ipsum"']`)
 
-      expect(link?.getAttribute('href')).toBe('/typo3/module/system/permissions?id=3')
+      expect(link?.getAttribute('href')).toBe('/typo3/module/users/permissions?id=3')
     })
   })
 

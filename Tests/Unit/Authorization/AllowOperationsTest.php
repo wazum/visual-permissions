@@ -14,9 +14,9 @@ final class AllowOperationsTest extends TestCase
     public function readsAnAllowAndADisallow(): void
     {
         self::assertSame(
-            [['target' => 'web_list', 'add' => true], ['target' => 'web_layout', 'add' => false]],
+            [['target' => 'records', 'add' => true], ['target' => 'web_layout', 'add' => false]],
             AllowOperations::from(
-                [['module' => 'web_list', 'allow' => true], ['module' => 'web_layout', 'allow' => false]],
+                [['module' => 'records', 'allow' => true], ['module' => 'web_layout', 'allow' => false]],
                 'module',
                 static fn(string $target): bool => true,
             ),
@@ -27,9 +27,9 @@ final class AllowOperationsTest extends TestCase
     public function readsAFlagThatArrivedAsText(): void
     {
         self::assertSame(
-            [['target' => 'web_list', 'add' => true], ['target' => 'web_layout', 'add' => false]],
+            [['target' => 'records', 'add' => true], ['target' => 'web_layout', 'add' => false]],
             AllowOperations::from(
-                [['module' => 'web_list', 'allow' => 'true'], ['module' => 'web_layout', 'allow' => 'false']],
+                [['module' => 'records', 'allow' => 'true'], ['module' => 'web_layout', 'allow' => 'false']],
                 'module',
                 static fn(string $target): bool => true,
             ),
@@ -40,7 +40,7 @@ final class AllowOperationsTest extends TestCase
     public function refusesToAllowWhatCannotBeAllowed(): void
     {
         self::assertNull(AllowOperations::from(
-            [['module' => 'web_list', 'allow' => true]],
+            [['module' => 'records', 'allow' => true]],
             'module',
             static fn(string $target): bool => false,
         ));
@@ -50,9 +50,9 @@ final class AllowOperationsTest extends TestCase
     public function disallowsWhatCanNoLongerBeAllowed(): void
     {
         self::assertSame(
-            [['target' => 'web_list', 'add' => false]],
+            [['target' => 'records', 'add' => false]],
             AllowOperations::from(
-                [['module' => 'web_list', 'allow' => false]],
+                [['module' => 'records', 'allow' => false]],
                 'module',
                 static fn(string $target): bool => false,
             ),
@@ -69,7 +69,7 @@ final class AllowOperationsTest extends TestCase
     public function refusesTheWholeListWhenOneOperationNamesNoTarget(): void
     {
         self::assertNull(AllowOperations::from(
-            [['module' => 'web_list', 'allow' => true], ['module' => 7, 'allow' => true]],
+            [['module' => 'records', 'allow' => true], ['module' => 7, 'allow' => true]],
             'module',
             static fn(string $target): bool => true,
         ));
@@ -79,7 +79,7 @@ final class AllowOperationsTest extends TestCase
     public function refusesAnOperationThatSaysNothingAboutTheDirection(): void
     {
         self::assertNull(AllowOperations::from(
-            [['module' => 'web_list']],
+            [['module' => 'records']],
             'module',
             static fn(string $target): bool => true,
         ));
@@ -89,7 +89,7 @@ final class AllowOperationsTest extends TestCase
     public function refusesAnOperationWhoseDirectionItCannotRead(): void
     {
         self::assertNull(AllowOperations::from(
-            [['module' => 'web_list', 'allow' => 'perhaps']],
+            [['module' => 'records', 'allow' => 'perhaps']],
             'module',
             static fn(string $target): bool => true,
         ));

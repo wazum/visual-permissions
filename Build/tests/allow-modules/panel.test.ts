@@ -24,19 +24,19 @@ const menu = (): void => {
   nav.append(loose)
 
   const control = document.createElement('button')
-  control.setAttribute('data-modulemenu-identifier', 'web')
-  control.setAttribute('aria-controls', 'group-web')
-  control.setAttribute('title', 'Web')
+  control.setAttribute('data-modulemenu-identifier', 'content')
+  control.setAttribute('aria-controls', 'group-content')
+  control.setAttribute('title', 'Content')
 
   const list = document.createElement('ul')
-  list.id = 'group-web'
+  list.id = 'group-content'
   list.className = 'modulemenu-group-container'
 
   const groupModules: [string, string][] = [
     ['web_layout', 'Page'],
     ['records', 'List'],
     ['site_configuration', 'Sites'],
-    ['web_info', 'Info'],
+    ['content_status', 'Status'],
   ]
 
   groupModules.forEach(([identifier, name]) => {
@@ -129,7 +129,7 @@ describe('the module panel the group sees', () => {
             web_layout: 'allowed',
             records: 'denied',
             site_configuration: 'adminOnly',
-            web_info: 'inherited',
+            content_status: 'inherited',
           },
         },
       },
@@ -203,7 +203,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPreview('[data-modulemenu-identifier="web_info"]')?.hasAttribute('tabindex')).toBe(false)
+    expect(inPreview('[data-modulemenu-identifier="content_status"]')?.hasAttribute('tabindex')).toBe(false)
   })
 
   it('says of a module that answers that it is a control, not a way into the module', async () => {
@@ -376,7 +376,7 @@ describe('the module panel the group sees', () => {
     const shape = [...(inPreview(`.${classes.faceScroll}`)?.children ?? [])]
       .map(child => child.className.includes(classes.allowedGroup) ? `# ${child.textContent}` : 'row')
 
-    expect(shape).toEqual(['row', '# Web', 'row', 'row'])
+    expect(shape).toEqual(['row', '# Content', 'row', 'row'])
   })
 
   it('invites adding on the face that shows what the group has', async () => {
@@ -411,7 +411,7 @@ describe('the module panel the group sees', () => {
     initialise(document, listening.signal)
 
     await armed()
-    inPreview('[data-modulemenu-identifier="web_info"]')
+    inPreview('[data-modulemenu-identifier="content_status"]')
       ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     expect(document.querySelectorAll(`.${classes.faceMarked}`)).toHaveLength(0)
@@ -558,7 +558,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPick(`.${classes.allowedGroup}`)?.textContent).toBe('Web')
+    expect(inPick(`.${classes.allowedGroup}`)?.textContent).toBe('Content')
     expect(inPick('[data-modulemenu-identifier="web"]')).toBeNull()
   })
 
@@ -698,7 +698,7 @@ describe('the module panel the group sees', () => {
             web_layout: 'allowed',
             records: 'allowed',
             site_configuration: 'adminOnly',
-            web_info: 'inherited',
+            content_status: 'inherited',
           },
         },
         pageMounts: { targets: {}, order: [], unseen: [] },
@@ -1364,7 +1364,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPreview('[data-modulemenu-identifier="web_info"] .' + classes.allowedFrom)?.textContent)
+    expect(inPreview('[data-modulemenu-identifier="content_status"] .' + classes.allowedFrom)?.textContent)
       .toBe('from a subgroup')
     expect(inPreview('[data-modulemenu-identifier="web_layout"] .' + classes.allowedFrom)).toBeNull()
   })
@@ -1388,10 +1388,10 @@ describe('the module panel the group sees', () => {
     initialise(document, listening.signal)
 
     await armed()
-    inPick('[data-modulemenu-identifier="web_info"]')
+    inPick('[data-modulemenu-identifier="content_status"]')
       ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-    expect(inPick('[data-modulemenu-identifier="web_info"]')?.getAttribute(attributes.verdict))
+    expect(inPick('[data-modulemenu-identifier="content_status"]')?.getAttribute(attributes.verdict))
       .toBe('inherited')
   })
 
@@ -1399,10 +1399,10 @@ describe('the module panel the group sees', () => {
     const nav = document.createElement('nav')
     nav.id = 'modulemenu'
     const control = document.createElement('button')
-    control.setAttribute('data-modulemenu-identifier', 'web')
-    control.setAttribute('aria-controls', 'group-web')
+    control.setAttribute('data-modulemenu-identifier', 'content')
+    control.setAttribute('aria-controls', 'group-content')
     const list = document.createElement('ul')
-    list.id = 'group-web'
+    list.id = 'group-content'
     list.className = 'modulemenu-group-container'
     const action = document.createElement('a')
     action.setAttribute('data-modulemenu-identifier', 'web_layout')
