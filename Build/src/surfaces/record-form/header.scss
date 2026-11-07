@@ -38,3 +38,8 @@ typo3-breadcrumb + .#{contract.$class-head-bar} {
 [#{contract.$attribute-face}='pick'] .module-docheader-navigation > .module-docheader-column:last-child > * {
   display: none;
 }
+
+[#{contract.$attribute-active}] .dropdown-menu:has(typo3-backend-localization-button)
+  > li:has(> typo3-backend-localization-button, > .dropdown-divider, > .dropdown-header) {
+  display: none;
+}

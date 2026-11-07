@@ -3,6 +3,7 @@ import { pickArea } from '../../../../fixtures/areas.js'
 import { onOlderCore } from '../../../../fixtures/compatibility.js'
 import { moduleContent } from '../../../../fixtures/module-content.js'
 import { pickFirstGroup } from '../../../../fixtures/groups.js'
+import { openFirstPage } from '../../../../fixtures/record-form.js'
 import { forgetSession } from '../../../../fixtures/session.js'
 import { openControls, switchOff, switchOn } from '../../../../fixtures/visual-mode.js'
 
@@ -32,4 +33,19 @@ test('the language menu stands in the row of the buttons', async ({ page }) => {
   await switchOff(page)
 
   await expect(form.locator('.module-docheader-bar-navigation select[name="_langSelector"]')).toBeVisible()
+})
+
+test('the language menu offers no new translation while permissions are edited', async ({ page }) => {
+  await page.goto('/typo3/')
+  await openControls(page)
+  await pickFirstGroup(page)
+
+  const form = await openFirstPage(page)
+  const newTranslation = form.locator('select[name="_langSelector"] option[value*="localize"]')
+
+  await openControls(page)
+  await switchOn(page)
+  await pickArea(page, 'fields')
+
+  await expect(newTranslation).toHaveCSS('display', 'none')
 })
