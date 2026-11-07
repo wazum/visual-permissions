@@ -212,6 +212,20 @@ describe('the form lock', () => {
     expect(browse.hasAttribute('inert')).toBe(true)
   })
 
+  it('puts a field element that draws its controls in a shadow root out of the way', () => {
+    initialise(document, listening.signal)
+    moduleArrives()
+    const anchor = fieldInModule()
+    const element = document.createElement('div')
+    element.attachShadow({ mode: 'open' }).append(document.createElement('button'))
+    anchor.append(element)
+
+    activate()
+    pickArea('fields')
+
+    expect(element.hasAttribute('inert')).toBe(true)
+  })
+
   // The form's own controls are locked; ours stand among them and are pressed to decide
   it('leaves a control of ours inside a field open', () => {
     initialise(document, listening.signal)

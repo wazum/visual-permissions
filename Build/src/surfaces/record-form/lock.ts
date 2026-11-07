@@ -45,14 +45,18 @@ export function initialise(outer: Document, signal: AbortSignal): void {
 
   // The controls, never the field around them: a field is pressed to pick it, and a field
   // that holds a record holds that record's fields too. Ours are not the form's to lock.
-  const controls = `.${classes.anchor} :is(a,input,select,textarea,button,[contenteditable])`
-    + `:not(.${classes.tableGate} *):not(.${classes.mark})`
+  const inField = `.${classes.anchor} *:not(.${classes.tableGate} *):not(.${classes.mark})`
+  const controls = 'a,input,select,textarea,button,[contenteditable]'
 
   const apply = (): void => {
     const locked = picked()
 
     // Inert, not disabled: a disabled control is left out of the save
-    doc?.querySelectorAll(controls).forEach(control => { control.toggleAttribute('inert', locked) })
+    doc?.querySelectorAll(inField).forEach(each => {
+      if (each.matches(controls) || each.shadowRoot !== null) {
+        each.toggleAttribute('inert', locked)
+      }
+    })
   }
 
   onFormReady(form => {
