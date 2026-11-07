@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -63,6 +64,14 @@ final class SwitchedValuesTest extends FunctionalTestCase
         self::assertSame('Changed', $this->formFor(['tt_content' => [1 => ['header' => 'Changed']]])['databaseRow']['header']);
     }
 
+    #[Test]
+    public function drawsAFormBuiltFromARequestWithoutAUser(): void
+    {
+        $this->signIn(modeOn: true);
+
+        self::assertSame('textmedia', $this->formFor(['tt_content' => [1 => ['CType' => 'textmedia']]], carriesUser: false)['recordTypeValue']);
+    }
+
     /**
      * @return array<string, array{mixed}>
      */
@@ -83,7 +92,7 @@ final class SwitchedValuesTest extends FunctionalTestCase
         self::assertSame('text', $this->formFor($switched)['recordTypeValue']);
     }
 
-    private function signIn(bool $modeOn): void
+    private function signIn(bool $modeOn): BackendUserAuthentication
     {
         $backendUser = $this->setUpBackendUser(1);
         if ($modeOn) {
@@ -91,16 +100,21 @@ final class SwitchedValuesTest extends FunctionalTestCase
         }
 
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        return $backendUser;
     }
 
     /**
      * @return array{recordTypeValue: string, databaseRow: array<string, mixed>}
      */
-    private function formFor(mixed $switched): array
+    private function formFor(mixed $switched, bool $carriesUser = true): array
     {
         $request = (new ServerRequest('https://example.com/typo3/record/edit'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
             ->withQueryParams(['vperm' => ['value' => $switched]]);
+        if ($carriesUser) {
+            $request = $request->withAttribute('backend.user', $GLOBALS['BE_USER']);
+        }
 
         /** @var array{recordTypeValue: string, databaseRow: array<string, mixed>} $formData */
         $formData = $this->get(FormDataCompiler::class)->compile(

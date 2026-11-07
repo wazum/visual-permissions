@@ -21,7 +21,8 @@ final readonly class ViewableUsersController
      */
     public function list(ServerRequestInterface $request): ResponseInterface
     {
-        $tag = sprintf('"%s"', md5($this->viewableUsers->version() . implode(',', $this->recent())));
+        $recent = $this->recent($request);
+        $tag = sprintf('"%s"', md5($this->viewableUsers->version() . implode(',', $recent)));
 
         // Server marks If-None-Match weak with W/; trim it off before comparison
         $held = ltrim($request->getHeaderLine('If-None-Match'), 'W/');
@@ -35,7 +36,7 @@ final readonly class ViewableUsersController
         }
 
         return new JsonResponse(
-            ['recent' => $this->recent(), 'users' => $users],
+            ['recent' => $recent, 'users' => $users],
             200,
             ['ETag' => $tag, 'Cache-Control' => 'private, no-cache'],
         );
@@ -44,9 +45,9 @@ final readonly class ViewableUsersController
     /**
      * @return list<int>
      */
-    private function recent(): array
+    private function recent(ServerRequestInterface $request): array
     {
-        $backendUser = $GLOBALS['BE_USER'] ?? null;
+        $backendUser = $request->getAttribute('backend.user');
         if (!$backendUser instanceof BackendUserAuthentication) {
             return [];
         }

@@ -102,7 +102,7 @@ final class LeaveUserViewTest extends FunctionalTestCase
         $this->get(LeaveUserView::class)->process($this->backendRequest(), $this->carriesOn());
 
         self::assertStringContainsString(
-            '"leave":"Leave user view"',
+            '"leave":"Benutzeransicht verlassen"',
             $this->get(PageRenderer::class)->render($this->backendRequest()),
         );
     }
@@ -128,7 +128,8 @@ final class LeaveUserViewTest extends FunctionalTestCase
     {
         $request = (new ServerRequest('https://example.com/typo3/main'))
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-            ->withAttribute('route', new Route('/main', ['_identifier' => 'main']));
+            ->withAttribute('route', new Route('/main', ['_identifier' => 'main']))
+            ->withAttribute('backend.user', $GLOBALS['BE_USER']);
 
         // PageRenderer::render() reads the request from here: 13.4 always, 14.3 when given none
         return $GLOBALS['TYPO3_REQUEST'] = $request
