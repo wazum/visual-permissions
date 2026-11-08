@@ -169,15 +169,31 @@ final readonly class BackendGroups
      */
     public function change(int $groupId, Scope $scope, array $operations): bool
     {
-        $list = $this->listOf($groupId, $scope);
+        return $this->changeTogether($groupId, [[$scope, $operations]]);
+    }
 
-        foreach ($operations as $operation) {
-            $list = $operation['add']
-                ? [...$list, $operation['target']]
-                : array_values(array_diff($list, [$operation['target']]));
+    /**
+     * @param list<array{Scope, list<array{target: string, add: bool}>}> $changes
+     *
+     * @return bool whether the backend took the write
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function changeTogether(int $groupId, array $changes): bool
+    {
+        $columns = [];
+        foreach ($changes as [$scope, $operations]) {
+            $list = $this->listOf($groupId, $scope);
+            foreach ($operations as $operation) {
+                $list = $operation['add']
+                    ? [...$list, $operation['target']]
+                    : array_values(array_diff($list, [$operation['target']]));
+            }
+
+            $columns[$this->columnFor($scope)] = StringUtility::uniqueList(implode(',', $list));
         }
 
-        return $this->update($groupId, $scope, $list);
+        return $this->records->update(self::TABLE, $groupId, $columns);
     }
 
     /**

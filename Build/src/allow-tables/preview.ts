@@ -25,7 +25,7 @@ export function initialise(signal: AbortSignal): void {
           }
         })
     },
-    explain: (doc, table, verdict, called) => drawBand(doc, { groupId: getState().groupId ?? 0, table, called, verdict }),
+    explain: (doc, table, verdict, called, reads) => drawBand(doc, { groupId: getState().groupId ?? 0, table, called, verdict, reads }),
   }, signal)
 }
 

@@ -177,8 +177,8 @@ describe('the record form as the group sees it', () => {
     groupForm(document)
 
     expect(document.querySelector('.form-section')?.hasAttribute('hidden')).toBe(true)
-    expect(document.querySelector(`.${classes.nothingTheirs} .callout-body`)?.textContent)
-      .toBe('The group may not edit records of this kind')
+    expect(document.querySelector(`.${classes.nothingTheirs} .${classes.tableLevels} [aria-checked="true"]`)?.textContent)
+      .toBe('No Access')
   })
 
   it('says why a record without tabs is empty', () => {
@@ -194,8 +194,8 @@ describe('the record form as the group sees it', () => {
     pickArea('fields')
     groupForm(document, { sys_file_reference: 'denied' })
 
-    expect(document.querySelector(`.${classes.nothingTheirs} .callout-body`)?.textContent)
-      .toBe('The group may not edit records of this kind')
+    expect(document.querySelector(`.${classes.nothingTheirs} .${classes.tableLevels} [aria-checked="true"]`)?.textContent)
+      .toBe('No Access')
   })
 
   it('says nothing of the kind while a field of theirs is still standing', () => {

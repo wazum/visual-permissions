@@ -5,7 +5,8 @@ export const groupForm = (
   doc: Document,
   tables: Readonly<Record<string, string>> = {},
   named: Readonly<Record<string, string>> = {},
-): void => { drawPreview(doc, { tables, named }) }
+  reads: Readonly<Record<string, string>> = {},
+): void => { drawPreview(doc, { tables, named, reads }) }
 
 // The server names the field that holds each one it draws, and nothing for the record's own
 export const row = (token: string, verdict: string, inside = ''): string => `
@@ -98,9 +99,10 @@ export const backendSays = (): void => {
   TYPO3.lang = {
     'allowFields.recordNoFields': 'The group may edit "%s", but no field of this record yet',
     'recordForm.add': 'Assign permissions',
-    'allowTables.missing': 'The group may not edit records of this kind',
     'allowTables.adminOnly': 'Only administrators may edit records of this kind',
-    'allowTables.allow': 'Allow "%s"',
     'allowTables.gone': 'This is empty for the group: it may not edit "%s"',
+    'be_groups.tables_modify.permissions.none': 'No Access',
+    'be_groups.tables_modify.permissions.select': 'Read',
+    'be_groups.tables_modify.permissions.modify': 'Read & Write',
   }
 }

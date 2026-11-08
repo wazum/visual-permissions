@@ -31,8 +31,8 @@ final class AllowTablesControllerTest extends FunctionalTestCase
         $response = $this->get(AllowTablesController::class)->write($this->asked([
             'group' => 20,
             'operations' => [
-                ['table' => 'sys_file_reference', 'allow' => true],
-                ['table' => 'pages', 'allow' => false],
+                ['table' => 'sys_file_reference', 'select' => true, 'modify' => true],
+                ['table' => 'pages', 'select' => false, 'modify' => false],
             ],
         ]));
 
@@ -41,11 +41,47 @@ final class AllowTablesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function letsTheGroupReadATableItMayNotWrite(): void
+    {
+        $response = $this->get(AllowTablesController::class)->write($this->asked([
+            'group' => 20,
+            'operations' => [['table' => 'sys_file_reference', 'select' => true, 'modify' => false]],
+        ]));
+
+        self::assertSame(204, $response->getStatusCode());
+        self::assertContains('sys_file_reference', $this->get(BackendGroups::class)->listOf(20, Scope::TablesSelect));
+        self::assertNotContains('sys_file_reference', $this->get(BackendGroups::class)->listOf(20, Scope::TablesModify));
+    }
+
+    #[Test]
+    public function refusesWritingATableWithoutReadingIt(): void
+    {
+        $response = $this->get(AllowTablesController::class)->write($this->asked([
+            'group' => 20,
+            'operations' => [['table' => 'sys_file_reference', 'select' => false, 'modify' => true]],
+        ]));
+
+        self::assertSame(400, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function refusesATableSentWithoutItsLevel(): void
+    {
+        $response = $this->get(AllowTablesController::class)->write($this->asked([
+            'group' => 20,
+            'operations' => [['table' => 'pages']],
+        ]));
+
+        self::assertSame(400, $response->getStatusCode());
+        self::assertSame('tt_content,pages', $this->tablesOfTwenty());
+    }
+
+    #[Test]
     public function refusesToAllowWhatCannotBeAllowed(): void
     {
         $response = $this->get(AllowTablesController::class)->write($this->asked([
             'group' => 20,
-            'operations' => [['table' => 'no_such_table', 'allow' => true]],
+            'operations' => [['table' => 'no_such_table', 'select' => true, 'modify' => true]],
         ]));
 
         self::assertSame(400, $response->getStatusCode());
@@ -57,7 +93,7 @@ final class AllowTablesControllerTest extends FunctionalTestCase
     {
         $response = $this->get(AllowTablesController::class)->write($this->asked([
             'group' => 20,
-            'operations' => [['table' => 'no_such_table', 'allow' => false]],
+            'operations' => [['table' => 'no_such_table', 'select' => false, 'modify' => false]],
         ]));
 
         self::assertSame(204, $response->getStatusCode());
