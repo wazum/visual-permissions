@@ -9,6 +9,7 @@ export const routes = {
   allow_values: 'visual_permissions_allow_values',
   file_operations: 'visual_permissions_file_operations',
   folder_tree: 'visual_permissions_folder_tree',
+  groups: 'visual_permissions_groups',
   inspect: 'visual_permissions_inspect',
   modules_outside_menu: 'visual_permissions_modules_outside_menu',
   mount_folders: 'visual_permissions_mount_folders',

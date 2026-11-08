@@ -8,6 +8,7 @@ use Wazum\VisualPermissions\AllowTables\AllowTablesController;
 use Wazum\VisualPermissions\AllowValues\AllowFileOperationsController;
 use Wazum\VisualPermissions\AllowValues\AllowPageTypesController;
 use Wazum\VisualPermissions\AllowValues\AllowValuesController;
+use Wazum\VisualPermissions\BackendGroups\GroupCatalogueController;
 use Wazum\VisualPermissions\EditOtherPermissions\OtherPermissionsController;
 use Wazum\VisualPermissions\Inspect\InspectController;
 use Wazum\VisualPermissions\MountBranches\Folders\FolderTreeController;
@@ -78,6 +79,11 @@ return [
     'visual_permissions_folder_tree' => [
         'path' => '/visual-permissions/folder-tree',
         'target' => FolderTreeController::class . '::tree',
+        'access' => 'admin',
+    ],
+    'visual_permissions_groups' => [
+        'path' => '/visual-permissions/groups',
+        'target' => GroupCatalogueController::class . '::list',
         'access' => 'admin',
     ],
     'visual_permissions_inspect' => [

@@ -1,6 +1,6 @@
 import Persistent from '@typo3/backend/storage/persistent.js'
 import { attributes, classes } from '../platform/contract.js'
-import { type GroupEntry, groupsOn } from '../platform/group-catalogue.js'
+import { type GroupEntry, groupsOn, refreshGroups } from '../platform/group-catalogue.js'
 import { labelOf } from '../platform/labels.js'
 import { counted } from '../platform/panel-card.js'
 import { createPicker, type Picker, type PickerEntry } from '../platform/picker/picker.js'
@@ -132,7 +132,7 @@ async function lastViewedUser(
 async function fill(doc: Document, picker: Picker): Promise<void> {
   picker.state = 'loading'
 
-  const answer = await viewableUsers().catch(() => null)
+  const [answer] = await Promise.all([viewableUsers().catch(() => null), refreshGroups(doc)])
   if (answer === null) {
     picker.state = 'failed'
 

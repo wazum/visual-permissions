@@ -28,6 +28,9 @@ services:
   Wazum\VisualPermissions\BackendGroups\BackendGroups:
     public: true
 
+  Wazum\VisualPermissions\BackendGroups\GroupCatalogueController:
+    public: true
+
   Wazum\VisualPermissions\Compatibility\NoModuleAccessNotice:
     public: true
     tags:
