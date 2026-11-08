@@ -139,6 +139,10 @@ export function initialise(doc: Document, signal: AbortSignal): void {
       const room = Math.max(cursor, column?.getBoundingClientRect().left ?? cursor)
 
       tab.style.setProperty('--vperm-host-x', `${String(room)}px`)
+      const edge = column?.getBoundingClientRect().right
+      if (edge !== undefined) {
+        tab.style.setProperty('--vperm-tab-room', `${String(edge - room)}px`)
+      }
 
       // Tab does not cover the rule if it is owned elsewhere; host must be defined for it to do so.
       tab.toggleAttribute(attributes.elsewhere, host === undefined)
@@ -223,6 +227,7 @@ function tabFor(doc: Document, area: string, label: string): HTMLElement {
   tab.setAttribute('role', 'tab')
   tab.setAttribute(attributes.area, area)
   tab.setAttribute(attributes.label, label)
+  tab.title = label
   tab.append(say(doc, classes.tabLabel, label))
   tab.addEventListener('click', () => {
     pickArea(area)

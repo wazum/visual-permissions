@@ -111,8 +111,11 @@ $divider: var(--vperm-divider, 0px);
   // One cell, with the word in it twice: what the reader sees, and a copy of it at the
   // weight the armed tab is set in, which nobody sees but which the width is taken from.
   display: inline-grid;
+  grid-template-columns: minmax(0, max-content);
   align-items: center;
   justify-items: center;
+  // A word longer than its column is cut short there, and the tab's title says it whole.
+  max-width: var(--vperm-tab-room, none);
   padding: 0.5rem 0.9rem 0.7rem;
   // Drawn in the region's own ink, so a dark area gets a light edge and a light one a dark
   // edge. The colour the backend divides its own boxes with is far too close to a dark
@@ -140,6 +143,16 @@ $divider: var(--vperm-divider, 0px);
 
   // The word the reader reads, and the copy of it the width comes from: both in the one
   // cell, so the tab is as wide as its own boldest word whether it is armed or not.
+  .#{contract.$class-tab-label},
+  &::after {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // The words are set solid, so a cut edge would take the tails off g and p.
+    padding-block: 3px;
+    margin-block: -3px;
+  }
+
   .#{contract.$class-tab-label} {
     grid-area: 1 / 1;
   }

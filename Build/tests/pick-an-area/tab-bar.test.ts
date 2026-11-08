@@ -394,6 +394,38 @@ describe('the bar of tabs over the areas', () => {
     shownTabs.forEach((tab, place) => { expect(tab).toBe(built[place]) })
   })
 
+  it('keeps a tab within what is left of the column after the tab before it', () => {
+    boxed(framed('fileMounts'), new DOMRect(240, 101, 300, 900))
+    toolbarItem()
+    initialise(document, listening.signal)
+    activate()
+    boxed(tabOf('pageMounts'), new DOMRect(240, 104, 140, 34))
+
+    pickArea('fileMounts')
+
+    expect(tabOf('fileMounts').style.getPropertyValue('--vperm-tab-room')).toBe('150px')
+  })
+
+  it('leaves a tab without a column on screen as wide as its word', () => {
+    boxed(framed('fileMounts'), new DOMRect(240, 101, 300, 900))
+    toolbarItem()
+    initialise(document, listening.signal)
+
+    activate()
+
+    expect(tabOf('modules').style.getPropertyValue('--vperm-tab-room')).toBe('')
+  })
+
+  it('names the whole area on a tab that may be cut short', () => {
+    boxed(framed('fileMounts'), new DOMRect(240, 101, 220, 900))
+    toolbarItem()
+    initialise(document, listening.signal)
+
+    activate()
+
+    expect(tabOf('fileMounts').title).toBe('File mounts')
+  })
+
   it('stands the other permissions where the tab it follows ends', () => {
     boxed(framed('fields'), new DOMRect(240, 101, 1560, 900))
     toolbarItem()
