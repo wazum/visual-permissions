@@ -4,6 +4,7 @@ import Persistent from '@typo3/backend/storage/persistent.js'
 import { attributes, classes, elements } from '../contract.js'
 import { labelOf } from '../labels.js'
 import { keep } from '../persistence.js'
+import { deactivate } from '../session.js'
 import { shellIn } from '../shell.js'
 import { match } from './match.js'
 
@@ -256,6 +257,7 @@ export class Picker extends LitElement {
     url.searchParams.set('returnUrl', shellIn(this.ownerDocument)?.getAttribute('endpoint') ?? '')
     link.href = url.href
     ModuleStateStorage.update('web', 0, true)
+    deactivate()
     this.hidePopover()
   }
 

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import '#src/platform/picker/picker.js'
 import { classes, elements } from '#src/platform/contract.js'
 import type { PickerEntry, PickerWords } from '#src/platform/picker/picker.js'
+import { activate, getState, selectGroup } from '#src/platform/session.js'
 import { chosen } from '../../__mocks__/typo3-module-state-storage.js'
 import { prime, quiet as written, stored } from '../../__mocks__/typo3-persistent-storage.js'
 
@@ -116,6 +117,22 @@ describe('the picker', () => {
 
     expect(new URL(link?.href ?? '').searchParams.get('returnUrl')).toBe('/typo3/module/content/records?token=2&id=3')
     expect(element.matches(':popover-open') || element.hasAttribute('data-open')).toBe(false)
+  })
+
+  it('switches editing permissions off on the way to the new one', async () => {
+    selectGroup(7)
+    activate()
+    const element = picker([...groups])
+    Object.assign(element, { addNew: { label: 'New group', url: '/typo3/record/edit?token=1&edit%5Bbe_groups%5D%5B0%5D=new' } })
+    await settled(element)
+    openedBy(element)
+
+    const link = element.querySelector('a')
+    link?.addEventListener('click', event => { event.preventDefault() })
+    expect(getState().active).toBe(true)
+    link?.click()
+
+    expect(getState().active).toBe(false)
   })
 
   it('stands the page tree on the root level, where the new one is made', async () => {
