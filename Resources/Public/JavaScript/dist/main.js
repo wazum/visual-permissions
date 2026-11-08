@@ -1,15 +1,15 @@
-import de from "@typo3/backend/storage/persistent.js";
-import { LitElement as Ar, html as M } from "lit";
+import pe from "@typo3/backend/storage/persistent.js";
+import { LitElement as Ar, html as I } from "lit";
 import { ModuleStateStorage as wn } from "@typo3/backend/storage/module-state-storage.js";
-import H from "@typo3/core/ajax/ajax-request.js";
+import Y from "@typo3/core/ajax/ajax-request.js";
 import $r from "@typo3/backend/login-refresh.js";
-import De from "@typo3/backend/notification.js";
+import Re from "@typo3/backend/notification.js";
 import { sudoModeInterceptor as Sr } from "@typo3/backend/security/sudo-mode-interceptor.js";
 import Mt from "@typo3/backend/modal.js";
 import { FileStorageTree as Er } from "@typo3/backend/tree/file-storage-tree.js";
 import { PageTree as Cr } from "@typo3/backend/tree/page-tree.js";
-import je from "@typo3/backend/module-menu.js";
-import ie from "@typo3/backend/storage/client.js";
+import We from "@typo3/backend/module-menu.js";
+import ae from "@typo3/backend/storage/client.js";
 import { JavaScriptItemProcessor as qr } from "@typo3/core/java-script-item-processor.js";
 import Lr from "@typo3/backend/viewport.js";
 import tt, { ModifierKeys as yn } from "@typo3/backend/hotkeys.js";
@@ -128,7 +128,7 @@ const d = {
   typeSwitch: "vperm-type-switch",
   unseenPages: "vperm-unseen-pages",
   viewAsControls: "vperm-view-as-controls"
-}, se = {
+}, le = {
   folderTree: "vperm-folder-tree",
   pageTree: "vperm-page-tree",
   picker: "vperm-picker"
@@ -148,7 +148,7 @@ function An(e) {
   return typeof t.document == "string" ? t.document : "";
 }
 function Or(e, t) {
-  const n = ae(e);
+  const n = ce(e);
   n !== null && e.addEventListener(
     "typo3-module-loaded",
     () => {
@@ -158,9 +158,9 @@ function Or(e, t) {
   );
 }
 function vt(e) {
-  return new URL(e.location.href).pathname.endsWith("/main") ? ae(e)?.getAttribute("endpoint") ?? "" : e.location.href;
+  return new URL(e.location.href).pathname.endsWith("/main") ? ce(e)?.getAttribute("endpoint") ?? "" : e.location.href;
 }
-function ae(e) {
+function ce(e) {
   return e.querySelector("typo3-backend-module-router");
 }
 function bt(e) {
@@ -182,9 +182,9 @@ function $n(e) {
   return n.searchParams.delete("token"), n.href;
 }
 let nt = Promise.resolve();
-function pe(e, t) {
+function fe(e, t) {
   const n = document, r = nt.then(async () => {
-    Nr(n) || await de.set(e, t);
+    Nr(n) || await pe.set(e, t);
   });
   return nt = r.catch(() => {
   }), r;
@@ -195,7 +195,7 @@ function xr() {
 const Sn = "vperm.session", En = 1, we = "modules", Fr = "fields", rt = /* @__PURE__ */ new Set();
 let T = Dr();
 document.addEventListener("typo3-module-loaded", () => {
-  We({ ...T, face: "preview" });
+  Ke({ ...T, face: "preview" });
 });
 function y() {
   return T;
@@ -205,45 +205,45 @@ function C(e, t) {
 }
 function Cn() {
   const e = T.groupId !== null, t = e ? Fr : T.area;
-  fe({ ...T, active: e, open: T.open || e, area: t, picked: t });
+  me({ ...T, active: e, open: T.open || e, area: t, picked: t });
 }
 function Tr() {
-  fe({ ...T, open: !0 });
+  me({ ...T, open: !0 });
 }
 function Mr() {
-  fe({ ...T, open: !1, active: !1 });
+  me({ ...T, open: !1, active: !1 });
 }
 function qn() {
-  fe({ ...T, active: !1 });
+  me({ ...T, active: !1 });
 }
 function Ln(e) {
-  fe({ ...T, area: e, picked: e, face: "preview" });
+  me({ ...T, area: e, picked: e, face: "preview" });
 }
 function Ir(e) {
-  We({ ...T, area: e });
+  Ke({ ...T, area: e });
 }
-function ue(e) {
-  We({ ...T, face: e });
+function de(e) {
+  Ke({ ...T, face: e });
 }
 function wt(e) {
-  fe({ ...T, groupId: e, active: T.active && e !== null });
+  me({ ...T, groupId: e, active: T.active && e !== null });
 }
-function fe(e) {
-  pe(Sn, {
+function me(e) {
+  fe(Sn, {
     version: En,
     open: e.open,
     active: e.active,
     groupId: e.groupId,
     area: e.picked
-  }), We(e);
+  }), Ke(e);
 }
-function We(e) {
+function Ke(e) {
   T = e;
   for (const t of rt)
     t(T);
 }
 function Dr() {
-  const e = de.get(Sn);
+  const e = pe.get(Sn);
   if (e === null || typeof e != "object")
     return { open: !1, active: !1, groupId: null, area: we, picked: we, face: "preview" };
   const t = e;
@@ -306,11 +306,11 @@ function Ur(e, t) {
     r.remove();
   });
 }
-function Ke(e) {
+function Ge(e) {
   return JSON.parse(e.querySelector(`[${d.groups}]`)?.getAttribute(d.groups) ?? "{}");
 }
-function te(e, t) {
-  return Ke(e)[String(t)]?.title ?? null;
+function re(e, t) {
+  return Ge(e)[String(t)]?.title ?? null;
 }
 function g(e) {
   return TYPO3.lang[e] ?? "";
@@ -321,7 +321,7 @@ function _e(e, t) {
   r.className = l.faceTally;
   const o = L(n, l.faceCounted, ""), i = L(n, l.faceWaiting, "");
   r.append(o, i);
-  const s = Q(n, g("platform.cancel"), `btn btn-default ${l.faceCancel}`, t.cancel), a = Q(n, t.label, `btn btn-primary ${l.faceApply}`, t.apply);
+  const s = X(n, g("platform.cancel"), `btn btn-default ${l.faceCancel}`, t.cancel), a = X(n, t.label, `btn btn-primary ${l.faceApply}`, t.apply);
   return e.replaceChildren(r, s, a), {
     state: o,
     waiting: i,
@@ -392,7 +392,7 @@ function kt(e, t, n, r) {
   }, { signal: t });
 }
 const Wr = (e) => e.querySelector("typo3-backend-modal, :popover-open") !== null;
-function Q(e, t, n, r, o) {
+function X(e, t, n, r, o) {
   const i = e.createElement("button");
   if (i.type = "button", i.className = n, i.textContent = t, i.addEventListener("click", r), o !== void 0) {
     const s = e.createElement("typo3-backend-icon");
@@ -404,10 +404,10 @@ function L(e, t, n) {
   const r = e.createElement("span");
   return r.className = t, r.textContent = n, r;
 }
-function G(e, t, ...n) {
-  return _(g(`${e}.${t === 1 ? "one" : "many"}`), ...n);
+function K(e, t, ...n) {
+  return N(g(`${e}.${t === 1 ? "one" : "many"}`), ...n);
 }
-function _(e, ...t) {
+function N(e, ...t) {
   return t.reduce(
     (n, r, o) => n.replace(`%${String(o + 1)}$s`, String(r)).replace("%s", String(r)),
     e
@@ -436,7 +436,7 @@ function Rt(e, t) {
   }
   return i;
 }
-const Bt = (e) => e.subtitle === "" ? e.title : `${e.title} ${e.subtitle}`, Gr = 70, Ye = 50;
+const Bt = (e) => e.subtitle === "" ? e.title : `${e.title} ${e.subtitle}`, Gr = 70, Je = 50;
 class zr extends Ar {
   // Stryker disable ObjectLiteral,BooleanLiteral: callers set these as properties, never as attributes
   static properties = {
@@ -487,7 +487,7 @@ class zr extends Ar {
     })).filter((n) => n.score >= 0).sort((n, r) => n.band - r.band || r.score - n.score).map((n) => n.entry);
   }
   get found() {
-    return this.matching.slice(0, Ye);
+    return this.matching.slice(0, Je);
   }
   connectedCallback() {
     super.connectedCallback(), this.setAttribute("popover", "manual"), this.addEventListener("keydown", (t) => {
@@ -512,7 +512,7 @@ class zr extends Ar {
   }
   render() {
     const t = this.found;
-    return M`
+    return I`
       <div class="input-group input-group-sm">
         <span class="input-group-text" aria-hidden="true">
           <typo3-backend-icon identifier="actions-search" size="small"></typo3-backend-icon>
@@ -530,7 +530,7 @@ class zr extends Ar {
         ${this.nothingToShow(t)}
         ${this.state !== "ready" ? "" : t.map((n, r) => {
       const o = Rt(this.query, Bt(n))?.at ?? [];
-      return M`
+      return I`
           ${this.headingBefore(n, t[r - 1])}
           <div role="option" id=${this.rowId(r)} data-id=${n.id}
                aria-selected=${r === this.active}
@@ -563,7 +563,7 @@ class zr extends Ar {
     `;
   }
   addNewLink() {
-    return this.addNew === null ? "" : M`
+    return this.addNew === null ? "" : I`
       <a class="btn btn-default" href=${this.addNew.url} target="list_frame"
          @click=${(t) => {
       this.leaveForNew(t.currentTarget);
@@ -575,17 +575,17 @@ class zr extends Ar {
   }
   leaveForNew(t) {
     const n = new URL(t.href);
-    n.searchParams.set("returnUrl", ae(this.ownerDocument)?.getAttribute("endpoint") ?? ""), t.href = n.href, wn.update("web", 0, !0), this.hidePopover();
+    n.searchParams.set("returnUrl", ce(this.ownerDocument)?.getAttribute("endpoint") ?? ""), t.href = n.href, wn.update("web", 0, !0), this.hidePopover();
   }
   kept() {
-    const t = de.get(this.remembers);
+    const t = pe.get(this.remembers);
     return typeof t == "string" ? t : "";
   }
   remember() {
-    this.remembers !== "" && pe(this.remembers, this.query);
+    this.remembers !== "" && fe(this.remembers, this.query);
   }
   nothingToShow(t) {
-    return this.state === "loading" ? M`<p>${this.words.loading}</p>` : this.state === "failed" ? M`
+    return this.state === "loading" ? I`<p>${this.words.loading}</p>` : this.state === "failed" ? I`
         <p>${this.words.failed}</p>
         <button type="button" class="btn btn-default btn-sm"
                 @click=${() => {
@@ -593,7 +593,7 @@ class zr extends Ar {
     }}>
           ${this.words.retry}
         </button>
-      ` : t.length === 0 ? M`<p>${this.words.empty}</p>` : "";
+      ` : t.length === 0 ? I`<p>${this.words.empty}</p>` : "";
   }
   activeId() {
     return this.inPane ? this.detailId(this.onDetail) : this.rowId(this.active);
@@ -602,18 +602,18 @@ class zr extends Ar {
     if (this.state !== "ready")
       return "";
     const t = this.matching.length;
-    return t <= Ye ? (t === 1 ? this.words.totalOne : this.words.totalMany).replace("%d", String(t)) : this.words.countMany.replace("%d", String(Ye)).replace("%d", String(t));
+    return t <= Je ? (t === 1 ? this.words.totalOne : this.words.totalMany).replace("%d", String(t)) : this.words.countMany.replace("%d", String(Je)).replace("%d", String(t));
   }
   detailPane() {
     const t = this.found[this.active];
-    return t === void 0 ? M`` : M`
+    return t === void 0 ? I`` : I`
       <div class=${l.pickerDetail}>
         <div class=${l.pickerHead}>
           <strong>${t.title}</strong>
           <p>${t.detailHeading}</p>
         </div>
         <div role="listbox" tabindex="-1">
-          ${t.detail.map((n, r) => M`
+          ${t.detail.map((n, r) => I`
             <div role="option" id=${this.detailId(r)} class=${l.pickerRow}
                  data-id=${n.id} aria-selected=${this.inPane && r === this.onDetail}
                  style="--vperm-picker-depth: ${String(n.depth)}"
@@ -668,7 +668,7 @@ class zr extends Ar {
   // The component holds the field; the slice never hears a keystroke: an entry carries its heading at all times
   headingBefore(t, n) {
     const r = t.heading ?? "";
-    return r === "" || r === n?.heading ? M`` : M`<p class="dropdown-header">${r}</p>`;
+    return r === "" || r === n?.heading ? I`` : I`<p class="dropdown-header">${r}</p>`;
   }
   rowId(t) {
     return `vperm-picker-row-${String(t)}`;
@@ -711,7 +711,7 @@ class zr extends Ar {
   marked(t, n, r) {
     const o = t.filter((a) => a >= r && a < r + n.length).map((a) => a - r);
     if (o.length === 0)
-      return M`${n}`;
+      return I`${n}`;
     const i = [];
     let s = 0;
     for (let a = 0; a < o.length; ) {
@@ -719,14 +719,14 @@ class zr extends Ar {
       for (; c + 1 < o.length && o[c + 1] === (o[c] ?? 0) + 1; )
         c += 1;
       const u = o[a] ?? 0, p = (o[c] ?? 0) + 1;
-      i.push(M`${n.slice(s, u)}<mark>${n.slice(u, p)}</mark>`), s = p, a = c + 1;
+      i.push(I`${n.slice(s, u)}<mark>${n.slice(u, p)}</mark>`), s = p, a = c + 1;
     }
-    return M`${i}${n.slice(s)}`;
+    return I`${i}${n.slice(s)}`;
   }
 }
-customElements.get(se.picker) === void 0 && customElements.define(se.picker, zr);
+customElements.get(le.picker) === void 0 && customElements.define(le.picker, zr);
 function Tn(e, t) {
-  const n = e.createElement(se.picker);
+  const n = e.createElement(le.picker);
   return n.words = {
     ...t,
     countMany: g("platform.picker.count"),
@@ -755,11 +755,11 @@ function Yr(e, t) {
     r.openedBy(n);
   }, { signal: t });
   const i = n.textContent, s = () => {
-    n.textContent = te(e, y().groupId) ?? i;
+    n.textContent = re(e, y().groupId) ?? i;
   };
   s(), C(s, t), C(() => {
     const { groupId: u } = y();
-    u !== null && o[0] !== u && (o = [u, ...o.filter((p) => p !== u)], pe(Mn, o)), r.entries = Ut(e, o);
+    u !== null && o[0] !== u && (o = [u, ...o.filter((p) => p !== u)], fe(Mn, o)), r.entries = Ut(e, o);
   }, t);
   const c = (u) => {
     wt(Number(u.detail.id));
@@ -769,11 +769,11 @@ function Yr(e, t) {
   });
 }
 function Jr(e) {
-  const t = Ke(e);
-  return [de.get(Mn)].flat().map(String).filter((n) => n in t).map(Number);
+  const t = Ge(e);
+  return [pe.get(Mn)].flat().map(String).filter((n) => n in t).map(Number);
 }
 function Ut(e, t) {
-  const n = Object.entries(Ke(e)), r = t.filter((s) => s !== y().groupId).slice(0, Hr), o = r.flatMap((s) => n.filter(([a]) => a === String(s))), i = n.filter(([s]) => !r.includes(Number(s))).sort(([, s], [, a]) => s.title.localeCompare(a.title));
+  const n = Object.entries(Ge(e)), r = t.filter((s) => s !== y().groupId).slice(0, Hr), o = r.flatMap((s) => n.filter(([a]) => a === String(s))), i = n.filter(([s]) => !r.includes(Number(s))).sort(([, s], [, a]) => s.title.localeCompare(a.title));
   return [
     ...o.map(([s, a]) => jt(s, a, g("pickAGroup.recent"))),
     ...i.map(([s, a]) => jt(s, a, g("pickAGroup.all")))
@@ -795,13 +795,13 @@ function jt(e, t, n) {
   };
 }
 function Qr(e) {
-  return e === 0 ? "" : G("pickAGroup.inherits", e, e);
+  return e === 0 ? "" : K("pickAGroup.inherits", e, e);
 }
 const In = (e) => `vperm:${e}`;
-function X(e, t) {
+function Z(e, t) {
   document.dispatchEvent(new CustomEvent(In(e), { detail: t }));
 }
-function Y(e, t, n) {
+function J(e, t, n) {
   document.addEventListener(
     In(e),
     (r) => {
@@ -826,13 +826,13 @@ function Xr() {
   };
 }
 const Dn = Xr();
-function D(e, t) {
+function R(e, t) {
   Dn.listen(e, t);
 }
 function Wt(e) {
   Dn.tell(e);
 }
-function I(e) {
+function D(e) {
   return TYPO3.settings.ajaxUrls[e] ?? "";
 }
 const O = {
@@ -855,9 +855,9 @@ const O = {
   write_other_permissions: "visual_permissions_write_other_permissions"
 };
 let ot = 0;
-async function ne(e, t, n = () => {
+async function oe(e, t, n = () => {
 }) {
-  return ot += 1, new H(I(e)).addMiddleware(Sr).post(t).then(async (r) => {
+  return ot += 1, new Y(D(e)).addMiddleware(Sr).post(t).then(async (r) => {
     const o = Kt(r);
     return o === "taken" && r.raw().status === 200 && n(await r.resolve()), o;
   }, Kt).finally(() => {
@@ -878,14 +878,14 @@ function Kt(e) {
 function Zr(e) {
   return e < 300 ? "taken" : e === 422 ? "cancelled" : e === 409 ? "refused" : "failed";
 }
-async function Ge(e, t = []) {
-  return Pe(new H(I(O.inspect)).withQueryArguments({ group: e, tables: [...t] }).get());
+async function ze(e, t = []) {
+  return Pe(new Y(D(O.inspect)).withQueryArguments({ group: e, tables: [...t] }).get());
 }
-function ze() {
+function Ve() {
   let e = 0;
   return {
     inspect: async (t, n) => {
-      const r = ++e, o = await Ge(t, n);
+      const r = ++e, o = await ze(t, n);
       return r === e ? o : null;
     },
     // Stryker disable next-line AssignmentOperator: counting down works as well, since only "is this still the newest" is asked
@@ -896,38 +896,38 @@ function ze() {
 }
 async function Rn(e, t) {
   const n = e.indexOf(":"), r = e.slice(0, n), o = e.slice(n + 1);
-  return (await (await new H(I(O.open_document)).withQueryArguments({ table: r, uids: o, returnUrl: t }).get()).resolve()).url ?? "";
+  return (await (await new Y(D(O.open_document)).withQueryArguments({ table: r, uids: o, returnUrl: t }).get()).resolve()).url ?? "";
 }
 async function Pe(e) {
   try {
     return await (await e).resolve();
   } catch {
-    return De.error(g("platform.notRead")), null;
+    return Re.error(g("platform.notRead")), null;
   }
 }
-const $t = ["allowed", "allowedAndInherited", "inherited"], eo = ["allowed", "denied"], Z = "allowed", me = "denied", Ve = "inherited", St = "allowedAndInherited", He = "adminOnly";
+const $t = ["allowed", "allowedAndInherited", "inherited"], eo = ["allowed", "denied"], ee = "allowed", he = "denied", He = "inherited", St = "allowedAndInherited", Ye = "adminOnly";
 function U(e) {
   return $t.some((t) => t === e);
 }
-const to = [...$t, me];
+const to = [...$t, he];
 function Et(e) {
   return eo.includes(e);
 }
-function Re(e) {
+function Be(e) {
   return e.substring(0, e.indexOf(":"));
 }
 function no(e) {
   return e.substring(e.indexOf(":") + 1);
 }
-const ee = {};
+const ne = {};
 function ro(e, t) {
-  ee.tables = e, t.addEventListener("abort", () => {
-    delete ee.tables;
+  ne.tables = e, t.addEventListener("abort", () => {
+    delete ne.tables;
   });
 }
 function oo(e, t) {
-  ee.fields = e, t.addEventListener("abort", () => {
-    delete ee.fields;
+  ne.fields = e, t.addEventListener("abort", () => {
+    delete ne.fields;
   });
 }
 function io(e, t) {
@@ -937,7 +937,7 @@ function io(e, t) {
     i.removeAttribute("hidden"), i.removeAttribute(d.unseen);
   });
   const { active: n, area: r, face: o } = y();
-  !n || r !== "fields" || (ee.tables?.hide(e, t, o), ee.fields?.hide(e, t, o), Gt(e, ".form-section").forEach((i) => {
+  !n || r !== "fields" || (ne.tables?.hide(e, t, o), ne.fields?.hide(e, t, o), Gt(e, ".form-section").forEach((i) => {
     [...i.querySelectorAll(`[${d.verdict}]`)].some((a) => a.closest(`[${d.unseen}]`) === null) || $e(i);
   }), Gt(e, ".tab-pane").forEach((i) => {
     i.querySelector(`.form-section:not([${d.unseen}])`) === null && ($e(i), $e(e.querySelector(`[data-typo3-tab='#${i.id}']`)?.closest(".nav-item") ?? null));
@@ -955,16 +955,16 @@ function so(e) {
 function ao(e, { tables: t, named: n }) {
   if (e.querySelector(`.form-section:not([${d.unseen}])`) !== null)
     return;
-  const r = lo(e), o = t[r], s = (U(o) ? ee.fields : ee.tables)?.explain(e, r, o, n[r] ?? r);
+  const r = lo(e), o = t[r], s = (U(o) ? ne.fields : ne.tables)?.explain(e, r, o, n[r] ?? r);
   s !== void 0 && (s.classList.add(l.nothingTheirs), e.querySelector(".typo3-TCEforms")?.append(s));
 }
 function lo(e) {
   const n = e.querySelector(`[${d.token}][${d.inside}='']`)?.getAttribute(d.token) ?? "";
-  return Re(n);
+  return Be(n);
 }
 function co(e, t) {
   let n = null;
-  const r = ze();
+  const r = Ve();
   t.addEventListener("abort", () => {
     r.drop();
   });
@@ -981,23 +981,23 @@ function co(e, t) {
       }), o = null, i();
       return;
     }
-    const m = [...new Set(c.map(([, f]) => Re(f)))], h = await r.inspect(p, m);
+    const m = [...new Set(c.map(([, f]) => Be(f)))], h = await r.inspect(p, m);
     if (h === null)
       return;
     const { scopes: v } = h;
     e.take(h), c.forEach(([f, b]) => {
       const w = v.fields.targets[b];
-      w !== void 0 && f.setAttribute(d.verdict, w), f.toggleAttribute(d.outOfReach, !U(v.tablesModify.targets[Re(b)]));
-    }), o = v.tablesModify, i(), X("fields-judged", {});
+      w !== void 0 && f.setAttribute(d.verdict, w), f.toggleAttribute(d.outOfReach, !U(v.tablesModify.targets[Be(b)]));
+    }), o = v.tablesModify, i(), Z("fields-judged", {});
   };
-  D(({ doc: c, fields: u }) => {
+  R(({ doc: c, fields: u }) => {
     r.drop(), c.body.style.setProperty("--vperm-inherited-note", `"${g("platform.from")}"`);
     const p = u.flatMap((m) => {
       const h = m.getAttribute(d.token);
       return h === null ? [] : [[m, h]];
     });
     n = p.length === 0 ? null : { doc: c, fields: p }, o = null, s();
-  }, t), Y("permissions-written", () => void s(), t);
+  }, t), J("permissions-written", () => void s(), t);
   let a = null;
   C(({ active: c, groupId: u }) => {
     const p = `${String(c)}:${String(u)}`;
@@ -1038,7 +1038,7 @@ function po() {
     }
   };
 }
-const Bn = (e) => e.map((t) => `[${d.verdict}='${t}']:not([${d.outOfReach}])`).join(","), fo = (e) => Bn(e === "pick" ? to : $t), it = (e) => Bn([e === "pick" ? me : Z]), mo = `.${l.anchor}[${d.verdict}]`, ho = (e, t, n) => {
+const Bn = (e) => e.map((t) => `[${d.verdict}='${t}']:not([${d.outOfReach}])`).join(","), fo = (e) => Bn(e === "pick" ? to : $t), it = (e) => Bn([e === "pick" ? he : ee]), mo = `.${l.anchor}[${d.verdict}]`, ho = (e, t, n) => {
   const r = U(e.getAttribute(d.verdict) ?? "");
   return {
     marked: t,
@@ -1095,7 +1095,7 @@ function bo(e, t) {
       }), r();
     }), a.querySelector(":scope > .form-section")?.prepend(u), u;
   };
-  D((s) => {
+  R((s) => {
     const a = s.doc === n;
     if (n = s.doc, r(), a)
       return;
@@ -1108,10 +1108,10 @@ function bo(e, t) {
     }, { signal: t }), s.doc.addEventListener("keydown", (u) => {
       u.key !== "Enter" && u.key !== " " || c(u) && u.preventDefault();
     }, { signal: t });
-  }, t), Y("fields-judged", r, t), C(r, t);
+  }, t), J("fields-judged", r, t), C(r, t);
 }
 async function wo(e, t) {
-  return ne(O.allow_fields, { group: e, operations: [...t] });
+  return oe(O.allow_fields, { group: e, operations: [...t] });
 }
 const zt = 280;
 function Se(e, t) {
@@ -1124,7 +1124,7 @@ function Se(e, t) {
     n.classList.remove(l.turning);
   }, zt * 2);
 }
-const Vt = `[${d.verdict}]:not([${d.outOfReach}])`, yo = [me, He].map((e) => `:not([${d.verdict}='${e}'])`).join("");
+const Vt = `[${d.verdict}]:not([${d.outOfReach}])`, yo = [he, Ye].map((e) => `:not([${d.verdict}='${e}'])`).join("");
 function ko(e, t) {
   let n = null, r = null;
   const o = () => {
@@ -1147,11 +1147,11 @@ function ko(e, t) {
     m.className = l.faceFoot;
     const h = () => [...a.querySelectorAll(`[${d.token}]`)].filter((w) => e.has(w)), v = () => {
       if (!c) {
-        ue("preview");
+        de("preview");
         return;
       }
       Se(a.ownerDocument, () => {
-        ue("preview");
+        de("preview");
       });
     }, f = _e(m, {
       label: g(c ? "platform.doAllow" : "platform.doDisallow"),
@@ -1159,30 +1159,30 @@ function ko(e, t) {
         e.drop(), v();
       },
       apply: () => {
-        const w = h().map(($) => ({ field: $.getAttribute(d.token) ?? "", allow: c }));
-        At() || wo(u, w).then(($) => {
+        const w = h().map((k) => ({ field: k.getAttribute(d.token) ?? "", allow: c }));
+        At() || wo(u, w).then((k) => {
           if (y().groupId !== u) {
-            $ === "taken" && X("permissions-written", {});
+            k === "taken" && Z("permissions-written", {});
             return;
           }
-          if ($ !== "taken") {
-            yt(f, $), p = w.length;
+          if (k !== "taken") {
+            yt(f, k), p = w.length;
             return;
           }
-          e.drop(), v(), X("permissions-written", {});
+          e.drop(), v(), Z("permissions-written", {});
         });
       }
     }), b = () => {
-      const w = [...a.querySelectorAll(Vt)].filter((x) => x.closest(`.${l.otherKinds}`) === null), $ = w.filter((x) => x.matches(yo)), P = h().length;
-      p !== P && (p = null, f.state.textContent = G("allowFields.tally", w.length, $.length, w.length), f.waiting.textContent = P === 0 ? "" : G(`allowFields.${c ? "waiting" : "going"}`, P, P), f.ready(P > 0, c || P > 0));
+      const w = [...a.querySelectorAll(Vt)].filter((x) => x.closest(`.${l.otherKinds}`) === null), k = w.filter((x) => x.matches(yo)), P = h().length;
+      p !== P && (p = null, f.state.textContent = K("allowFields.tally", w.length, k.length, w.length), f.waiting.textContent = P === 0 ? "" : K(`allowFields.${c ? "waiting" : "going"}`, P, P), f.ready(P > 0, c || P > 0));
     };
     return b(), a.append(m), b;
   }, s = () => {
     r?.showCount();
   };
-  D((a) => {
+  R((a) => {
     n = a.doc, o(), n.defaultView?.addEventListener("click", s, { signal: t }), n.defaultView?.addEventListener("keydown", s, { signal: t });
-  }, t), Y("fields-judged", o, t), C(o, t);
+  }, t), J("fields-judged", o, t), C(o, t);
 }
 const Ao = `.${l.anchor}[${d.verdict}]`, $o = 350, So = 250, st = (e) => e.getAttribute(d.verdict) ?? "", Eo = (e) => e.getAttribute(d.token) ?? "", Co = (e) => e.querySelector(":scope > .form-label, :scope > fieldset > legend"), at = (e) => g(`allowFields.mark.${e}.title`), qo = (e) => {
   if (e.getAttribute("role") !== "switch" || e.getAttribute("aria-disabled") === "true")
@@ -1200,7 +1200,7 @@ function Lo(e, t) {
     const a = n.createElement("span");
     a.textContent = s.title;
     const c = n.createElement("button");
-    c.type = "button", c.className = "btn btn-default btn-sm", c.textContent = g("allowFields.showGroup"), c.setAttribute("aria-label", _(g("allowFields.showGroupNamed"), s.title)), c.addEventListener("click", () => {
+    c.type = "button", c.className = "btn btn-default btn-sm", c.textContent = g("allowFields.showGroup"), c.setAttribute("aria-label", N(g("allowFields.showGroupNamed"), s.title)), c.addEventListener("click", () => {
       e.hidePopover(), wt(s.groupId);
     });
     const u = n.createElement("li");
@@ -1280,9 +1280,9 @@ function _o(e, t) {
       }), v.append(b);
     });
   };
-  D((h) => {
+  R((h) => {
     n = h.doc;
-  }, t), Y("fields-judged", m, t);
+  }, t), J("fields-judged", m, t);
 }
 function Oo(e) {
   let t = document;
@@ -1291,9 +1291,9 @@ function Oo(e) {
       Po(r);
     });
   };
-  D((r) => {
+  R((r) => {
     t = r.doc, n();
-  }, e), Y("fields-judged", n, e);
+  }, e), J("fields-judged", n, e);
 }
 function Po(e) {
   const t = e.parentElement?.closest(`.${l.anchor}`)?.querySelector(".panel-group");
@@ -1335,7 +1335,7 @@ function jn(e, t) {
 }
 function Fo(e, t) {
   const n = (i) => {
-    if ((i.active ? te(e, i.groupId) : null) === null) {
+    if ((i.active ? re(e, i.groupId) : null) === null) {
       Ht(e);
       return;
     }
@@ -1377,7 +1377,7 @@ function Do(e, t) {
   let n = null;
   const r = (p) => {
     const m = p.target.closest(Io);
-    !y().active || m === null || (p.preventDefault(), p.stopPropagation(), ae(e)?.setAttribute("endpoint", m.getAttribute("edit-url") ?? ""));
+    !y().active || m === null || (p.preventDefault(), p.stopPropagation(), ce(e)?.setAttribute("endpoint", m.getAttribute("edit-url") ?? ""));
   };
   e.addEventListener("click", r, { capture: !0, signal: t });
   const o = () => {
@@ -1393,7 +1393,7 @@ function Do(e, t) {
       (m.matches(c) || m.shadowRoot !== null) && m.toggleAttribute("inert", p);
     });
   };
-  D((p) => {
+  R((p) => {
     n = p.doc, n.addEventListener("submit", i, { capture: !0, signal: t }), n.addEventListener("click", s, { capture: !0, signal: t }), n.addEventListener("click", r, { capture: !0, signal: t }), u();
   }, t), C(u, t);
 }
@@ -1427,14 +1427,14 @@ function Uo(e, t = Bo) {
       h.className = "input-group-text", h.textContent = m;
       const v = i.createElement("select");
       v.className = "form-select form-select-sm", v.setAttribute("aria-label", m), v.append(...[...u.children].map((f) => f.cloneNode(!0))), v.value = u.value, v.addEventListener("change", () => {
-        const [f, b, w] = u.name.slice(5, -1).split("]["), $ = new URL(i.URL), P = String(b).startsWith("NEW") ? `defVals[${String(f)}][${String(w)}]` : `vperm[value][${String(f)}][${String(b)}][${String(w)}]`;
-        $.searchParams.set(P, v.value), t(i, $.toString());
+        const [f, b, w] = u.name.slice(5, -1).split("]["), k = new URL(i.URL), P = String(b).startsWith("NEW") ? `defVals[${String(f)}][${String(w)}]` : `vperm[value][${String(f)}][${String(b)}][${String(w)}]`;
+        k.searchParams.set(P, v.value), t(i, k.toString());
       }), p.append(h, v), i.querySelector(Ro)?.append(p);
     });
   };
   C(() => {
     r(), o();
-  }, e), D(({ doc: i }) => {
+  }, e), R(({ doc: i }) => {
     n = i, r(), o();
   }, e);
 }
@@ -1444,7 +1444,7 @@ function Ct(e, t, n, r, o = /* @__PURE__ */ new Set()) {
     const f = document.createElement("section"), b = document.createElement("h2");
     b.textContent = h;
     const w = document.createElement("div");
-    w.append(...v.map(($) => Wo($, n.has($.value), o.has($.value)))), f.append(b, w), i.append(f);
+    w.append(...v.map((k) => Wo(k, n.has(k.value), o.has(k.value)))), f.append(b, w), i.append(f);
   });
   const s = L(document, l.faceWaiting, ""), a = () => [...i.querySelectorAll("input")].filter((h) => h.checked !== n.has(h.value)).map((h) => ({ value: h.value, allow: h.checked })), c = {
     text: g("platform.cancel"),
@@ -1469,7 +1469,7 @@ function Ct(e, t, n, r, o = /* @__PURE__ */ new Set()) {
       });
     }
   }, p = Mt.advanced({
-    title: _(e.title, t),
+    title: N(e.title, t),
     content: i,
     size: Mt.sizes.large,
     buttons: [c, u]
@@ -1487,8 +1487,8 @@ function Ct(e, t, n, r, o = /* @__PURE__ */ new Set()) {
 }
 function jo(e, t) {
   return [
-    ...e > 0 ? [_(g("platform.waiting"), e)] : [],
-    ...t > 0 ? [_(g("platform.going"), t)] : []
+    ...e > 0 ? [N(g("platform.waiting"), e)] : [],
+    ...t > 0 ? [N(g("platform.going"), t)] : []
   ].join(`
 `);
 }
@@ -1503,29 +1503,29 @@ function Wo({ value: e, label: t, icon: n }, r, o) {
   return c.type = "checkbox", c.value = e, c.checked = r, c.disabled = o, i.append(s, a, c), i;
 }
 async function Wn(e, t) {
-  return ne(O.allow_modules, { group: e, operations: [...t] }, (n) => {
+  return oe(O.allow_modules, { group: e, operations: [...t] }, (n) => {
     n.alsoAllowed.forEach((r) => {
-      De.info(_(g("allowModules.alsoAllowed"), r));
+      Re.info(N(g("allowModules.alsoAllowed"), r));
     });
   });
 }
 async function Ko(e, t) {
-  const n = await Ge(e);
+  const n = await ze(e);
   if (n === null)
     return;
-  const r = await Pe(new H(I(O.modules_outside_menu)).get());
+  const r = await Pe(new Y(D(O.modules_outside_menu)).get());
   if (r === null)
     return;
   const o = new Set(Object.entries(n.scopes.modules.targets).filter(([, i]) => U(i)).map(([i]) => i));
-  Ct(r, t, o, async (i) => await Wn(e, i.map(({ value: a, allow: c }) => ({ module: a, allow: c }))) !== "taken" ? !1 : (X("permissions-written", {}), !0), new Set(Object.entries(n.scopes.modules.targets).filter(([, i]) => i === Ve).map(([i]) => i)));
+  Ct(r, t, o, async (i) => await Wn(e, i.map(({ value: a, allow: c }) => ({ module: a, allow: c }))) !== "taken" ? !1 : (Z("permissions-written", {}), !0), new Set(Object.entries(n.scopes.modules.targets).filter(([, i]) => i === He).map(([i]) => i)));
 }
-const Kn = "data-modulemenu-identifier", Be = `[${Kn}]:not([aria-controls])`, Gn = ".modulemenu-group-container";
+const Kn = "data-modulemenu-identifier", Ue = `[${Kn}]:not([aria-controls])`, Gn = ".modulemenu-group-container";
 let ye = !1;
 const lt = /* @__PURE__ */ new WeakMap();
-let ce = null;
+let ue = null;
 const ke = xn(560);
 function Go(e, t, n) {
-  const r = y().groupId, o = te(e, r) ?? "", i = [...t.querySelectorAll(Be)], s = i.filter((A) => U(J(A))), a = i.filter((A) => J(A) === Z), c = Yt(e, l.facePreview, g("platform.preview"), _(g("allowModules.previewFor"), o)), u = Yt(e, l.facePick, g("platform.pick"), _(g("allowModules.pickFor"), o)), m = e.querySelector(`.${l.coin}`) ?? e.createElement("div");
+  const r = y().groupId, o = re(e, r) ?? "", i = [...t.querySelectorAll(Ue)], s = i.filter((A) => U(Q(A))), a = i.filter((A) => Q(A) === ee), c = Yt(e, l.facePreview, g("platform.preview"), N(g("allowModules.previewFor"), o)), u = Yt(e, l.facePick, g("platform.pick"), N(g("allowModules.pickFor"), o)), m = e.querySelector(`.${l.coin}`) ?? e.createElement("div");
   m.className = l.coin, m.replaceChildren(c.sheet, u.sheet);
   const v = e.querySelector(`.${l.allowed}`) ?? e.createElement("div");
   v.className = l.allowed, m.parentElement !== v && v.replaceChildren(m);
@@ -1536,27 +1536,27 @@ function Go(e, t, n) {
   const b = (A) => {
     ye = A, m.classList.toggle(l.coinTurned, A), c.sheet.toggleAttribute("inert", A), u.sheet.toggleAttribute("inert", !A);
   }, w = (A) => {
-    const E = A.filter((N) => N.allow).map((N) => N.module);
-    r !== null && y().groupId === r && (At() || (E.forEach((N) => {
-      ke.add(N);
-    }), Wn(r, A).then((N) => {
-      if (N !== "taken") {
-        E.forEach((B) => {
-          ke.delete(B);
-        }), yt(ye ? x : $, N);
+    const E = A.filter((_) => _.allow).map((_) => _.module);
+    r !== null && y().groupId === r && (At() || (E.forEach((_) => {
+      ke.add(_);
+    }), Wn(r, A).then((_) => {
+      if (_ !== "taken") {
+        E.forEach((j) => {
+          ke.delete(j);
+        }), yt(ye ? x : k, _);
         return;
       }
-      b(!1), X("permissions-written", {});
+      b(!1), Z("permissions-written", {});
     })));
-  }, $ = _e(c.foot, {
+  }, k = _e(c.foot, {
     label: g("platform.doDisallow"),
     cancel: () => {
-      Je(c.scroll).forEach((A) => {
+      Qe(c.scroll).forEach((A) => {
         A.classList.remove(l.faceMarked);
       }), F();
     },
     apply: () => {
-      w(Je(c.scroll).map((A) => ({ module: Qe(A), allow: !1 })));
+      w(Qe(c.scroll).map((A) => ({ module: Te(A), allow: !1 })));
     }
   }), P = () => {
     Jt(u.scroll, t, F), F(), b(!1);
@@ -1564,36 +1564,38 @@ function Go(e, t, n) {
     label: g("platform.doAllow"),
     cancel: P,
     apply: () => {
-      const A = Qt(u.scroll).filter((E) => J(E) !== lt.get(E));
-      w(A.map((E) => ({ module: Qe(E), allow: !0 })));
+      const A = Qt(u.scroll).filter((E) => Q(E) !== lt.get(E));
+      w(A.map((E) => ({ module: Te(E), allow: !0 })));
     }
   }), F = () => {
-    const A = Qt(u.scroll), E = A.filter((k) => J(k) !== lt.get(k)), N = A.filter((k) => U(J(k)) && !E.includes(k)).length, B = G("allowModules.tally", A.length, N, A.length);
-    j.textContent = B;
-    const W = Je(c.scroll);
-    $.state.textContent = W.length === 0 ? B : G("allowModules.marked", a.length, W.length, a.length), $.ready(W.length > 0, W.length > 0), x.state.textContent = "", x.waiting.textContent = E.length === 0 ? "" : _(g("platform.waiting"), E.length), x.ready(E.length > 0, !0);
+    const A = Qt(u.scroll), E = A.filter((M) => Q(M) !== lt.get(M)), _ = A.filter((M) => U(Q(M)) && !E.includes(M)).length, j = K("allowModules.tally", A.length, _, A.length);
+    G.textContent = j;
+    const W = Qe(c.scroll);
+    k.state.textContent = W.length === 0 ? j : K("allowModules.marked", a.length, W.length, a.length);
+    const $ = W.map(Te), q = n.filter(({ verdict: M, parent: te }) => U(M) && $.includes(te)).map(({ label: M }) => N(g("allowModules.takenAway.name"), M));
+    k.waiting.textContent = q.length === 0 ? "" : K("allowModules.takenAway", q.length, q.join(", ")), k.ready(W.length > 0, W.length > 0), x.state.textContent = "", x.waiting.textContent = E.length === 0 ? "" : N(g("platform.waiting"), E.length), x.ready(E.length > 0, !0);
   };
   c.bar.append(
-    Q(e, g("allowModules.allow"), "btn btn-default", () => {
+    X(e, g("allowModules.allow"), "btn btn-default", () => {
       b(!0);
     }),
     L(e, l.faceHint, g("allowModules.hint"))
   );
-  const V = e.createElement("div");
-  V.className = l.faceChoice;
-  const j = L(e, l.faceCounted, "");
-  V.append(j), V.append(Q(e, g("allowModules.outside"), "btn btn-default", () => {
+  const H = e.createElement("div");
+  H.className = l.faceChoice;
+  const G = L(e, l.faceCounted, "");
+  H.append(G), H.append(X(e, g("allowModules.outside"), "btn btn-default", () => {
     r !== null && Ko(r, o);
   }));
-  const S = n.filter(U).length;
-  V.append(L(e, l.faceCounted, G("allowModules.outside.tally", n.length, S, n.length))), u.sheet.insertBefore(V, u.foot), u.scroll.style.setProperty("--vperm-queued-note", `"${g("platform.toAllow")}"`), Ho(e, c.scroll, s, g("platform.from"), F), Jt(u.scroll, t, F), F(), b(ye), ke.start(() => {
-    m.querySelectorAll(`.${l.facePreview} ${Be}`).forEach((A) => {
-      A.classList.toggle(l.justAdded, ke.isLit(Qe(A)));
+  const S = n.filter(({ verdict: A }) => U(A)).length;
+  H.append(L(e, l.faceCounted, K("allowModules.outside.tally", n.length, S, n.length))), u.sheet.insertBefore(H, u.foot), u.scroll.style.setProperty("--vperm-queued-note", `"${g("platform.toAllow")}"`), Ho(e, c.scroll, s, g("platform.from"), F), Jt(u.scroll, t, F), F(), b(ye), ke.start(() => {
+    m.querySelectorAll(`.${l.facePreview} ${Ue}`).forEach((A) => {
+      A.classList.toggle(l.justAdded, ke.isLit(Te(A)));
     });
-  }), ce?.abort(), ce = new AbortController(), kt(e, ce.signal, () => ye, P), Fn(r, [$, x], ce.signal);
+  }), ue?.abort(), ue = new AbortController(), kt(e, ue.signal, () => ye, P), Fn(r, [k, x], ue.signal);
 }
 function zo(e, t) {
-  ce?.abort(), ce = null, ye = !1, ke.stop();
+  ue?.abort(), ue = null, ye = !1, ke.stop();
   const n = e.querySelector(`.${l.panelCard}`);
   if (t.removeAttribute("inert"), n === null)
     return;
@@ -1621,7 +1623,7 @@ function Ho(e, t, n, r, o) {
     const a = s.closest(Gn)?.previousElementSibling?.getAttribute("title") ?? "";
     a !== i && a !== "" && (i = a, t.append(L(e, l.allowedGroup, a)));
     const c = Qo(s);
-    c.getAttribute(d.verdict) === Z ? Vn(c, () => {
+    c.getAttribute(d.verdict) === ee ? Vn(c, () => {
       c.classList.toggle(l.faceMarked), o();
     }) : c.append(L(e, l.allowedFrom, r)), t.append(c);
   });
@@ -1629,8 +1631,8 @@ function Ho(e, t, n, r, o) {
 function Jt(e, t, n) {
   e.replaceChildren(...[...t.children].map((r) => r.cloneNode(!0))), e.querySelectorAll(Gn).forEach((r) => {
     r.classList.add("show");
-  }), e.querySelectorAll(Be).forEach((r) => {
-    zn(r), lt.set(r, J(r)), U(J(r)) && r.setAttribute("aria-disabled", "true"), Vn(r, () => {
+  }), e.querySelectorAll(Ue).forEach((r) => {
+    zn(r), lt.set(r, Q(r)), U(Q(r)) && r.setAttribute("aria-disabled", "true"), Vn(r, () => {
       Jo(r), n();
     });
   }), e.querySelectorAll("[aria-controls]").forEach((r) => {
@@ -1638,12 +1640,12 @@ function Jt(e, t, n) {
   });
 }
 function Yo(e) {
-  const t = J(e);
+  const t = Q(e);
   return e.getAttribute("aria-disabled") === "true" || !Et(t) ? "" : U(t) ? "unpick" : "allow";
 }
 function Jo(e) {
   const t = Yo(e);
-  t !== "" && e.setAttribute(d.verdict, t === "allow" ? Z : me);
+  t !== "" && e.setAttribute(d.verdict, t === "allow" ? ee : he);
 }
 function zn(e) {
   e.removeAttribute("href"), e.removeAttribute("aria-current"), e.classList.remove("modulemenu-action-active");
@@ -1659,15 +1661,15 @@ function Vn(e, t) {
     !(n instanceof KeyboardEvent) || n.key !== "Enter" && n.key !== " " || (n.preventDefault(), t());
   });
 }
-function Je(e) {
+function Qe(e) {
   return [...e.querySelectorAll(`.${l.faceMarked}`)];
 }
 function Qt(e) {
-  return [...e.querySelectorAll(Be)].filter((t) => Et(J(t)));
+  return [...e.querySelectorAll(Ue)].filter((t) => Et(Q(t)));
 }
-const J = (e) => e.getAttribute(d.verdict) ?? "", Qe = (e) => e.getAttribute(Kn) ?? "", Xe = "#modulemenu", Hn = "data-modulemenu-identifier", Xo = `[${Hn}]:not([aria-controls])`;
+const Q = (e) => e.getAttribute(d.verdict) ?? "", Te = (e) => e.getAttribute(Kn) ?? "", Xe = "#modulemenu", Hn = "data-modulemenu-identifier", Xo = `[${Hn}]:not([aria-controls])`;
 function Zo(e, t) {
-  const n = ze();
+  const n = Ve();
   let r = null;
   const o = async () => {
     const { active: s, groupId: a, area: c } = y();
@@ -1691,31 +1693,35 @@ function Zo(e, t) {
       p.filter((w) => w.getAttribute(Hn) === f).forEach((w) => {
         w.setAttribute(d.verdict, b);
       });
-    }), r ??= Pe(new H(I(O.modules_outside_menu)).get());
+    }), r ??= Pe(new Y(D(O.modules_outside_menu)).get());
     const v = await r;
     if (v === null) {
       r = null;
       return;
     }
-    Go(e, u, v.groups.flatMap(({ values: f }) => f.map(({ value: b }) => h.modules.targets[b])));
+    Go(e, u, v.groups.flatMap(({ values: f }) => f.map(({ value: b, label: w, parent: k }) => ({
+      verdict: h.modules.targets[b],
+      parent: k,
+      label: w
+    }))));
   }, i = (s) => {
     const a = s.querySelector(Xe);
     a !== null && zo(s, a);
   };
-  o(), Y("permissions-written", () => void o(), t), C(() => void o(), t);
+  o(), J("permissions-written", () => void o(), t), C(() => void o(), t);
 }
 async function ei(e, t, n) {
-  const r = await ne(O.allow_tables, { group: e, operations: [{ table: t, allow: n }] });
-  return r === "taken" && X("permissions-written", {}), r;
+  const r = await oe(O.allow_tables, { group: e, operations: [{ table: t, allow: n }] });
+  return r === "taken" && Z("permissions-written", {}), r;
 }
 function Yn(e, { groupId: t, table: n, called: r, verdict: o }) {
-  const i = o === Z, s = o === Ve || o === St, a = o === He, c = e.createElement("div");
+  const i = o === ee, s = o === He || o === St, a = o === Ye, c = e.createElement("div");
   c.className = `callout callout-notice callout-sm ${l.tableGate}`, c.append(L(e, l.tableName, r)), c.append(L(e, l.tableToken, n));
   const u = L(e, "callout-body", g(ti(o)));
   if (c.append(u), !s && !a) {
-    const p = Q(
+    const p = X(
       e,
-      _(g(i ? "allowTables.disallow" : "allowTables.allow"), r),
+      N(g(i ? "allowTables.disallow" : "allowTables.allow"), r),
       `btn btn-default btn-sm ${i ? l.tableDisallow : l.tableAllow}`,
       () => {
         p.toggleAttribute("disabled", !0), ei(t, n, !i).then((m) => {
@@ -1728,12 +1734,12 @@ function Yn(e, { groupId: t, table: n, called: r, verdict: o }) {
   return c;
 }
 function ti(e) {
-  return e === Z ? "allowTables.theirs" : e === He ? "allowTables.adminOnly" : e === St ? "allowTables.alsoInherited" : e === Ve ? "allowTables.inherited" : "allowTables.missing";
+  return e === ee ? "allowTables.theirs" : e === Ye ? "allowTables.adminOnly" : e === St ? "allowTables.alsoInherited" : e === He ? "allowTables.inherited" : "allowTables.missing";
 }
 const Xt = ".typo3-TCEforms";
 function ni(e) {
   let t = null;
-  const n = ze(), r = async () => {
+  const n = Ve(), r = async () => {
     if (t === null)
       return;
     const o = t;
@@ -1748,7 +1754,7 @@ function ni(e) {
     const u = /* @__PURE__ */ new Map();
     o.querySelectorAll(`[${d.inside}]`).forEach((v) => {
       const f = v.getAttribute(d.inside) ?? "", b = f === "" ? v.closest(Xt) : o.querySelector(`[${d.field}='${f}']`), w = v.getAttribute(d.token) ?? "";
-      b !== null && u.set(b, Re(w));
+      b !== null && u.set(b, Be(w));
     });
     const p = await n.inspect(c, [...new Set(u.values())]);
     if (p === null)
@@ -1756,19 +1762,19 @@ function ni(e) {
     const { named: m, targets: h } = p.scopes.tablesModify;
     u.forEach((v, f) => {
       const b = h[v];
-      if (![Z, Ve, St, me].some((P) => P === b))
+      if (![ee, He, St, he].some((P) => P === b))
         return;
-      const w = Yn(o, { groupId: c, table: v, called: m[v] ?? v, verdict: b }), $ = f.matches(Xt) ? null : f.querySelector(".form-irre-object");
-      if ($ === null) {
+      const w = Yn(o, { groupId: c, table: v, called: m[v] ?? v, verdict: b }), k = f.matches(Xt) ? null : f.querySelector(".form-irre-object");
+      if (k === null) {
         f.prepend(w);
         return;
       }
-      $.before(w);
+      k.before(w);
     });
   };
-  D((o) => {
+  R((o) => {
     t = o.doc, r();
-  }, e), Y("permissions-written", () => void r(), e), C(() => void r(), e);
+  }, e), J("permissions-written", () => void r(), e), C(() => void r(), e);
 }
 const ri = ".form-group";
 function Jn(e) {
@@ -1796,12 +1802,12 @@ function ii(e, t, n) {
     o.append(L(
       e,
       `callout callout-notice callout-sm ${l.tableNote}`,
-      _(g("allowTables.gone"), n)
+      N(g("allowTables.gone"), n)
     ));
   });
 }
 async function si(e, t, n) {
-  return ne(e === "pageTypes" ? O.allow_page_types : O.allow_values, {
+  return oe(e === "pageTypes" ? O.allow_page_types : O.allow_values, {
     group: t,
     operations: [...n]
   });
@@ -1824,20 +1830,20 @@ function ai(e) {
       const s = i.getAttribute(d.token) ?? "", a = i.ownerDocument.createElement("button");
       a.type = "button", a.className = `btn btn-default btn-sm ${l.allowChoose}`, a.textContent = g(`allowedValues.choose.${no(s)}`), a.addEventListener("click", () => {
         const c = JSON.parse(i.getAttribute(d.choices) ?? "{}"), u = y().groupId ?? 0;
-        Ge(u).then((p) => {
+        ze(u).then((p) => {
           if (p === null)
             return;
           const m = i.getAttribute(d.allows) === "pageTypes" ? "pageTypes" : "fieldValues", h = m === "pageTypes" ? "" : `${s}:`, v = new Set(Object.entries(p.scopes[m].targets).filter(([, f]) => U(f)).map(([f]) => f.substring(h.length)));
-          Ct(c, te(document, u) ?? "", v, async (f) => await si(m, u, f.map(({ value: w, allow: $ }) => ({ value: `${h}${w}`, allow: $ }))) !== "taken" ? !1 : (X("permissions-written", {}), !0), new Set(Object.entries(p.scopes[m].targets).filter(([, f]) => U(f) && f !== Z).map(([f]) => f.substring(h.length))));
+          Ct(c, re(document, u) ?? "", v, async (f) => await si(m, u, f.map(({ value: w, allow: k }) => ({ value: `${h}${w}`, allow: k }))) !== "taken" ? !1 : (Z("permissions-written", {}), !0), new Set(Object.entries(p.scopes[m].targets).filter(([, f]) => U(f) && f !== ee).map(([f]) => f.substring(h.length))));
         });
       }), i.after(a);
     });
   };
-  D((r) => {
+  R((r) => {
     t = r.doc, n();
   }, e), C(n, e);
 }
-const li = `[${d.verdict}='${me}'], [${d.verdict}='${He}']`;
+const li = `[${d.verdict}='${he}'], [${d.verdict}='${Ye}']`;
 function ci(e) {
   oo({
     hide: (t, n, r) => {
@@ -1848,10 +1854,10 @@ function ci(e) {
     explain: (t, n, r, o) => {
       const i = t.createElement("div");
       return i.className = "callout callout-notice", i.append(
-        L(t, "callout-body", _(g("allowFields.recordNoFields"), o)),
-        Q(t, g("recordForm.add"), "btn btn-default btn-sm", () => {
+        L(t, "callout-body", N(g("allowFields.recordNoFields"), o)),
+        X(t, g("recordForm.add"), "btn btn-default btn-sm", () => {
           Se(t, () => {
-            ue("pick");
+            de("pick");
           });
         })
       ), i;
@@ -1859,19 +1865,19 @@ function ci(e) {
   }, e);
 }
 async function ui(e, t) {
-  const n = await Ge(e);
+  const n = await ze(e);
   if (n === null)
     return;
-  const r = await Pe(new H(I(O.file_operations)).get());
+  const r = await Pe(new Y(D(O.file_operations)).get());
   if (r === null)
     return;
   const o = new Set(Object.keys(n.scopes.fileOperations.targets));
-  Ct(r, t, o, async (i) => await ne(O.allow_file_operations, { group: e, operations: i }) !== "taken" ? !1 : (X("permissions-written", {}), !0), new Set(Object.entries(n.scopes.fileOperations.targets).filter(([, i]) => i !== Z).map(([i]) => i)));
+  Ct(r, t, o, async (i) => await oe(O.allow_file_operations, { group: e, operations: i }) !== "taken" ? !1 : (Z("permissions-written", {}), !0), new Set(Object.entries(n.scopes.fileOperations.targets).filter(([, i]) => i !== ee).map(([i]) => i)));
 }
 const Qn = {
   word: "folders",
   component: "typo3-backend-navigation-component-filestoragetree",
-  tree: se.folderTree,
+  tree: le.folderTree,
   base: Er,
   namesFirst: !0,
   mounted: ({ fileMounts: e }) => {
@@ -1881,15 +1887,15 @@ const Qn = {
     return { targets: n, order: Object.keys(n), named: t(e.named), unseen: [] };
   },
   rootedAt: (e) => {
-    const t = I(O.folder_tree);
+    const t = D(O.folder_tree);
     return {
       dataUrl: `${t}${t.includes("?") ? "&" : "?"}group=${String(e)}`,
-      rootlineUrl: I("filestorage_tree_rootline"),
-      filterUrl: I("filestorage_tree_filter"),
+      rootlineUrl: D("filestorage_tree_rootline"),
+      filterUrl: D("filestorage_tree_filter"),
       showIcons: !0
     };
   },
-  write: async (e, t, n, r) => ne(O.mount_folders, {
+  write: async (e, t, n, r) => oe(O.mount_folders, {
     group: e,
     operations: t.map((o) => ({
       folder: decodeURIComponent(o),
@@ -1898,19 +1904,19 @@ const Qn = {
       title: r.get(o) ?? ""
     }))
   }),
-  choice: (e, t) => Q(
+  choice: (e, t) => X(
     e,
     g("mountBranches.folders.chooseOperations"),
     // Stryker disable next-line StringLiteral: only core draws the class, and only a browser shows it
     "btn btn-default",
     () => {
-      ui(t, te(e, t) ?? "");
+      ui(t, re(e, t) ?? "");
     }
   )
 }, Xn = {
   word: "pages",
   component: "typo3-backend-navigation-component-pagetree",
-  tree: se.pageTree,
+  tree: le.pageTree,
   base: Cr,
   namesFirst: !1,
   mounted: ({ pageMounts: e }) => ({
@@ -1919,8 +1925,8 @@ const Qn = {
     named: {},
     unseen: e.unseen
   }),
-  rootedAt: async () => ({ ...await (await new H(I("page_tree_browser_configuration")).get()).resolve(), rootlineUrl: I("page_tree_rootline") }),
-  write: async (e, t, n) => ne(O.mount_pages, {
+  rootedAt: async () => ({ ...await (await new Y(D("page_tree_browser_configuration")).get()).resolve(), rootlineUrl: D("page_tree_rootline") }),
+  write: async (e, t, n) => oe(O.mount_pages, {
     group: e,
     operations: t.map((r) => ({ page: Number(r), mount: n }))
   })
@@ -1954,23 +1960,23 @@ function fi(e, t) {
     s?.remove(), r.removeAttribute("aria-invalid"), r.removeAttribute("aria-describedby");
   }), n.every((r) => r.value.trim() !== "");
 }
-const Zn = (e) => [...e.querySelectorAll(`.${l.naming} input[data-folder]`)], Ee = xn(520), R = /* @__PURE__ */ new Set(), K = /* @__PURE__ */ new Set(), z = /* @__PURE__ */ new Set(), Ue = /* @__PURE__ */ new Set(), ct = /* @__PURE__ */ new Set(), er = (e) => decodeURIComponent(e).endsWith(":/") || Number(e) < 1, tr = (e) => z.has(e) && !Ue.has(e), nr = (e) => e.__parents ?? [], Ce = (e) => nr(e).some((t) => z.has(t)), mi = (e, t) => t.some((n) => z.has(n.identifier) && nr(n).includes(e.identifier)), rr = (e) => e.detail;
+const Zn = (e) => [...e.querySelectorAll(`.${l.naming} input[data-folder]`)], Ee = xn(520), B = /* @__PURE__ */ new Set(), z = /* @__PURE__ */ new Set(), V = /* @__PURE__ */ new Set(), je = /* @__PURE__ */ new Set(), ct = /* @__PURE__ */ new Set(), er = (e) => decodeURIComponent(e).endsWith(":/") || Number(e) < 1, tr = (e) => V.has(e) && !je.has(e), nr = (e) => e.__parents ?? [], Ce = (e) => nr(e).some((t) => V.has(t)), mi = (e, t) => t.some((n) => V.has(n.identifier) && nr(n).includes(e.identifier)), rr = (e) => e.detail;
 function hi(e, t, n) {
   e.addEventListener("typo3:tree:node-selected", (o) => {
     o.stopPropagation();
     const { node: i, propagate: s } = rr(o);
-    s === !1 || er(i.identifier) || z.has(i.identifier) || Ce(i) || (K.has(i.identifier) ? K.delete(i.identifier) : K.add(i.identifier), t(), Ze(Ie(e)));
+    s === !1 || er(i.identifier) || V.has(i.identifier) || Ce(i) || (z.has(i.identifier) ? z.delete(i.identifier) : z.add(i.identifier), t(), Ze(De(e)));
   }, { capture: !0, signal: n });
   const r = new MutationObserver(() => {
-    const o = Ie(e);
+    const o = De(e);
     o !== null && (!Oe.has(o) || e.querySelector(".node[data-id='0']") !== null) && Ze(o);
   });
   r.observe(e, { childList: !0, subtree: !0 }), n.addEventListener("abort", () => {
     r.disconnect();
-  }), Ze(Ie(e));
+  }), Ze(De(e));
 }
 function gi(e) {
-  const t = Ie(e);
+  const t = De(e);
   if (t === null)
     return;
   const n = Oe.get(t);
@@ -1984,7 +1990,7 @@ function Ze(e) {
       const t = e.getNodeClasses.bind(e), n = e.prepareNodes.bind(e);
       Oe.set(e, { classes: t, rows: n }), e.prepareNodes = (r) => Zt(n(r)), e.getNodeClasses = (r) => {
         const o = t(r).filter((i) => i !== "node-selected");
-        return z.has(r.identifier) && o.push(l.mountAlready), K.has(r.identifier) && o.push(l.mountPicked), er(r.identifier) && o.push(l.mountWhole), o;
+        return V.has(r.identifier) && o.push(l.mountAlready), z.has(r.identifier) && o.push(l.mountPicked), er(r.identifier) && o.push(l.mountWhole), o;
       };
     }
     e.requestUpdate();
@@ -1995,7 +2001,7 @@ function Zt(e) {
     t.__hidden = !0;
   }), e;
 }
-const Oe = /* @__PURE__ */ new WeakMap(), Ie = (e) => e.querySelector(
+const Oe = /* @__PURE__ */ new WeakMap(), De = (e) => e.querySelector(
   "typo3-backend-navigation-component-pagetree-tree,typo3-backend-navigation-component-filestorage-tree"
 );
 let et = "", en = () => {
@@ -2017,14 +2023,14 @@ async function vi(e, t, n, { groupId: r, kind: o, showCount: i }) {
   }), p.addEventListener("typo3:tree:node-selected", (h) => {
     h.stopPropagation();
     const { node: v, propagate: f } = rr(h);
-    f !== !1 && (R.has(v.identifier) ? R.delete(v.identifier) : R.add(v.identifier), ut(e), en());
+    f !== !1 && (B.has(v.identifier) ? B.delete(v.identifier) : B.add(v.identifier), ut(e), en());
   }), Object.assign(p, { allowNodeEdit: !1, allowNodeDrag: !1, allowNodeSorting: !1 });
   const m = e.createElement("div");
   m.className = l.mountTree, m.append(p), t.replaceChildren(m), et = s, Object.assign(p, { setup: u });
 }
 function ut(e) {
   e.querySelector(
-    `.${l.facePreview} :is(${se.pageTree}, ${se.folderTree})`
+    `.${l.facePreview} :is(${le.pageTree}, ${le.folderTree})`
   )?.requestUpdate();
 }
 function bi(e, t) {
@@ -2036,9 +2042,9 @@ function bi(e, t) {
     // Core loads the first levels only, so a deeper mount needs the way down to it loaded
     async loadData() {
       await super.loadData();
-      const n = [...z].filter((r) => !this.nodes.some((o) => o.identifier === r));
+      const n = [...V].filter((r) => !this.nodes.some((o) => o.identifier === r));
       for (const r of n) {
-        const o = await new H(this.settings.rootlineUrl ?? "").withQueryArguments({ identifier: r }).get().catch(() => null);
+        const o = await new Y(this.settings.rootlineUrl ?? "").withQueryArguments({ identifier: r }).get().catch(() => null);
         if (o === null)
           continue;
         const { rootline: i } = await o.resolve();
@@ -2053,17 +2059,17 @@ function bi(e, t) {
       return tn(super.prepareNodes(n));
     }
     hideChildren(n) {
-      !Ce(n) && !z.has(n.identifier) || super.hideChildren(n);
+      !Ce(n) && !V.has(n.identifier) || super.hideChildren(n);
     }
     getNodeClasses(n) {
       const r = super.getNodeClasses(n).filter((o) => o !== "node-selected");
-      return Ce(n) && r.push(l.mountInside), !Ce(n) && !z.has(n.identifier) && r.push(l.mountContext), Ue.has(n.identifier) && r.push(l.mountInherited), R.has(n.identifier) && r.push(l.faceMarked), ct.has(n.identifier) && r.push(l.mountUnseen), Ee.isLit(n.identifier) && r.push(l.justAdded), r;
+      return Ce(n) && r.push(l.mountInside), !Ce(n) && !V.has(n.identifier) && r.push(l.mountContext), je.has(n.identifier) && r.push(l.mountInherited), B.has(n.identifier) && r.push(l.faceMarked), ct.has(n.identifier) && r.push(l.mountUnseen), Ee.isLit(n.identifier) && r.push(l.justAdded), r;
     }
   });
 }
 function tn(e) {
   return e.forEach((t) => {
-    Ce(t) || z.has(t.identifier) || (t.__expanded = !0, t.__hidden = !mi(t, e));
+    Ce(t) || V.has(t.identifier) || (t.__expanded = !0, t.__hidden = !mi(t, e));
   }), e;
 }
 function wi(e, t, n, r) {
@@ -2073,28 +2079,28 @@ function wi(e, t, n, r) {
   const i = e.createElement("div");
   i.className = l.unseenPages;
   const s = e.createElement("b");
-  s.textContent = G(`${r}.unseen`, n.length, n.length);
+  s.textContent = K(`${r}.unseen`, n.length, n.length);
   const a = e.createElement("p");
   a.append(s, ` ${o("unseenWhy")}`);
   const c = e.createElement("ul");
   n.forEach(({ page: u, title: p, link: m }) => {
     const h = e.createElement("a");
     h.href = m, h.addEventListener("click", (f) => {
-      f.preventDefault(), wn.update("web", u, !0), je.App.showModule("permissions_pages");
-    }), h.setAttribute("aria-label", _(o("unseenLink"), p)), h.textContent = _(o("unseenPage"), p);
+      f.preventDefault(), wn.update("web", u, !0), We.App.showModule("permissions_pages");
+    }), h.setAttribute("aria-label", N(o("unseenLink"), p)), h.textContent = N(o("unseenPage"), p);
     const v = e.createElement("li");
     v.append(h), c.append(v);
   }), i.append(a, c), t.sheet.insertBefore(i, t.foot);
 }
 let Ae = !1, dt = null, qe = null;
 function yi(e, t, n, { groupId: r, kind: o }) {
-  const i = `mountBranches.${o.word}`, s = (S) => g(`${i}.${S}`), a = te(e, r) ?? "", c = Ai(e, t);
-  dt !== r && (R.clear(), K.clear(), dt = r), qe?.abort(), qe = new AbortController();
+  const i = `mountBranches.${o.word}`, s = (S) => g(`${i}.${S}`), a = re(e, r) ?? "", c = Ai(e, t);
+  dt !== r && (B.clear(), z.clear(), dt = r), qe?.abort(), qe = new AbortController();
   const { signal: u } = qe, p = nn(e, c, l.facePick), m = nn(e, c, l.facePreview);
-  m.eyebrow.textContent = g("platform.preview"), m.sentence.textContent = _(s("previewFor"), a), p.eyebrow.textContent = g("platform.pick"), p.sentence.textContent = _(s("pickFor"), a);
+  m.eyebrow.textContent = g("platform.preview"), m.sentence.textContent = N(s("previewFor"), a), p.eyebrow.textContent = g("platform.pick"), p.sentence.textContent = N(s("pickFor"), a);
   const h = n.order;
-  z.clear(), Ue.clear(), Object.entries(n.targets).forEach(([S, A]) => {
-    z.add(S), Et(A) || (Ue.add(S), R.delete(S));
+  V.clear(), je.clear(), Object.entries(n.targets).forEach(([S, A]) => {
+    V.add(S), Et(A) || (je.add(S), B.delete(S));
   });
   const v = (S) => {
     m.sheet.toggleAttribute("inert", S), p.sheet.toggleAttribute("inert", !S);
@@ -2103,56 +2109,56 @@ function yi(e, t, n, { groupId: r, kind: o }) {
   };
   v(Ae);
   const b = () => {
-    const S = G(`${i}.tally`, h.length, h.length);
-    $.state.textContent = R.size === 0 ? S : G(`${i}.marked`, h.length, R.size, h.length), $.ready(R.size > 0, R.size > 0), j.state.textContent = S, j.waiting.textContent = K.size === 0 ? "" : _(g("mountBranches.waiting"), K.size), j.ready(K.size > 0, !0);
+    const S = K(`${i}.tally`, h.length, h.length);
+    k.state.textContent = B.size === 0 ? S : K(`${i}.marked`, h.length, B.size, h.length), k.ready(B.size > 0, B.size > 0), G.state.textContent = S, G.waiting.textContent = z.size === 0 ? "" : N(g("mountBranches.waiting"), z.size), G.ready(z.size > 0, !0);
   }, w = (S, A) => {
     if (y().groupId !== r)
       return;
     const E = [...S];
     if (E.length === 0 || At())
       return;
-    const N = o.write(r, E, A, pi(p.sheet));
-    A && E.forEach((B) => {
-      Ee.add(B);
-    }), N.then((B) => {
-      if (B !== "taken") {
+    const _ = o.write(r, E, A, pi(p.sheet));
+    A && E.forEach((j) => {
+      Ee.add(j);
+    }), _.then((j) => {
+      if (j !== "taken") {
         E.forEach((W) => {
           Ee.delete(W);
-        }), yt(A ? j : $, B);
+        }), yt(A ? G : k, j);
         return;
       }
-      E.forEach((W) => S.delete(W)), x(), f(!1), X("permissions-written", {});
+      E.forEach((W) => S.delete(W)), x(), f(!1), Z("permissions-written", {});
     });
-  }, $ = _e(m.foot, {
+  }, k = _e(m.foot, {
     label: g("mountBranches.doRemove"),
     cancel: () => {
-      R.clear(), ut(e), b();
+      B.clear(), ut(e), b();
     },
     apply: () => {
-      w(R, !1);
+      w(B, !1);
     }
   }), P = new Set(Object.keys(n.named)), x = () => {
-    p.sheet.querySelector(`.${l.naming}`)?.remove(), p.scroll.hidden = !1, p.eyebrow.textContent = g("platform.pick"), p.sentence.textContent = _(s("pickFor"), a);
+    p.sheet.querySelector(`.${l.naming}`)?.remove(), p.scroll.hidden = !1, p.eyebrow.textContent = g("platform.pick"), p.sentence.textContent = N(s("pickFor"), a);
   }, F = () => {
-    const S = [...K].filter((E) => !P.has(E)), A = p.sheet.querySelector(`.${l.naming}`) !== null;
+    const S = [...z].filter((E) => !P.has(E)), A = p.sheet.querySelector(`.${l.naming}`) !== null;
     if (o.namesFirst && S.length > 0 && !A) {
       const E = di(e, S);
-      E.addEventListener("submit", (N) => {
-        N.preventDefault(), F();
+      E.addEventListener("submit", (_) => {
+        _.preventDefault(), F();
       }), E.addEventListener("input", () => {
-        j.ready(V(), !0);
+        G.ready(H(), !0);
       }), p.eyebrow.textContent = s("name"), p.sentence.textContent = s("nameFor"), p.scroll.hidden = !0, p.sheet.insertBefore(E, p.foot), E.querySelector("input")?.focus();
       return;
     }
-    if (A && !V()) {
+    if (A && !H()) {
       p.sheet.querySelector(`.${l.naming} input[aria-invalid]`)?.focus();
       return;
     }
-    w(K, !0);
-  }, V = () => fi(p.sheet, s("nameWhy")), j = _e(p.foot, {
+    w(z, !0);
+  }, H = () => fi(p.sheet, s("nameWhy")), G = _e(p.foot, {
     label: g("mountBranches.doAdd"),
     cancel: () => {
-      K.clear(), x(), f(!1), b();
+      z.clear(), x(), f(!1), b();
     },
     apply: F
   });
@@ -2170,10 +2176,10 @@ function yi(e, t, n, { groupId: r, kind: o }) {
       return;
     }
     f(!1);
-  }), Fn(r, [$, j], u), m.bar.replaceChildren(
+  }), Fn(r, [k, G], u), m.bar.replaceChildren(
     m.eyebrow,
     m.sentence,
-    Q(e, s("add"), "btn btn-default", () => {
+    X(e, s("add"), "btn btn-default", () => {
       f(!0);
     }),
     L(e, l.faceHint, s("hint"))
@@ -2187,7 +2193,7 @@ function ki(e) {
   );
   if (t === null)
     return;
-  Ae = !1, R.clear(), dt = null, Ee.stop(), qe?.abort(), qe = null;
+  Ae = !1, B.clear(), dt = null, Ee.stop(), qe?.abort(), qe = null;
   const n = t.querySelector(`.${l.facePick} > .${l.faceScroll}`), r = t.parentElement;
   n === null || r === null || (t.classList.remove(l.panelCardTurned), t.toggleAttribute("inert", !0), gi(n), window.setTimeout(() => {
     t.hasAttribute("inert") && (r.append(...n.childNodes), t.remove());
@@ -2220,7 +2226,7 @@ function $i(e) {
 }
 const Si = { pageMounts: Xn, fileMounts: Qn };
 function Ei(e, t) {
-  const n = ze();
+  const n = Ve();
   let r = !1;
   const o = async () => {
     const { active: s, groupId: a, area: c } = y(), u = Si[c];
@@ -2239,11 +2245,11 @@ function Ei(e, t) {
   });
   i.observe(e.body, { childList: !0, subtree: !0 }), t.addEventListener("abort", () => {
     i.disconnect();
-  }), o(), Y("permissions-written", () => void o(), t), C(() => void o(), t);
+  }), o(), J("permissions-written", () => void o(), t), C(() => void o(), t);
 }
 let pt = null;
 function or(e) {
-  pt = e, je.App.showModule(e);
+  pt = e, We.App.showModule(e);
 }
 function Ci(e) {
   document.dispatchEvent(new CustomEvent("typo3-module-load", { detail: { module: e } }));
@@ -2252,7 +2258,7 @@ function qi(e) {
   const t = pt === e;
   return pt = null, t;
 }
-const Le = "other", rn = ["modules", "pageMounts", "fileMounts", "fields", Le], Li = 10, oe = {
+const Le = "other", rn = ["modules", "pageMounts", "fileMounts", "fields", Le], Li = 10, se = {
   pageMounts: "tree",
   fileMounts: "tree",
   // Stryker disable next-line StringLiteral: the name only pairs the two tabs, and the other tab follows the fields tab anyway
@@ -2274,40 +2280,40 @@ function _i(e, t) {
   let i = "", s = "";
   const a = (f) => {
     const b = ir(e);
-    if (b.forEach((k) => {
-      v.observe(k);
+    if (b.forEach(($) => {
+      v.observe($);
     }), !f.active) {
       n.remove(), o();
       return;
     }
-    const w = b.map((k) => re(k)), $ = [...rn, ...w.filter((k) => !rn.includes(k))], P = w.includes("fields") ? [Le] : [], x = b.filter((k) => k.getBoundingClientRect().width !== 0).map(re), F = x.includes("fields") ? [...x, Le] : x, [V] = F.includes("fields") ? ["fields"] : F, j = F.find((k) => oe[k] !== void 0 && oe[k] === oe[f.picked]), S = F.includes(f.picked) ? f.picked : j ?? V;
+    const w = b.map(($) => ie($)), k = [...rn, ...w.filter(($) => !rn.includes($))], P = w.includes("fields") ? [Le] : [], x = b.filter(($) => $.getBoundingClientRect().width !== 0).map(ie), F = x.includes("fields") ? [...x, Le] : x, [H] = F.includes("fields") ? ["fields"] : F, G = F.find(($) => se[$] !== void 0 && se[$] === se[f.picked]), S = F.includes(f.picked) ? f.picked : G ?? H;
     if (F.join() !== i && (i = F.join(), S !== void 0 && S !== f.area)) {
       Ir(S);
       return;
     }
     w.join() !== s && (s = w.join(), n.replaceChildren(
-      ...w.flatMap((k) => [Ui(e, k), Bi(e, k)]),
-      ...$.map((k) => Pi(e, k, g(`pickAnArea.${k}`)))
+      ...w.flatMap(($) => [Ui(e, $), Bi(e, $)]),
+      ...k.map(($) => Pi(e, $, g(`pickAnArea.${$}`)))
     )), n.parentElement === null && Oi(e).append(n);
     const A = f.area === Le ? "fields" : f.area;
-    Ti(n, e), Mi(n, e, b.find((k) => re(k) === A) ?? null);
+    Ti(n, e), Mi(n, e, b.find(($) => ie($) === A) ?? null);
     const E = f.area !== "fields";
-    b.forEach((k) => {
-      const q = re(k), ve = q === A, le = E && !ve && q !== "modules", be = Te(n, q);
-      be?.setAttribute("aria-selected", String(q === f.area)), xi(be, k), k.toggleAttribute(d.armed, ve), k.toggleAttribute("inert", le), r.add(k), ji(Ki(n, q), k, le), Ii(Gi(n, q), k, ve, b);
+    b.forEach(($) => {
+      const q = ie($), M = q === A, te = E && !M && q !== "modules", be = Me(n, q);
+      be?.setAttribute("aria-selected", String(q === f.area)), xi(be, $), $.toggleAttribute(d.armed, M), $.toggleAttribute("inert", te), r.add($), ji(Ki(n, q), $, te), Ii(Gi(n, q), $, M, b);
     });
-    let N = 0, B = null;
-    $.forEach((k) => {
-      const q = Te(n, k);
+    let _ = 0, j = null;
+    k.forEach(($) => {
+      const q = Me(n, $);
       if (q === null)
         return;
-      const ve = q.hidden ? 0 : q.getBoundingClientRect().width, le = b.find((kr) => re(kr) === k), be = le ?? Wi(k, b), Tt = Math.max(N, be?.getBoundingClientRect().left ?? N);
-      q.style.setProperty("--vperm-host-x", `${String(Tt)}px`), q.toggleAttribute(d.elsewhere, le === void 0), le === void 0 && (q.setAttribute("aria-selected", String(k === f.area)), xe(q, be ?? B ?? q)), N = q.hidden ? N : Tt + ve + Li, B = q;
+      const M = q.hidden ? 0 : q.getBoundingClientRect().width, te = b.find((kr) => ie(kr) === $), be = te ?? Wi($, b), Tt = Math.max(_, be?.getBoundingClientRect().left ?? _);
+      q.style.setProperty("--vperm-host-x", `${String(Tt)}px`), q.toggleAttribute(d.elsewhere, te === void 0), te === void 0 && (q.setAttribute("aria-selected", String($ === f.area)), xe(q, be ?? j ?? q)), _ = q.hidden ? _ : Tt + M + Li, j = q;
     });
-    const W = Te(n, "fields");
-    P.forEach((k) => {
-      const q = Te(n, k);
-      q === null || W === null || (q.setAttribute("aria-selected", String(k === f.area)), q.hidden = W.hidden);
+    const W = Me(n, "fields");
+    P.forEach(($) => {
+      const q = Me(n, $);
+      q === null || W === null || (q.setAttribute("aria-selected", String($ === f.area)), q.hidden = W.hidden);
     });
   };
   let c = 0;
@@ -2325,7 +2331,7 @@ function _i(e, t) {
       m = !0;
       return;
     }
-    !w && oe[y().picked] === "tree" && Ln("fields");
+    !w && se[y().picked] === "tree" && Ln("fields");
   };
   e.addEventListener("typo3-module-loaded", h, { signal: t }), p.observe(e.body, { childList: !0, subtree: !0 });
   const v = new ResizeObserver(u);
@@ -2339,7 +2345,7 @@ function Pi(e, t, n) {
   return r.type = "button", r.className = l.tab, r.setAttribute("role", "tab"), r.setAttribute(d.area, t), r.setAttribute(d.label, n), r.append(L(e, l.tabLabel, n)), r.addEventListener("click", () => {
     Ln(t);
     const o = Ni[t];
-    o !== void 0 && ir(e).every((i) => re(i) !== t) && or(o);
+    o !== void 0 && ir(e).every((i) => ie(i) !== t) && or(o);
   }), r;
 }
 function xi(e, t) {
@@ -2400,12 +2406,12 @@ function ji(e, t, n) {
 }
 const Wi = (e, t) => (
   // Scope drawn in none finds no column to share; area must be defined elsewhere
-  oe[e] === void 0 ? void 0 : t.find((n) => oe[re(n)] === oe[e])
-), Te = (e, t) => e.querySelector(`.${l.tab}[${d.area}="${t}"]`), Ki = (e, t) => e.querySelector(`.${l.areaCover}[${d.area}="${t}"]`), Gi = (e, t) => e.querySelector(`.${l.tabSeam}[${d.area}="${t}"]`);
+  se[e] === void 0 ? void 0 : t.find((n) => se[ie(n)] === se[e])
+), Me = (e, t) => e.querySelector(`.${l.tab}[${d.area}="${t}"]`), Ki = (e, t) => e.querySelector(`.${l.areaCover}[${d.area}="${t}"]`), Gi = (e, t) => e.querySelector(`.${l.tabSeam}[${d.area}="${t}"]`);
 function ir(e) {
   return [...e.querySelectorAll(`.${l.frame}[${d.area}]`)];
 }
-const re = (e) => e.getAttribute(d.area) ?? "", sr = "#modulemenu", zi = `${sr} .modulemenu-group-container.collapse:not(.show)`, Vi = `${sr} [aria-controls]`, Hi = "typo3-backend-content-navigation[navigation-collapsed]", on = "navigation-collapsed";
+const ie = (e) => e.getAttribute(d.area) ?? "", sr = "#modulemenu", zi = `${sr} .modulemenu-group-container.collapse:not(.show)`, Vi = `${sr} [aria-controls]`, Hi = "typo3-backend-content-navigation[navigation-collapsed]", on = "navigation-collapsed";
 function Yi(e, t) {
   let n = [];
   const r = () => {
@@ -2474,16 +2480,16 @@ function es(e, t) {
     ), or(a);
   }, o = (i) => {
     const s = i.detail.module ?? "";
-    y().active && Ne.includes(s) && pe(lr, s);
+    y().active && Ne.includes(s) && fe(lr, s);
   };
   e.addEventListener("typo3-module-loaded", o, { signal: t }), C(r, t);
 }
 async function ts(e, t) {
-  const n = ae(e), r = await Rn(t, n?.getAttribute("endpoint") ?? "");
+  const n = ce(e), r = await Rn(t, n?.getAttribute("endpoint") ?? "");
   r !== "" && n?.setAttribute("endpoint", r);
 }
 function ns(e) {
-  return je.App.getCurrentModule() ?? ae(e)?.getAttribute("module") ?? "";
+  return We.App.getCurrentModule() ?? ce(e)?.getAttribute("module") ?? "";
 }
 const cr = "[data-modulemenu-identifier]:not([aria-controls])", rs = `#modulemenu ${cr}`;
 function os(e, t) {
@@ -2495,7 +2501,7 @@ function os(e, t) {
   });
 }
 function is() {
-  const e = de.get(lr);
+  const e = pe.get(lr);
   return typeof e == "string" && Ne.includes(e) ? e : void 0;
 }
 function ss(e, t) {
@@ -2509,7 +2515,7 @@ function ss(e, t) {
   }), n();
 }
 function as(e) {
-  D(({ doc: t }) => {
+  R(({ doc: t }) => {
     t.querySelectorAll(".module-docheader-bar-navigation").forEach((n) => {
       n.classList.add("module-docheader-navigation");
     }), t.querySelectorAll(".module-docheader-bar-navigation > .module-docheader-bar-column-left").forEach((n) => {
@@ -2520,7 +2526,7 @@ function as(e) {
   }, e);
 }
 function ls(e) {
-  D(({ doc: t }) => {
+  R(({ doc: t }) => {
     t.querySelectorAll('[data-bs-toggle="tab"][data-bs-target]:not([data-typo3-tab])').forEach((n) => {
       n.setAttribute("data-typo3-tab", n.getAttribute("data-bs-target") ?? "");
     });
@@ -2541,7 +2547,7 @@ function ur(e, t) {
       r.has(a) || (r.add(a), ds(a), dr(a, e));
     });
   };
-  D((i) => {
+  R((i) => {
     n = i.doc, o();
   }, t), C(o, t);
 }
@@ -2558,13 +2564,13 @@ const Lt = (e) => (
   `vperm.unfolded.${e.getAttribute("data-object-id") ?? ""}`
 );
 function ds(e) {
-  ie.set(Lt(e), "folded");
+  ae.set(Lt(e), "folded");
 }
 function ps(e) {
-  return ie.isset(Lt(e));
+  return ae.isset(Lt(e));
 }
 function fs(e) {
-  ie.unset(Lt(e));
+  ae.unset(Lt(e));
 }
 function ms(e) {
   ur({
@@ -2591,12 +2597,12 @@ function hs(e, t) {
     const v = { group: String(m) };
     for (const [f, b] of new FormData(r))
       typeof b == "string" && (v[f] = b);
-    ne(O.write_other_permissions, v).then((f) => {
+    oe(O.write_other_permissions, v).then((f) => {
       if (u.setAttribute("identifier", "actions-document-save"), c.disabled = m !== p, f === "taken") {
-        De.success(g("notification.record_saved.title.singular"));
+        Re.success(g("notification.record_saved.title.singular"));
         return;
       }
-      f !== "cancelled" && De.error(g("editOtherPermissions.notSaved"));
+      f !== "cancelled" && Re.error(g("editOtherPermissions.notSaved"));
     });
   }), a.append(c), i.append(s, a), o.append(i), n.append(o, r);
   let p = null, m = null;
@@ -2607,14 +2613,14 @@ function hs(e, t) {
       return;
     }
     const w = v.groupId;
-    w !== p && (p = w, c.disabled = !0, s.textContent = te(e, w) ?? "", gs(w).then(($) => {
-      $ === null || w !== p || (r.replaceChildren(e.createRange().createContextualFragment($.html)), m = w, c.disabled = !1, e.querySelector(`.${l.frame}[${d.area}="fields"]`)?.append(n), new qr().processItems([...$.scriptItems]));
+    w !== p && (p = w, c.disabled = !0, s.textContent = re(e, w) ?? "", gs(w).then((k) => {
+      k === null || w !== p || (r.replaceChildren(e.createRange().createContextualFragment(k.html)), m = w, c.disabled = !1, e.querySelector(`.${l.frame}[${d.area}="fields"]`)?.append(n), new qr().processItems([...k.scriptItems]));
     }));
   };
   h(y()), C(h, t);
 }
 async function gs(e) {
-  return Pe(new H(I(O.other_permissions)).withQueryArguments({ group: e }).get());
+  return Pe(new Y(D(O.other_permissions)).withQueryArguments({ group: e }).get());
 }
 const Nt = '.form-group:has(> select[name="_langSelector"])', ft = /* @__PURE__ */ new WeakMap();
 function vs(e, t) {
@@ -2648,33 +2654,33 @@ function Ss(e, t) {
     const u = i.querySelector(`[${d.token}][${d.inside}='']:not([${d.outOfReach}])`) !== null;
     if (!u && y().face === "pick") {
       Se(i, () => {
-        ue("preview");
+        de("preview");
       });
       return;
     }
     const p = y().face === "preview", m = i.createElement("div");
     if (m.className = l.headBar, m.append(
       L(i, l.faceEyebrow, g(p ? "platform.preview" : "platform.pick")),
-      L(i, l.faceSentence, _(
+      L(i, l.faceSentence, N(
         g(p ? "recordForm.previewFor" : "recordForm.pickFor"),
-        te(e, y().groupId) ?? ""
+        re(e, y().groupId) ?? ""
       ))
     ), i.querySelector(ys)?.append(m), !p || !u)
       return;
-    const h = Q(
+    const h = X(
       i,
       g("recordForm.add"),
       `btn btn-default btn-sm ${l.headButton}`,
       () => {
         Se(i, () => {
-          ue("pick");
+          de("pick");
         });
       },
       "actions-check-square"
     );
     [...i.querySelectorAll(ln)].find((f) => f.contains(a))?.after(h);
   };
-  D((i) => {
+  R((i) => {
     const s = i.doc === n;
     n = i.doc, o(), !s && kt(
       i.doc,
@@ -2682,11 +2688,11 @@ function Ss(e, t) {
       () => y().face === "pick",
       () => {
         Se(i.doc, () => {
-          ue("preview");
+          de("preview");
         });
       }
     );
-  }, t), Y("fields-judged", o, t), C(o, t);
+  }, t), J("fields-judged", o, t), C(o, t);
 }
 const cn = `[${d.token}]`;
 function Es(e, t) {
@@ -2725,7 +2731,7 @@ function qs(e, t) {
 const Ls = ar(["records"]);
 function Ns(e, t) {
   let n = y().active;
-  const r = () => !(e.querySelector("#typo3-contentIframe")?.contentDocument?.querySelector('form[name="editform"]') != null) && Ls.includes(je.App.getCurrentModule() ?? "");
+  const r = () => !(e.querySelector("#typo3-contentIframe")?.contentDocument?.querySelector('form[name="editform"]') != null) && Ls.includes(We.App.getCurrentModule() ?? "");
   C(({ active: o }) => {
     o !== n && xr().then(() => {
       r() && Lr.ContentContainer.refresh();
@@ -2750,10 +2756,10 @@ function _s(e, t) {
 }
 const Os = ".module-docheader-buttons .btn-toolbar", un = "vperm.show", dn = "vperm.identify", pn = (e, t, n) => {
   if (n) {
-    ie.set(e, t);
+    ae.set(e, t);
     return;
   }
-  ie.unset(e);
+  ae.unset(e);
 }, fn = (e, t) => {
   if (e.setAttribute("aria-selected", String(t)), !t) {
     e.removeAttribute("data-dropdowntoggle-status");
@@ -2776,7 +2782,7 @@ function Ps(e) {
       o.body.removeAttribute(d.show), bs(o);
       return;
     }
-    hn(o, ie.get(un) === "list"), mn(o, ie.get(dn) === "said");
+    hn(o, ae.get(un) === "list"), mn(o, ae.get(dn) === "said");
     const i = o.createElement("div");
     i.className = `btn-group ${l.showMenu}`;
     const s = o.createElement("button");
@@ -2793,9 +2799,9 @@ function Ps(e) {
       })
     ), i.append(s, a), o.querySelector(Os)?.append(i), vs(o, i);
   };
-  D((o) => {
+  R((o) => {
     t = o.doc, r();
-  }, e), Y("fields-judged", r, e), C(r, e);
+  }, e), J("fields-judged", r, e), C(r, e);
 }
 function mn(e, t) {
   e.querySelectorAll(`.${l.fieldToken}`).forEach((n) => {
@@ -2875,13 +2881,13 @@ function Ms(e) {
     opener: ".panel-button"
   }, e);
 }
-function he(e, t) {
+function ge(e, t) {
   try {
     sessionStorage.setItem(e, t);
   } catch {
   }
 }
-function ge(e) {
+function ve(e) {
   try {
     return sessionStorage.getItem(e);
   } catch {
@@ -2907,7 +2913,7 @@ function mr(e, t, n) {
   const o = () => {
     r || (r = !0, n());
   };
-  he(Pt, t), e.body.setAttribute(d.leaving, t), e.body.addEventListener("animationend", o, { once: !0 }), window.setTimeout(o, fr);
+  ge(Pt, t), e.body.setAttribute(d.leaving, t), e.body.addEventListener("animationend", o, { once: !0 }), window.setTimeout(o, fr);
 }
 function Us(e) {
   e.body.setAttribute(d.settling, "");
@@ -2934,21 +2940,21 @@ function js(e) {
   }, { signal: i.signal }), window.setTimeout(c, Ds);
 }
 function Ws() {
-  return ge(Pt);
+  return ve(Pt);
 }
 const hr = "vperm.viewing", gr = "vperm.seen", vr = "vperm.room";
 function Ks(e) {
-  he(hr, e);
+  ge(hr, e);
 }
 function Gs(e) {
-  he(vr, String(e));
+  ge(vr, String(e));
 }
 function zs() {
-  return ge(vr);
+  return ve(vr);
 }
 function Vs(e) {
-  const t = ge(hr);
-  t !== null && he(gr, JSON.stringify({
+  const t = ve(hr);
+  t !== null && ge(gr, JSON.stringify({
     ...xt(),
     [t]: { place: $n(e), document: bt(e) }
   }));
@@ -2960,7 +2966,7 @@ function Ys(e) {
   return An(xt()[e]);
 }
 function xt() {
-  const e = ge(gr);
+  const e = ve(gr);
   return e === null ? {} : JSON.parse(e);
 }
 function Js(e, t) {
@@ -2988,10 +2994,10 @@ function Js(e, t) {
 }
 const Ft = "vperm.opening";
 function br(e, t) {
-  e !== "" && he(Ft, JSON.stringify({ record: e, screen: t }));
+  e !== "" && ge(Ft, JSON.stringify({ record: e, screen: t }));
 }
 function Qs(e) {
-  const t = Zs(), n = ae(e)?.getAttribute("endpoint") ?? "";
+  const t = Zs(), n = ce(e)?.getAttribute("endpoint") ?? "";
   t === null || n === "" || !Xs(t.screen, n, e.location.href) || (Ot(Ft), ea(e, n, t.record));
 }
 function Xs(e, t, n) {
@@ -2999,7 +3005,7 @@ function Xs(e, t, n) {
   return r.pathname === o.pathname && (r.searchParams.get("id") ?? "") === (o.searchParams.get("id") ?? "");
 }
 function Zs() {
-  const e = ge(Ft);
+  const e = ve(Ft);
   try {
     return e === null ? null : JSON.parse(e);
   } catch {
@@ -3010,18 +3016,18 @@ async function ea(e, t, n) {
   const r = await Rn(n, t);
   r !== "" && Or(e, r);
 }
-let Me = null;
+let Ie = null;
 function ta(e) {
   if (e.raw?.().status !== 304)
     throw e;
   return e;
 }
 async function wr() {
-  const e = await new H(I(O.viewable_users)).get(Me === null ? {} : { headers: { "If-None-Match": Me.tag } }).catch(ta), t = e.raw();
+  const e = await new Y(D(O.viewable_users)).get(Ie === null ? {} : { headers: { "If-None-Match": Ie.tag } }).catch(ta), t = e.raw();
   if (t.status === 304)
-    return Me.users;
+    return Ie.users;
   const n = await e.resolve(), r = t.headers.get("ETag");
-  return Me = r === null ? null : { tag: r, users: n }, n;
+  return Ie = r === null ? null : { tag: r, users: n }, n;
 }
 const na = {
   go: (e) => {
@@ -3036,13 +3042,13 @@ const na = {
   }
 }, mt = "vperm.returnTo", ht = "vperm.returning", ra = "vperm.userSearch";
 function oa(e, t, n = na) {
-  const r = de.get(mt), o = kn(r);
-  return o !== "" && ia(o) ? (br(An(r), o), pe(mt, { place: "" }).then(() => {
+  const r = pe.get(mt), o = kn(r);
+  return o !== "" && ia(o) ? (br(An(r), o), fe(mt, { place: "" }).then(() => {
     n.go(o);
   }), !0) : (sa(e, t, n), !1);
 }
 function ia(e) {
-  return ge(ht) === e ? !1 : (he(ht, e), !0);
+  return ve(ht) === e ? !1 : (ge(ht, e), !0);
 }
 function sa(e, t, n) {
   const r = e.querySelector(`[${d.viewAs}]`);
@@ -3087,7 +3093,7 @@ async function gt(e, t) {
   }
   const { recent: r, users: o } = n;
   t.state = "ready";
-  const i = Ke(e), s = new Map(o.map((u) => [u.id, u])), a = r.map((u) => s.get(u)).filter((u) => u !== void 0), c = o.filter((u) => !r.includes(u.id));
+  const i = Ge(e), s = new Map(o.map((u) => [u.id, u])), a = r.map((u) => s.get(u)).filter((u) => u !== void 0), c = o.filter((u) => !r.includes(u.id));
   t.entries = [
     ...a.map((u) => vn(u, g("viewAsUser.recent"), i)),
     ...c.map((u) => vn(u, g("viewAsUser.all"), i))
@@ -3106,19 +3112,19 @@ function vn(e, t, n) {
   };
 }
 function la(e) {
-  return e === 0 ? "" : G("viewAsUser.groups", e, e);
+  return e === 0 ? "" : K("viewAsUser.groups", e, e);
 }
 function ca(e) {
-  return e === 0 ? g("viewAsUser.detail.none") : G("viewAsUser.detail", e, e);
+  return e === 0 ? g("viewAsUser.detail.none") : K("viewAsUser.detail", e, e);
 }
 async function yr(e, t, n) {
-  Ot(ht), Ks(String(t)), Gs(e.querySelector(`.${l.viewAsControls}`)?.getBoundingClientRect().width ?? 0), await pe(mt, { place: $n(e), document: bt(e) });
+  Ot(ht), Ks(String(t)), Gs(e.querySelector(`.${l.viewAsControls}`)?.getBoundingClientRect().width ?? 0), await fe(mt, { place: $n(e), document: bt(e) });
   const r = Hs(String(t));
   br(Ys(String(t)), r), ua(t, n, r);
 }
 function ua(e, t, n) {
   _r(document), mr(document, "down", () => {
-    t.handOver(I(O.view_as_user), {
+    t.handOver(D(O.view_as_user), {
       targetUser: String(e),
       screen: n
     });

@@ -171,6 +171,18 @@
                 <source>The modules the group "%s" may open</source>
                 <target>Die Module, die die Gruppe „%s“ öffnen darf</target>
             </trans-unit>
+            <trans-unit id="allowModules.takenAway.many" resname="allowModules.takenAway.many" approved="yes">
+                <source>%s are taken away as well</source>
+                <target>%s werden ebenfalls entzogen</target>
+            </trans-unit>
+            <trans-unit id="allowModules.takenAway.name" resname="allowModules.takenAway.name" approved="yes">
+                <source>"%s"</source>
+                <target>„%s“</target>
+            </trans-unit>
+            <trans-unit id="allowModules.takenAway.one" resname="allowModules.takenAway.one" approved="yes">
+                <source>%s is taken away as well</source>
+                <target>%s wird ebenfalls entzogen</target>
+            </trans-unit>
             <trans-unit id="allowModules.tally.many" resname="allowModules.tally.many" approved="yes">
                 <source>%1$s of %2$s menu modules allowed</source>
                 <target>%1$s von %2$s Modulen im Menü erlaubt</target>

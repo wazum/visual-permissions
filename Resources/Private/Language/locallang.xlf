@@ -129,6 +129,15 @@
             <trans-unit id="allowModules.previewFor" resname="allowModules.previewFor">
                 <source>The modules the group "%s" may open</source>
             </trans-unit>
+            <trans-unit id="allowModules.takenAway.many" resname="allowModules.takenAway.many">
+                <source>%s are taken away as well</source>
+            </trans-unit>
+            <trans-unit id="allowModules.takenAway.name" resname="allowModules.takenAway.name">
+                <source>"%s"</source>
+            </trans-unit>
+            <trans-unit id="allowModules.takenAway.one" resname="allowModules.takenAway.one">
+                <source>%s is taken away as well</source>
+            </trans-unit>
             <trans-unit id="allowModules.tally.many" resname="allowModules.tally.many">
                 <source>%1$s of %2$s menu modules allowed</source>
             </trans-unit>

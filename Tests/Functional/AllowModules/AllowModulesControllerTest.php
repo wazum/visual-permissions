@@ -59,6 +59,22 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function disallowsTheModulesBelowAModuleWithIt(): void
+    {
+        $this->get(AllowModulesController::class)->write($this->asked([
+            'group' => 10,
+            'operations' => [['module' => 'module_tree_child', 'allow' => true]],
+        ]));
+
+        $this->get(AllowModulesController::class)->write($this->asked([
+            'group' => 10,
+            'operations' => [['module' => 'module_tree_parent', 'allow' => false]],
+        ]));
+
+        self::assertSame(['web_layout'], $this->get(BackendGroups::class)->listOf(10, Scope::Modules));
+    }
+
+    #[Test]
     public function namesTheParentAllowedAlongWithAModule(): void
     {
         $response = $this->get(AllowModulesController::class)->write($this->asked([
@@ -145,6 +161,14 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function namesTheMenuModuleAModuleOutsideTheMenuSitsUnder(): void
+    {
+        $values = array_column(array_merge(...array_column($this->outsideTheMenu()['groups'], 'values')), 'parent', 'value');
+
+        self::assertSame('module_tree_parent', $values['module_tree_child'] ?? null);
+    }
+
+    #[Test]
     public function showsAModuleOutsideTheMenuWithItsOwnIcon(): void
     {
         $values = array_column(array_merge(...array_column($this->outsideTheMenu()['groups'], 'values')), 'icon', 'value');
@@ -159,7 +183,7 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     }
 
     /**
-     * @return array{title: string, groups: list<array{label: string, values: list<array{value: string, label: string, icon: string}>}>}
+     * @return array{title: string, groups: list<array{label: string, values: list<array{value: string, label: string, icon: string, parent: string}>}>}
      */
     private function outsideTheMenu(): array
     {
@@ -168,7 +192,7 @@ final class AllowModulesControllerTest extends FunctionalTestCase
                 ->withAttribute('backend.user', $GLOBALS['BE_USER']),
         );
 
-        /** @var array{title: string, groups: list<array{label: string, values: list<array{value: string, label: string, icon: string}>}>} $choices */
+        /** @var array{title: string, groups: list<array{label: string, values: list<array{value: string, label: string, icon: string, parent: string}>}>} $choices */
         $choices = json_decode((string) $response->getBody(), true);
 
         return $choices;

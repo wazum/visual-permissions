@@ -79,6 +79,9 @@ const carrier = (): void => {
     'allowModules.hint': 'or click a module to remove it',
     'allowModules.alsoAllowed': '"%s" allowed as well, so the group finds the module in the menu',
     'allowModules.outside': 'Choose modules outside the menu',
+    'allowModules.takenAway.name': '"%s"',
+    'allowModules.takenAway.one': '%s is taken away as well',
+    'allowModules.takenAway.many': '%s are taken away as well',
     'allowModules.outside.tally.one': '%1$s of %2$s outside the menu allowed',
     'allowModules.outside.tally.many': '%1$s of %2$s outside the menu allowed',
     'platform.pick': 'Assign',
@@ -110,8 +113,8 @@ const armed = async (): Promise<void> => {
 const outsideTheMenu = {
   title: 'Modules outside the menu the group "%s" may open',
   groups: [
-    { label: 'Help', values: [{ value: 'about', label: 'About TYPO3 CMS', icon: '' }] },
-    { label: 'User Tools', values: [{ value: 'user_setup', label: 'User Settings', icon: '' }] },
+    { label: 'Help', values: [{ value: 'about', label: 'About TYPO3 CMS', icon: '', parent: 'help' }] },
+    { label: 'User Tools', values: [{ value: 'user_setup', label: 'User Settings', icon: '', parent: 'user' }] },
   ],
 }
 
@@ -696,6 +699,55 @@ describe('the module panel the group sees', () => {
       ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('1 of 2 modules marked to remove')
+  })
+
+  it('names the modules outside the menu a module marked to be disallowed takes along', async () => {
+    replyTo('visual_permissions_modules_outside_menu', {
+      title: '',
+      groups: [{ label: 'Content', values: [
+        { value: 'web_info_overview', label: 'Status › Pagetree Overview', icon: '', parent: 'content_status' },
+        { value: 'web_info_translations', label: 'Status › Localization Overview', icon: '', parent: 'content_status' },
+        { value: 'web_info_trash', label: 'Status › Trash', icon: '', parent: 'content_status' },
+      ] }],
+    })
+    reply({
+      group: { id: 7, title: 'Content Reviewers' },
+      chain: [],
+      scopes: { modules: { targets: { content_status: 'allowed', web_info_overview: 'allowed', web_info_translations: 'denied', web_info_trash: 'allowed' } } },
+    })
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+
+    await armed()
+    inPreview('[data-modulemenu-identifier="content_status"]')
+      ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+    expect(inPreview(`.${classes.faceWaiting}`)?.textContent)
+      .toBe('"Status › Pagetree Overview", "Status › Trash" are taken away as well')
+  })
+
+  it('names one module outside the menu a module marked to be disallowed takes along in the singular', async () => {
+    replyTo('visual_permissions_modules_outside_menu', {
+      title: '',
+      groups: [{ label: 'Content', values: [
+        { value: 'web_info_overview', label: 'Status › Pagetree Overview', icon: '', parent: 'content_status' },
+      ] }],
+    })
+    reply({
+      group: { id: 7, title: 'Content Reviewers' },
+      chain: [],
+      scopes: { modules: { targets: { content_status: 'allowed', web_info_overview: 'allowed' } } },
+    })
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+
+    await armed()
+    inPreview('[data-modulemenu-identifier="content_status"]')
+      ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+    expect(inPreview(`.${classes.faceWaiting}`)?.textContent).toBe('"Status › Pagetree Overview" is taken away as well')
   })
 
   it('disallows everything marked when the change is applied', async () => {

@@ -55,7 +55,12 @@ final readonly class AllowModulesController extends GroupWriteController
                 $main = $parent;
             }
 
-            $groups[$language->sL($main->getTitle())][] = ['value' => $identifier, 'label' => implode(' › ', $path), 'icon' => $module->getIconIdentifier()];
+            $groups[$language->sL($main->getTitle())][] = [
+                'value' => $identifier,
+                'label' => implode(' › ', $path),
+                'icon' => $module->getIconIdentifier(),
+                'parent' => $module->getParentIdentifier(),
+            ];
         }
 
         return new JsonResponse(['title' => $language->sL(
@@ -100,7 +105,11 @@ final readonly class AllowModulesController extends GroupWriteController
      */
     protected function writeOperations(int $groupId, array $operations): bool
     {
-        return $this->groups->change($groupId, Scope::Modules, [...$operations, ...$this->parentsOf($operations)]);
+        return $this->groups->change(
+            $groupId,
+            Scope::Modules,
+            [...$operations, ...$this->parentsOf($operations), ...$this->childrenOf($operations)],
+        );
     }
 
     /**
@@ -147,5 +156,29 @@ final readonly class AllowModulesController extends GroupWriteController
         }
 
         return array_values($parents);
+    }
+
+    /**
+     * @param list<array{target: string, add: bool}> $operations
+     *
+     * @return list<array{target: string, add: bool}>
+     */
+    private function childrenOf(array $operations): array
+    {
+        $children = [];
+        foreach ($operations as $operation) {
+            if ($operation['add'] || !$this->registry->hasModule($operation['target'])) {
+                continue;
+            }
+
+            $below = $this->registry->getModule($operation['target'])->getSubModules();
+            while ([] !== $below) {
+                $module = array_shift($below);
+                $children[$module->getIdentifier()] = ['target' => $module->getIdentifier(), 'add' => false];
+                $below = [...$below, ...$module->getSubModules()];
+            }
+        }
+
+        return array_values($children);
     }
 }
