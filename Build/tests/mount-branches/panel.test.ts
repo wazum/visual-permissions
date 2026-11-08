@@ -73,7 +73,7 @@ const carrier = (): void => {
     'platform.pick': 'Assign',
     'platform.cancel': 'Cancel',
     'mountBranches.doAdd': 'Add',
-    'mountBranches.doRemove': 'Remove',
+    'platform.doRemove': 'Remove',
     'platform.from': 'from a subgroup',
     'mountBranches.pages.previewFor': 'What %s may work in',
     'mountBranches.pages.add': 'Add page mounts',

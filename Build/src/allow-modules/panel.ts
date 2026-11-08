@@ -124,7 +124,7 @@ export function render(doc: Document, menu: Element, outside: readonly OutsideMo
   }
 
   const removals = footIn(preview.foot, {
-    label: labelOf('platform.doDisallow'),
+    label: labelOf('platform.doRemove'),
     cancel: () => {
       marked(preview.scroll).forEach(row => { row.classList.remove(classes.faceMarked) })
       showCount()
@@ -163,12 +163,12 @@ export function render(doc: Document, menu: Element, outside: readonly OutsideMo
       ? has
       : counted('allowModules.marked', allowedByGroup.length, toRemove.length, allowedByGroup.length)
     const leaving = toRemove.map(nameOf)
-    const takenAway = outside
+    const alsoRemoved = outside
       .filter(({ verdict, parent }) => isReachable(verdict) && leaving.includes(parent))
-      .map(({ label }) => said(labelOf('allowModules.takenAway.name'), label))
-    removals.waiting.textContent = takenAway.length === 0
+      .map(({ label }) => said(labelOf('allowModules.alsoRemoved.name'), label))
+    removals.waiting.textContent = alsoRemoved.length === 0
       ? ''
-      : counted('allowModules.takenAway', takenAway.length, takenAway.join(', '))
+      : counted('allowModules.alsoRemoved', alsoRemoved.length, alsoRemoved.join(', '))
     removals.ready(toRemove.length > 0, toRemove.length > 0)
 
     additions.state.textContent = ''

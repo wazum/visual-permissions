@@ -102,14 +102,23 @@
             <trans-unit id="allowModules.alsoAllowed" resname="allowModules.alsoAllowed">
                 <source>"%s" allowed as well, so the group finds the module in the menu</source>
             </trans-unit>
+            <trans-unit id="allowModules.alsoRemoved.many" resname="allowModules.alsoRemoved.many">
+                <source>%s are removed as well</source>
+            </trans-unit>
+            <trans-unit id="allowModules.alsoRemoved.name" resname="allowModules.alsoRemoved.name">
+                <source>"%s"</source>
+            </trans-unit>
+            <trans-unit id="allowModules.alsoRemoved.one" resname="allowModules.alsoRemoved.one">
+                <source>%s is removed as well</source>
+            </trans-unit>
             <trans-unit id="allowModules.hint" resname="allowModules.hint">
-                <source>or click a module to disallow it</source>
+                <source>or click a module to remove it</source>
             </trans-unit>
             <trans-unit id="allowModules.marked.many" resname="allowModules.marked.many">
-                <source>%1$s of %2$s modules waiting to be disallowed</source>
+                <source>%1$s of %2$s modules waiting to be removed</source>
             </trans-unit>
             <trans-unit id="allowModules.marked.one" resname="allowModules.marked.one">
-                <source>%1$s of %2$s module waiting to be disallowed</source>
+                <source>%1$s of %2$s module waiting to be removed</source>
             </trans-unit>
             <trans-unit id="allowModules.outside" resname="allowModules.outside">
                 <source>Choose modules outside the menu</source>
@@ -128,15 +137,6 @@
             </trans-unit>
             <trans-unit id="allowModules.previewFor" resname="allowModules.previewFor">
                 <source>The modules the group "%s" may open</source>
-            </trans-unit>
-            <trans-unit id="allowModules.takenAway.many" resname="allowModules.takenAway.many">
-                <source>%s are taken away as well</source>
-            </trans-unit>
-            <trans-unit id="allowModules.takenAway.name" resname="allowModules.takenAway.name">
-                <source>"%s"</source>
-            </trans-unit>
-            <trans-unit id="allowModules.takenAway.one" resname="allowModules.takenAway.one">
-                <source>%s is taken away as well</source>
             </trans-unit>
             <trans-unit id="allowModules.tally.many" resname="allowModules.tally.many">
                 <source>%1$s of %2$s menu modules allowed</source>
@@ -188,9 +188,6 @@
             </trans-unit>
             <trans-unit id="mountBranches.doAdd" resname="mountBranches.doAdd">
                 <source>Add</source>
-            </trans-unit>
-            <trans-unit id="mountBranches.doRemove" resname="mountBranches.doRemove">
-                <source>Remove</source>
             </trans-unit>
             <trans-unit id="mountBranches.folders.add" resname="mountBranches.folders.add">
                 <source>Add file mounts</source>
@@ -344,6 +341,9 @@
             </trans-unit>
             <trans-unit id="platform.doDisallow" resname="platform.doDisallow">
                 <source>Disallow</source>
+            </trans-unit>
+            <trans-unit id="platform.doRemove" resname="platform.doRemove">
+                <source>Remove</source>
             </trans-unit>
             <trans-unit id="platform.failed" resname="platform.failed">
                 <source>The change could not be sent. It is still waiting here.</source>

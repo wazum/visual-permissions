@@ -79,9 +79,9 @@ const carrier = (): void => {
     'allowModules.hint': 'or click a module to remove it',
     'allowModules.alsoAllowed': '"%s" allowed as well, so the group finds the module in the menu',
     'allowModules.outside': 'Choose modules outside the menu',
-    'allowModules.takenAway.name': '"%s"',
-    'allowModules.takenAway.one': '%s is taken away as well',
-    'allowModules.takenAway.many': '%s are taken away as well',
+    'allowModules.alsoRemoved.name': '"%s"',
+    'allowModules.alsoRemoved.one': '%s is removed as well',
+    'allowModules.alsoRemoved.many': '%s are removed as well',
     'allowModules.outside.tally.one': '%1$s of %2$s outside the menu allowed',
     'allowModules.outside.tally.many': '%1$s of %2$s outside the menu allowed',
     'platform.pick': 'Assign',
@@ -94,7 +94,7 @@ const carrier = (): void => {
     'platform.from': 'from a subgroup',
     'platform.cancel': 'Cancel',
     'platform.doAllow': 'Allow',
-    'platform.doDisallow': 'Disallow',
+    'platform.doRemove': 'Remove',
     'platform.toAllow': 'to allow',
     'platform.refused': 'The change could not be saved',
     'platform.failed': 'The change could not be sent',
@@ -661,7 +661,7 @@ describe('the module panel the group sees', () => {
 
     await armed()
 
-    expect(inPreview(`.${classes.faceApply}`)?.textContent).toBe('Disallow')
+    expect(inPreview(`.${classes.faceApply}`)?.textContent).toBe('Remove')
     expect(inPick(`.${classes.faceApply}`)?.textContent).toBe('Allow')
   })
 
@@ -701,7 +701,7 @@ describe('the module panel the group sees', () => {
     expect(inPreview(`.${classes.faceTally}`)?.textContent).toBe('1 of 2 modules marked to remove')
   })
 
-  it('names the modules outside the menu a module marked to be disallowed takes along', async () => {
+  it('names the modules outside the menu a module marked to be removed takes along', async () => {
     replyTo('visual_permissions_modules_outside_menu', {
       title: '',
       groups: [{ label: 'Content', values: [
@@ -724,10 +724,10 @@ describe('the module panel the group sees', () => {
       ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     expect(inPreview(`.${classes.faceWaiting}`)?.textContent)
-      .toBe('"Status › Pagetree Overview", "Status › Trash" are taken away as well')
+      .toBe('"Status › Pagetree Overview", "Status › Trash" are removed as well')
   })
 
-  it('names one module outside the menu a module marked to be disallowed takes along in the singular', async () => {
+  it('names one module outside the menu a module marked to be removed takes along in the singular', async () => {
     replyTo('visual_permissions_modules_outside_menu', {
       title: '',
       groups: [{ label: 'Content', values: [
@@ -747,7 +747,7 @@ describe('the module panel the group sees', () => {
     inPreview('[data-modulemenu-identifier="content_status"]')
       ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
-    expect(inPreview(`.${classes.faceWaiting}`)?.textContent).toBe('"Status › Pagetree Overview" is taken away as well')
+    expect(inPreview(`.${classes.faceWaiting}`)?.textContent).toBe('"Status › Pagetree Overview" is removed as well')
   })
 
   it('disallows everything marked when the change is applied', async () => {

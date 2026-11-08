@@ -69,7 +69,7 @@ const carrier = (): void => {
     'mountBranches.pages.previewFor': 'What %s may work in',
     'platform.cancel': 'Cancel',
     'mountBranches.doAdd': 'Add',
-    'mountBranches.doRemove': 'Remove',
+    'platform.doRemove': 'Remove',
     'platform.notRead': 'Not read',
     'platform.pick': 'Assign',
     'platform.preview': 'Preview',
