@@ -59,6 +59,47 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function namesTheParentAllowedAlongWithAModule(): void
+    {
+        $response = $this->get(AllowModulesController::class)->write($this->asked([
+            'group' => 10,
+            'operations' => [['module' => 'module_tree_child', 'allow' => true]],
+        ]));
+
+        self::assertSame(['alsoAllowed' => ['Module tree']], json_decode((string) $response->getBody(), true));
+    }
+
+    #[Test]
+    public function namesNoParentTheGroupHasAlready(): void
+    {
+        $this->get(AllowModulesController::class)->write($this->asked([
+            'group' => 10,
+            'operations' => [['module' => 'module_tree_parent', 'allow' => true]],
+        ]));
+
+        $response = $this->get(AllowModulesController::class)->write($this->asked([
+            'group' => 10,
+            'operations' => [['module' => 'module_tree_child', 'allow' => true]],
+        ]));
+
+        self::assertSame(204, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function namesNoParentAllowedInTheSameWrite(): void
+    {
+        $response = $this->get(AllowModulesController::class)->write($this->asked([
+            'group' => 10,
+            'operations' => [
+                ['module' => 'module_tree_child', 'allow' => true],
+                ['module' => 'module_tree_parent', 'allow' => true],
+            ],
+        ]));
+
+        self::assertSame(204, $response->getStatusCode());
+    }
+
+    #[Test]
     public function refusesToAllowWhatCannotBeAllowed(): void
     {
         $response = $this->get(AllowModulesController::class)->write($this->asked([
@@ -139,6 +180,7 @@ final class AllowModulesControllerTest extends FunctionalTestCase
     private function asked(array $body): ServerRequest
     {
         return (new ServerRequest('https://example.com/typo3/ajax/visual-permissions/allow-modules', 'POST'))
-            ->withParsedBody($body);
+            ->withParsedBody($body)
+            ->withAttribute('backend.user', $GLOBALS['BE_USER']);
     }
 }

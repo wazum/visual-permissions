@@ -75,6 +75,29 @@ final readonly class AllowModulesController extends GroupWriteController
     /**
      * @throws \Doctrine\DBAL\Exception
      */
+    protected function answerFor(ServerRequestInterface $request, int $groupId, array $operations): array
+    {
+        $held = [...$this->groups->listOf($groupId, Scope::Modules), ...array_column($operations, 'target')];
+        $parents = array_filter($this->parentsOf($operations), static fn(array $parent): bool => !\in_array($parent['target'], $held, true));
+        if ([] === $parents) {
+            return [];
+        }
+
+        /**
+         * @var BackendUserAuthentication $administrator
+         */
+        $administrator = $request->getAttribute('backend.user');
+        $language = $this->languages->createFromUserPreferences($administrator);
+
+        return ['alsoAllowed' => array_values(array_map(
+            fn(array $parent): string => $language->sL($this->registry->getModule($parent['target'])->getTitle()),
+            $parents,
+        ))];
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     protected function writeOperations(int $groupId, array $operations): bool
     {
         return $this->groups->change($groupId, Scope::Modules, [...$operations, ...$this->parentsOf($operations)]);

@@ -47,13 +47,20 @@ export type WriteOutcome = 'taken' | 'cancelled' | 'refused' | 'failed' | 'logge
 
 let writing = 0
 
-export async function write(route: string, body: unknown): Promise<WriteOutcome> {
+export async function write(route: string, body: unknown, heard: (answer: unknown) => void = () => undefined): Promise<WriteOutcome> {
   writing += 1
 
   return new AjaxRequest(ajaxUrl(route))
     .addMiddleware(sudoModeInterceptor)
     .post(body)
-    .then(outcomeOf, outcomeOf)
+    .then(async answer => {
+      const outcome = outcomeOf(answer)
+      if (outcome === 'taken' && answer.raw().status === 200) {
+        heard(await answer.resolve())
+      }
+
+      return outcome
+    }, outcomeOf)
     .finally(() => { writing -= 1 })
 }
 
