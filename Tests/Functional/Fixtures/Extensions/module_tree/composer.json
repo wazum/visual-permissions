@@ -1,0 +1,13 @@
+{
+    "name": "wazum/module-tree",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "typo3/cms-core": "*"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "module_tree"
+        }
+    }
+}

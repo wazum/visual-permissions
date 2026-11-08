@@ -77,7 +77,7 @@ final readonly class AllowModulesController extends GroupWriteController
      */
     protected function writeOperations(int $groupId, array $operations): bool
     {
-        return $this->groups->change($groupId, Scope::Modules, $operations);
+        return $this->groups->change($groupId, Scope::Modules, [...$operations, ...$this->parentsOf($operations)]);
     }
 
     /**
@@ -101,5 +101,28 @@ final readonly class AllowModulesController extends GroupWriteController
     private function allowable(string $module): bool
     {
         return TargetKind::Allowable === ($this->catalogue->all()[$module] ?? null);
+    }
+
+    /**
+     * @param list<array{target: string, add: bool}> $operations
+     *
+     * @return list<array{target: string, add: bool}>
+     */
+    private function parentsOf(array $operations): array
+    {
+        $parents = [];
+        foreach ($operations as $operation) {
+            if (!$operation['add']) {
+                continue;
+            }
+
+            $parent = $this->registry->getModule($operation['target'])->getParentModule();
+            while ($parent instanceof ModuleInterface && $this->allowable($parent->getIdentifier())) {
+                $parents[$parent->getIdentifier()] = ['target' => $parent->getIdentifier(), 'add' => true];
+                $parent = $parent->getParentModule();
+            }
+        }
+
+        return array_values($parents);
     }
 }

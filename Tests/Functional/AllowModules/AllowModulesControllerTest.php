@@ -16,7 +16,10 @@ final class AllowModulesControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['beuser'];
 
-    protected array $testExtensionsToLoad = ['wazum/visual-permissions'];
+    protected array $testExtensionsToLoad = [
+        'wazum/visual-permissions',
+        __DIR__ . '/../Fixtures/Extensions/module_tree',
+    ];
 
     protected function setUp(): void
     {
@@ -39,6 +42,20 @@ final class AllowModulesControllerTest extends FunctionalTestCase
 
         self::assertSame(204, $response->getStatusCode());
         self::assertSame(['about'], $this->get(BackendGroups::class)->listOf(10, Scope::Modules));
+    }
+
+    #[Test]
+    public function allowsTheParentOfAModuleBelowTheMenuWithIt(): void
+    {
+        $this->get(AllowModulesController::class)->write($this->asked([
+            'group' => 10,
+            'operations' => [['module' => 'module_tree_child', 'allow' => true]],
+        ]));
+
+        self::assertEqualsCanonicalizing(
+            ['web_layout', 'module_tree_child', 'module_tree_parent'],
+            $this->get(BackendGroups::class)->listOf(10, Scope::Modules),
+        );
     }
 
     #[Test]
