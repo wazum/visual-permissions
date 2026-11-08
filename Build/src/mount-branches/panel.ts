@@ -206,7 +206,7 @@ export function paintMounts(
         event.preventDefault()
         addPicked()
       })
-      form.addEventListener('input', () => { additions.ready(validateNames(), true) })
+      form.addEventListener('input', () => { additions.ready(validateNames(), true, true) })
 
       pick.eyebrow.textContent = own('name')
       pick.sentence.textContent = own('nameFor')

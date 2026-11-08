@@ -3,3 +3,19 @@
   cursor: not-allowed;
   pointer-events: auto;
 }
+
+// A hint to read rather than a cap to press, in the button's own ink so it holds on a
+// pressed button too: core's cap is black on black there, in a monospace face that
+// leaves ⌘⇧ no air at this size.
+@mixin key-hint {
+  margin-inline-start: .5em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  color: inherit;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .04em;
+}

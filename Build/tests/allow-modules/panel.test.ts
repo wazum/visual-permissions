@@ -92,6 +92,7 @@ const carrier = (): void => {
     'allowModules.marked.one': '%1$s of %2$s module marked to remove',
     'allowModules.marked.many': '%1$s of %2$s modules marked to remove',
     'platform.from': 'from a subgroup',
+    'platform.back': 'Back',
     'platform.cancel': 'Cancel',
     'platform.doAllow': 'Allow',
     'platform.doRemove': 'Remove',
@@ -140,6 +141,7 @@ describe('the module panel the group sees', () => {
     localStorage.clear()
     forget()
     forgetNotices()
+    TYPO3.settings.visualPermissions = {}
     deactivate()
     selectGroup(7)
     listening = new AbortController()
@@ -652,6 +654,39 @@ describe('the module panel the group sees', () => {
     const marks = document.querySelectorAll(`.${classes.allowed} .modulemenu-action-active, .${classes.allowed} [aria-current]`)
 
     expect(marks).toHaveLength(0)
+  })
+
+  it('offers the way back, with its key, while nothing waits on the assign side', async () => {
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+
+    await armed()
+
+    expect(inPick(`.${classes.faceCancel}`)?.firstChild?.textContent).toBe('Back')
+    expect(inPick(`.${classes.faceCancel} kbd`)?.textContent).toBe('Esc')
+  })
+
+  it('leaves the key off the way back where keys stay off the buttons', async () => {
+    menu()
+    carrier()
+    TYPO3.settings.visualPermissions = { keysOnButtons: false }
+    initialise(document, listening.signal)
+
+    await armed()
+
+    expect(inPick(`.${classes.faceCancel}`)?.textContent).toBe('Back')
+  })
+
+  it('offers to cancel once something waits on the assign side', async () => {
+    menu()
+    carrier()
+    initialise(document, listening.signal)
+
+    await armed()
+    inPick('[data-modulemenu-identifier="records"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+    expect(inPick(`.${classes.faceCancel}`)?.textContent).toBe('Cancel')
   })
 
   it('says what each face will do, not that something is applied', async () => {
@@ -1322,18 +1357,17 @@ describe('the module panel the group sees', () => {
     initialise(document, listening.signal)
 
     await armed()
-    inPreview('button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
-    inPick('[data-modulemenu-identifier="records"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    inPreview('[data-modulemenu-identifier="web_layout"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     cancelNextPassword()
 
-    inPick(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    inPreview(`.${classes.faceApply}`)?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
 
     await vi.waitFor(() => {
       expect(sent).toHaveLength(1)
     })
     await vi.advanceTimersByTimeAsync(20)
 
-    expect(inPick(`.${classes.faceFoot} .${classes.faceCounted}`)?.textContent).toBe('')
+    expect(inPreview(`.${classes.faceFoot} .${classes.faceCounted}`)?.textContent).toBe('1 of 2 modules marked to remove')
   })
 
   it('turns one card, however often the panel is painted', async () => {

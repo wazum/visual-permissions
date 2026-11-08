@@ -439,6 +439,10 @@
                 <source>Page mounts</source>
                 <target>Seitenfreigaben</target>
             </trans-unit>
+            <trans-unit id="platform.back" resname="platform.back" approved="yes">
+                <source>Back</source>
+                <target>Zurück</target>
+            </trans-unit>
             <trans-unit id="platform.cancel" resname="platform.cancel" approved="yes">
                 <source>Cancel</source>
                 <target>Abbrechen</target>

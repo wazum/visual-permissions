@@ -663,6 +663,24 @@ describe('the file mounts panel', () => {
     document.querySelector<HTMLElement>(`.${classes.facePick} .${classes.faceCancel}`)?.click()
   })
 
+  it('offers to cancel while a picked folder waits for its name', async () => {
+    await armed()
+    document.querySelector<HTMLElement>(`.${classes.facePreview} .${classes.faceBar} button`)?.click()
+    pickInTree('1%3A%2Fpress%2F')
+    document.querySelector<HTMLElement>(`.${classes.facePick} .${classes.faceApply}`)?.click()
+    await quiet()
+
+    const field = document.querySelector<HTMLInputElement>(`.${classes.naming} input`)
+    if (field !== null) {
+      field.value = ' '
+      field.dispatchEvent(new Event('input', { bubbles: true }))
+    }
+
+    expect(document.querySelector(`.${classes.facePick} .${classes.faceCancel}`)?.textContent).toBe('Cancel')
+
+    document.querySelector<HTMLElement>(`.${classes.facePick} .${classes.faceCancel}`)?.click()
+  })
+
   it('refuses a folder whose name was cleared', async () => {
     await armed()
     document.querySelector<HTMLElement>(`.${classes.facePreview} .${classes.faceBar} button`)?.click()

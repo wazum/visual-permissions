@@ -130,6 +130,10 @@
     flex: 1;
   }
 
+  kbd {
+    @include buttons.key-hint;
+  }
+
   .btn:disabled {
     @include buttons.cannot-be-pressed;
   }

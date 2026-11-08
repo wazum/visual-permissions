@@ -330,6 +330,9 @@
             <trans-unit id="pickAnArea.pageMounts" resname="pickAnArea.pageMounts">
                 <source>Page mounts</source>
             </trans-unit>
+            <trans-unit id="platform.back" resname="platform.back">
+                <source>Back</source>
+            </trans-unit>
             <trans-unit id="platform.cancel" resname="platform.cancel">
                 <source>Cancel</source>
             </trans-unit>
