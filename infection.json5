@@ -15,6 +15,7 @@
             'Authorization/AdminAccess.php',
             'BackendGroups/BackendGroups.php',
             'BackendGroups/GroupCatalogue.php',
+            'BackendGroups/GroupCatalogueController.php',
             'Compatibility',
             'Configuration/InlineSettings.php',
             'Configuration/Settings.php',
