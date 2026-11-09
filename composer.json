@@ -44,6 +44,7 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "visual_permissions",
+            "version": "0.1.1",
             "Package": {
                 "providesPackages": {}
             }

@@ -36,6 +36,15 @@ jobs:
             exit 1
           fi
 
+      - name: Assert composer.json matches the tag
+        run: |
+          declared=$(jq -r '.extra["typo3/cms"].version' composer.json)
+          tagged="${GITHUB_REF_NAME#v}"
+          if [ "${declared}" != "${tagged}" ]; then
+            echo "composer.json says ${declared}, tag says ${tagged}"
+            exit 1
+          fi
+
       # The release says what the changelog says for this version, so pushing the
       # tag is the whole release procedure.
       - name: Take the release notes from the changelog

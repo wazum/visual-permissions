@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-12
+
+### Fixed
+
+- TYPO3 14.3 no longer reports the extension's `ext_emconf.php` as deprecated: `composer.json`
+  declares the version again.
+
 ## [0.1.0] - 2026-10-12
 
 The first release. Pick a backend group in the toolbar and switch the permissions on: the
@@ -42,5 +49,6 @@ may do there, and you change it on the same screen. The extension is alpha, and 
   with a message.
 - English and German labels, TYPO3 13.4 and 14.3, PHP 8.2 and up.
 
-[Unreleased]: https://github.com/wazum/visual-permissions/compare/v0.1.0...main
+[Unreleased]: https://github.com/wazum/visual-permissions/compare/v0.1.1...main
+[0.1.1]: https://github.com/wazum/visual-permissions/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/wazum/visual-permissions/releases/tag/v0.1.0

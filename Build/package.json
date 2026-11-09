@@ -1,6 +1,6 @@
 {
   "name": "@wazum/visual-permissions",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Edit TYPO3 backend group permissions directly on the relevant screens.",
   "private": true,
   "type": "module",
