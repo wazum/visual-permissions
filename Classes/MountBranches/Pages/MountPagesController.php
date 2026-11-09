@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wazum\VisualPermissions\MountBranches\Pages;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use Wazum\VisualPermissions\Authorization\Scope;
 use Wazum\VisualPermissions\Write\GroupWriteController;
 
@@ -31,6 +32,10 @@ final readonly class MountPagesController extends GroupWriteController
 
             $mount = filter_var($operation['mount'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
             if (null === $mount) {
+                return null;
+            }
+
+            if ($mount && null === BackendUtility::getRecord('pages', $page, 'uid')) {
                 return null;
             }
 

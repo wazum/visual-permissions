@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Wazum\VisualPermissions\AllowFields\AllowFieldsController;
 use Wazum\VisualPermissions\AllowModules\AllowModulesController;
@@ -188,6 +189,8 @@ final class GroupWriteControllerTest extends FunctionalTestCase
 
     private function arrange(string $fixture): void
     {
+        GeneralUtility::mkdir_deep($this->instancePath . '/fileadmin/archive/');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/file_storage.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/' . $fixture . '.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->setUpBackendUser(1);
