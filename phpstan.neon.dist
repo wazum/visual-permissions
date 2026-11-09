@@ -32,6 +32,14 @@ parameters:
                 - Tests/Functional/Surfaces/Toolbar/VisualPermissionsToolbarItemTest.php
                 - Tests/Functional/ViewAsUser/LeaveUserViewTest.php
             reportUnmatched: false
+        # 14.3 checks a local URL against the request it is given; 13.4 takes none
+        -
+            identifier: arguments.count
+            message: '#GeneralUtility::sanitizeLocalUrl\(\) invoked with 2 parameters, 1 required#'
+            paths:
+                - Classes/Surfaces/RecordForm/OpenDocumentController.php
+                - Classes/ViewAsUser/SwitchUserController.php
+            reportUnmatched: false
         # Calls the API of both majors; each analysis sees one of the two methods missing
         -
             identifier: method.notFound

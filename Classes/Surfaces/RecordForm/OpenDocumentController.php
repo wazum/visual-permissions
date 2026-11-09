@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final readonly class OpenDocumentController
 {
@@ -31,8 +32,7 @@ final readonly class OpenDocumentController
 
         $url = $this->uriBuilder->buildUriFromRoute('record_edit', [
             'edit' => [$table => \array_fill_keys(\explode(',', $uids), 'edit')],
-            // returnUrl must be a single leading slash; no host or scheme allowed
-            'returnUrl' => 1 === \preg_match('#^/[^/\\\\]#', $wayBack) ? $wayBack : '',
+            'returnUrl' => GeneralUtility::sanitizeLocalUrl($wayBack, $request),
         ]);
 
         return new JsonResponse(['url' => (string) $url]);

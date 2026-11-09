@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
 use SavinMikhail\AnnotateThrowsRector\AnnotateThrowsRector;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
@@ -35,6 +36,11 @@ return RectorConfig::configure()
         AnnotateThrowsRector::class => [
             __DIR__ . '/Configuration',
             __DIR__ . '/Tests',
+        ],
+        // 14.3 checks a local URL against the request it is given; 13.4 takes none
+        RemoveExtraParametersRector::class => [
+            __DIR__ . '/Classes/Surfaces/RecordForm/OpenDocumentController.php',
+            __DIR__ . '/Classes/ViewAsUser/SwitchUserController.php',
         ],
     ])
     ->withPhpSets(php82: true)

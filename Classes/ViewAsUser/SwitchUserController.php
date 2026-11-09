@@ -14,6 +14,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final readonly class SwitchUserController
 {
@@ -64,16 +65,14 @@ final readonly class SwitchUserController
         $params = \is_array($body) ? $body : [];
         $screen = \is_string($params['screen'] ?? null) ? $params['screen'] : '';
 
-        return new RedirectResponse($this->screenOrBackend($screen), 303);
+        return new RedirectResponse($this->screenOrBackend($screen, $request), 303);
     }
 
     /**
      * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    private function screenOrBackend(string $screen): string
+    private function screenOrBackend(string $screen, ServerRequestInterface $request): string
     {
-        return 1 === \preg_match('#^/[^/\\\\]#', $screen)
-            ? $screen
-            : (string) $this->uriBuilder->buildUriFromRoute('main');
+        return GeneralUtility::sanitizeLocalUrl($screen, $request) ?: (string) $this->uriBuilder->buildUriFromRoute('main');
     }
 }
