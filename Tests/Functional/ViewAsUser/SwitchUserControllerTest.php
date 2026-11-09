@@ -6,6 +6,8 @@ namespace Wazum\VisualPermissions\Tests\Functional\ViewAsUser;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Wazum\VisualPermissions\ViewAsUser\SwitchUserController;
 
@@ -68,6 +70,25 @@ final class SwitchUserControllerTest extends FunctionalTestCase
         $this->get(SwitchUserController::class)->switchUser($this->asked(['targetUser' => 2]));
 
         self::assertSame(1, $backendUser->getOriginalUserIdWhenInSwitchUserMode());
+    }
+
+    #[Test]
+    public function tellsTheAdminWhenTheUserCouldNotBeViewed(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/be_users.csv');
+        $backendUser = $this->setUpBackendUser(1);
+
+        $response = $this->get(SwitchUserController::class)->switchUser($this->asked([
+            'targetUser' => 4,
+            'screen' => '/typo3/module/content/records?id=3',
+        ]));
+
+        self::assertSame('/typo3/module/content/records?id=3', $response->getHeaderLine('location'));
+        self::assertNull($backendUser->getOriginalUserIdWhenInSwitchUserMode());
+        $messages = $this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->getAllMessages();
+        self::assertCount(1, $messages);
+        self::assertSame('The backend could not switch to this user', $messages[0]->getMessage());
+        self::assertSame(ContextualFeedbackSeverity::ERROR, $messages[0]->getSeverity());
     }
 
     /**
