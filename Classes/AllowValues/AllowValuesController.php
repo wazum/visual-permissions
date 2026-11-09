@@ -6,6 +6,7 @@ namespace Wazum\VisualPermissions\AllowValues;
 
 use Wazum\VisualPermissions\Authorization\AllowOperations;
 use Wazum\VisualPermissions\Authorization\Scope;
+use Wazum\VisualPermissions\Surfaces\RecordForm\ValueChoices;
 use Wazum\VisualPermissions\Write\GroupWriteController;
 
 /**

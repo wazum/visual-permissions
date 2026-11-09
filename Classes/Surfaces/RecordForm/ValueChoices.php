@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wazum\VisualPermissions\AllowValues;
+namespace Wazum\VisualPermissions\Surfaces\RecordForm;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 
