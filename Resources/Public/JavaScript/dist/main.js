@@ -2939,8 +2939,8 @@ function Ds(e, t) {
 }
 function Bs(e) {
   pr({
-    shut: "[data-object-id]:has(.panel-button.collapsed)",
-    opener: ".panel-button"
+    shut: "[data-object-id]:has(> .panel-heading .panel-button.collapsed)",
+    opener: ":scope > .panel-heading .panel-button"
   }, e);
 }
 function be(e, t) {
