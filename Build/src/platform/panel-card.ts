@@ -211,8 +211,8 @@ export function counted(key: string, count: number, ...values: (string | number)
 export function said(pattern: string, ...values: (string | number)[]): string {
   return values.reduce<string>(
     (words, value, place) => words
-      .replace(`%${String(place + 1)}$s`, String(value))
-      .replace('%s', String(value)),
+      .replace(`%${String(place + 1)}$s`, () => String(value))
+      .replace('%s', () => String(value)),
     pattern,
   )
 }
