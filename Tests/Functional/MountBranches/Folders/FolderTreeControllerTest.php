@@ -42,6 +42,18 @@ final class FolderTreeControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function leavesAMountOnAStorageThatIsNotThereOutOfTheTree(): void
+    {
+        $this->arrange();
+        $this->getConnectionPool()->getConnectionForTable('sys_filemounts')
+            ->update('sys_filemounts', ['identifier' => '9:/press/'], ['uid' => 2]);
+
+        $response = $this->get(FolderTreeController::class)->tree($this->asked(['group' => 20]));
+
+        self::assertSame(['1:/', '1:/campaign/'], $this->foldersIn($response->getBody()->__toString()));
+    }
+
+    #[Test]
     public function standsEachFolderAtTheDepthOfItsPlace(): void
     {
         $this->arrange();
@@ -77,6 +89,19 @@ final class FolderTreeControllerTest extends FunctionalTestCase
             ->tree($this->asked(['parent' => rawurlencode('1:/campaign/'), 'depth' => 1]));
 
         self::assertSame(['1:/campaign/spring/'], $this->foldersIn($response->getBody()->__toString()));
+    }
+
+    #[Test]
+    public function reportsNothingInsideAFolderThatIsNotThere(): void
+    {
+        $this->arrange();
+
+        foreach (['1:/nowhere/', '9:/campaign/'] as $folder) {
+            $response = $this->get(FolderTreeController::class)
+                ->tree($this->asked(['parent' => rawurlencode($folder), 'depth' => 1]));
+
+            self::assertSame(404, $response->getStatusCode(), $folder);
+        }
     }
 
     #[Test]
