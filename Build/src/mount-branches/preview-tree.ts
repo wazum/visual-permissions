@@ -1,7 +1,9 @@
 import AjaxRequest from '@typo3/core/ajax/ajax-request.js'
+import Notification from '@typo3/backend/notification.js'
 import type { PageTree, PreparedNode } from '@typo3/backend/tree/page-tree.js'
 import type { Tree, TreeNode } from '@typo3/backend/tree/tree.js'
 import { classes, elements } from '../platform/contract.js'
+import { labelOf } from '../platform/labels.js'
 import {
   actionRow,
   flash,
@@ -13,7 +15,7 @@ import {
   pickedIn,
   unseenIds,
 } from './marks.js'
-import type { Kind } from './panel.js'
+import type { Kind, TreeConfiguration } from './panel.js'
 
 // Stryker disable next-line StringLiteral: rooted always names a group and its pages, so no seed matches it
 let builtFor = ''
@@ -50,7 +52,14 @@ export async function showBranches(
     return
   }
 
-  const configuration = await kind.rootedAt(groupId)
+  let configuration: TreeConfiguration
+  try {
+    configuration = await kind.rootedAt(groupId)
+  } catch {
+    Notification.error(labelOf('platform.notRead'))
+
+    return
+  }
 
   const tree = doc.createElement(ours)
 

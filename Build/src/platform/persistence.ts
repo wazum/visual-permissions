@@ -19,7 +19,7 @@ export function keep(key: string, value: unknown): Promise<unknown> {
   })
   inFlight = write.catch(() => undefined)
 
-  return write
+  return inFlight
 }
 
 // Once every setting written so far has reached the server

@@ -9,6 +9,7 @@ import {
   forget,
   holdNextRead,
   holdNextWrite,
+  refuseNextRead,
   refuseNextWrite,
   sendNextWriteToLogin,
 } from '../__mocks__/typo3-ajax-request.js'
@@ -38,6 +39,12 @@ describe('the changes the panels ask the backend for', () => {
       '/typo3/ajax/visual_permissions_open_document'
       + '?table=pages&uids=3%2C5&returnUrl=%2Ftypo3%2Fmodule%2Fweb%2Flayout',
     ])
+  })
+
+  it('names no document URL when the backend could not answer', async () => {
+    refuseNextRead()
+
+    await expect(documentUrl('pages:3', '/typo3/module/web/layout')).resolves.toBe('')
   })
 
   // The other scopes ask about the group alone, not tables
