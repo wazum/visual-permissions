@@ -1378,7 +1378,7 @@ describe('the module panel the group sees', () => {
     await armed()
     const first = document.querySelector(`.${classes.panelCard}`)
 
-    selectGroup(7)
+    emit('permissions-written', {})
     await vi.advanceTimersByTimeAsync(20)
 
     expect(document.querySelectorAll(`.${classes.panelCard}`)).toHaveLength(1)
@@ -1573,7 +1573,7 @@ describe('the module panel the group sees', () => {
     await armed()
     const card = document.querySelector(`.${classes.panelCard}`)
 
-    selectGroup(7)
+    emit('permissions-written', {})
     await vi.waitFor(() => {
       expect(sent).toHaveLength(0)
     })
@@ -1600,7 +1600,7 @@ describe('the module panel the group sees', () => {
     const replaceStage = vi.spyOn(stage, 'replaceChildren')
     const appendStage = vi.spyOn(card, 'append')
 
-    selectGroup(7)
+    emit('permissions-written', {})
     await vi.waitFor(() => {
       expect(document.querySelector(`.${classes.facePreview}`)).not.toBe(face)
     })
@@ -1618,7 +1618,7 @@ describe('the module panel the group sees', () => {
     const coin = document.querySelector(`.${classes.coin}`)
     const face = document.querySelector(`.${classes.facePreview}`)
 
-    selectGroup(7)
+    emit('permissions-written', {})
     await vi.waitFor(() => {
       expect(document.querySelector(`.${classes.facePreview}`)).not.toBe(face)
     })

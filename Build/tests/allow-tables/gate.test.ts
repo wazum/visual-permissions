@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { emit, on } from '#src/platform/bus.js'
 import { formReady } from '#src/surfaces/record-form/form.js'
 import { attributes, classes } from '#src/platform/contract.js'
-import { activate, deactivate, pickArea, selectGroup, turnTo } from '#src/platform/session.js'
+import { activate, deactivate, pickArea, selectGroup, showControls, turnTo } from '#src/platform/session.js'
 import { initialise } from '#src/allow-tables/gate.js'
 import { pickFieldsToGive } from '../platform/session-fixture.js'
 import { initialise as lockForm } from '#src/surfaces/record-form/lock.js'
@@ -439,6 +439,43 @@ describe('the gate a record stands behind while its table is not allowed', () =>
     })
 
     expect(document.querySelectorAll(`.${classes.tableLevels}`)).toHaveLength(1)
+  })
+
+  it('keeps the band standing until the fresh answer is in', async () => {
+    recordOf('sys_file_reference:title')
+    initialise(listening.signal)
+    pickFieldsToGive()
+    formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
+    await vi.waitFor(() => {
+      expect(gates()).toStrictEqual([''])
+    })
+
+    const release = holdNextRead()
+    emit('permissions-written', {})
+    await new Promise(settled => { setTimeout(settled, 0) })
+
+    expect(gates()).toStrictEqual([''])
+
+    release()
+    await new Promise(settled => { setTimeout(settled, 0) })
+
+    expect(gates()).toStrictEqual([''])
+  })
+
+  it('asks nothing again when the controls are shown', async () => {
+    recordOf('sys_file_reference:title')
+    initialise(listening.signal)
+    pickFieldsToGive()
+    formReady({ doc: document, fields: [...document.querySelectorAll(`[${attributes.token}]`)] })
+    await vi.waitFor(() => {
+      expect(gates()).toStrictEqual([''])
+    })
+    const read = asked.length
+
+    showControls()
+    await new Promise(settled => { setTimeout(settled, 0) })
+
+    expect(asked).toHaveLength(read)
   })
 
   // There is nothing else on this form to decide alongside it
