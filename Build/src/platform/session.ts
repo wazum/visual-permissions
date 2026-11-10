@@ -123,13 +123,14 @@ function restore(): SessionState {
     return { open: false, active: false, groupId: null, area: firstArea, picked: firstArea, face: 'preview' }
   }
 
-  const groupId = Number(session.groupId)
+  const stored = Number(session.groupId)
+  const groupId = Number.isInteger(stored) && stored > 0 ? stored : null
   const area = typeof session.area === 'string' && session.area !== 'null' ? session.area : firstArea
 
   return {
     open: String(session.open) === 'true',
-    active: String(session.active) === 'true',
-    groupId: Number.isInteger(groupId) && groupId > 0 ? groupId : null,
+    active: String(session.active) === 'true' && groupId !== null,
+    groupId,
     area,
     picked: area,
     face: 'preview',

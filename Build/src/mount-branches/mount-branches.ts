@@ -17,7 +17,9 @@ export function initialise(doc: Document, signal: AbortSignal): void {
     refusedFor = null
     const { active, groupId, area } = getState()
     const kind = kinds[area]
-    if (!active || groupId === null || kind === undefined) {
+    // Stryker disable next-line ConditionalExpression: this only narrows the type; the mode is never on without a group
+    const nobody = groupId === null
+    if (!active || nobody || kind === undefined) {
       latest.drop()
       restoreTree(doc)
 

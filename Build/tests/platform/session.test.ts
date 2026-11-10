@@ -224,6 +224,15 @@ describe('session', () => {
     expect(fresh.getState().active).toBe(false)
   })
 
+  it('starts with the mode off when the stored session says on but names no group', async () => {
+    prime({ vperm: { session: { version: '1', open: 'true', active: 'true', groupId: 'null', area: 'fields' } } })
+
+    vi.resetModules()
+    const fresh = await import('#src/platform/session.js')
+
+    expect(fresh.getState().active).toBe(false)
+  })
+
   it('refuses to show permissions for a stored group of none', async () => {
     prime({ vperm: { session: { version: '1', open: 'true', active: 'false', groupId: '0', area: 'modules' } } })
 
