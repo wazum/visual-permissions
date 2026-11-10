@@ -14,8 +14,6 @@ $say = static fn(string $line): int => print $line . PHP_EOL;
 copy($instance . '/settings.php', $root . '/config/system/settings.php');
 copy($instance . '/additional.php', $root . '/config/system/additional.php');
 
-$settings = require $instance . '/settings.php';
-$encryptionKey = $settings['SYS']['encryptionKey'];
 $seed = $root . '/var/e2e/seed.sqlite';
 
 // unused $password is required by the installer; do not remove
@@ -42,9 +40,14 @@ if (0 !== $failed) {
     exit(1);
 }
 
-$installedDatabase = (require $root . '/config/system/settings.php')['DB']['Connections']['Default']['path'];
+$installed = require $root . '/config/system/settings.php';
+$installedDatabase = $installed['DB']['Connections']['Default']['path'];
 
-copy($instance . '/settings.php', $root . '/config/system/settings.php');
+// The installer's key is random and stays; the instance file adds the rest
+$encryptionKey = $installed['SYS']['encryptionKey'];
+$settings = require $instance . '/settings.php';
+$settings['SYS']['encryptionKey'] = $encryptionKey;
+file_put_contents($root . '/config/system/settings.php', "<?php\n\nreturn " . var_export($settings, true) . ";\n");
 
 // Core offers language views only with a second language
 @mkdir($root . '/config/sites/visual-permissions', 0o775, true);
@@ -111,7 +114,7 @@ $database->exec("UPDATE be_users SET uc = '" . serialize([]) . "'");
 // Core hashes the stored id and signs the cookie differently per major; it does both here
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $encryptionKey;
 $GLOBALS['EXEC_TIME'] = time();
-$plainSessionId = 'e2eseedsession0000000000000000000000000000000000000000000000e2e0';
+$plainSessionId = bin2hex(random_bytes(32));
 
 $database->prepare('INSERT INTO be_sessions (ses_id, ses_iplock, ses_userid, ses_tstamp, ses_data) VALUES (?, ?, ?, ?, ?)')
     ->execute([
