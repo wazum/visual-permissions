@@ -39,11 +39,8 @@ const recordWithAFile = async (page: Page, filesGranted = true): Promise<FrameLo
     return form
   }
 
-  // The first press asks for the password and writes nothing; the second one writes
-  await expect(async () => {
-    await verifyIfAsked(page, () => readAndWrite.click({ timeout: 2000 }))
-    await expect(readAndWrite).toHaveAttribute('aria-checked', 'true', { timeout: 3000 })
-  }).toPass({ timeout: 20000 })
+  await verifyIfAsked(page, () => readAndWrite.click())
+  await expect(readAndWrite).toHaveAttribute('aria-checked', 'true')
 
   return form
 }

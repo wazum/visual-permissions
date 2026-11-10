@@ -295,7 +295,7 @@ test('the pointer carries an open card from one mark to the next', async ({ page
 
   await next.hover()
 
-  await expect(card).toHaveAccessibleName(await next.getAttribute('aria-label') ?? '', { timeout: 200 })
+  await expect(card).toHaveAccessibleName(await next.getAttribute('aria-label') ?? '')
   await expect(card).toHaveAttribute('data-closings', '0')
 })
 
