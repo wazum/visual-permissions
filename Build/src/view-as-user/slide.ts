@@ -39,8 +39,7 @@ export function slideAway(doc: Document, way: Way, then: () => void): void {
   writeNote(wayKey, way)
 
   doc.body.setAttribute(attributes.leaving, way)
-  // Stryker disable next-line ObjectLiteral,BooleanLiteral: go is guarded above, so hearing it twice still ends in one switch
-  doc.body.addEventListener('animationend', go, { once: true })
+  doc.body.addEventListener('animationend', ended => { if (ended.target === doc.body) go() })
   window.setTimeout(go, slideTimeout)
 }
 
@@ -90,8 +89,7 @@ export function slideIn(doc: Document): void {
     unwrap()
   }
 
-  // Stryker disable next-line ObjectLiteral,BooleanLiteral: unwrap is guarded above, so hearing it twice leaves the page as it stands
-  doc.body.addEventListener('animationend', settled, { once: true })
+  doc.body.addEventListener('animationend', ended => { if (ended.target === doc.body) settled() })
   window.setTimeout(settled, slideTimeout)
 
   let loading = 0
