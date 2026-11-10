@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import '#src/platform/picker/picker.js'
-import { classes, elements } from '#src/platform/contract.js'
+import { attributes, classes, elements } from '#src/platform/contract.js'
 import type { PickerEntry, PickerWords } from '#src/platform/picker/picker.js'
 import { activate, getState, selectGroup } from '#src/platform/session.js'
 import { chosen } from '../../__mocks__/typo3-module-state-storage.js'
@@ -116,7 +116,7 @@ describe('the picker', () => {
     link?.click()
 
     expect(new URL(link?.href ?? '').searchParams.get('returnUrl')).toBe('/typo3/module/content/records?token=2&id=3')
-    expect(element.matches(':popover-open') || element.hasAttribute('data-open')).toBe(false)
+    expect(element.matches(':popover-open') || element.hasAttribute(attributes.open)).toBe(false)
   })
 
   it('switches editing permissions off on the way to the new one', async () => {
@@ -339,7 +339,7 @@ describe('the picker', () => {
     press(element, 'Escape')
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(false)
+    expect(element.hasAttribute(attributes.open)).toBe(false)
     expect(document.activeElement).toBe(trigger)
   })
 
@@ -352,7 +352,7 @@ describe('the picker', () => {
     open(element, trigger)
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(false)
+    expect(element.hasAttribute(attributes.open)).toBe(false)
   })
 
   it('keeps what was typed for the next time it opens', async () => {
@@ -410,7 +410,7 @@ describe('the picker', () => {
     document.body.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(false)
+    expect(element.hasAttribute(attributes.open)).toBe(false)
   })
 
   it('opens beside a frame it is not allowed to read', async () => {
@@ -423,12 +423,12 @@ describe('the picker', () => {
     openedBy(element)
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(true)
+    expect(element.hasAttribute(attributes.open)).toBe(true)
 
     document.body.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(false)
+    expect(element.hasAttribute(attributes.open)).toBe(false)
     frame.remove()
   })
 
@@ -441,7 +441,7 @@ describe('the picker', () => {
     rows(element)[0]?.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(true)
+    expect(element.hasAttribute(attributes.open)).toBe(true)
   })
 
   it('takes a press in its stride before it has ever been opened', async () => {
@@ -451,7 +451,7 @@ describe('the picker', () => {
     document.body.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(false)
+    expect(element.hasAttribute(attributes.open)).toBe(false)
     expect(rows(element)).toHaveLength(2)
   })
 
@@ -464,12 +464,12 @@ describe('the picker', () => {
     field(element).dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(true)
+    expect(element.hasAttribute(attributes.open)).toBe(true)
 
     trigger.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(true)
+    expect(element.hasAttribute(attributes.open)).toBe(true)
   })
 
   it('closes when the press lands in a frame the page holds', async () => {
@@ -483,7 +483,7 @@ describe('the picker', () => {
     frame.contentDocument?.body.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(false)
+    expect(element.hasAttribute(attributes.open)).toBe(false)
   })
 
   it('closes on escape wherever the key was pressed', async () => {
@@ -499,7 +499,7 @@ describe('the picker', () => {
     )
     await settled(element)
 
-    expect(element.hasAttribute('data-open')).toBe(false)
+    expect(element.hasAttribute(attributes.open)).toBe(false)
     expect(document.activeElement).toBe(trigger)
   })
 
@@ -522,7 +522,7 @@ describe('the picker', () => {
 
     expect(trigger.getAttribute('aria-expanded')).toBe('true')
 
-    element.removeAttribute('data-open')
+    element.removeAttribute(attributes.open)
     element.dispatchEvent(new Event('toggle'))
     await settled(element)
 
@@ -655,7 +655,7 @@ describe('the picker', () => {
 
     await type(element, 'bernd wern 501')
 
-    expect(rows(element).map(row => row.dataset['id'])).toEqual(['1'])
+    expect(rows(element).map(row => row.lastElementChild?.textContent.trim())).toEqual(['tu10000501'])
   })
 
   it('marks letters that stand apart one by one', async () => {
@@ -1210,7 +1210,7 @@ describe('the picker', () => {
     await settled(element)
 
     expect(field(element).value).toBe('')
-    expect(element.hasAttribute('data-open')).toBe(true)
+    expect(element.hasAttribute(attributes.open)).toBe(true)
   })
 
   it('says in the footer which key closes it', async () => {

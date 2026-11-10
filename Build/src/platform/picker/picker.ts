@@ -108,7 +108,7 @@ export class Picker extends LitElement {
   }
 
   get isOpen(): boolean {
-    return this.hasAttribute('data-open') || this.matches(':popover-open')
+    return this.hasAttribute(attributes.open) || this.matches(':popover-open')
   }
 
   // Matched on what names an entry, never on the note, so a word standing in every note
@@ -212,7 +212,7 @@ export class Picker extends LitElement {
 
           return html`
           ${this.headingBefore(entry, found[index - 1])}
-          <div role="option" id=${this.rowId(index)} data-id=${entry.id}
+          <div role="option" id=${this.rowId(index)}
                aria-selected=${index === this.active}
                @mouseenter=${() => { this.settleOn(index) }}
                @mouseleave=${() => { this.stopSettling() }}
@@ -327,7 +327,7 @@ export class Picker extends LitElement {
         <div role="listbox" tabindex="-1">
           ${shown.detail.map((row, index) => html`
             <div role="option" id=${this.detailId(index)} class=${classes.pickerRow}
-                 data-id=${row.id} aria-selected=${this.inPane && index === this.onDetail}
+                 aria-selected=${this.inPane && index === this.onDetail}
                  style="--vperm-picker-depth: ${String(row.depth)}"
                  @click=${() => { this.takeDetail(row.id) }}>
               ${row.title}

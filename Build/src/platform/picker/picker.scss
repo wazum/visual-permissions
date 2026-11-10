@@ -33,7 +33,7 @@
   flex-direction: column;
 
   &:popover-open,
-  &[data-open] {
+  &[#{contract.$attribute-open}] {
     display: flex;
   }
 

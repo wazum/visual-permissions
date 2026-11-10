@@ -34,6 +34,7 @@ const p = {
   label: "data-vperm-label",
   leaving: "data-vperm-leaving",
   newRecord: "data-vperm-new-record",
+  open: "data-vperm-open",
   outOfReach: "data-vperm-out-of-reach",
   picked: "data-vperm-picked",
   settling: "data-vperm-settling",
@@ -576,7 +577,7 @@ class Qr extends Cr {
     };
   }
   get isOpen() {
-    return this.hasAttribute("data-open") || this.matches(":popover-open");
+    return this.hasAttribute(p.open) || this.matches(":popover-open");
   }
   // Matched on what names an entry, never on the note, so a word standing in every note
   // cannot match everyone.
@@ -636,7 +637,7 @@ class Qr extends Cr {
       const o = Ut(this.query, jt(n))?.at ?? [];
       return R`
           ${this.headingBefore(n, t[r - 1])}
-          <div role="option" id=${this.rowId(r)} data-id=${n.id}
+          <div role="option" id=${this.rowId(r)}
                aria-selected=${r === this.active}
                @mouseenter=${() => {
         this.settleOn(r);
@@ -719,7 +720,7 @@ class Qr extends Cr {
         <div role="listbox" tabindex="-1">
           ${t.detail.map((n, r) => R`
             <div role="option" id=${this.detailId(r)} class=${l.pickerRow}
-                 data-id=${n.id} aria-selected=${this.inPane && r === this.onDetail}
+                 aria-selected=${this.inPane && r === this.onDetail}
                  style="--vperm-picker-depth: ${String(n.depth)}"
                  @click=${() => {
       this.takeDetail(n.id);

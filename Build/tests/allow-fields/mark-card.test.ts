@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { emit } from '#src/platform/bus.js'
-import { verdicts } from '#src/platform/contract.js'
+import { attributes, verdicts } from '#src/platform/contract.js'
 import { activate, deactivate, getState, pickArea, selectGroup, turnTo } from '#src/platform/session.js'
 import { createDraft } from '#src/allow-fields/draft.js'
 import { initialise as pickFields } from '#src/allow-fields/pick.js'
@@ -126,7 +126,7 @@ describe('a field\'s mark', () => {
 
     expect(sent).not.toHaveBeenCalled()
     expect(mark?.getAttribute('aria-controls')).toBe(cardOf().id)
-    expect(cardOf().hasAttribute('data-open')).toBe(true)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(true)
     expect(cardOf().getAttribute('aria-labelledby')).toBe(cardOf().querySelector('h2')?.id)
     expect(cardOf().querySelector('h2')?.textContent).toBe('Not allowed')
     expect(cardOf().querySelector('p')?.textContent).toBe('The group may not edit this field.')
@@ -152,7 +152,7 @@ describe('a field\'s mark', () => {
     show[1]?.click()
 
     expect(getState().groupId).toBe(5)
-    expect(cardOf().hasAttribute('data-open')).toBe(false)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(false)
   })
 
   it('names no group for a field the group allows itself', async () => {
@@ -203,7 +203,7 @@ describe('a field\'s mark', () => {
 
     elsewhere.focus()
 
-    expect(cardOf().hasAttribute('data-open')).toBe(false)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(false)
   })
 
   it('stays open while the keyboard is in the card, and closes once it leaves', async () => {
@@ -214,11 +214,11 @@ describe('a field\'s mark', () => {
     document.body.append(elsewhere)
     markOf('pages:nav_title')?.focus()
     markOf('pages:nav_title')?.click()
-    expect(cardOf().hasAttribute('data-open')).toBe(true)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(true)
 
     elsewhere.focus()
 
-    expect(cardOf().hasAttribute('data-open')).toBe(false)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(false)
   })
 
   it('opens under the pointer after a moment, and lets go a moment after the pointer left', async () => {
@@ -227,7 +227,7 @@ describe('a field\'s mark', () => {
     await vi.waitFor(() => { expect(markOf('pages:title')).not.toBeNull() })
     vi.useFakeTimers()
     const mark = markOf('pages:title')
-    const open = (): boolean => cardOf().hasAttribute('data-open')
+    const open = (): boolean => cardOf().hasAttribute(attributes.open)
 
     mark?.dispatchEvent(new MouseEvent('mouseenter'))
     vi.advanceTimersByTime(349)
@@ -261,10 +261,10 @@ describe('a field\'s mark', () => {
 
     markOf('pages:title')?.dispatchEvent(new MouseEvent('mouseleave'))
     vi.advanceTimersByTime(249)
-    expect(cardOf().hasAttribute('data-open')).toBe(true)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(true)
     vi.advanceTimersByTime(1)
 
-    expect(cardOf().hasAttribute('data-open')).toBe(false)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(false)
     expect(document.activeElement).toBe(elsewhere)
   })
 
@@ -280,7 +280,7 @@ describe('a field\'s mark', () => {
 
     expect(cardOf().querySelector('h2')?.textContent).toBe('Open to all editors')
     vi.advanceTimersByTime(1000)
-    expect(cardOf().hasAttribute('data-open')).toBe(true)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(true)
     expect([markOf('pages:title'), markOf('pages:slug')].map(mark => mark?.getAttribute('aria-expanded')))
       .toStrictEqual(['false', 'true'])
   })

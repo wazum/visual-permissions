@@ -170,7 +170,7 @@ describe('the group picker', () => {
     list.dispatchEvent(new CustomEvent('vperm:detail-picked', { detail: { id: '13' } }))
 
     expect(getState().groupId).toBeNull()
-    expect(list.hasAttribute('data-open')).toBe(false)
+    expect(list.hasAttribute(attributes.open)).toBe(false)
   })
 
   it('lists the groups without a word where the backend published none', async () => {
@@ -305,7 +305,7 @@ describe('the group picker', () => {
     trigger().click()
     await settled()
 
-    expect(picker().hasAttribute('data-open')).toBe(true)
+    expect(picker().hasAttribute(attributes.open)).toBe(true)
   })
 
   it('hangs the picker under the button that opened it', async () => {
