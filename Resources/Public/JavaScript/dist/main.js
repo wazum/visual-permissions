@@ -239,7 +239,11 @@ function he(e) {
 function Ke(e) {
   M = e;
   for (const t of rt)
-    t(M);
+    try {
+      t(M);
+    } catch (n) {
+      console.error(n);
+    }
 }
 function Br() {
   const e = fe.get(Sn);
@@ -1436,7 +1440,7 @@ const Wo = ".module-docheader-buttons .btn-toolbar", Go = (e, t) => {
 function Ko(e, t = Go) {
   let n = null;
   const r = () => {
-    if (n === null || y().active)
+    if (n?.defaultView == null || y().active)
       return;
     const i = new URL(n.URL), s = [...i.searchParams.keys()].filter((a) => a.startsWith("vperm[value]"));
     s.length !== 0 && (s.forEach((a) => {

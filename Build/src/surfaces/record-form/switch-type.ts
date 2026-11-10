@@ -13,7 +13,7 @@ export function initialise(signal: AbortSignal, load: Load = loadInPlace): void 
   let shown: Document | null = null
 
   const loadStored = (): void => {
-    if (shown === null || getState().active) {
+    if (shown?.defaultView == null || getState().active) {
       return
     }
 

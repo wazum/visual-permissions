@@ -6,9 +6,10 @@ import { initialise } from '#src/surfaces/record-form/switch-type.js'
 
 const editUrl = 'https://example.com/typo3/record/edit?token=t&edit%5Btt_content%5D%5B1%5D=edit'
 
-const formAt = (href: string): Document => {
+const formAt = (href: string, view: Window | null = window): Document => {
   const doc = document.implementation.createHTMLDocument()
   Object.defineProperty(doc, 'URL', { value: href })
+  Object.defineProperty(doc, 'defaultView', { value: view })
   doc.body.innerHTML = '<div class="module-docheader-buttons"><div class="btn-toolbar"></div></div>'
 
   return doc
@@ -213,6 +214,18 @@ describe('the type switch', () => {
 
   it('leaves a form that shows the stored type alone when the mode is switched off', () => {
     const doc = formAt(editUrl)
+    const loads = vi.fn()
+    activate()
+    initialise(listening.signal, loads)
+    formReady({ doc, fields: [] })
+
+    deactivate()
+
+    expect(loads).not.toHaveBeenCalled()
+  })
+
+  it('leaves a form the browser has already left alone when the mode is switched off', () => {
+    const doc = formAt(`${editUrl}&vperm%5Bvalue%5D%5Btt_content%5D%5B1%5D%5BCType%5D=textmedia`, null)
     const loads = vi.fn()
     activate()
     initialise(listening.signal, loads)

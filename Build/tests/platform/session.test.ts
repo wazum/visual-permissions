@@ -402,4 +402,21 @@ describe('session', () => {
 
     expect(seen).toEqual([true, false])
   })
+
+  it('tells the other subscribers what the state became when one of them fails', () => {
+    selectGroup(13)
+    const broken = new Error('broken')
+    const reported = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    const seen: boolean[] = []
+    const listening = new AbortController()
+    subscribe(() => { throw broken }, listening.signal)
+    subscribe(state => seen.push(state.active), listening.signal)
+
+    activate()
+    listening.abort()
+
+    expect(seen).toEqual([true])
+    expect(reported).toHaveBeenCalledWith(broken)
+    reported.mockRestore()
+  })
 })
