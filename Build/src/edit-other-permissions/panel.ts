@@ -103,7 +103,14 @@ export function initialise(doc: Document, signal: AbortSignal): void {
 
     void fetchForm(asked).then(rendered => {
       // The reader is owed the group they are looking at, not the one they left
-      if (rendered === null || asked !== shownFor) {
+      if (asked !== shownFor) {
+        return
+      }
+
+      if (rendered === null) {
+        shownFor = null
+        sheet.remove()
+
         return
       }
 

@@ -2676,7 +2676,13 @@ function ws(e, t) {
     }
     const w = v.groupId;
     w !== d && (d = w, c.disabled = !0, s.textContent = oe(e, w) ?? "", ys(w).then((k) => {
-      k === null || w !== d || (r.replaceChildren(e.createRange().createContextualFragment(k.html)), m = w, c.disabled = !1, e.querySelector(`.${l.frame}[${p.area}="fields"]`)?.append(n), new Nr().processItems([...k.scriptItems]));
+      if (w === d) {
+        if (k === null) {
+          d = null, n.remove();
+          return;
+        }
+        r.replaceChildren(e.createRange().createContextualFragment(k.html)), m = w, c.disabled = !1, e.querySelector(`.${l.frame}[${p.area}="fields"]`)?.append(n), new Nr().processItems([...k.scriptItems]);
+      }
     }));
   };
   h(y()), L(h, t);
