@@ -211,6 +211,15 @@ final class AnchorEmittingFieldContainerTest extends FunctionalTestCase
         self::assertStringNotContainsString('vperm-other-kinds', $html);
     }
 
+    #[Test]
+    public function leavesAnEditorsFieldAsCoreDrawsIt(): void
+    {
+        $html = $this->renderField('pages', 1, 'title', [], 2);
+
+        self::assertStringContainsString('form-control', $html);
+        self::assertStringNotContainsString('vperm-anchor', $html);
+    }
+
     /**
      * @return array{title: string, groups: list<array{label: string, values: list<array{value: string, label: string, icon: string}>}>}
      */
