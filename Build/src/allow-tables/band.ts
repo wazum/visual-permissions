@@ -47,6 +47,10 @@ export function drawBand(doc: Document, { groupId, table, called, verdict, reads
     option.disabled = at < floor
     option.title = at < floor ? labelOf('allowTables.inherited') : ''
     option.addEventListener('click', () => {
+      if (at === chosen) {
+        return
+      }
+
       const options = [...switched.querySelectorAll('button')]
       options.forEach(one => { one.disabled = true })
       void writeTable(groupId, table, at >= 1, at >= 2).then(outcome => {
