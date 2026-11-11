@@ -93,6 +93,7 @@ const carrier = (): void => {
     'allowModules.marked.many': '%1$s of %2$s modules marked to remove',
     'platform.from': 'from a subgroup',
     'platform.back': 'Back',
+    'platform.key.escape': 'Esc',
     'platform.cancel': 'Cancel',
     'platform.doAllow': 'Allow',
     'platform.doRemove': 'Remove',

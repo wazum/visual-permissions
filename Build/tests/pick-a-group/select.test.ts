@@ -134,6 +134,7 @@ describe('the group picker', () => {
       'pickAGroup.key.take': 'select',
       'platform.picker.key.close': 'close',
       'platform.picker.key.clear': 'clear',
+      'platform.key.escape': 'Esc',
       'pickAGroup.key.detail': 'detail',
       'platform.picker.empty': 'Nothing matches',
     }
@@ -151,6 +152,7 @@ describe('the group picker', () => {
       take: 'select',
       close: 'close',
       clear: 'clear',
+      escape: 'Esc',
       detail: 'detail',
       empty: 'Nothing matches',
       loading: '',
@@ -182,15 +184,15 @@ describe('the group picker', () => {
     await settled()
 
     expect(handed.placeholder).toBe('')
-    expect(Object.values(handed.words)).toStrictEqual(Array.from({ length: 12 }, () => ''))
+    expect(Object.values(handed.words)).toStrictEqual(Array.from({ length: 13 }, () => ''))
     // The keys are picker's own; everything else is backend's text
-    expect(picker().textContent.split(/\s+/).filter(word => word !== '' && !'↑↓⇥↵esc'.includes(word)))
+    expect(picker().textContent.split(/\s+/).filter(word => word !== '' && !'↑↓⇥↵'.includes(word)))
       .toStrictEqual(['Editors', 'Institute', 'Editors', 'Editors'])
 
     field().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }))
     await settled()
 
-    expect(picker().textContent.split(/\s+/).filter(word => word !== '' && !'↑↓⇥↵esc'.includes(word)))
+    expect(picker().textContent.split(/\s+/).filter(word => word !== '' && !'↑↓⇥↵'.includes(word)))
       .toStrictEqual(['Editors', 'Institute', 'Editors', 'Institute', 'Editors', 'Editors'])
   })
 

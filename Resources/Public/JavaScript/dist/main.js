@@ -431,7 +431,7 @@ function xe(e, t) {
       if (s.textContent = g("platform.back"), TYPO3.settings.visualPermissions?.keysOnButtons === !1)
         return;
       const m = n.createElement("kbd");
-      m.textContent = "Esc", s.append(m);
+      m.textContent = g("platform.key.escape"), s.append(m);
     }
   };
 }
@@ -569,6 +569,7 @@ class Xr extends qr {
       take: "",
       close: "",
       clear: "",
+      escape: "",
       detail: "",
       loading: "",
       failed: "",
@@ -661,7 +662,7 @@ class Xr extends qr {
           <span><kbd>↑</kbd><kbd>↓</kbd> ${this.words.move}</span>
           <span><kbd>⇥</kbd> ${this.words.detail}</span>
           <span><kbd>↵</kbd> ${this.words.take}</span>
-          <span><kbd>esc</kbd> ${this.query === "" ? this.words.close : this.words.clear}</span>
+          <span><kbd>${this.words.escape}</kbd> ${this.query === "" ? this.words.close : this.words.clear}</span>
         </span>
         <span class=${l.pickerTally}>${this.counted()}</span>
       </p>
@@ -838,6 +839,7 @@ function Rn(e, t) {
     move: g("platform.picker.key.move"),
     close: g("platform.picker.key.close"),
     clear: g("platform.picker.key.clear"),
+    escape: g("platform.key.escape"),
     retry: g("platform.picker.retry"),
     empty: g("platform.picker.empty")
   }, n;

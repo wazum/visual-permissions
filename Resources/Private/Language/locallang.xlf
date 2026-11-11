@@ -342,6 +342,9 @@
             <trans-unit id="platform.going" resname="platform.going">
                 <source>%s waiting to be disallowed</source>
             </trans-unit>
+            <trans-unit id="platform.key.escape" resname="platform.key.escape">
+                <source>Esc</source>
+            </trans-unit>
             <trans-unit id="platform.loggedOut" resname="platform.loggedOut">
                 <source>Your login has run out. The change was not saved and is still waiting here.</source>
             </trans-unit>
