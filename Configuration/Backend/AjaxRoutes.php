@@ -18,7 +18,7 @@ use Wazum\VisualPermissions\Surfaces\RecordForm\OpenDocumentController;
 use Wazum\VisualPermissions\ViewAsUser\SwitchUserController;
 use Wazum\VisualPermissions\ViewAsUser\ViewableUsersController;
 
-// Sorted by key. Every route is for administrators, except the two the viewed user calls.
+// Sorted by key. Every route is for administrators, except the one the viewed user calls.
 // A write that changes what others may do asks for the password again, in core's own group
 // for user management: the group fields it writes ask in that group too, and one password
 // has to cover both.
