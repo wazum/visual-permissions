@@ -34,7 +34,7 @@ final class WriteGuard
             return;
         }
 
-        if (PermissionMode::isOn($dataHandler->BE_USER->uc) && !$this->changesOnlyPagePermissions($dataHandler->datamap)) {
+        if (PermissionMode::isOn($dataHandler->BE_USER) && !$this->changesOnlyPagePermissions($dataHandler->datamap)) {
             $dataHandler->datamap = [];
             $this->logRefusal($dataHandler);
         }
@@ -46,7 +46,7 @@ final class WriteGuard
             return;
         }
 
-        if (PermissionMode::isOn($dataHandler->BE_USER->uc)) {
+        if (PermissionMode::isOn($dataHandler->BE_USER)) {
             $dataHandler->cmdmap = [];
             $this->logRefusal($dataHandler);
         }

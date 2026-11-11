@@ -12,7 +12,7 @@ final class RecordActions
 {
     public function __invoke(ModifyRecordListRecordActionsEvent $event): void
     {
-        if (!PermissionMode::isOn($this->getBackendUser()->uc)) {
+        if (!PermissionMode::isOn($this->getBackendUser())) {
             return;
         }
 
