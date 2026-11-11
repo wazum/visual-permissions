@@ -1034,7 +1034,7 @@ function ho(e, t) {
       const v = h.getAttribute(p.token);
       return v === null ? [] : [[h, v]];
     });
-    n = m.length === 0 ? null : { doc: u, fields: m }, o = null, a();
+    n = m.length === 0 ? null : { doc: u, fields: m }, a();
   }, t), J("permissions-written", () => void a(), t);
   let c = null;
   L(({ active: u, groupId: d }) => {
