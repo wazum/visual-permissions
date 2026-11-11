@@ -11,8 +11,8 @@ export interface Events {
 // that nothing declares here, fails the typecheck
 type Unnamed = Exclude<keyof Events, (typeof eventNames)[number]>
 type Undeclared = Exclude<(typeof eventNames)[number], keyof Events>
-// Stryker disable next-line BooleanLiteral: nothing reads it; its type is the assertion, and false fails it
-export const contractHolds: [Unnamed, Undeclared] extends [never, never] ? true : never = true
+type Holds<Check extends true> = Check
+export type ContractHolds = Holds<[Unnamed, Undeclared] extends [never, never] ? true : false>
 
 const dispatched = (event: keyof Events): string => `vperm:${event}`
 
