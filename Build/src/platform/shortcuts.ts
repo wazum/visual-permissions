@@ -10,7 +10,7 @@ export function spelled(key: string): string {
 
 export function bindShortcut(
   key: string,
-  button: Element | null,
+  button: Element,
   act: () => void,
   allowOnEditables = false,
 ): void {
@@ -19,7 +19,7 @@ export function bindShortcut(
     return
   }
 
-  if (button !== null && TYPO3.settings.visualPermissions?.keysOnButtons !== false) {
+  if (TYPO3.settings.visualPermissions?.keysOnButtons !== false) {
     const keys = button.ownerDocument.createElement('kbd')
     keys.textContent = spelled(key)
     button.append(keys)
@@ -28,6 +28,6 @@ export function bindShortcut(
   Hotkeys.register(
     [Hotkeys.normalizedCtrlModifierKey, ModifierKeys.SHIFT, key],
     act,
-    { allowOnEditables, bindElement: button ?? undefined },
+    { allowOnEditables, bindElement: button },
   )
 }
