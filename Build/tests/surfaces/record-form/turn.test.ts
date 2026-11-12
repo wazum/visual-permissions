@@ -12,6 +12,7 @@ describe('turning the record form over', () => {
   beforeEach(() => {
     vi.useFakeTimers()
     document.body.replaceChildren()
+    document.body.removeAttribute('style')
   })
 
   afterEach(() => {
@@ -33,6 +34,16 @@ describe('turning the record form over', () => {
   })
 
   it('shows the other side at once where there is no form to turn', () => {
+    let turned = false
+
+    flipForm(document, () => { turned = true })
+
+    expect(turned).toBe(true)
+  })
+
+  it('shows the other side at once where nothing may move', () => {
+    drawForm()
+    document.body.style.setProperty('--vperm-motion', '0')
     let turned = false
 
     flipForm(document, () => { turned = true })
