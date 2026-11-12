@@ -73,7 +73,7 @@ final readonly class MountFoldersController extends GroupWriteController
     {
         try {
             $this->resources->getFolderObjectFromCombinedIdentifier($folder);
-        } catch (Exception) {
+        } catch (Exception|\InvalidArgumentException) {
             return false;
         }
 

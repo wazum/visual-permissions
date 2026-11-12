@@ -121,6 +121,20 @@ final class MountFoldersControllerTest extends FunctionalTestCase
         self::assertSame('1,2', $this->mountsOf(20));
     }
 
+    #[Test]
+    public function refusesToMountAFolderOnAStorageThatIsNotThere(): void
+    {
+        $this->arrange();
+
+        $response = $this->get(MountFoldersController::class)->write($this->asked([
+            'group' => 20,
+            'operations' => [['folder' => '999:/archive/', 'mount' => true, 'title' => 'Archive']],
+        ]));
+
+        self::assertSame(400, $response->getStatusCode());
+        self::assertSame('1,2', $this->mountsOf(20));
+    }
+
     private function mountsOf(int $groupId): string
     {
         $mounts = $this->getConnectionPool()
