@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wazum\VisualPermissions\Tests\Unit\AllowFields;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Wazum\VisualPermissions\AllowFields\FieldCatalogue;
@@ -58,6 +59,49 @@ final class FieldCatalogueTest extends TestCase
         self::assertSame(
             TargetKind::NeverEditable,
             (new FieldCatalogue())->of('pages')['pages:layout'],
+        );
+    }
+
+    /**
+     * @return array<string, array{array<string, mixed>}>
+     */
+    public static function tablesOnlyAdministratorsEdit(): array
+    {
+        return [
+            'admin only' => [['adminOnly' => true]],
+            'root level' => [['rootLevel' => 1]],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $control
+     */
+    #[Test]
+    #[DataProvider('tablesOnlyAdministratorsEdit')]
+    public function saysAFieldOfATableOnlyAdministratorsEditIsTheirsAlone(array $control): void
+    {
+        $GLOBALS['TCA'] = ['sys_note' => [
+            'ctrl' => $control,
+            'columns' => ['subject' => ['exclude' => true, 'config' => ['type' => 'input']]],
+        ]];
+
+        self::assertSame(
+            TargetKind::AdminOnly,
+            (new FieldCatalogue())->of('sys_note')['sys_note:subject'],
+        );
+    }
+
+    #[Test]
+    public function letsGroupsBeAllowedAFieldOfARootLevelTableThatIgnoresTheRootLevelRestriction(): void
+    {
+        $GLOBALS['TCA'] = ['sys_note' => [
+            'ctrl' => ['rootLevel' => 1, 'security' => ['ignoreRootLevelRestriction' => true]],
+            'columns' => ['subject' => ['exclude' => true, 'config' => ['type' => 'input']]],
+        ]];
+
+        self::assertSame(
+            TargetKind::Allowable,
+            (new FieldCatalogue())->of('sys_note')['sys_note:subject'],
         );
     }
 

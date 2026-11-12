@@ -14,18 +14,31 @@ final readonly class FieldCatalogue
     public function of(string $table): array
     {
         /**
-         * @var array<string, array{columns?: array<string, array{
-         *     exclude?: bool|int,
-         *     displayCond?: mixed,
-         *     config?: array{readOnly?: bool|int}
-         * }>}> $tableConfigurations
+         * @var array<string, array{
+         *     ctrl?: array{
+         *         adminOnly?: bool|int,
+         *         rootLevel?: int,
+         *         security?: array{ignoreRootLevelRestriction?: bool|int}
+         *     },
+         *     columns?: array<string, array{
+         *         exclude?: bool|int,
+         *         displayCond?: mixed,
+         *         config?: array{readOnly?: bool|int}
+         *     }>
+         * }> $tableConfigurations
          */
         $tableConfigurations = $GLOBALS['TCA'];
         $columns = $tableConfigurations[$table]['columns'] ?? [];
+        $control = $tableConfigurations[$table]['ctrl'] ?? [];
+        $forAdministrators = ($control['adminOnly'] ?? false)
+            || (1 === ($control['rootLevel'] ?? null) && !($control['security']['ignoreRootLevelRestriction'] ?? false));
 
         $targets = [];
         foreach ($columns as $fieldName => $configuration) {
-            $targets[$table . ':' . $fieldName] = $this->kindOf($configuration);
+            $kind = $this->kindOf($configuration);
+            $targets[$table . ':' . $fieldName] = $forAdministrators && TargetKind::Allowable === $kind
+                ? TargetKind::AdminOnly
+                : $kind;
         }
 
         return $targets;
