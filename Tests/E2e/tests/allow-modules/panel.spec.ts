@@ -120,3 +120,17 @@ test('the keyboard leaves the picking face for the one it came from', async ({ p
 
   await expect(page.locator('.vperm-coin-turned')).toHaveCount(0)
 })
+
+test('the panel turns without moving where the browser asks for less motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await showModules(page)
+
+  await expect(page.locator('.vperm-panel-card')).toHaveCSS('transition-duration', '0s')
+})
+
+test('the panel shows its bar at once where the browser asks for less motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await showModules(page)
+
+  await expect(page.locator(`${preview} .vperm-face-bar`)).toHaveCSS('transition-delay', '0s')
+})
