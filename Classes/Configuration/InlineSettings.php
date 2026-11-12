@@ -23,6 +23,12 @@ final readonly class InlineSettings implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $user = $request->getAttribute('backend.user');
+        if (!$user instanceof BackendUserAuthentication
+            || (!$user->isAdmin() && null === $user->getOriginalUserIdWhenInSwitchUserMode())) {
+            return $handler->handle($request);
+        }
+
         $this->pageRenderer->addInlineSettingArray('visualPermissions', [
             'animation' => $this->settings->animation(),
             'toggleKey' => $this->settings->toggleKey(),

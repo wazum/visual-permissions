@@ -23,9 +23,11 @@ final class NoAccessibleModuleTest extends FunctionalTestCase
     public function sendsAReaderWithNoModuleToTheBackendItself(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $this->setUpBackendUser(2);
+        $switched = $this->setUpBackendUser(2);
+        $switched->setAndSaveSessionData('backuserid', 1);
 
-        $request = new ServerRequest('https://example.com/typo3/module/web/layout');
+        $request = (new ServerRequest('https://example.com/typo3/module/web/layout'))
+            ->withAttribute('backend.user', $switched);
         $refusing = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -37,5 +39,23 @@ final class NoAccessibleModuleTest extends FunctionalTestCase
 
         self::assertSame(303, $response->getStatusCode());
         self::assertStringContainsString('/typo3/main', $response->getHeaderLine('location'));
+    }
+
+    #[Test]
+    public function leavesAUserWithNoModuleToTheBackendWhenNobodyViewsAsThem(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $request = (new ServerRequest('https://example.com/typo3/module/web/layout'))
+            ->withAttribute('backend.user', $this->setUpBackendUser(2));
+        $refusing = new class implements RequestHandlerInterface {
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                throw new NoAccessibleModuleException('none of them', 1702480600);
+            }
+        };
+
+        $this->expectException(NoAccessibleModuleException::class);
+
+        $this->get(NoAccessibleModule::class)->process($request, $refusing);
     }
 }

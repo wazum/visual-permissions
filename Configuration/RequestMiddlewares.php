@@ -15,6 +15,8 @@ return [
             'before' => [
                 'wazum/visual-permissions/inline-settings',
                 'wazum/visual-permissions/leave-user-view',
+                'wazum/visual-permissions/no-accessible-module',
+                'wazum/visual-permissions/no-accessible-page',
             ],
         ],
         'wazum/visual-permissions/inline-settings' => [

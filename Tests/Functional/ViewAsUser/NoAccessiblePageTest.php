@@ -21,7 +21,11 @@ final class NoAccessiblePageTest extends FunctionalTestCase
     #[Test]
     public function sendsAReaderToTheModuleWithoutAPageTheyMayNotSee(): void
     {
-        $request = new ServerRequest('https://example.com/typo3/module/web/layout?id=25&token=abc');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $switched = $this->setUpBackendUser(2);
+        $switched->setAndSaveSessionData('backuserid', 1);
+        $request = (new ServerRequest('https://example.com/typo3/module/web/layout?id=25&token=abc'))
+            ->withAttribute('backend.user', $switched);
         $refusing = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -33,6 +37,24 @@ final class NoAccessiblePageTest extends FunctionalTestCase
 
         self::assertSame(303, $response->getStatusCode());
         self::assertSame('https://example.com/typo3/module/web/layout?token=abc', $response->getHeaderLine('location'));
+    }
+
+    #[Test]
+    public function leavesAPageAUserMayNotSeeToTheBackendWhenNobodyViewsAsThem(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $request = (new ServerRequest('https://example.com/typo3/module/web/layout?id=25'))
+            ->withAttribute('backend.user', $this->setUpBackendUser(2));
+        $refusing = new class implements RequestHandlerInterface {
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                throw new \RuntimeException('You don\'t have access to this page', 1289917924);
+            }
+        };
+
+        $this->expectExceptionCode(1289917924);
+
+        $this->get(NoAccessiblePage::class)->process($request, $refusing);
     }
 
     #[Test]

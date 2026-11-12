@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 
 final readonly class NoAccessiblePage implements MiddlewareInterface
@@ -16,6 +17,11 @@ final readonly class NoAccessiblePage implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $user = $request->getAttribute('backend.user');
+        if (!$user instanceof BackendUserAuthentication || null === $user->getOriginalUserIdWhenInSwitchUserMode()) {
+            return $handler->handle($request);
+        }
+
         try {
             return $handler->handle($request);
         } catch (\RuntimeException $exception) {

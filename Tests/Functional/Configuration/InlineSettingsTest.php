@@ -23,6 +23,13 @@ final class InlineSettingsTest extends FunctionalTestCase
 
     protected array $testExtensionsToLoad = ['wazum/visual-permissions'];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+    }
+
     protected function tearDown(): void
     {
         unset($GLOBALS['TYPO3_REQUEST']);
@@ -67,7 +74,7 @@ final class InlineSettingsTest extends FunctionalTestCase
         $this->get(InlineSettings::class)->process($this->backendRequest(), $this->carriesOn());
 
         self::assertStringContainsString(
-            '"modifiers":"Ctrl+Shift"',
+            '"modifiers":"Strg+Umschalt"',
             $this->get(PageRenderer::class)->render($this->backendRequest()),
         );
     }
@@ -83,10 +90,31 @@ final class InlineSettingsTest extends FunctionalTestCase
         self::assertStringContainsString('"keysOnButtons":false', $this->get(PageRenderer::class)->render($this->backendRequest()));
     }
 
+    #[Test]
+    public function tellsTheUserAnAdministratorViewsAs(): void
+    {
+        $this->setUpBackendUser(2)->setAndSaveSessionData('backuserid', 1);
+
+        $this->get(InlineSettings::class)->process($this->backendRequest(), $this->carriesOn());
+
+        self::assertStringContainsString('"animation":true', $this->get(PageRenderer::class)->render($this->backendRequest()));
+    }
+
+    #[Test]
+    public function tellsAUserNobodyViewsAsNothing(): void
+    {
+        $this->setUpBackendUser(2);
+
+        $this->get(InlineSettings::class)->process($this->backendRequest(), $this->carriesOn());
+
+        self::assertStringNotContainsString('visualPermissions', $this->get(PageRenderer::class)->render($this->backendRequest()));
+    }
+
     private function backendRequest(): ServerRequestInterface
     {
         $request = (new ServerRequest('https://example.com/typo3/'))
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
+            ->withAttribute('backend.user', $GLOBALS['BE_USER']);
 
         // PageRenderer::render() reads the request from here: 13.4 always, 14.3 when given none
         return $GLOBALS['TYPO3_REQUEST'] = $request
