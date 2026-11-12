@@ -65,6 +65,42 @@ final class FileMountsTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function mountsTheWritableFileMountOfAFolderThatAlsoHasAReadOnlyOne(): void
+    {
+        $this->arrange();
+        $this->getConnectionPool()->getConnectionForTable('sys_filemounts')->bulkInsert(
+            'sys_filemounts',
+            [
+                [4, 0, 'Library, read only', '1:/library/', 1],
+                [5, 0, 'Library', '1:/library/', 0],
+            ],
+            ['uid', 'pid', 'title', 'identifier', 'read_only'],
+        );
+
+        $this->get(FileMounts::class)->write(20, [['folder' => '1:/library/', 'mount' => true]]);
+
+        self::assertSame('1,2,5', $this->mountsOf(20));
+    }
+
+    #[Test]
+    public function mountsTheFirstFileMountOfAFolderInTheOrderTheBackendSortsThem(): void
+    {
+        $this->arrange();
+        $this->getConnectionPool()->getConnectionForTable('sys_filemounts')->bulkInsert(
+            'sys_filemounts',
+            [
+                [4, 0, 'Library', '1:/library/', 256],
+                [5, 0, 'Library, too', '1:/library/', 128],
+            ],
+            ['uid', 'pid', 'title', 'identifier', 'sorting'],
+        );
+
+        $this->get(FileMounts::class)->write(20, [['folder' => '1:/library/', 'mount' => true]]);
+
+        self::assertSame('1,2,5', $this->mountsOf(20));
+    }
+
+    #[Test]
     public function leavesTheSubgroupsAlone(): void
     {
         $this->arrange();

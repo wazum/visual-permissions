@@ -66,7 +66,11 @@ final readonly class FileMounts
         $mount = $builder
             ->select('uid')
             ->from(self::FILE_MOUNTS)
-            ->where($builder->expr()->eq('identifier', $builder->createNamedParameter($folder)))
+            ->where(
+                $builder->expr()->eq('identifier', $builder->createNamedParameter($folder)),
+                $builder->expr()->eq('read_only', $builder->createNamedParameter(0, Connection::PARAM_INT)),
+            )
+            ->orderBy('sorting')
             ->executeQuery()
             ->fetchOne();
 
