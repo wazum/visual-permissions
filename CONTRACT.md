@@ -84,4 +84,6 @@ response to the fields scope and reads the marks it draws. A change to either si
 fails in CI, rather than at runtime in somebody's backend.
 
 The write endpoints have no such fixture: a write that is taken answers 204 with no body,
-and the browser reads only the status.
+and the browser reads only the status. The one exception is a module write that also
+allows parent modules: it answers 200 with `alsoAllowed`, the titles of those parents,
+and the browser names them to the admin.
