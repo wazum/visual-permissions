@@ -17,7 +17,10 @@ final class OtherPermissionsControllerTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['beuser'];
 
-    protected array $testExtensionsToLoad = ['wazum/visual-permissions'];
+    protected array $testExtensionsToLoad = [
+        'wazum/visual-permissions',
+        __DIR__ . '/../Fixtures/Extensions/group_regions',
+    ];
 
     protected function setUp(): void
     {
@@ -55,9 +58,23 @@ final class OtherPermissionsControllerTest extends FunctionalTestCase
 
         self::assertStringContainsString('data[be_groups][10][subgroup]', $payload['html']);
         self::assertStringContainsString('data[be_groups][10][hidden]', $payload['html']);
-        self::assertStringNotContainsString('data[be_groups][10][groupMods]', $payload['html']);
-        self::assertStringNotContainsString('data[be_groups][10][db_mountpoints]', $payload['html']);
-        self::assertStringNotContainsString('data[be_groups][10][non_exclude_fields]', $payload['html']);
+        foreach (['title', 'description', 'non_exclude_fields', 'explicit_allowdeny', 'groupMods', 'db_mountpoints', 'file_mountpoints', 'file_permissions', 'pagetypes_select', 'tables_modify', 'tables_select'] as $column) {
+            self::assertStringNotContainsString('data[be_groups][10][' . $column . ']', $payload['html']);
+        }
+    }
+
+    #[Test]
+    public function rendersAColumnAnotherExtensionAddsToTheGroup(): void
+    {
+        $request = (new ServerRequest('https://example.com/typo3/ajax/visual-permissions/other-permissions'))
+            ->withQueryParams(['group' => '10']);
+
+        $response = $this->get(OtherPermissionsController::class)->form($request);
+
+        /** @var array{html: string} $payload */
+        $payload = json_decode((string) $response->getBody(), true);
+
+        self::assertStringContainsString('data[be_groups][10][tx_groupregions_regions]', $payload['html']);
     }
 
     #[Test]
@@ -130,6 +147,26 @@ final class OtherPermissionsControllerTest extends FunctionalTestCase
         );
     }
 
+    #[Test]
+    public function writesAColumnAnotherExtensionAddsToTheGroup(): void
+    {
+        $request = (new ServerRequest('https://example.com/typo3/ajax/visual-permissions/write-other-permissions'))
+            ->withParsedBody([
+                'group' => '10',
+                'data' => ['be_groups' => ['10' => ['tx_groupregions_regions' => 'north']]],
+            ]);
+
+        $response = $this->get(OtherPermissionsController::class)->write($request);
+
+        self::assertSame(204, $response->getStatusCode());
+        self::assertSame(
+            'north',
+            $this->getConnectionPool()
+                ->getConnectionForTable('be_groups')
+                ->fetchOne('SELECT tx_groupregions_regions FROM be_groups WHERE uid = 10'),
+        );
+    }
+
     /**
      * @return array<string, array{mixed}>
      */
@@ -164,16 +201,17 @@ final class OtherPermissionsControllerTest extends FunctionalTestCase
                 'data' => ['be_groups' => ['10' => [
                     'TSconfig' => 'options.saveDocNew = 1',
                     'groupMods' => 'records',
+                    'title' => 'Renamed',
                 ]]],
             ]);
 
         $this->get(OtherPermissionsController::class)->write($request);
 
         self::assertSame(
-            'web_layout',
-            $this->getConnectionPool()
+            ['web_layout', 'Editors'],
+            array_values((array) $this->getConnectionPool()
                 ->getConnectionForTable('be_groups')
-                ->fetchOne('SELECT groupMods FROM be_groups WHERE uid = 10'),
+                ->fetchAssociative('SELECT groupMods, title FROM be_groups WHERE uid = 10')),
         );
     }
 

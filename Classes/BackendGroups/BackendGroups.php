@@ -208,7 +208,7 @@ final readonly class BackendGroups
         ]);
     }
 
-    private function columnFor(Scope $scope): string
+    public function columnFor(Scope $scope): string
     {
         return match ($scope) {
             Scope::Fields => 'non_exclude_fields',

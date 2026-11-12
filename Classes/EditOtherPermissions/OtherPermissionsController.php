@@ -16,6 +16,7 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\JavaScriptItems;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Wazum\VisualPermissions\Authorization\Scope;
 use Wazum\VisualPermissions\BackendGroups\BackendGroups;
 use Wazum\VisualPermissions\DataHandling\Records;
 
@@ -33,6 +34,8 @@ final readonly class OtherPermissionsController
         'TSconfig',
         'tsconfig_includes',
     ];
+
+    private const NOT_PERMISSIONS = ['title', 'description'];
 
     private const FORM_NAME = 'editform';
 
@@ -55,17 +58,12 @@ final readonly class OtherPermissionsController
         $requested = $request->getQueryParams()['group'] ?? null;
 
         try {
-            $formData = $this->formDataCompiler->compile([
-                'request' => $request,
-                'tableName' => BackendGroups::TABLE,
-                'vanillaUid' => is_numeric($requested) ? (int) $requested : 0,
-                'command' => 'edit',
-            ], GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+            $formData = $this->formDataOf($request, is_numeric($requested) ? (int) $requested : 0);
         } catch (DatabaseRecordException) {
             return new Response(null, 404);
         }
 
-        $formData['fieldListToRender'] = implode(',', self::COLUMNS);
+        $formData['fieldListToRender'] = implode(',', $this->columnsOf($formData));
         $formData['renderType'] = 'listOfFieldsContainer';
 
         /** @var array{html: string, javaScriptModules: list<JavaScriptModuleInstruction>} $form */
@@ -88,6 +86,8 @@ final readonly class OtherPermissionsController
 
     /**
      * @throws \Doctrine\DBAL\Exception
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
      */
     public function write(ServerRequestInterface $request): ResponseInterface
     {
@@ -98,7 +98,10 @@ final readonly class OtherPermissionsController
             return new Response(null, 404);
         }
 
-        $values = array_intersect_key($this->fieldsOf($params['data'] ?? null, $groupId), array_flip(self::COLUMNS));
+        $values = array_intersect_key(
+            $this->fieldsOf($params['data'] ?? null, $groupId),
+            array_flip($this->columnsOf($this->formDataOf($request, $groupId))),
+        );
         if ([] === $values) {
             return new Response(null, 400);
         }
@@ -108,6 +111,38 @@ final readonly class OtherPermissionsController
         }
 
         return new Response(null, 204);
+    }
+
+    /**
+     * @return array<mixed>
+     *
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
+     */
+    private function formDataOf(ServerRequestInterface $request, int $groupId): array
+    {
+        return $this->formDataCompiler->compile([
+            'request' => $request,
+            'tableName' => BackendGroups::TABLE,
+            'vanillaUid' => $groupId,
+            'command' => 'edit',
+        ], GeneralUtility::makeInstance(TcaDatabaseRecord::class));
+    }
+
+    /**
+     * @param array<mixed> $formData
+     *
+     * @return list<string>
+     */
+    private function columnsOf(array $formData): array
+    {
+        /** @var list<string> $shown */
+        $shown = $formData['columnsToProcess'];
+
+        return [
+            ...self::COLUMNS,
+            ...array_diff($shown, self::COLUMNS, self::NOT_PERMISSIONS, array_map($this->groups->columnFor(...), Scope::cases())),
+        ];
     }
 
     /**
