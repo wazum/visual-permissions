@@ -1,13 +1,7 @@
 import { initialise as markBody } from './platform/body.js'
 import { initialise as headerControls } from './surfaces/toolbar/controls.js'
 import { initialise as selectGroup } from './pick-a-group/select.js'
-import { initialise as fields } from './allow-fields/fields.js'
-import { createDraft } from './allow-fields/draft.js'
-import { createJudgement } from './allow-fields/judgement.js'
-import { initialise as pickFields } from './allow-fields/pick.js'
-import { initialise as fieldsFoot } from './allow-fields/foot.js'
-import { initialise as markCards } from './allow-fields/mark-card.js'
-import { initialise as otherKinds } from './allow-fields/other-kinds.js'
+import { initialise as allowFields } from './allow-fields/allow-fields.js'
 import { initialise as frameArea } from './pick-an-area/frame.js'
 import { initialise as lockForm } from './surfaces/record-form/lock.js'
 import { initialise as switchType } from './surfaces/record-form/switch-type.js'
@@ -15,7 +9,6 @@ import { initialise as modules } from './allow-modules/modules.js'
 import { initialise as tableGates } from './allow-tables/gate.js'
 import { initialise as tablesPreview } from './allow-tables/preview.js'
 import { initialise as chooseValues } from './allow-values/choose.js'
-import { initialise as fieldsPreview } from './allow-fields/preview.js'
 import { initialise as mounts } from './mount-branches/mount-branches.js'
 import { initialise as tabBar } from './pick-an-area/tab-bar.js'
 import { initialise as keepAreasOpen } from './pick-an-area/areas.js'
@@ -57,19 +50,12 @@ function start(): void {
   // 13.4's tabs and form header take their 14.3 names before any scope reads the form
   tabNames(backend.signal)
   formDocheaderNames(backend.signal)
-  const judgement = createJudgement()
-  fields(judgement, backend.signal)
-  const draft = createDraft()
-  pickFields(draft, backend.signal)
-  fieldsFoot(draft, backend.signal)
-  markCards(judgement, backend.signal)
-  otherKinds(backend.signal)
+  allowFields(backend.signal)
   modules(document, backend.signal)
   mounts(document, backend.signal)
   tableGates(backend.signal)
   tablesPreview(backend.signal)
   chooseValues(backend.signal)
-  fieldsPreview(backend.signal)
   keepAreasOpen(document, backend.signal)
   newContent(document, backend.signal)
   redrawRecords(document, backend.signal)
