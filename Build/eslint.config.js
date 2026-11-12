@@ -95,6 +95,7 @@ export default tseslint.config(
       '@typescript-eslint/member-ordering': 'error',
       '@typescript-eslint/explicit-module-boundary-types': 'error',
       '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-shadow': 'error',
     },
   },
 
