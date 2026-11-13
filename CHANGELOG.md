@@ -7,14 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.1] - 2026-10-12
+## [0.2.0] - 2026-11-13
+
+### Added
+
+- The **Permissions** module changes page permissions while the permissions are switched on.
+- **Other permissions** shows the fields other extensions add to the group record.
+- **View as** says so when the backend could not switch to the user.
+- The animations stop when the browser asks for reduced motion.
+
+### Changed
+
+- The extension acts only for administrators and the users they view as. An editor's
+  backend and record form stay as TYPO3 draws them.
+- Fields of tables only administrators edit can no longer be allowed to a group.
+- A folder that already has a file mount gets its first writable one, in the order the
+  backend sorts them.
+
+### Fixed
+
+- A page or folder that is not there, or a folder on a storage that is not there, can no
+  longer be mounted, and a mount on a missing storage is left out of the folder tree.
+- The choices dialog opens once however often its button is pressed, and pressing the
+  table level that is already chosen writes nothing.
+- The record form keeps the group's table level when a new form comes in, and asks again
+  for a group whose form could not be read.
+- The permissions start switched off when the stored session names no group.
+- A label containing dollar signs is shown as it is.
+
+### Security
+
+- Paths sent by the browser are checked with TYPO3's own URL sanitizer.
+
+## [0.1.1] - 2026-11-09
 
 ### Fixed
 
 - TYPO3 14.3 no longer reports the extension's `ext_emconf.php` as deprecated: `composer.json`
   declares the version again.
 
-## [0.1.0] - 2026-10-12
+## [0.1.0] - 2026-11-08
 
 The first release. Pick a backend group in the toolbar and switch the permissions on: the
 module menu, the page tree, the folder tree and the record form then show what the group
@@ -49,6 +81,7 @@ may do there, and you change it on the same screen. The extension is alpha, and 
   with a message.
 - English and German labels, TYPO3 13.4 and 14.3, PHP 8.2 and up.
 
-[Unreleased]: https://github.com/wazum/visual-permissions/compare/v0.1.1...main
+[Unreleased]: https://github.com/wazum/visual-permissions/compare/v0.2.0...main
+[0.2.0]: https://github.com/wazum/visual-permissions/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/wazum/visual-permissions/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/wazum/visual-permissions/releases/tag/v0.1.0
