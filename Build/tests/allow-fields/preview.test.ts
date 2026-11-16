@@ -60,7 +60,7 @@ describe('the fields of the form as the group sees it', () => {
 
     expect(note?.querySelector('.callout-body')?.textContent)
       .toBe('The group may edit "Page Content", but no field of this record yet')
-    expect(note?.querySelector('button')?.textContent).toBe('Assign permissions')
+    expect(note?.querySelector('button')?.textContent).toBe('Allow fields')
     expect(note?.querySelector('button')?.className).toBe('btn btn-default btn-sm')
   })
 

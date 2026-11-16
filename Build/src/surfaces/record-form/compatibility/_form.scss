@@ -5,6 +5,15 @@
 // it names exists in 13.4 alone, so these rules reach nothing under 14.3.
 // Delete this with 13.4 support.
 
+// 13.4's button column is a block, so the way over would wrap in under core's buttons
+.module-docheader-bar-column-left:has(> .#{contract.$class-head-button}) {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--module-docheader-spacing) 0;
+}
+
 [#{contract.$attribute-picked}='fields'] {
   .form-irre-header-icon,
   .form-irre-header-control {

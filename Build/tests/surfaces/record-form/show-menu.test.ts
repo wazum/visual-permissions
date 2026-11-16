@@ -91,6 +91,18 @@ describe('the menu that says how much of a form is shown', () => {
     expect(document.querySelector(`.${classes.showMenu}`)).toBeNull()
   })
 
+  it('stays open when the backend judges the fields again', () => {
+    initialise(listening.signal)
+    drawForm()
+
+    activate()
+    pickArea('fields')
+    document.querySelector(`.${classes.showMenu} .dropdown-menu`)?.classList.add('show')
+    emit('fields-judged', {})
+
+    expect(document.querySelector(`.${classes.showMenu} .dropdown-menu.show`)).not.toBeNull()
+  })
+
   // Core writes an icon beside each of its own items, between the tick and the word
   it('names each entry with an icon of its own', () => {
     initialise(listening.signal)

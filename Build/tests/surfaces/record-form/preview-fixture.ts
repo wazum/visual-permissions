@@ -98,7 +98,7 @@ export const recordsOnScreen = (): string[] =>
 export const backendSays = (): void => {
   TYPO3.lang = {
     'allowFields.recordNoFields': 'The group may edit "%s", but no field of this record yet',
-    'recordForm.add': 'Assign permissions',
+    'recordForm.add': 'Allow fields',
     'allowTables.adminOnly': 'Only administrators may edit records of this kind',
     'allowTables.gone': 'This is empty for the group: it may not edit "%s"',
     'allowTables.readOnly': 'The group may only read "%s", so it cannot open this form',

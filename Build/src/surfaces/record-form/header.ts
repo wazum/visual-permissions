@@ -10,6 +10,7 @@ import { flipForm } from './turn.js'
 
 const column = '.module-docheader-navigation > .module-docheader-column-breadcrumb'
 const buttons = '.module-docheader-buttons .btn-toolbar > *'
+const row = '.module-docheader-buttons > .module-docheader-column-grow'
 
 const closeButton = '.t3js-editform-close'
 
@@ -36,7 +37,7 @@ export function initialise(outer: Document, signal: AbortSignal): void {
     const inner = doc
     const taken = ours(inner)
 
-    inner.querySelectorAll(`.${classes.headBar}, .${classes.headButton}`)
+    inner.querySelectorAll(`.${classes.headBar}, .${classes.headButton}, .${classes.faceHint}`)
       .forEach(gone => { gone.remove() })
 
     const out = inner.querySelector(closeButton)
@@ -89,8 +90,9 @@ export function initialise(outer: Document, signal: AbortSignal): void {
       'actions-check-square',
     )
 
-    const beside = [...inner.querySelectorAll(buttons)].find(control => control.contains(out))
-    beside?.after(way)
+    // Where the other cards keep their way over: under the line that says whose side this is
+    // Stryker disable next-line OptionalChaining: a record form always draws its row of buttons
+    inner.querySelector(row)?.append(way, say(inner, classes.faceHint, labelOf('recordForm.hint')))
   }
 
   onFormReady(form => {

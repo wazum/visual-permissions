@@ -13,7 +13,8 @@ const backendSays = (
   labels: Record<string, string> = {
     'platform.preview': 'Preview',
     'recordForm.previewFor': 'The form as the group "%s" sees it',
-    'recordForm.add': 'Assign permissions',
+    'recordForm.add': 'Allow fields',
+    'recordForm.hint': 'or press a field to disallow it',
     'platform.pick': 'Assign',
     'recordForm.pickFor': 'Pick what the group "%s" may edit',
     'platform.cancel': 'Cancel',
@@ -123,7 +124,7 @@ describe('the header of a form we have taken over', () => {
     activate()
     pickArea('fields')
 
-    expect(visibleHeaderControls()).toEqual(['Close', 'Assign permissions'])
+    expect(visibleHeaderControls()).toEqual(['Close', 'Allow fields'])
   })
 
   it('marks the way into the picking with a small icon set off from its name', () => {
@@ -134,12 +135,12 @@ describe('the header of a form we have taken over', () => {
     pickArea('fields')
 
     const way = [...document.querySelectorAll('.module-docheader-buttons button')]
-      .find(control => control.textContent.trim() === 'Assign permissions')
+      .find(control => control.textContent.trim() === 'Allow fields')
     const mark = way?.querySelector('typo3-backend-icon')
 
     expect(mark?.getAttribute('identifier')).toBe('actions-check-square')
     expect(mark?.getAttribute('size')).toBe('small')
-    expect(way?.textContent).toBe(' Assign permissions')
+    expect(way?.textContent).toBe(' Allow fields')
   })
 
   // A record is closed from the side that shows it; the other side is left through its foot
@@ -291,7 +292,7 @@ describe('the header of a form we have taken over', () => {
     pickArea('fields')
 
     expect(document.querySelector(`.${classes.headBar}`)).toBe(null)
-    expect(visibleHeaderControls()).toEqual(['Close', 'Assign permissions'])
+    expect(visibleHeaderControls()).toEqual(['Close', 'Allow fields'])
   })
 
   it('waits for a form when an area is picked without one on screen', () => {
@@ -302,7 +303,7 @@ describe('the header of a form we have taken over', () => {
     docheader(save, close)
 
     expect(said(classes.faceEyebrow)).toBe('Preview')
-    expect(visibleHeaderControls()).toEqual(['Close', 'Assign permissions'])
+    expect(visibleHeaderControls()).toEqual(['Close', 'Allow fields'])
   })
 
   // The page layout stands in this area too
@@ -326,8 +327,7 @@ describe('the header of a form we have taken over', () => {
 
     const turn = document.querySelector<HTMLElement>(`.${classes.headButton}`)
 
-    expect(turn?.textContent.trim()).toBe('Assign permissions')
-    // It stands among core's own controls and wears what they wear
+    expect(turn?.textContent.trim()).toBe('Allow fields')
     expect(turn?.className).toBe(`btn btn-default btn-sm ${classes.headButton}`)
     expect(turn?.querySelector('typo3-backend-icon')?.getAttribute('identifier'))
       .toBe('actions-check-square')
@@ -340,6 +340,25 @@ describe('the header of a form we have taken over', () => {
     vi.advanceTimersByTime(280)
 
     expect(document.body.getAttribute(attributes.face)).toBe('pick')
+  })
+
+  it('offers the way at the end of the row, apart from core\'s controls, and says what a press on a field does', () => {
+    initialise(document, listening.signal)
+    docheader(save, close)
+
+    activate()
+    pickArea('fields')
+
+    const turn = document.querySelector(`.${classes.headButton}`)
+
+    expect(turn?.closest('.btn-toolbar')).toBeNull()
+    expect(turn?.parentElement?.lastElementChild).toBe(turn?.nextElementSibling)
+    expect(turn?.nextElementSibling?.className).toBe(classes.faceHint)
+    expect(turn?.nextElementSibling?.textContent).toBe('or press a field to disallow it')
+
+    turnTo('pick')
+
+    expect(document.querySelector(`.${classes.faceHint}`)).toBeNull()
   })
 
   // The way back stands in the foot with the rest of what the picking decides

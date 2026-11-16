@@ -532,8 +532,12 @@
                 <target>Solange Berechtigungen bearbeitet werden, werden keine Datensätze gespeichert</target>
             </trans-unit>
             <trans-unit id="recordForm.add" resname="recordForm.add" approved="yes">
-                <source>Assign permissions</source>
-                <target>Rechte vergeben</target>
+                <source>Allow fields</source>
+                <target>Felder erlauben</target>
+            </trans-unit>
+            <trans-unit id="recordForm.hint" resname="recordForm.hint" approved="yes">
+                <source>or press a field to disallow it</source>
+                <target>oder ein Feld drücken, um es zu entziehen</target>
             </trans-unit>
             <trans-unit id="recordForm.pickFor" resname="recordForm.pickFor" approved="yes">
                 <source>Pick what the group "%s" may edit</source>

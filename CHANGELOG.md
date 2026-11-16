@@ -14,10 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - A field's card heads the groups a field is inherited from "Subgroups that allow it".
+- The record form turns with **Allow fields** at the end of its button row, as the other
+  cards turn, instead of "Assign permissions" beside **Close**.
 
 ### Fixed
 
 - The form as the group gets it says why it is empty when the group may only read the table.
+- The **Show** menu of a record form stays open while the backend judges the fields again.
 
 ## [0.2.0] - 2026-11-13
 

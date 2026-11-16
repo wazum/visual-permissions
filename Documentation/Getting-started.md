@@ -22,7 +22,7 @@ areas fade until you pick them.
 The front, marked **Preview**, shows what the group has. Click an item there to remove it.
 
 The back, marked **Assign**, shows what you can add. The button at the top of the front turns
-the card: **Allow modules**, **Add page mounts** or **Add file mounts**.
+the card: **Allow modules**, **Add page mounts**, **Add file mounts** or **Allow fields**.
 
 | Front: what the group has | Back: what you add |
 |---|---|
@@ -34,14 +34,15 @@ The foot of the card counts what you marked. Nothing is saved until you press **
 A permission the group gets from a subgroup is marked as inherited. You change it on that
 subgroup, not here.
 
-## 3. Records and fields: turn the form with "Assign permissions"
+## 3. Records and fields: turn the form with "Allow fields"
 
 Open any record, a page or a content element, with **Records and fields** picked. The form now
 shows what the group sees of it.
 
-To turn the form, press **Assign permissions** at its top, next to **Close**:
+To turn the form, press **Allow fields** at the end of the button row, under the line that
+says whose form this is:
 
-![The record form header with the Assign permissions button marked](Images/guide-record-header.png)
+![The record form header with the Allow fields button marked](Images/guide-record-header.png)
 
 On the back, every field the group does not have is offered. Press a field to mark it, then
 press **Allow** in the foot. The band above the form sets how far the group reaches into the

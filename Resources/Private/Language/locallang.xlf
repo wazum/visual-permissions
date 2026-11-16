@@ -400,7 +400,10 @@
                 <source>Records are not saved while permissions are edited</source>
             </trans-unit>
             <trans-unit id="recordForm.add" resname="recordForm.add">
-                <source>Assign permissions</source>
+                <source>Allow fields</source>
+            </trans-unit>
+            <trans-unit id="recordForm.hint" resname="recordForm.hint">
+                <source>or press a field to disallow it</source>
             </trans-unit>
             <trans-unit id="recordForm.pickFor" resname="recordForm.pickFor">
                 <source>Pick what the group "%s" may edit</source>

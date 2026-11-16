@@ -35,6 +35,31 @@ test('the assign side offers no language menu', async ({ page }) => {
   await expect(languages).toBeHidden()
 })
 
+test('the form the group gets offers to allow fields at the far end of its buttons, as the other cards do', async ({ page }) => {
+  await page.goto('/typo3/')
+  await openControls(page)
+  await pickFirstGroup(page)
+  await page.goto('/typo3/record/edit?edit%5Btt_content%5D%5B1%5D=edit')
+
+  const form = moduleContent(page)
+
+  await expect(form.locator('.t3js-formengine-field-item').first()).toBeVisible()
+  await openControls(page)
+  await switchOn(page)
+  await pickArea(page, 'fields')
+
+  const turn = form.getByRole('button', { name: 'Allow fields' })
+  const hint = form.getByText('or press a field to disallow it', { exact: true })
+  await expect(turn).toBeVisible()
+  await expect(hint).toBeVisible()
+  const row = await form.locator('.module-docheader-buttons').boundingBox()
+  const turnBox = await turn.boundingBox()
+  const hintBox = await hint.boundingBox()
+
+  expect(turnBox?.x ?? 0).toBeGreaterThan((row?.x ?? 0) + (row?.width ?? 0) / 2)
+  expect(hintBox?.x ?? 0).toBeGreaterThan((turnBox?.x ?? 0) + (turnBox?.width ?? 0))
+})
+
 // A record of a table the group may not write has no field to allow, and no other side
 test('a record the group cannot reach offers no way to the fields', async ({ page }) => {
   await page.goto('/typo3/')

@@ -24,6 +24,17 @@ typo3-breadcrumb + .#{contract.$class-head-bar} {
   white-space: nowrap;
 }
 
+.module-docheader-column-grow > .#{contract.$class-head-button} {
+  margin-inline-start: auto;
+}
+
+.module-docheader-column-grow > .#{contract.$class-face-hint} {
+  margin-inline-start: 0.625rem;
+  color: var(--typo3-text-color-variant);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 .#{contract.$class-type-switch} {
   flex: none;
   width: auto;

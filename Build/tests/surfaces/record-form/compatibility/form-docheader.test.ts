@@ -33,4 +33,13 @@ describe('the header of a form 13.4 drew', () => {
     expect(document.querySelector('.module-docheader-buttons'))
       .toBe(document.querySelector('.module-docheader-bar-buttons'))
   })
+
+  it('names the column the buttons stand in the way 14.3 does', () => {
+    initialise(listening.signal)
+
+    formArrives()
+
+    expect(document.querySelector('.module-docheader-buttons > .module-docheader-column-grow'))
+      .toBe(document.querySelector('.module-docheader-bar-buttons > .module-docheader-bar-column-left'))
+  })
 })

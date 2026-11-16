@@ -54,9 +54,8 @@ export function initialise(signal: AbortSignal): void {
 
     const inner = doc
 
-    inner.querySelectorAll(`.${classes.showMenu}`).forEach(gone => { gone.remove() })
-
     if (!ours(inner)) {
+      inner.querySelectorAll(`.${classes.showMenu}`).forEach(gone => { gone.remove() })
       inner.body.removeAttribute(attributes.show)
       backToOlderLanguageMenu(inner)
 
@@ -65,6 +64,13 @@ export function initialise(signal: AbortSignal): void {
 
     readAs(inner, Client.get(note) === 'list')
     nameFields(inner, Client.get(identifyNote) === 'said')
+
+    // Drawn again, an open menu would close under the reader; only its own items change its ticks
+    if (inner.querySelector(`.${classes.showMenu} .dropdown-menu.show`) !== null) {
+      return
+    }
+
+    inner.querySelectorAll(`.${classes.showMenu}`).forEach(gone => { gone.remove() })
 
     const menu = inner.createElement('div')
     menu.className = `btn-group ${classes.showMenu}`
