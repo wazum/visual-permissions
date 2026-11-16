@@ -40,10 +40,6 @@ change stays on the screen with a message.
 You can also open the backend as one of the group's users, and then go back to the screen
 where you were.
 
-> [!NOTE]
-> The **Records and fields** area still has open problems in how it works for the user, so
-> it can still change a lot.
-
 ## Screenshots
 
 **Records and fields.** The front shows the form as the group gets it. On the back, you mark
