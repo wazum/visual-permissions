@@ -7,7 +7,7 @@
                 <source>Allow all on this tab</source>
             </trans-unit>
             <trans-unit id="allowFields.allowedBy" resname="allowFields.allowedBy">
-                <source>Allowed by</source>
+                <source>Subgroups that allow it</source>
             </trans-unit>
             <trans-unit id="allowFields.allowedElsewhere" resname="allowFields.allowedElsewhere">
                 <source>Other groups that allow it</source>

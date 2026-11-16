@@ -59,7 +59,7 @@ cannot open the form at all, so the band says so.
 Each field carries a square at the end of its heading. Point at it, or press it, and a card
 says what the square means.
 
-- **Allowed by** names the subgroups the field comes from.
+- **Subgroups that allow it** names the subgroups the field comes from.
 - **Other groups that allow it** names every other group that gives the field.
 
 **Show group** switches to that group, on the same form.

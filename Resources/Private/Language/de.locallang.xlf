@@ -8,8 +8,8 @@
                 <target>Alle auf diesem Reiter erlauben</target>
             </trans-unit>
             <trans-unit id="allowFields.allowedBy" resname="allowFields.allowedBy" approved="yes">
-                <source>Allowed by</source>
-                <target>Erlaubt durch</target>
+                <source>Subgroups that allow it</source>
+                <target>Untergruppen, die es erlauben</target>
             </trans-unit>
             <trans-unit id="allowFields.allowedElsewhere" resname="allowFields.allowedElsewhere" approved="yes">
                 <source>Other groups that allow it</source>

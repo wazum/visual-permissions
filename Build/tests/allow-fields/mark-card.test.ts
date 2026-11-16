@@ -144,7 +144,7 @@ describe('a field\'s mark', () => {
 
     markOf('pages:nav_title')?.click()
 
-    expect(cardOf().querySelector('h3')?.textContent).toBe('Allowed by')
+    expect(cardOf().querySelector('h3')?.textContent).toBe('Subgroups that allow it')
     expect([...cardOf().querySelectorAll('li')].map(line => line.querySelector('span')?.textContent))
       .toStrictEqual(['Consectetur', 'Aliquam'])
     const show = [...cardOf().querySelectorAll('button')]

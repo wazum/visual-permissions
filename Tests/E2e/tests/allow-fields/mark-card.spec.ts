@@ -188,7 +188,7 @@ test('an inherited field names the groups that allow it, and shows one of them',
   await form.locator('[data-vperm-token="pages:nav_title"]').getByRole('button', { name: 'Inherited' }).press('Enter')
   const card = form.getByRole('dialog', { name: 'Inherited' })
 
-  await expect(card.getByRole('heading', { name: 'Allowed by' })).toBeVisible()
+  await expect(card.getByRole('heading', { name: 'Subgroups that allow it' })).toBeVisible()
   await expect(card.getByRole('listitem')).toContainText(['News Office', 'Faculty Editors'])
   await expect(card.getByRole('button', { name: 'Show group "Faculty Editors"' })).toHaveText('Show group')
   await expect(card.getByRole('button', { name: 'Show group "News Office"' })).toBeFocused()

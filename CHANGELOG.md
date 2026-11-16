@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - A field's card in **Records and fields** names the other groups that allow the field.
 
+### Changed
+
+- A field's card heads the groups a field is inherited from "Subgroups that allow it".
+
 ### Fixed
 
 - The form as the group gets it says why it is empty when the group may only read the table.
