@@ -11,6 +11,10 @@
                 <source>Allowed by</source>
                 <target>Erlaubt durch</target>
             </trans-unit>
+            <trans-unit id="allowFields.allowedElsewhere" resname="allowFields.allowedElsewhere" approved="yes">
+                <source>Other groups that allow it</source>
+                <target>Andere Gruppen, die es erlauben</target>
+            </trans-unit>
             <trans-unit id="allowFields.going.many" resname="allowFields.going.many" approved="yes">
                 <source>%s fields waiting to be disallowed</source>
                 <target>%s Felder noch zu entziehen</target>

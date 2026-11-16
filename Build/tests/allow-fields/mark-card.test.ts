@@ -40,7 +40,11 @@ const markOf = (token: string): HTMLButtonElement | null =>
 
 const cardOf = (): HTMLElement => document.querySelector<HTMLElement>('[role="dialog"]') ?? document.createElement('div')
 
-const judged = (targets: Record<string, string>, allowedBy: Record<string, number[]> = {}): void => {
+const judged = (
+  targets: Record<string, string>,
+  allowedBy: Record<string, number[]> = {},
+  allowedElsewhere: Record<string, { groupId: number, title: string, disabled: boolean }[]> = {},
+): void => {
   reply({
     group: { id: 7, title: 'Editors' },
     chain: [
@@ -48,7 +52,7 @@ const judged = (targets: Record<string, string>, allowedBy: Record<string, numbe
       { groupId: 6, title: 'Consectetur', depth: 1 },
       { groupId: 5, title: 'Aliquam', depth: 2 },
     ],
-    scopes: { fields: { targets, allowedBy }, tablesModify: { targets: { pages: 'allowed' } } },
+    scopes: { fields: { targets, allowedBy, allowedElsewhere }, tablesModify: { targets: { pages: 'allowed' } } },
   })
 }
 
@@ -152,6 +156,34 @@ describe('a field\'s mark', () => {
     show[1]?.click()
 
     expect(getState().groupId).toBe(5)
+    expect(cardOf().hasAttribute(attributes.open)).toBe(false)
+  })
+
+  it('names the other groups that allow a field, and shows the one pressed', async () => {
+    judged({ 'pages:nav_title': 'denied' }, {}, { 'pages:nav_title': [
+      { groupId: 9, title: 'Vestibulum', disabled: false },
+      { groupId: 12, title: 'Pellentesque', disabled: true },
+    ] })
+    drawForm(row('pages:nav_title', 'denied'))
+    await vi.waitFor(() => { expect(markOf('pages:nav_title')).not.toBeNull() })
+
+    markOf('pages:nav_title')?.click()
+
+    const elsewhere = cardOf().querySelector('section')
+    expect(document.getElementById(elsewhere?.getAttribute('aria-labelledby') ?? '')?.textContent).toBe('Other groups that allow it')
+    expect([...elsewhere?.querySelectorAll('li') ?? []].map(line => [
+      line.querySelector('span')?.textContent,
+      line.querySelector('small')?.textContent,
+    ])).toStrictEqual([['Vestibulum', undefined], ['Pellentesque', 'disabled']])
+    const show = [...elsewhere?.querySelectorAll('button') ?? []]
+    expect(show.map(button => button.getAttribute('aria-label'))).toStrictEqual([
+      'Show group "Vestibulum"',
+      'Show group "Pellentesque"',
+    ])
+
+    show[0]?.click()
+
+    expect(getState().groupId).toBe(9)
     expect(cardOf().hasAttribute(attributes.open)).toBe(false)
   })
 

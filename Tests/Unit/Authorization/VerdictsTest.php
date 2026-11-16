@@ -21,6 +21,17 @@ final class VerdictsTest extends TestCase
     }
 
     #[Test]
+    public function namesEveryGroupOutsideTheChainThatAllowsATarget(): void
+    {
+        $allowedOutside = (new Verdicts())->allowedOutside(
+            [20, 21],
+            [20 => [5], 21 => [7], 30 => [7, 9], 31 => [], 32 => [7]],
+        );
+
+        self::assertSame([7 => [30, 32], 9 => [30]], $allowedOutside);
+    }
+
+    #[Test]
     public function callsATargetNobodyAllowedDenied(): void
     {
         $verdicts = (new Verdicts())->resolve([13], [13 => []], ['pages:layout' => TargetKind::Allowable]);

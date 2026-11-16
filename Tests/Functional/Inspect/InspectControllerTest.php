@@ -149,6 +149,25 @@ final class InspectControllerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function namesTheOtherGroupsThatAllowAField(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/fields_allowed_elsewhere.csv');
+
+        $request = (new ServerRequest('https://example.com/typo3/ajax/visual-permissions/inspect'))
+            ->withQueryParams(['group' => '20', 'tables' => ['pages']]);
+
+        $response = $this->get(InspectController::class)->inspect($request);
+
+        /** @var array{scopes: array{fields: array{allowedElsewhere?: array<string, list<array{groupId: int}>>}}} $payload */
+        $payload = json_decode((string) $response->getBody(), true);
+
+        self::assertSame(
+            ['pages:nav_title' => [['groupId' => 30, 'title' => 'Archive', 'disabled' => false]]],
+            $payload['scopes']['fields']['allowedElsewhere'] ?? [],
+        );
+    }
+
+    #[Test]
     public function reportsAModuleTheGroupIsAllowed(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/group_chain.csv');

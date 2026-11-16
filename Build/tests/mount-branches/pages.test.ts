@@ -24,7 +24,7 @@ describe('the page mounts', () => {
     const none = { targets: {} }
 
     expect(pages.mounted({
-      fields: { targets: {}, allowedBy: {} },
+      fields: { targets: {}, allowedBy: {}, allowedElsewhere: {} },
       modules: none,
       pageMounts: { targets: { 30: 'allowed', 25: 'inherited' }, order: [30, 25], unseen: [] },
       fileMounts: { targets: {}, named: {} },

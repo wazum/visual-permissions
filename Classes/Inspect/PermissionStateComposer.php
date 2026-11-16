@@ -27,6 +27,7 @@ final readonly class PermissionStateComposer
     /**
      * @param array<int, array{
      *     title: string,
+     *     disabled?: bool,
      *     subgroups: list<int>,
      *     fields?: list<string>,
      *     modules?: list<string>,
@@ -44,7 +45,11 @@ final readonly class PermissionStateComposer
      *     group: array{id: int, title: string},
      *     chain: list<ChainStep>,
      *     scopes: array{
-     *         fields: array{targets: array<string, string>, allowedBy: array<string, list<int>>},
+     *         fields: array{
+     *             targets: array<string, string>,
+     *             allowedBy: array<string, list<int>>,
+     *             allowedElsewhere: array<string, list<array{groupId: int, title: string, disabled: bool}>>
+     *         },
      *         fieldValues: array{targets: array<string, string>},
      *         modules: array{targets: array<string, string>},
      *         pageMounts: array{targets: array<int, string>},
@@ -94,7 +99,23 @@ final readonly class PermissionStateComposer
             'scopes' => [
                 'fields' => $this->values(
                     array_intersect_key($this->verdicts->resolve($chainIds, $fields, $fieldTargets), $fieldTargets),
-                ) + ['allowedBy' => array_intersect_key($this->verdicts->allowedBy($chainIds, $fields), $fieldTargets)],
+                ) + [
+                    'allowedBy' => array_intersect_key($this->verdicts->allowedBy($chainIds, $fields), $fieldTargets),
+                    'allowedElsewhere' => array_map(
+                        static fn(array $groupIds): array => array_map(static fn(int $id): array => [
+                            'groupId' => $id,
+                            'title' => $groups[$id]['title'],
+                            'disabled' => $groups[$id]['disabled'] ?? false,
+                        ], $groupIds),
+                        array_intersect_key(
+                            $this->verdicts->allowedOutside($chainIds, array_map(
+                                static fn(array $group): array => $group['fields'] ?? [],
+                                $groups,
+                            )),
+                            $fieldTargets,
+                        ),
+                    ),
+                ],
                 'fieldValues' => $this->values($this->verdicts->resolve($chainIds, $fieldValues)),
                 'fileMounts' => $this->values($this->verdicts->resolve($chainIds, $fileMounts)),
                 'fileOperations' => $this->values($this->verdicts->resolve($chainIds, $fileOperations)),

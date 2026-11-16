@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- A field's card in **Records and fields** names the other groups that allow the field.
+
 ## [0.2.0] - 2026-11-13
 
 ### Added

@@ -3,7 +3,7 @@ import { attributes, classes } from '../platform/contract.js'
 import { labelOf } from '../platform/labels.js'
 import { said } from '../platform/panel-card.js'
 import { getState, selectGroup } from '../platform/session.js'
-import type { ChainStep } from '../platform/transport.js'
+import type { ChainStep, OtherGroup } from '../platform/transport.js'
 import { onFormReady } from '../surfaces/record-form/form.js'
 import type { Judgement } from './judgement.js'
 
@@ -36,18 +36,26 @@ const hintOf = (field: Element): string => {
   return labelOf(marked ? 'allowFields.hint.keep' : 'allowFields.hint.disallow')
 }
 
-function givers(card: HTMLElement, groups: readonly ChainStep[]): HTMLElement[] {
+function givers(card: HTMLElement, kind: 'allowedBy' | 'allowedElsewhere', groups: readonly (ChainStep | OtherGroup)[]): HTMLElement[] {
   if (groups.length === 0) {
     return []
   }
 
   const doc = card.ownerDocument
   const heading = doc.createElement('h3')
-  heading.textContent = labelOf('allowFields.allowedBy')
+  heading.id = `${classes.markCard}-${kind}`
+  heading.textContent = labelOf(`allowFields.${kind}`)
   const list = doc.createElement('ul')
   list.append(...groups.map(group => {
     const name = doc.createElement('span')
     name.textContent = group.title
+    const line = doc.createElement('li')
+    line.append(name)
+    if ('disabled' in group && group.disabled) {
+      const disabled = doc.createElement('small')
+      disabled.textContent = labelOf('pickAGroup.disabled')
+      line.append(disabled)
+    }
     const show = doc.createElement('button')
     // Stryker disable next-line StringLiteral: the card stands outside any form, so there is nothing to submit
     show.type = 'button'
@@ -59,18 +67,18 @@ function givers(card: HTMLElement, groups: readonly ChainStep[]): HTMLElement[] 
       card.hidePopover()
       selectGroup(group.groupId)
     })
-    const line = doc.createElement('li')
-    line.append(name, show)
+    line.append(show)
 
     return line
   }))
   const section = doc.createElement('section')
+  section.setAttribute('aria-labelledby', heading.id)
   section.append(heading, list)
 
   return [section]
 }
 
-function fill(card: HTMLElement, field: Element, groups: readonly ChainStep[]): void {
+function fill(card: HTMLElement, field: Element, judgement: Judgement): void {
   const doc = card.ownerDocument
   const verdict = verdictOf(field)
   // The card shows the field's square again; CSS draws it, which only a browser does
@@ -89,7 +97,11 @@ function fill(card: HTMLElement, field: Element, groups: readonly ChainStep[]): 
   words.append(title, meaning)
   const header = doc.createElement('header')
   header.append(words)
-  card.replaceChildren(header, ...givers(card, groups))
+  card.replaceChildren(
+    header,
+    ...givers(card, 'allowedBy', judgement.allowedBy(tokenOf(field))),
+    ...givers(card, 'allowedElsewhere', judgement.allowedElsewhere(tokenOf(field))),
+  )
 
   const hint = hintOf(field)
   if (hint !== '') {
@@ -162,7 +174,7 @@ export function initialise(judgement: Judgement, signal: AbortSignal): void {
     // Stryker disable next-line StringLiteral: anchor positioning is the browser's to do
     mark.style.setProperty('anchor-name', '--vperm-mark')
     mark.setAttribute('aria-expanded', 'true')
-    fill(card, field, judgement.allowedBy(tokenOf(field)))
+    fill(card, field, judgement)
     card.showPopover()
   }
 

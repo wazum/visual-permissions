@@ -16,7 +16,7 @@ const unexplainedMarks = async (page: Page, form: FrameLocator): Promise<string[
     await mark.press('Enter')
     const card = form.getByRole('dialog')
     const name = await mark.getAttribute('aria-label') ?? ''
-    const title = await card.getByRole('heading').textContent() ?? ''
+    const title = await card.getByRole('heading', { level: 2 }).textContent() ?? ''
     const meaning = await card.locator('p').textContent() ?? ''
 
     if (name === '' || meaning === '' || title !== name) {
@@ -194,6 +194,29 @@ test('an inherited field names the groups that allow it, and shows one of them',
   await expect(card.getByRole('button', { name: 'Show group "News Office"' })).toBeFocused()
 
   await page.keyboard.press('Enter')
+
+  await expect(shownGroup(page)).toHaveText('News Office')
+  await expect(card).toBeHidden()
+})
+
+test('a field\'s card names the other groups that allow it, and shows one of them', async ({ page }) => {
+  await page.goto('/typo3/')
+  await openControls(page)
+  await pickGroup(page, 'Research Staff')
+
+  const form = await openFirstPage(page)
+
+  await openControls(page)
+  await switchOn(page)
+
+  await form.locator('[data-vperm-token="pages:nav_title"]').getByRole('button', { name: 'Inherited' }).press('Enter')
+  const card = form.getByRole('dialog', { name: 'Inherited' })
+  const elsewhere = card.getByRole('region', { name: 'Other groups that allow it' })
+
+  await expect(elsewhere.getByRole('listitem')).toContainText(['News Office'])
+  await expect(elsewhere.getByRole('listitem')).toHaveCount(1)
+
+  await elsewhere.getByRole('button', { name: 'Show group "News Office"' }).click()
 
   await expect(shownGroup(page)).toHaveText('News Office')
   await expect(card).toBeHidden()

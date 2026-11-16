@@ -31,7 +31,8 @@ you pick more. A permission the group gets from a subgroup is marked as inherite
 change it on that subgroup.
 
 In the record form, point at a field's square or press it to read what it means. For an
-inherited field, it names the groups that give it, and one press shows that group.
+inherited field, it names the groups that give it, and one press shows that group. It also
+names the other groups that allow the field, so you need not open each group to find them.
 
 The extension saves nothing until you click to save. If TYPO3 does not accept a change, the
 change stays on the screen with a message.
@@ -47,11 +48,12 @@ where you were.
 
 **Records and fields.** The front shows the form as the group gets it. On the back, you mark
 the fields to give the group, and the band above the form sets how far the group reaches
-into the table: no access, read, or read and write.
+into the table: no access, read, or read and write. A field's card names the other groups
+that allow the field.
 
 | What the group has | What you give the group |
 |---|---|
-| ![The record form as the group sees it](Documentation/Images/record-form-preview.png) | ![Two fields marked to allow on the back of the record form](Documentation/Images/record-form-assign.png) |
+| ![The record form as the group sees it](Documentation/Images/record-form-preview.png) | ![Two fields marked to allow on the back of the record form, and the card of a field that another group allows](Documentation/Images/record-form-assign.png) |
 
 **Modules, page mounts and file mounts.** The module menu, the page tree and the folder tree
 show what the group has, and you mark more on the same tree.

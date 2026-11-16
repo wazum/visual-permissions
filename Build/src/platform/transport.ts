@@ -12,6 +12,12 @@ export interface ChainStep {
   readonly depth: number
 }
 
+export interface OtherGroup {
+  readonly groupId: number
+  readonly title: string
+  readonly disabled: boolean
+}
+
 export interface Targets {
   readonly targets: Readonly<Record<string, string>>
 }
@@ -27,7 +33,11 @@ export interface Permissions {
   readonly chain: readonly ChainStep[]
   readonly scopes: {
     // A field a subgroup allows names that subgroup; one the group allows itself is not listed
-    readonly fields: Targets & { readonly allowedBy: Readonly<Record<string, readonly number[]>> }
+    readonly fields: Targets & {
+      readonly allowedBy: Readonly<Record<string, readonly number[]>>
+      // Groups outside the chain that allow the field themselves, not by inheritance
+      readonly allowedElsewhere: Readonly<Record<string, readonly OtherGroup[]>>
+    }
     readonly fieldValues: Targets
     readonly modules: Targets
     readonly pageMounts: Targets & { readonly order: readonly number[], readonly unseen: readonly UnseenPage[] }

@@ -9,6 +9,9 @@
             <trans-unit id="allowFields.allowedBy" resname="allowFields.allowedBy">
                 <source>Allowed by</source>
             </trans-unit>
+            <trans-unit id="allowFields.allowedElsewhere" resname="allowFields.allowedElsewhere">
+                <source>Other groups that allow it</source>
+            </trans-unit>
             <trans-unit id="allowFields.going.many" resname="allowFields.going.many">
                 <source>%s fields waiting to be disallowed</source>
             </trans-unit>

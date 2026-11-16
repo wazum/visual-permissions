@@ -1,0 +1,6 @@
+"be_groups",,,,,,
+,"uid","pid","title","subgroup","non_exclude_fields","hidden","deleted"
+,20,0,"Editors","21","pages:subtitle",0,0
+,21,0,"Writers","","pages:nav_title",0,0
+,30,0,"Archive","","pages:nav_title,tt_content:header",0,0
+,31,0,"Press","21","",0,0

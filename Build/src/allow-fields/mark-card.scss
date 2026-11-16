@@ -176,17 +176,27 @@ $judged: '[#{contract.$attribute-picked}="fields"] .#{contract.$class-anchor}[#{
   ul {
     display: grid;
     gap: 0.5rem;
+    max-block-size: 12rem;
     margin: 0;
     padding: 0;
+    overflow-y: auto;
     list-style: none;
   }
 
   li {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 0.75rem;
     font-weight: 600;
+  }
+
+  small {
+    color: var(--typo3-text-color-variant);
+    font-weight: 400;
+  }
+
+  li > button {
+    margin-inline-start: auto;
   }
 }
 

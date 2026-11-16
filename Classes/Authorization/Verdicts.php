@@ -62,4 +62,24 @@ final readonly class Verdicts
 
         return $allowedBy;
     }
+
+    /**
+     * @template Target of array-key
+     *
+     * @param list<int>                $chain group ids, nearest first
+     * @param array<int, list<Target>> $held  group id to the targets it holds, for every group
+     *
+     * @return array<Target, list<int>>
+     */
+    public function allowedOutside(array $chain, array $held): array
+    {
+        $allowedOutside = [];
+        foreach (array_diff_key($held, array_flip($chain)) as $groupId => $targets) {
+            foreach ($targets as $target) {
+                $allowedOutside[$target][] = $groupId;
+            }
+        }
+
+        return $allowedOutside;
+    }
 }

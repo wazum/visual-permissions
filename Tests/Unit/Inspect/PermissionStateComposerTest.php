@@ -74,6 +74,28 @@ final class PermissionStateComposerTest extends TestCase
     }
 
     #[Test]
+    public function namesTheOtherGroupsThatAllowTheFieldsOfTheTablesItWasAskedAbout(): void
+    {
+        $GLOBALS['TCA'] = [
+            'pages' => ['columns' => ['nav_title' => ['exclude' => true, 'config' => ['type' => 'input']]]],
+            'tt_content' => ['columns' => ['header' => ['exclude' => true, 'config' => ['type' => 'input']]]],
+        ];
+
+        $state = $this->composer()->compose(10, [
+            10 => ['title' => 'Editors', 'subgroups' => [11]],
+            11 => ['title' => 'Everyone', 'subgroups' => [], 'fields' => ['pages:nav_title']],
+            12 => ['title' => 'Archive', 'subgroups' => [], 'fields' => ['pages:nav_title', 'tt_content:header']],
+            13 => ['title' => 'Press', 'disabled' => true, 'subgroups' => [], 'fields' => ['pages:nav_title']],
+            14 => ['title' => 'Guests', 'subgroups' => [11]],
+        ], ['pages']);
+
+        self::assertSame(['pages:nav_title' => [
+            ['groupId' => 12, 'title' => 'Archive', 'disabled' => false],
+            ['groupId' => 13, 'title' => 'Press', 'disabled' => true],
+        ]], $state['scopes']['fields']['allowedElsewhere']);
+    }
+
+    #[Test]
     public function reportsTheTablesTheGroupMayWriteAndTheOnesItMayRead(): void
     {
         $GLOBALS['TCA'] = ['pages' => [], 'tt_content' => [], 'sys_category' => []];
