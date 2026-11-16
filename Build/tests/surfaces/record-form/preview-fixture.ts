@@ -101,6 +101,7 @@ export const backendSays = (): void => {
     'recordForm.add': 'Assign permissions',
     'allowTables.adminOnly': 'Only administrators may edit records of this kind',
     'allowTables.gone': 'This is empty for the group: it may not edit "%s"',
+    'allowTables.readOnly': 'The group may only read "%s", so it cannot open this form',
     'be_groups.tables_modify.permissions.none': 'No Access',
     'be_groups.tables_modify.permissions.select': 'Read',
     'be_groups.tables_modify.permissions.modify': 'Read & Write',

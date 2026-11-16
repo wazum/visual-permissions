@@ -153,6 +153,9 @@
             <trans-unit id="allowTables.gone" resname="allowTables.gone">
                 <source>This is empty for the group: it may not edit "%s"</source>
             </trans-unit>
+            <trans-unit id="allowTables.readOnly" resname="allowTables.readOnly">
+                <source>The group may only read "%s", so it cannot open this form</source>
+            </trans-unit>
             <trans-unit id="allowTables.inherited" resname="allowTables.inherited">
                 <source>Reached through a subgroup, not by this group itself. Change it on that group.</source>
             </trans-unit>

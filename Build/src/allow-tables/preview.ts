@@ -25,7 +25,15 @@ export function initialise(signal: AbortSignal): void {
           }
         })
     },
-    explain: (doc, table, verdict, called, reads) => drawBand(doc, { groupId: getState().groupId ?? 0, table, called, verdict, reads }),
+    explain: (doc, table, verdict, called, reads) => drawBand(doc, {
+      groupId: getState().groupId ?? 0,
+      table,
+      called,
+      verdict,
+      reads,
+      // Core opens no form of a table the group may only read
+      says: isReachable(reads) ? said(labelOf('allowTables.readOnly'), called) : '',
+    }),
   }, signal)
 }
 

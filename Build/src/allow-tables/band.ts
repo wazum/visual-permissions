@@ -10,11 +10,12 @@ export interface BandState {
   readonly called: string
   readonly verdict: string | undefined
   readonly reads?: string | undefined
+  readonly says: string
 }
 
 const levels = ['none', 'select', 'modify']
 
-export function drawBand(doc: Document, { groupId, table, called, verdict, reads }: BandState): HTMLElement {
+export function drawBand(doc: Document, { groupId, table, called, verdict, reads, says }: BandState): HTMLElement {
   const passedOn = (one: string | undefined): boolean => one === inherited || one === alsoInherited
   const floor = passedOn(verdict) ? 2 : passedOn(reads) ? 1 : 0
   const chosen = Math.max(verdict === picked ? 2 : reads === picked ? 1 : 0, floor)
@@ -23,8 +24,8 @@ export function drawBand(doc: Document, { groupId, table, called, verdict, reads
   band.className = `callout callout-notice callout-sm ${classes.tableGate}`
   band.append(say(doc, classes.tableName, called))
   band.append(say(doc, classes.tableToken, table))
-  // The switch says where the group stands; only a table nobody can be given says it in words
-  const body = say(doc, 'callout-body', verdict === adminsOnly ? labelOf('allowTables.adminOnly') : '')
+  // The switch says where the group stands; words only say what the switch cannot
+  const body = say(doc, 'callout-body', verdict === adminsOnly ? labelOf('allowTables.adminOnly') : says)
   band.append(body)
 
   if (verdict === adminsOnly) {

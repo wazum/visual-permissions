@@ -82,6 +82,26 @@ test('leaving the group only reading the table of the record turns the form to w
   await expect(form.locator('body')).toHaveAttribute('data-vperm-face', 'preview')
 })
 
+test('the form the group gets says that reading a table opens no form of it', async ({ page }) => {
+  await page.goto('/typo3/')
+  await openControls(page)
+  await pickFirstGroup(page)
+
+  await page.goto('/typo3/record/edit?edit%5Btt_content%5D%5B1%5D=edit')
+
+  const form = moduleContent(page)
+  const own = form.locator('.vperm-table-gate:has(.vperm-table-token:text-is("tt_content"))')
+
+  await openControls(page)
+  await switchOn(page)
+  await pickArea(page, 'fields')
+  await turnToFields(page)
+  await choose(page, own, 'Read')
+
+  await expect(form.locator('body')).toHaveAttribute('data-vperm-face', 'preview')
+  await expect(own).toContainText('The group may only read "Page Content", so it cannot open this form')
+})
+
 // The group's own form carries no such record at all, and a gap explains nothing
 test('the form the group gets says why a record of that table is missing', async ({ page }) => {
   await page.goto('/typo3/')

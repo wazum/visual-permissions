@@ -203,6 +203,10 @@
                 <source>This is empty for the group: it may not edit "%s"</source>
                 <target>Für die Gruppe bleibt das hier leer: sie darf „%s“ nicht bearbeiten</target>
             </trans-unit>
+            <trans-unit id="allowTables.readOnly" resname="allowTables.readOnly" approved="yes">
+                <source>The group may only read "%s", so it cannot open this form</source>
+                <target>Die Gruppe darf „%s“ nur lesen und kann dieses Formular daher nicht öffnen</target>
+            </trans-unit>
             <trans-unit id="allowTables.inherited" resname="allowTables.inherited" approved="yes">
                 <source>Reached through a subgroup, not by this group itself. Change it on that group.</source>
                 <target>Über eine Untergruppe erreichbar, nicht durch die Gruppe selbst. Dort zu ändern.</target>

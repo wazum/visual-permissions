@@ -327,6 +327,18 @@ describe('the tables of the form as the group sees it', () => {
     })
   })
 
+  it.each(['allowed', 'inherited', 'allowedAndInherited'])('says a table the group reads as %s opens no form of it', reads => {
+    drawForm(row('tt_content:header', 'notApplicable'))
+    backendSays()
+
+    activate()
+    pickArea('fields')
+    groupForm(document, { tt_content: 'denied' }, { tt_content: 'Page Content' }, { tt_content: reads })
+
+    expect(document.querySelector(`.${classes.nothingTheirs} .callout-body`)?.textContent)
+      .toBe('The group may only read "Page Content", so it cannot open this form')
+  })
+
   it('keeps its word while the taken table is read back', async () => {
     drawForm(row('tt_content:header', 'notApplicable'))
     backendSays()
