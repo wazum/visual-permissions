@@ -95,6 +95,9 @@ permissions.
 permissions. <kbd>Ctrl/Cmd</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> switches to the user you
 viewed last, and back again.
 
+The [walk-through](Documentation/Getting-started.md) shows step by step how the cards work,
+and where the record form keeps its button to assign permissions.
+
 ## Settings
 
 You find these in the extension configuration:
