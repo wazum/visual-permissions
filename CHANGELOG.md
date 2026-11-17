@@ -7,15 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-17
+
 ### Added
 
 - A field's card in **Records and fields** names the other groups that allow the field.
+- A getting-started guide walks through the cards step by step.
 
 ### Changed
 
-- A field's card heads the groups a field is inherited from "Subgroups that allow it".
-- The record form turns with **Allow fields** at the end of its button row, as the other
-  cards turn, instead of "Assign permissions" beside **Close**.
+- A field's card lists the subgroups a field comes from under "Subgroups that allow it",
+  no longer under "Allowed by".
+- **Allow fields** at the end of the record form's buttons turns the form, as the other
+  areas turn. It replaces "Assign permissions" next to **Close**.
 
 ### Fixed
 
@@ -54,5 +58,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Paths sent by the browser are checked with TYPO3's own URL sanitizer.
 
-[Unreleased]: https://github.com/wazum/visual-permissions/compare/v0.2.0...main
+[Unreleased]: https://github.com/wazum/visual-permissions/compare/v0.3.0...main
+[0.3.0]: https://github.com/wazum/visual-permissions/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/wazum/visual-permissions/releases/tag/v0.2.0
