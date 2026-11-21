@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-21
+
 ### Fixed
 
 - A record form opens for an administrator when another extension's field draws nothing,
@@ -63,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Paths sent by the browser are checked with TYPO3's own URL sanitizer.
 
-[Unreleased]: https://github.com/wazum/visual-permissions/compare/v0.3.0...main
+[Unreleased]: https://github.com/wazum/visual-permissions/compare/v0.3.1...main
+[0.3.1]: https://github.com/wazum/visual-permissions/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/wazum/visual-permissions/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/wazum/visual-permissions/releases/tag/v0.2.0
