@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Wazum\VisualPermissions\Surfaces\RecordForm\ValueChoices;
+use Wazum\VisualPermissions\Tests\Functional\Fixtures\HtmllessElement;
 use Wazum\VisualPermissions\Tests\Functional\Fixtures\LabellessElement;
 
 final class AnchorEmittingFieldContainerTest extends FunctionalTestCase
@@ -185,6 +186,16 @@ final class AnchorEmittingFieldContainerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function drawsNothingForAFieldWhoseElementDrawsNothing(): void
+    {
+        $this->addLabellessReport(HtmllessElement::class);
+
+        $html = $this->renderField('pages', 1, 'tx_report');
+
+        self::assertSame('', $html);
+    }
+
+    #[Test]
     public function leavesTheLabelOfAFieldThatDrawsItsOwn(): void
     {
         $html = $this->renderField('pages', 1, 'title');
@@ -233,7 +244,7 @@ final class AnchorEmittingFieldContainerTest extends FunctionalTestCase
     }
 
     // An extension's field whose element draws a report and no label of its own
-    private function addLabellessReport(): void
+    private function addLabellessReport(string $element = LabellessElement::class): void
     {
         /** @var array{pages: array{columns: array<string, mixed>, types: array{1: array{showitem: string}}}} $tca */
         $tca = $GLOBALS['TCA'];
@@ -250,7 +261,7 @@ final class AnchorEmittingFieldContainerTest extends FunctionalTestCase
         $configuration['SYS']['formEngine']['nodeRegistry'][1790000000] = [
             'nodeName' => 'labellessReport',
             'priority' => 40,
-            'class' => LabellessElement::class,
+            'class' => $element,
         ];
         $GLOBALS['TYPO3_CONF_VARS'] = $configuration;
     }

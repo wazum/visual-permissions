@@ -28,8 +28,8 @@ final class AnchorEmittingFieldContainer extends SingleFieldContainer
         $table = $this->data['tableName'];
         /** @var string $fieldName */
         $fieldName = $this->data['fieldName'];
-        /** @var string $html */
-        $html = $result['html'];
+        // An extension's element may leave its html null, which core prints as nothing
+        $html = \is_string($result['html'] ?? null) ? $result['html'] : '';
         /** @var array{uid?: string|int} $record */
         $record = $this->data['databaseRow'];
         $uid = $record['uid'] ?? '';
